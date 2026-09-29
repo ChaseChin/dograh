@@ -1,8 +1,53 @@
 import type {
     ConversationItem,
+    LatencyBreakdown,
     RealtimeFeedbackEvent,
     RealtimeFeedbackMessage,
 } from "../types";
+
+/** Map a pipecat processor name to a latency category.
+ * "TencentASRService" has no "STT" in it, so ASR is matched too;
+ * "STTS" contains "TTS", so STT/ASR must be tested first. */
+function latencyCategory(processor?: string): keyof LatencyBreakdown | null {
+    if (!processor) return null;
+    if (processor.includes("STT")) return "stt";
+    if (processor.includes("ASR")) return "stt";
+    if (processor.includes("TTS")) return "tts";
+    if (processor.includes("LLM")) return "llm";
+    return null;
+}
+
+/** Record a TTFB metric; the first value per category wins (a turn can emit
+ * several TTS TTFBs, one per sentence, and the first is what the user waits on). */
+function recordLatency(pending: LatencyBreakdown, processor: string | undefined, seconds?: number) {
+    const category = latencyCategory(processor);
+    if (category && seconds !== undefined && pending[category] === undefined) {
+        pending[category] = seconds * 1000;
+    }
+}
+
+function hasLatency(pending: LatencyBreakdown) {
+    return pending.stt !== undefined || pending.llm !== undefined || pending.tts !== undefined;
+}
+
+/** Backfill a late TTS TTFB onto the most recent assistant output. TTS first
+ * audio can arrive after the turn's bot text was already emitted, so the
+ * pending accumulator has been consumed; patch the item that is still
+ * missing it. Returns false when this turn has no assistant output yet (the
+ * metric should go into the pending accumulator instead). */
+function backfillTtsLatency(items: ConversationItem[], seconds: number): boolean {
+    for (let i = items.length - 1; i >= 0; i--) {
+        const item = items[i];
+        if (item.kind === "message" && item.role === "user") return false;
+        if (item.kind === "tool-call" || (item.kind === "message" && item.role === "assistant")) {
+            if (item.latencyMs?.tts === undefined) {
+                item.latencyMs = { ...item.latencyMs, tts: seconds * 1000 };
+            }
+            return true;
+        }
+    }
+    return false;
+}
 
 function feedbackEventText(event: RealtimeFeedbackEvent) {
     return (
@@ -15,7 +60,11 @@ function feedbackEventText(event: RealtimeFeedbackEvent) {
     );
 }
 
-function liveFeedbackItem(message: RealtimeFeedbackMessage, reasoningDurationMs?: number): ConversationItem | null {
+function liveFeedbackItem(
+    message: RealtimeFeedbackMessage,
+    reasoningDurationMs?: number,
+    latencyMs?: LatencyBreakdown,
+): ConversationItem | null {
     if (message.type === "ttfb-metric") {
         return null;
     }
@@ -40,6 +89,7 @@ function liveFeedbackItem(message: RealtimeFeedbackMessage, reasoningDurationMs?
             text: message.text,
             final: message.final,
             reasoningDurationMs,
+            latencyMs,
         };
     }
 
@@ -54,6 +104,7 @@ function liveFeedbackItem(message: RealtimeFeedbackMessage, reasoningDurationMs?
             result: message.result,
             status: message.status ?? "completed",
             reasoningDurationMs,
+            latencyMs,
         };
     }
 
@@ -100,25 +151,39 @@ function liveFeedbackItem(message: RealtimeFeedbackMessage, reasoningDurationMs?
 
 export function conversationItemsFromLiveFeedback(messages: RealtimeFeedbackMessage[]) {
     const items: ConversationItem[] = [];
-    let pendingReasoningDurationMs: number | undefined;
+    let pendingLatency: LatencyBreakdown = {};
 
     messages.forEach((message) => {
         if (message.type === "ttfb-metric") {
-            if (message.ttfbSeconds !== undefined) {
-                pendingReasoningDurationMs = message.ttfbSeconds * 1000;
+            // First-audio TTFB usually lands after this turn's bot text has
+            // consumed the pending accumulator; patch the message directly.
+            if (
+                latencyCategory(message.processor) === "tts" &&
+                message.ttfbSeconds !== undefined &&
+                pendingLatency.tts === undefined &&
+                backfillTtsLatency(items, message.ttfbSeconds)
+            ) {
+                return;
             }
+            recordLatency(pendingLatency, message.processor, message.ttfbSeconds);
             return;
         }
 
-        const item = liveFeedbackItem(message, pendingReasoningDurationMs);
+        const item = liveFeedbackItem(
+            message,
+            pendingLatency.llm,
+            hasLatency(pendingLatency) ? { ...pendingLatency } : undefined,
+        );
         if (!item) {
             return;
         }
 
         items.push(item);
 
-        if (item.kind === "message" || item.kind === "tool-call") {
-            pendingReasoningDurationMs = undefined;
+        // Latencies attach to the next assistant output; user transcriptions
+        // must not consume them (STT TTFB arrives with the final transcript).
+        if (item.kind === "tool-call" || (item.kind === "message" && item.role === "assistant")) {
+            pendingLatency = {};
         }
     });
 
@@ -128,15 +193,23 @@ export function conversationItemsFromLiveFeedback(messages: RealtimeFeedbackMess
 export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeedbackEvent[]) {
     const items: ConversationItem[] = [];
     const toolCallIndexById = new Map<string, number>();
-    let pendingReasoningDurationMs: number | undefined;
+    let pendingLatency: LatencyBreakdown = {};
     let currentBotItemIndex: number | null = null;
     let currentBotTurn: number | null = null;
 
     events.forEach((event, index) => {
         if (event.type === "rtf-ttfb-metric") {
-            if (event.payload.ttfb_seconds !== undefined) {
-                pendingReasoningDurationMs = event.payload.ttfb_seconds * 1000;
+            // First-audio TTFB usually lands after this turn's bot text has
+            // consumed the pending accumulator; patch the message directly.
+            if (
+                latencyCategory(event.payload.processor) === "tts" &&
+                event.payload.ttfb_seconds !== undefined &&
+                pendingLatency.tts === undefined &&
+                backfillTtsLatency(items, event.payload.ttfb_seconds)
+            ) {
+                return;
             }
+            recordLatency(pendingLatency, event.payload.processor, event.payload.ttfb_seconds);
             return;
         }
 
@@ -178,11 +251,12 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 role: "assistant",
                 text,
                 final: event.payload.final,
-                reasoningDurationMs: pendingReasoningDurationMs,
+                reasoningDurationMs: pendingLatency.llm,
+                latencyMs: hasLatency(pendingLatency) ? { ...pendingLatency } : undefined,
             });
             currentBotItemIndex = items.length - 1;
             currentBotTurn = event.turn;
-            pendingReasoningDurationMs = undefined;
+            pendingLatency = {};
             return;
         }
 
@@ -199,12 +273,13 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 toolCallId,
                 arguments: event.payload.arguments,
                 status: "running",
-                reasoningDurationMs: pendingReasoningDurationMs,
+                reasoningDurationMs: pendingLatency.llm,
+                latencyMs: hasLatency(pendingLatency) ? { ...pendingLatency } : undefined,
             });
             if (toolCallId) {
                 toolCallIndexById.set(toolCallId, items.length - 1);
             }
-            pendingReasoningDurationMs = undefined;
+            pendingLatency = {};
             return;
         }
 
@@ -232,9 +307,10 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 toolCallId,
                 result: event.payload.result,
                 status: "completed",
-                reasoningDurationMs: pendingReasoningDurationMs,
+                reasoningDurationMs: pendingLatency.llm,
+                latencyMs: hasLatency(pendingLatency) ? { ...pendingLatency } : undefined,
             });
-            pendingReasoningDurationMs = undefined;
+            pendingLatency = {};
             return;
         }
 

@@ -1,8 +1,9 @@
 "use client";
 
-import { Brain } from "lucide-react";
-
 import { cn } from "@/lib/utils";
+
+import { LatencyLine } from "./LatencyLine";
+import type { LatencyBreakdown } from "./types";
 
 interface MessageBubbleProps {
     role: "user" | "assistant";
@@ -10,6 +11,7 @@ interface MessageBubbleProps {
     final?: boolean;
     tone?: "default" | "muted";
     reasoningDurationMs?: number;
+    latencyMs?: LatencyBreakdown;
     containerClassName?: string;
 }
 
@@ -19,6 +21,7 @@ export function MessageBubble({
     final = true,
     tone = "default",
     reasoningDurationMs,
+    latencyMs,
     containerClassName,
 }: MessageBubbleProps) {
     const isUser = role === "user";
@@ -27,12 +30,8 @@ export function MessageBubble({
     return (
         <div className={cn("flex", isUser ? "justify-end" : "justify-start", containerClassName)}>
             <div className="flex max-w-[85%] flex-col gap-1">
-                {!isUser && reasoningDurationMs !== undefined ? (
-                    <div className="flex items-center gap-1.5 px-1 text-xs text-muted-foreground">
-                        <Brain className="h-3 w-3" />
-                        <span className="font-medium">Reasoning Delay:</span>
-                        <span>{Math.round(reasoningDurationMs)}ms</span>
-                    </div>
+                {!isUser ? (
+                    <LatencyLine latencyMs={latencyMs} reasoningDurationMs={reasoningDurationMs} />
                 ) : null}
                 <div
                     className={cn(

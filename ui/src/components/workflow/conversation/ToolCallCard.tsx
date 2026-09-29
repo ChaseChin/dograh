@@ -1,12 +1,14 @@
 "use client";
 
-import { Brain, ChevronRight, Wrench } from "lucide-react";
+import { ChevronRight, Wrench } from "lucide-react";
 import { useState } from "react";
 
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
 import { cn } from "@/lib/utils";
 
+import { LatencyLine } from "./LatencyLine";
+import type { LatencyBreakdown } from "./types";
 import { formatConversationValue } from "./utils";
 
 interface ToolCallCardProps {
@@ -15,6 +17,7 @@ interface ToolCallCardProps {
     argumentsValue?: unknown;
     resultValue?: unknown;
     reasoningDurationMs?: number;
+    latencyMs?: LatencyBreakdown;
 }
 
 export function ToolCallCard({
@@ -23,6 +26,7 @@ export function ToolCallCard({
     argumentsValue,
     resultValue,
     reasoningDurationMs,
+    latencyMs,
 }: ToolCallCardProps) {
     const [open, setOpen] = useState(false);
     const hasArguments = argumentsValue !== undefined;
@@ -32,13 +36,11 @@ export function ToolCallCard({
     return (
         <div className="flex justify-center">
             <div className="flex w-full max-w-[85%] flex-col gap-1">
-                {reasoningDurationMs !== undefined ? (
-                    <div className="flex items-center justify-center gap-1.5 text-xs text-muted-foreground">
-                        <Brain className="h-3 w-3" />
-                        <span className="font-medium">Reasoning Delay:</span>
-                        <span>{Math.round(reasoningDurationMs)}ms</span>
-                    </div>
-                ) : null}
+                <LatencyLine
+                    latencyMs={latencyMs}
+                    reasoningDurationMs={reasoningDurationMs}
+                    className="justify-center"
+                />
                 <Collapsible
                     open={hasDetails ? open : false}
                     onOpenChange={hasDetails ? setOpen : undefined}

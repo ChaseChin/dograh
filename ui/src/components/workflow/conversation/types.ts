@@ -63,11 +63,19 @@ export interface WorkflowRunLogs {
     realtime_feedback_events?: RealtimeFeedbackEvent[];
 }
 
+/** Per-service TTFB latency breakdown for one assistant turn, in ms. */
+export interface LatencyBreakdown {
+    stt?: number;
+    llm?: number;
+    tts?: number;
+}
+
 interface ConversationItemBase {
     id: string;
     timestamp?: string;
     turnId?: string;
     reasoningDurationMs?: number;
+    latencyMs?: LatencyBreakdown;
 }
 
 export interface ConversationMessageItem extends ConversationItemBase {

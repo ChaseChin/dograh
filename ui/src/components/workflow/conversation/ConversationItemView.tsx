@@ -23,6 +23,7 @@ export function ConversationItemView({ item, actions }: ConversationItemViewProp
                 final={item.final}
                 tone={item.tone}
                 reasoningDurationMs={item.reasoningDurationMs}
+                latencyMs={item.latencyMs}
                 containerClassName={isUser && actions ? "min-w-0 flex-1 justify-end" : undefined}
             />
         );
@@ -60,6 +61,7 @@ export function ConversationItemView({ item, actions }: ConversationItemViewProp
                 argumentsValue={item.arguments}
                 resultValue={item.result}
                 reasoningDurationMs={item.reasoningDurationMs}
+                latencyMs={item.latencyMs}
             />
         );
     }

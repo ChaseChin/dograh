@@ -222,13 +222,21 @@ class RealtimeFeedbackObserver(BaseObserver):
                     result=frame.result,
                 )
             )
-        # Handle TTFB metrics - capture LLM generation time only
+        # Handle TTFB metrics - forward STT/LLM/TTS generation times so the
+        # client can show a per-service latency breakdown.
         elif isinstance(frame, MetricsFrame):
-            # Check if this MetricsFrame contains TTFB data from an LLM processor
             for metric_data in frame.data:
                 if isinstance(metric_data, TTFBMetricsData):
-                    # Only send TTFB if it's from an LLM processor
-                    if metric_data.processor and "LLM" in metric_data.processor:
+                    processor = metric_data.processor or ""
+                    # Match by service-class names: "STT"/"ASR" cover the STT
+                    # services ("TencentASRService" has no "STT" in it), and
+                    # "STTS" contains "TTS" so the TTS check comes last.
+                    if (
+                        "STT" in processor
+                        or "ASR" in processor
+                        or "TTS" in processor
+                        or "LLM" in processor
+                    ):
                         await self._send_message(
                             build_ttfb_metric_event(
                                 ttfb_seconds=metric_data.value,
