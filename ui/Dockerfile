@@ -43,8 +43,12 @@ ENV NEXT_PUBLIC_CHATWOOT_TOKEN="3fkFx2mCEjNHjM9gaNc4A82X"
 ENV BACKEND_URL="http://api:8000"
 
 # Build the application with standalone mode
-# Increase Node.js heap size to prevent out-of-memory errors during build
-ENV NODE_OPTIONS="--max-old-space-size=4096"
+# Increase Node.js heap size to prevent out-of-memory errors during build.
+# EXTRA_NODE_OPTIONS lets restricted-network builds force IPv4 DNS resolution
+# (Google Fonts is unreachable over IPv6 in some regions), e.g.:
+#   --build-arg EXTRA_NODE_OPTIONS="--dns-result-order=ipv4first --no-network-family-autoselection"
+ARG EXTRA_NODE_OPTIONS=""
+ENV NODE_OPTIONS="--max-old-space-size=4096 ${EXTRA_NODE_OPTIONS}"
 RUN npm run build && \
     rm -rf /tmp/* /root/.npm /root/.next/cache
 
