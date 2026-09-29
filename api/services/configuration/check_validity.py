@@ -12,6 +12,7 @@ from groq import Groq
 from api.schemas.ai_model_configuration import (
     EffectiveAIModelConfiguration,
 )
+from api.services.configuration.options import BAILIAN_DEFAULT_BASE_URL
 from api.services.configuration.registry import ServiceConfig, ServiceProviders
 from api.services.mps_service_key_client import mps_service_key_client
 from api.utils.url_security import validate_user_configured_service_url
@@ -38,6 +39,8 @@ class UserConfigurationValidator:
         self._validator_map = {
             ServiceProviders.OPENAI.value: self._check_openai_api_key,
             ServiceProviders.ATLASCLOUD.value: self._check_openai_api_key,
+            ServiceProviders.DEEPSEEK.value: self._check_openai_api_key,
+            ServiceProviders.BAILIAN.value: self._check_openai_api_key,
             ServiceProviders.DEEPGRAM.value: self._check_deepgram_api_key,
             ServiceProviders.GROQ.value: self._check_groq_api_key,
             ServiceProviders.OPENROUTER.value: self._check_openrouter_api_key,
@@ -178,6 +181,20 @@ class UserConfigurationValidator:
                 return [{"model": service_name, "message": str(e)}]
             return []
 
+        # Tencent Cloud ASR uses SecretId/SecretKey/APPID instead of api_key.
+        if provider == ServiceProviders.TENCENT.value:
+            try:
+                if not self._check_tencent_credentials(provider, service_config):
+                    return [
+                        {
+                            "model": service_name,
+                            "message": f"Invalid {provider} credentials",
+                        }
+                    ]
+            except ValueError as e:
+                return [{"model": service_name, "message": str(e)}]
+            return []
+
         # AWS Bedrock services use IAM credentials instead of api_key.
         if provider in {
             ServiceProviders.AWS_BEDROCK.value,
@@ -241,6 +258,8 @@ class UserConfigurationValidator:
             ServiceProviders.OPENAI.value,
             ServiceProviders.ATLASCLOUD.value,
             ServiceProviders.OPENAI_REALTIME.value,
+            ServiceProviders.DEEPSEEK.value,
+            ServiceProviders.BAILIAN.value,
         ):
             return validator(provider, api_key, service_config)
         return validator(provider, api_key)
@@ -248,11 +267,21 @@ class UserConfigurationValidator:
     def _check_openai_api_key(
         self, model: str, api_key: str, service_config: Optional[ServiceConfig] = None
     ) -> bool:
-        provider_name = (
-            "Atlas Cloud" if model == ServiceProviders.ATLASCLOUD.value else "OpenAI"
-        )
+        provider_name = {
+            ServiceProviders.ATLASCLOUD.value: "Atlas Cloud",
+            ServiceProviders.DEEPSEEK.value: "DeepSeek",
+            ServiceProviders.BAILIAN.value: "Alibaba Cloud Bailian",
+        }.get(model, "OpenAI")
         client_kwargs: dict[str, str] = {"api_key": api_key}
         base_url = getattr(service_config, "base_url", None) if service_config else None
+        if (
+            model == ServiceProviders.BAILIAN.value
+            and base_url
+            and not base_url.startswith("http")
+        ):
+            # The Bailian TTS config carries the DashScope websocket endpoint;
+            # key validation must use the OpenAI-compatible HTTPS endpoint.
+            base_url = BAILIAN_DEFAULT_BASE_URL
         if base_url:
             client_kwargs["base_url"] = base_url
         client = openai.OpenAI(**client_kwargs)
@@ -497,6 +526,18 @@ class UserConfigurationValidator:
     def _check_aws_bedrock_api_key(self, model: str, service_config) -> bool:
         if not service_config.aws_access_key or not service_config.aws_secret_key:
             raise ValueError("AWS access key and secret key are required for Bedrock")
+        return True
+
+    def _check_tencent_credentials(self, model: str, service_config) -> bool:
+        missing = [
+            field
+            for field in ("tencent_secret_id", "tencent_secret_key", "tencent_app_id")
+            if not getattr(service_config, field, None)
+        ]
+        if missing:
+            raise ValueError(
+                f"Tencent Cloud credentials incomplete: {', '.join(missing)} required"
+            )
         return True
 
     def _check_assemblyai_api_key(self, model: str, service_config) -> bool:

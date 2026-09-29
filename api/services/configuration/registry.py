@@ -22,12 +22,19 @@ from api.services.configuration.options import (
     AZURE_SPEECH_STT_LANGUAGES,
     AZURE_SPEECH_TTS_LANGUAGES,
     AZURE_SPEECH_TTS_VOICES,
+    BAILIAN_DEFAULT_BASE_URL,
+    BAILIAN_LLM_MODELS,
+    BAILIAN_TTS_DEFAULT_BASE_URL,
+    BAILIAN_TTS_MODELS,
+    BAILIAN_TTS_VOICES,
     CARTESIA_INK_2_STT_LANGUAGES,
     CARTESIA_INK_WHISPER_STT_LANGUAGES,
     CARTESIA_STT_LANGUAGES,
     CARTESIA_STT_MODELS,
     DEEPGRAM_BASE_URLS,
     DEEPGRAM_DEFAULT_BASE_URL,
+    DEEPSEEK_DEFAULT_BASE_URL,
+    DEEPSEEK_LLM_MODELS,
     DEEPGRAM_FLUX_MULTILINGUAL_LANGUAGE_OPTIONS,
     DEEPGRAM_FLUX_MULTILINGUAL_LANGUAGES,
     DEEPGRAM_LANGUAGES,
@@ -61,6 +68,7 @@ from api.services.configuration.options import (
     SMALLEST_TTS_PRO_VOICES,
     SMALLEST_TTS_VOICES,
     SPEECHMATICS_STT_LANGUAGES,
+    TENCENT_STT_MODELS,
 )
 from api.services.configuration.options.google import (
     GOOGLE_VERTEX_DEFAULT_LOCATION,
@@ -113,6 +121,9 @@ class ServiceProviders(str, Enum):
     XAI = "xai"
     LMNT = "lmnt"
     SPEECHIFY = "speechify"
+    TENCENT = "tencent"
+    DEEPSEEK = "deepseek"
+    BAILIAN = "bailian"
 
 
 class BaseServiceConfiguration(BaseModel):
@@ -148,6 +159,9 @@ class BaseServiceConfiguration(BaseModel):
         ServiceProviders.XAI,
         ServiceProviders.LMNT,
         ServiceProviders.SPEECHIFY,
+        ServiceProviders.TENCENT,
+        ServiceProviders.DEEPSEEK,
+        ServiceProviders.BAILIAN,
     ]
     api_key: str | list[str]
 
@@ -316,6 +330,16 @@ ATLASCLOUD_PROVIDER_MODEL_CONFIG = provider_model_config(
 GOOGLE_PROVIDER_MODEL_CONFIG = provider_model_config("Google")
 GROQ_PROVIDER_MODEL_CONFIG = provider_model_config("Groq")
 OPENROUTER_PROVIDER_MODEL_CONFIG = provider_model_config("Open Router")
+DEEPSEEK_PROVIDER_MODEL_CONFIG = provider_model_config(
+    "DeepSeek",
+    description="DeepSeek official API (OpenAI-compatible).",
+    provider_docs_url="https://api-docs.deepseek.com/",
+)
+BAILIAN_PROVIDER_MODEL_CONFIG = provider_model_config(
+    "Alibaba Cloud Bailian",
+    description="Alibaba Cloud Model Studio (百炼) via the DashScope OpenAI-compatible endpoint.",
+    provider_docs_url="https://help.aliyun.com/zh/model-studio/developer-reference/compatibility-of-openai-with-dashscope",
+)
 AZURE_OPENAI_PROVIDER_MODEL_CONFIG = provider_model_config("Azure OpenAI")
 DOGRAH_PROVIDER_MODEL_CONFIG = provider_model_config("Dograh")
 AWS_BEDROCK_PROVIDER_MODEL_CONFIG = provider_model_config("AWS Bedrock")
@@ -373,6 +397,11 @@ AZURE_REALTIME_PROVIDER_MODEL_CONFIG = provider_model_config(
     "Azure OpenAI Realtime",
     description="Azure OpenAI Realtime API — low-latency speech-to-speech conversations.",
     provider_docs_url="https://learn.microsoft.com/en-us/azure/ai-services/openai/how-to/realtime-audio-quickstart",
+)
+TENCENT_PROVIDER_MODEL_CONFIG = provider_model_config(
+    "Tencent Cloud",
+    description="Tencent Cloud realtime ASR (实时语音识别) — streaming speech recognition over websocket.",
+    provider_docs_url="https://cloud.tencent.com/document/product/1093",
 )
 AWS_NOVA_SONIC_PROVIDER_MODEL_CONFIG = provider_model_config(
     "AWS Nova 2 Sonic",
@@ -539,6 +568,50 @@ class OpenRouterLLMConfiguration(BaseLLMConfiguration):
     base_url: str = Field(
         default="https://openrouter.ai/api/v1",
         description="Override only if proxying OpenRouter through your own gateway.",
+    )
+
+
+@register_llm
+class DeepSeekLLMConfiguration(BaseLLMConfiguration):
+    model_config = DEEPSEEK_PROVIDER_MODEL_CONFIG
+    provider: Literal[ServiceProviders.DEEPSEEK] = ServiceProviders.DEEPSEEK
+    model: str = Field(
+        default="deepseek-chat",
+        description=(
+            "DeepSeek model id. 'deepseek-chat' supports function calling and "
+            "suits voice agents; 'deepseek-reasoner' is a slow reasoning model "
+            "without tool calling — avoid for realtime calls."
+        ),
+        json_schema_extra={"examples": DEEPSEEK_LLM_MODELS, "allow_custom_input": True},
+    )
+
+    base_url: str = Field(
+        default=DEEPSEEK_DEFAULT_BASE_URL,
+        description="DeepSeek API base URL. Override only when proxying through your own gateway.",
+    )
+
+
+@register_llm
+class BailianLLMConfiguration(BaseLLMConfiguration):
+    model_config = BAILIAN_PROVIDER_MODEL_CONFIG
+    provider: Literal[ServiceProviders.BAILIAN] = ServiceProviders.BAILIAN
+    model: str = Field(
+        default="qwen-plus",
+        description=(
+            "Bailian (DashScope) model id, e.g. 'qwen-plus' or 'qwen-turbo' for "
+            "low-latency voice agents. Other models (qwen3 series, hosted "
+            "deepseek-*, etc.) can be entered manually."
+        ),
+        json_schema_extra={"examples": BAILIAN_LLM_MODELS, "allow_custom_input": True},
+    )
+
+    base_url: str = Field(
+        default=BAILIAN_DEFAULT_BASE_URL,
+        description=(
+            "DashScope OpenAI-compatible endpoint. Use "
+            "https://dashscope-intl.aliyuncs.com/compatible-mode/v1 for the "
+            "international site."
+        ),
     )
 
 
@@ -1105,6 +1178,8 @@ LLMConfig = Annotated[
         HuggingFaceLLMConfiguration,
         MiniMaxLLMConfiguration,
         SarvamLLMConfiguration,
+        DeepSeekLLMConfiguration,
+        BailianLLMConfiguration,
     ],
     Field(discriminator="provider"),
 ]
@@ -1516,6 +1591,36 @@ class MiniMaxTTSConfiguration(BaseTTSConfiguration):
 
 
 @register_tts
+class BailianTTSConfiguration(BaseTTSConfiguration):
+    model_config = BAILIAN_PROVIDER_MODEL_CONFIG
+    provider: Literal[ServiceProviders.BAILIAN] = ServiceProviders.BAILIAN
+    model: str = Field(
+        default="cosyvoice-v2",
+        description="Bailian TTS model (CosyVoice).",
+        json_schema_extra={"examples": BAILIAN_TTS_MODELS},
+    )
+    voice: str = Field(
+        default="longxiaochun_v2",
+        description=(
+            "Bailian CosyVoice voice ID. cosyvoice-v2 voices carry a _v2 "
+            "suffix (e.g. longxiaochun_v2); cosyvoice-v1 voices do not."
+        ),
+        json_schema_extra={"examples": BAILIAN_TTS_VOICES, "allow_custom_input": True},
+    )
+    base_url: str = Field(
+        default=BAILIAN_TTS_DEFAULT_BASE_URL,
+        description=(
+            "DashScope websocket inference endpoint. Defaults to the mainland "
+            "China endpoint; use wss://dashscope-intl.aliyuncs.com/api-ws/v1/inference "
+            "for the international site."
+        ),
+    )
+    speed: float = Field(
+        default=1.0, ge=0.5, le=2.0, description="Speech speed (0.5 to 2.0)."
+    )
+
+
+@register_tts
 class AzureSpeechTTSConfiguration(BaseTTSConfiguration):
     model_config = AZURE_SPEECH_PROVIDER_MODEL_CONFIG
     provider: Literal[ServiceProviders.AZURE_SPEECH] = ServiceProviders.AZURE_SPEECH
@@ -1739,6 +1844,7 @@ TTSConfig = Annotated[
         RimeTTSConfiguration,
         SpeachesTTSConfiguration,
         MiniMaxTTSConfiguration,
+        BailianTTSConfiguration,
         AzureSpeechTTSConfiguration,
         SmallestAITTSConfiguration,
         XAITTSConfiguration,
@@ -2159,6 +2265,36 @@ class SmallestAISTTConfiguration(BaseSTTConfiguration):
     )
 
 
+@register_stt
+class TencentSTTConfiguration(BaseSTTConfiguration):
+    model_config = TENCENT_PROVIDER_MODEL_CONFIG
+    provider: Literal[ServiceProviders.TENCENT] = ServiceProviders.TENCENT
+    model: str = Field(
+        default="8k_zh",
+        description="Tencent Cloud ASR engine model type. '8k_zh' is the telephony model; other engine types can be entered manually.",
+        json_schema_extra={
+            "examples": TENCENT_STT_MODELS,
+            "allow_custom_input": True,
+        },
+    )
+    tencent_secret_id: str = Field(
+        default="",
+        description="Tencent Cloud CAM SecretId (访问管理 → API 密钥管理).",
+    )
+    tencent_secret_key: str = Field(
+        default="",
+        description="Tencent Cloud CAM SecretKey paired with the SecretId.",
+    )
+    tencent_app_id: str = Field(
+        default="",
+        description="Tencent Cloud account APPID — required in the ASR websocket URL.",
+    )
+    api_key: str | list[str] | None = Field(
+        default=None,
+        description="Not used for Tencent Cloud — authentication is via the SecretId/SecretKey above. Leave blank.",
+    )
+
+
 STTConfig = Annotated[
     Union[
         DeepgramSTTConfiguration,
@@ -2175,6 +2311,7 @@ STTConfig = Annotated[
         AzureSpeechSTTConfiguration,
         SmallestAISTTConfiguration,
         ElevenlabsSTTConfiguration,
+        TencentSTTConfiguration,
     ],
     Field(discriminator="provider"),
 ]

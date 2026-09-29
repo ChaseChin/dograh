@@ -22,7 +22,9 @@ from api.services.configuration.registry import ServiceProviders
 from api.services.pipecat.gemini_json_schema_adapter import (
     DograhGeminiJSONSchemaAdapter,
 )
+from api.services.pipecat.bailian_tts import BailianTTSService
 from api.services.pipecat.minimax_tts import MiniMaxOwnedSessionTTSService
+from api.services.pipecat.tencent_asr import TencentASRSTTService
 from api.utils.url_security import validate_user_configured_service_url
 from pipecat.services.assemblyai.stt import AssemblyAISTTService, AssemblyAISTTSettings
 from pipecat.services.aws.llm import AWSBedrockLLMService, AWSBedrockLLMSettings
@@ -631,6 +633,15 @@ def create_stt_service(
             should_interrupt=False,
             sample_rate=audio_config.transport_in_sample_rate,
         )
+    elif user_config.stt.provider == ServiceProviders.TENCENT.value:
+        return TencentASRSTTService(
+            secret_id=user_config.stt.tencent_secret_id,
+            secret_key=user_config.stt.tencent_secret_key,
+            app_id=user_config.stt.tencent_app_id,
+            engine_model_type=user_config.stt.model,
+            should_interrupt=False,  # Let UserAggregator own interruption confirmation.
+            sample_rate=audio_config.transport_in_sample_rate,
+        )
     else:
         raise HTTPException(
             status_code=400, detail=f"Invalid STT provider {user_config.stt.provider}"
@@ -924,6 +935,23 @@ def create_tts_service(
             skip_aggregator_types=["recording_router", "recording"],
             silence_time_s=1.0,
         )
+    elif user_config.tts.provider == ServiceProviders.BAILIAN.value:
+        voice = getattr(user_config.tts, "voice", None) or "longxiaochun_v2"
+        speed = getattr(user_config.tts, "speed", None) or 1.0
+        base_url = getattr(user_config.tts, "base_url", None)
+        if base_url:
+            _validate_runtime_service_url(base_url, "base_url")
+        return BailianTTSService(
+            api_key=user_config.tts.api_key,
+            model=user_config.tts.model,
+            voice=voice,
+            rate=speed,
+            sample_rate=audio_config.transport_out_sample_rate,
+            text_filters=[xml_function_tag_filter],
+            skip_aggregator_types=["recording_router", "recording"],
+            silence_time_s=1.0,
+            **({"base_url": base_url} if base_url else {}),
+        )
     elif user_config.tts.provider == ServiceProviders.AZURE_SPEECH.value:
         region = getattr(user_config.tts, "region", None) or "eastus"
         voice = getattr(user_config.tts, "voice", None) or "en-US-AriaNeural"
@@ -1115,6 +1143,21 @@ def create_llm_service_from_provider(
                 ),
                 **kwargs,
             )
+        return OpenAILLMService(
+            api_key=api_key,
+            settings=OpenAILLMSettings(model=model, temperature=0.1),
+            **kwargs,
+        )
+    elif provider in (
+        ServiceProviders.DEEPSEEK.value,
+        ServiceProviders.BAILIAN.value,
+    ):
+        # Both expose OpenAI-compatible endpoints, so the stock OpenAI service
+        # works with just a base_url override.
+        kwargs = {}
+        if base_url:
+            _validate_runtime_service_url(base_url, "base_url")
+            kwargs["base_url"] = base_url
         return OpenAILLMService(
             api_key=api_key,
             settings=OpenAILLMSettings(model=model, temperature=0.1),
@@ -1483,6 +1526,11 @@ def create_llm_service(
     ):
         kwargs["base_url"] = user_config.llm.base_url
     elif provider == ServiceProviders.OPENROUTER.value:
+        kwargs["base_url"] = user_config.llm.base_url
+    elif provider in (
+        ServiceProviders.DEEPSEEK.value,
+        ServiceProviders.BAILIAN.value,
+    ):
         kwargs["base_url"] = user_config.llm.base_url
     elif provider == ServiceProviders.AZURE.value:
         kwargs["endpoint"] = user_config.llm.endpoint

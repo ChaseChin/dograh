@@ -627,7 +627,11 @@ export type ByokPipelineAiModelConfiguration = {
         provider: 'minimax';
     } & MiniMaxLlmConfiguration) | ({
         provider: 'sarvam';
-    } & SarvamLlmConfiguration);
+    } & SarvamLlmConfiguration) | ({
+        provider: 'deepseek';
+    } & DeepSeekLlmConfiguration) | ({
+        provider: 'bailian';
+    } & BailianLlmConfiguration);
     /**
      * Tts
      */
@@ -656,6 +660,8 @@ export type ByokPipelineAiModelConfiguration = {
     } & SpeachesTtsConfiguration) | ({
         provider: 'minimax';
     } & MiniMaxTtsConfiguration) | ({
+        provider: 'bailian';
+    } & BailianTtsConfiguration) | ({
         provider: 'azure_speech';
     } & AzureSpeechTtsConfiguration) | ({
         provider: 'smallest';
@@ -697,7 +703,9 @@ export type ByokPipelineAiModelConfiguration = {
         provider: 'smallest';
     } & SmallestAisttConfiguration) | ({
         provider: 'elevenlabs';
-    } & ElevenlabsSttConfiguration);
+    } & ElevenlabsSttConfiguration) | ({
+        provider: 'tencent';
+    } & TencentSttConfiguration);
     /**
      * Embeddings
      */
@@ -763,7 +771,11 @@ export type ByokRealtimeAiModelConfiguration = {
         provider: 'minimax';
     } & MiniMaxLlmConfiguration) | ({
         provider: 'sarvam';
-    } & SarvamLlmConfiguration);
+    } & SarvamLlmConfiguration) | ({
+        provider: 'deepseek';
+    } & DeepSeekLlmConfiguration) | ({
+        provider: 'bailian';
+    } & BailianLlmConfiguration);
     /**
      * Embeddings
      */
@@ -776,6 +788,74 @@ export type ByokRealtimeAiModelConfiguration = {
     } & AzureOpenAiEmbeddingsConfiguration) | ({
         provider: 'dograh';
     } & DograhEmbeddingsConfiguration) | null;
+};
+
+/**
+ * Alibaba Cloud Bailian
+ *
+ * Alibaba Cloud Model Studio (百炼) via the DashScope OpenAI-compatible endpoint.
+ */
+export type BailianLlmConfiguration = {
+    /**
+     * Provider
+     */
+    provider?: 'bailian';
+    /**
+     * Api Key
+     */
+    api_key: string | Array<string>;
+    /**
+     * Model
+     *
+     * Bailian (DashScope) model id, e.g. 'qwen-plus' or 'qwen-turbo' for low-latency voice agents. Other models (qwen3 series, hosted deepseek-*, etc.) can be entered manually.
+     */
+    model?: string;
+    /**
+     * Base Url
+     *
+     * DashScope OpenAI-compatible endpoint. Use https://dashscope-intl.aliyuncs.com/compatible-mode/v1 for the international site.
+     */
+    base_url?: string;
+};
+
+/**
+ * Alibaba Cloud Bailian
+ *
+ * Alibaba Cloud Model Studio (百炼) via the DashScope OpenAI-compatible endpoint.
+ */
+export type BailianTtsConfiguration = {
+    /**
+     * Provider
+     */
+    provider?: 'bailian';
+    /**
+     * Api Key
+     */
+    api_key: string | Array<string>;
+    /**
+     * Model
+     *
+     * Bailian TTS model (CosyVoice).
+     */
+    model?: string;
+    /**
+     * Voice
+     *
+     * Bailian CosyVoice voice ID. cosyvoice-v2 voices carry a _v2 suffix (e.g. longxiaochun_v2); cosyvoice-v1 voices do not.
+     */
+    voice?: string;
+    /**
+     * Base Url
+     *
+     * DashScope websocket inference endpoint. Defaults to the mainland China endpoint; use wss://dashscope-intl.aliyuncs.com/api-ws/v1/inference for the international site.
+     */
+    base_url?: string;
+    /**
+     * Speed
+     *
+     * Speech speed (0.5 to 2.0).
+     */
+    speed?: number;
 };
 
 /**
@@ -1979,6 +2059,34 @@ export type DailyUsageItem = {
      * Call Count
      */
     call_count: number;
+};
+
+/**
+ * DeepSeek
+ *
+ * DeepSeek official API (OpenAI-compatible).
+ */
+export type DeepSeekLlmConfiguration = {
+    /**
+     * Provider
+     */
+    provider?: 'deepseek';
+    /**
+     * Api Key
+     */
+    api_key: string | Array<string>;
+    /**
+     * Model
+     *
+     * DeepSeek model id. 'deepseek-chat' supports function calling and suits voice agents; 'deepseek-reasoner' is a slow reasoning model without tool calling — avoid for realtime calls.
+     */
+    model?: string;
+    /**
+     * Base Url
+     *
+     * DeepSeek API base URL. Override only when proxying through your own gateway.
+     */
+    base_url?: string;
 };
 
 /**
@@ -6480,6 +6588,48 @@ export type TelnyxConfigurationRequest = {
      * Webhook public key from Mission Control Portal → Keys & Credentials → Public Key. Used to verify Telnyx webhook signatures.
      */
     webhook_public_key?: string | null;
+};
+
+/**
+ * Tencent Cloud
+ *
+ * Tencent Cloud realtime ASR (实时语音识别) — streaming speech recognition over websocket.
+ */
+export type TencentSttConfiguration = {
+    /**
+     * Provider
+     */
+    provider?: 'tencent';
+    /**
+     * Api Key
+     *
+     * Not used for Tencent Cloud — authentication is via the SecretId/SecretKey above. Leave blank.
+     */
+    api_key?: string | Array<string> | null;
+    /**
+     * Model
+     *
+     * Tencent Cloud ASR engine model type. '8k_zh' is the telephony model; other engine types can be entered manually.
+     */
+    model?: string;
+    /**
+     * Tencent Secret Id
+     *
+     * Tencent Cloud CAM SecretId (访问管理 → API 密钥管理).
+     */
+    tencent_secret_id?: string;
+    /**
+     * Tencent Secret Key
+     *
+     * Tencent Cloud CAM SecretKey paired with the SecretId.
+     */
+    tencent_secret_key?: string;
+    /**
+     * Tencent App Id
+     *
+     * Tencent Cloud account APPID — required in the ASR websocket URL.
+     */
+    tencent_app_id?: string;
 };
 
 /**

@@ -25,6 +25,8 @@ SERVICE_SECRET_FIELDS = (
     "aws_access_key",
     "aws_secret_key",
     "aws_session_token",
+    "tencent_secret_id",
+    "tencent_secret_key",
 )
 MODEL_OVERRIDE_FIELDS = ("llm", "tts", "stt", "realtime")
 
