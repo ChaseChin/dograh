@@ -1,38 +1,83 @@
 import { cn } from "@/lib/utils";
 
-// Reusable Dograh wordmark. Theme-aware by default: the dark logo shows on light
-// surfaces and the light/cream logo shows on dark. Pass `inverse` to force the
-// light logo on an always-dark surface (e.g. the auth brand panel). Pass `mark`
-// to render the square logo mark instead of the full wordmark (e.g. the app
-// sidebar header). Height is controlled by the caller via className (e.g.
-// "h-7"); width stays auto so each lockup keeps its aspect ratio.
+// VoiceWorker wordmark, rendered as inline SVG text (no image assets required).
+// Everything uses `currentColor`, so the lockup automatically takes whatever text
+// color the surrounding context sets — light on dark panels (auth brand column,
+// event banner, dark sidebar) and dark on light surfaces. `mark` renders just the
+// square voice mark (app sidebar header); otherwise it renders the mark plus the
+// "VoiceWorker" wordmark. Height is controlled by the caller via className (e.g.
+// "h-7"); width stays auto so the lockup keeps its aspect ratio.
+//
+// The wordmark width is pinned with SVG `textLength` so the text can never clip,
+// regardless of the font metrics on the platform rendering it.
 export function BrandLogo({
   className,
   inverse = false,
   mark = false,
 }: {
   className?: string;
+  /** Kept for call-site compatibility; colour now comes from `currentColor`. */
   inverse?: boolean;
   mark?: boolean;
 }) {
   if (mark) {
     return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/dograh-mark.png" alt="Dograh" className={cn("w-auto select-none", className)} />
+      <svg
+        viewBox="0 0 44 44"
+        role="img"
+        aria-label="VoiceWorker"
+        className={cn("w-auto select-none text-foreground", className)}
+      >
+        <VoiceMark />
+      </svg>
     );
   }
-  if (inverse) {
-    return (
-      // eslint-disable-next-line @next/next/no-img-element
-      <img src="/dograh-logo-inverse.png" alt="Dograh" className={cn("w-auto select-none", className)} />
-    );
-  }
+
+  return (
+    <svg
+      viewBox="0 0 268 44"
+      role="img"
+      aria-label="VoiceWorker"
+      className={cn("w-auto select-none text-foreground", className)}
+    >
+      <g transform="translate(2 2)">
+        <VoiceMark />
+      </g>
+      <text
+        x="54"
+        y="31"
+        fontSize="30"
+        fontWeight={700}
+        fontFamily="inherit"
+        fill="currentColor"
+        textLength="200"
+        lengthAdjust="spacingAndGlyphs"
+      >
+        VoiceWorker
+      </text>
+    </svg>
+  );
+}
+
+// A compact "voice" mark: a rounded square holding a short audio waveform. Drawn
+// in a single colour (currentColor) so it reads cleanly at any size.
+function VoiceMark() {
   return (
     <>
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/dograh-logo.png" alt="Dograh" className={cn("block w-auto select-none dark:hidden", className)} />
-      {/* eslint-disable-next-line @next/next/no-img-element */}
-      <img src="/dograh-logo-inverse.png" alt="Dograh" className={cn("hidden w-auto select-none dark:block", className)} />
+      <rect
+        x="3"
+        y="3"
+        width="38"
+        height="38"
+        rx="10"
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="3.5"
+      />
+      <rect x="11" y="17" width="4.5" height="10" rx="2.25" fill="currentColor" />
+      <rect x="19" y="11" width="4.5" height="22" rx="2.25" fill="currentColor" />
+      <rect x="27" y="7" width="4.5" height="30" rx="2.25" fill="currentColor" />
+      <rect x="35" y="16" width="4.5" height="12" rx="2.25" fill="currentColor" />
     </>
   );
 }
