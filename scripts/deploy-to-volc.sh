@@ -34,7 +34,10 @@ fi
 docker buildx build --platform linux/amd64 -f "$DOCKERFILE" "${BUILD_ARGS[@]}" -t "$LOCAL_TAG" --load .
 
 echo "==> [2/4] docker save | ssh ${SSH_HOST} docker load"
-docker save "$LOCAL_TAG" | gzip | ssh "$SSH_HOST" 'gunzip | docker load'
+# Remote output redirected to /dev/null: if left attached to the ssh streams,
+# ssh lingers after docker load finishes (remote fds kept open) and the
+# pipeline hangs forever.
+docker save "$LOCAL_TAG" | gzip | ssh "$SSH_HOST" 'gunzip | docker load >/dev/null 2>&1 && echo "remote load ok"'
 
 echo "==> [3/4] retag -> ${REMOTE_TAG} + recreate ${SERVICE}"
 ssh "$SSH_HOST" "docker tag '$LOCAL_TAG' '$REMOTE_TAG' && cd '$REMOTE_DIR' && docker compose up -d --no-deps '$SERVICE'"
