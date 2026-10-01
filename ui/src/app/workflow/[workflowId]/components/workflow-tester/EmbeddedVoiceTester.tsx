@@ -3,6 +3,7 @@
 import { Loader2, Phone, RefreshCw } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { RealtimeFeedback } from "@/components/workflow/conversation";
@@ -28,6 +29,7 @@ export function EmbeddedVoiceTester({
     onReset,
     onNodeTransition,
 }: EmbeddedVoiceTesterProps) {
+    const { t } = useTranslation();
     const router = useRouter();
     const {
         audioRef,
@@ -101,14 +103,14 @@ export function EmbeddedVoiceTester({
         appConfig?.backendStatus !== "reachable";
 
     const endButtonLabel = connectionActive
-        ? "End Call"
+        ? t("workflow.tester.voice.endCall")
         : isCompleted
-            ? "Start Another Test"
+            ? t("workflow.tester.voice.startAnother")
             : connectionStatus === "failed"
-                ? "Retry Call"
+                ? t("workflow.tester.voice.retryCall")
                 : configUnreachable
-                    ? "Retry Connection"
-                    : "Starting Test...";
+                    ? t("workflow.tester.voice.retryConnection")
+                    : t("workflow.tester.voice.starting");
 
     const handleConfigRetry = () => {
         // Deliberately NOT resetting configRetriedRef here. It's already
@@ -172,7 +174,7 @@ export function EmbeddedVoiceTester({
                             ) : isStarting && connectionStatus !== "failed" ? (
                                 <>
                                     <Loader2 className="h-4 w-4 animate-spin" />
-                                    Starting Test...
+                                    {t("workflow.tester.voice.starting")}
                                 </>
                             ) : connectionActive ? (
                                 <>
@@ -198,7 +200,7 @@ export function EmbeddedVoiceTester({
                         </Button>
                         {configUnreachable ? (
                             <p className="text-center text-sm text-muted-foreground">
-                                Couldn&apos;t reach the backend to confirm call settings. Tap retry once it&apos;s back.
+                                {t("workflow.tester.voice.backendUnreachable")}
                             </p>
                         ) : null}
                     </div>

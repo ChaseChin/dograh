@@ -3,6 +3,7 @@
 import { useParams, useSearchParams } from 'next/navigation';
 import posthog from 'posthog-js';
 import { useEffect, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import RenderWorkflow from '@/app/workflow/[workflowId]/RenderWorkflow';
 import { getWorkflowApiV1WorkflowFetchWorkflowIdGet } from '@/client/sdk.gen';
@@ -24,6 +25,7 @@ export default function WorkflowDetailPage() {
     const [loading, setLoading] = useState(true);
     const [error, setError] = useState<string | null>(null);
     const { user, redirectToLogin, loading: authLoading } = useAuth();
+    const { t } = useTranslation();
 
     // Redirect if not authenticated
     useEffect(() => {
@@ -44,15 +46,15 @@ export default function WorkflowDetailPage() {
 
                 if (response.error) {
                     const fallback = response.response?.status === 503
-                        ? 'VoiceWorker is temporarily unavailable. Please try again later.'
-                        : 'Failed to fetch workflow';
+                        ? t("workflow.editor.serviceUnavailable")
+                        : t("workflow.editor.fetchFailed");
                     setError(detailFromError(response.error, fallback));
                     return;
                 }
 
                 const workflow = response.data;
                 if (!workflow) {
-                    setError('Workflow not found');
+                    setError(t("workflow.editor.notFound"));
                     return;
                 }
                 setWorkflow(workflow);
@@ -61,7 +63,7 @@ export default function WorkflowDetailPage() {
                     workflow_name: workflow.name,
                 });
             } catch (err) {
-                setError('Failed to fetch workflow');
+                setError(t("workflow.editor.fetchFailed"));
                 logger.error(`Error fetching workflow: ${err}`);
             } finally {
                 setLoading(false);
@@ -71,7 +73,7 @@ export default function WorkflowDetailPage() {
         if (user) {
             fetchWorkflow();
         }
-    }, [params.workflowId, user]);
+    }, [params.workflowId, user, t]);
 
     const stableUser = useMemo(() => user, [user]);
     const openTesterOnLoad = searchParams.get('onboarding') === 'web_call';
@@ -87,7 +89,7 @@ export default function WorkflowDetailPage() {
         return (
             <WorkflowLayout showFeaturesNav={false}>
                 <div className="flex items-center justify-center min-h-screen">
-                    <div className="text-lg text-destructive">{error || 'Workflow not found'}</div>
+                    <div className="text-lg text-destructive">{error || t("workflow.editor.notFound")}</div>
                 </div>
             </WorkflowLayout>
         );

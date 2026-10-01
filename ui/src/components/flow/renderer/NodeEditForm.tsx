@@ -1,6 +1,8 @@
-import { useCallback } from "react";
+import { useCallback, useMemo } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { NodeSpec } from "@/client/types.gen";
+import { localizePropertySpec } from "@/i18n/nodeSpecServerText";
 
 import { evaluateDisplayOptions } from "./displayOptions";
 import { PropertyInput, type RendererContext } from "./PropertyInput";
@@ -39,6 +41,7 @@ const COLUMN_SPAN_CLASS: Record<number, string> = {
  * grouped fields (e.g. `pre_call_fetch`) live as separate flat fields here.
  */
 export function NodeEditForm({ spec, values, onChange, context }: NodeEditFormProps) {
+    const { t } = useTranslation();
     const setProp = useCallback(
         (propName: string, propValue: unknown) => {
             onChange({ ...values, [propName]: propValue });
@@ -46,9 +49,17 @@ export function NodeEditForm({ spec, values, onChange, context }: NodeEditFormPr
         [values, onChange],
     );
 
+    // Localize backend-delivered spec text (labels, descriptions,
+    // placeholders, option labels) for the current locale. Property names are
+    // untouched, so values/display_options still key off the wire format.
+    const localizedProperties = useMemo(
+        () => spec.properties.map((p) => localizePropertySpec(t, spec.name, p)),
+        [t, spec],
+    );
+
     return (
         <div className="grid grid-cols-12 gap-3">
-            {spec.properties
+            {localizedProperties
                 .filter((p) => evaluateDisplayOptions(p.display_options, values))
                 .map((p) => {
                     const columnSpan = getPropertyColumnSpan(p.renderer_options);

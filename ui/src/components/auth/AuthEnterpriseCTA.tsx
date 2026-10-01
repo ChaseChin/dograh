@@ -10,12 +10,14 @@
 
 import posthog from "posthog-js";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { EnterpriseModal } from "@/components/lead-forms/EnterpriseModal";
 import { Button } from "@/components/ui/button";
 import { PostHogEvent } from "@/constants/posthog-events";
 
 export function AuthEnterpriseCTA() {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
 
   const openModal = () => {
@@ -30,7 +32,7 @@ export function AuthEnterpriseCTA() {
         onClick={openModal}
         className="w-full border-white/20 bg-white/5 text-zinc-100 hover:bg-white/10 hover:text-white"
       >
-        Enterprise Enquiry
+        {t("auth.enterpriseCta")}
       </Button>
       <EnterpriseModal open={open} onOpenChange={setOpen} source="auth_page" />
     </>

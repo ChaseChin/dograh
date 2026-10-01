@@ -1,4 +1,5 @@
 import { ChangeEvent, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -11,7 +12,8 @@ interface TagInputFilterProps {
   placeholder?: string;
 }
 
-export const TagInputFilter: React.FC<TagInputFilterProps> = ({ value, onChange, error, placeholder="Enter tags (comma separated)" }) => {
+export const TagInputFilter: React.FC<TagInputFilterProps> = ({ value, onChange, error, placeholder }) => {
+  const { t } = useTranslation();
   const [text, setText] = useState(value.codes.join(", "));
 
   // Sync local state when parent value changes (e.g., from URL or clear)
@@ -29,10 +31,10 @@ export const TagInputFilter: React.FC<TagInputFilterProps> = ({ value, onChange,
 
   return (
     <div className="space-y-2">
-      <Label>Tags</Label>
+      <Label>{t("filters.tags.label")}</Label>
       <Input
         value={text}
-        placeholder={placeholder}
+        placeholder={placeholder ?? t("filters.tags.placeholder")}
         onChange={(e) => setText(e.target.value)}
         onBlur={handleBlur}
       />

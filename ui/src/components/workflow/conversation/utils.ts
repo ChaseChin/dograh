@@ -1,8 +1,8 @@
 import type { ConversationItem } from "./types";
 
-export function formatConversationValue(value: unknown) {
+export function formatConversationValue(value: unknown, noneLabel: string) {
     if (value == null) {
-        return "None";
+        return noneLabel;
     }
     if (typeof value === "string") {
         return value;

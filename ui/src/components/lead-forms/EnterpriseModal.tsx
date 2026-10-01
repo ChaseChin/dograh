@@ -3,6 +3,7 @@
 import Cal from "@calcom/embed-react";
 import { ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { useAppConfig } from "@/context/AppConfigContext";
@@ -29,6 +30,7 @@ interface EnterpriseModalProps {
 }
 
 export function EnterpriseModal({ open, onOpenChange, source, prefill }: EnterpriseModalProps) {
+  const { t } = useTranslation();
   const { config } = useAppConfig();
   // Deployment provenance (analytics only); OSS submits via the public contact-sales path.
   const origin = config?.deploymentMode === "cloud" ? "cloud_app" : "oss_app";
@@ -79,10 +81,10 @@ export function EnterpriseModal({ open, onOpenChange, source, prefill }: Enterpr
 
   // Validate, then pop the anti-spam check on top of the modal.
   const handleSubmit = () => {
-    const err = validateWorkEmail(value.workEmail);
+    const err = validateWorkEmail(value.workEmail, t);
     if (err) { setEmailError(err); return; }
     if (!value.name.trim() || !value.company.trim() || !value.jobTitle.trim() || !value.phone.trim() || !value.volume) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("leadForms.toasts.fillRequired"));
       return;
     }
     setCaptchaActive(true);
@@ -115,12 +117,12 @@ export function EnterpriseModal({ open, onOpenChange, source, prefill }: Enterpr
         setSubmitting(false);
         setCalLink(result.cal_link);
       } else {
-        toast.success("Check your inbox - we just emailed you the next steps (give it a minute).");
+        toast.success(t("leadForms.toasts.emailSent"));
         reset();
         onOpenChange(false);
       }
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("leadForms.toasts.submitFailed"));
       setSubmitting(false);
     }
   };
@@ -132,10 +134,10 @@ export function EnterpriseModal({ open, onOpenChange, source, prefill }: Enterpr
         open={open}
         onOpenChange={(o) => { if (!o) reset(); onOpenChange(o); }}
         icon={ShieldCheck}
-        eyebrow="Enterprise"
-        title="Book a Strategy Call"
-        description="Pick a time that works for you."
-        primary={{ label: "Done", onClick: () => { reset(); onOpenChange(false); } }}
+        eyebrow={t("leadForms.enterprise.eyebrow")}
+        title={t("leadForms.enterprise.title")}
+        description={t("leadForms.bookDescription")}
+        primary={{ label: t("leadForms.done"), onClick: () => { reset(); onOpenChange(false); } }}
       >
         {/* Compact, zoomed-out calendar: render it larger, scale to 0.8, and clip the layout box left behind. */}
         <div className="overflow-hidden" style={{ height: "440px" }}>
@@ -154,11 +156,11 @@ export function EnterpriseModal({ open, onOpenChange, source, prefill }: Enterpr
       open={open}
       onOpenChange={(o) => { if (!o) reset(); onOpenChange(o); }}
       icon={ShieldCheck}
-      eyebrow="Enterprise"
-      title="Book a Strategy Call"
-      description="SSO, on-prem, data residency, committed volume. Tell us about your environment."
-      primary={{ label: "Submit", onClick: handleSubmit, disabled: !canSubmit, loading: submitting }}
-      secondary={{ label: "Cancel", onClick: () => onOpenChange(false), disabled: submitting }}
+      eyebrow={t("leadForms.enterprise.eyebrow")}
+      title={t("leadForms.enterprise.title")}
+      description={t("leadForms.enterprise.description")}
+      primary={{ label: t("leadForms.submit"), onClick: handleSubmit, disabled: !canSubmit, loading: submitting }}
+      secondary={{ label: t("common.cancel"), onClick: () => onOpenChange(false), disabled: submitting }}
       trustLine={<FormTrustLine />}
       overlay={captchaActive ? <CaptchaChallenge onVerified={doSubmit} onCancel={() => setCaptchaActive(false)} /> : undefined}
     >

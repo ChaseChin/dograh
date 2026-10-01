@@ -1,8 +1,15 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+
+import i18n from "@/i18n";
 
 import { TransferAgentToolConfig } from "./TransferAgentToolConfig";
+
+// The assertions below match the en.json copy.
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 const noop = vi.fn();
 

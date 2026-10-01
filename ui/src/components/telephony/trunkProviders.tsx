@@ -1,6 +1,8 @@
 "use client";
 
+import type { TFunction } from "i18next";
 import type { ComponentType } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { TelephonyConfigurationDetail } from "@/client/types.gen";
 import { Input } from "@/components/ui/input";
@@ -41,7 +43,7 @@ export interface TrunkProviderUi {
   /** Extra form fields, rendered under the name and enabled controls. */
   Fields?: ComponentType<TrunkSettingsFieldsProps>;
   /** Mirrors the provider's server-side trunk schema; message or null. */
-  validate?: (name: string, settings: TrunkSettings) => string | null;
+  validate?: (t: TFunction, name: string, settings: TrunkSettings) => string | null;
   /** One line under the trunk name in the list. */
   summarize?: (settings: TrunkSettings) => string;
 }
@@ -59,6 +61,7 @@ function CloudonixTrunkFields({
   onChange,
   disabled,
 }: TrunkSettingsFieldsProps) {
+  const { t } = useTranslation();
   const regions = regionsOf(configuration);
   const region = typeof settings.region === "string" ? settings.region : "";
   const sipDomain = typeof settings.sip_domain === "string" ? settings.sip_domain : "";
@@ -68,7 +71,7 @@ function CloudonixTrunkFields({
   return (
     <>
       <div className="space-y-2">
-        <Label htmlFor="trunk-sip-domain">SIP domain</Label>
+        <Label htmlFor="trunk-sip-domain">{t("telephony.trunks.sipDomain")}</Label>
         <Input
           id="trunk-sip-domain"
           value={sipDomain}
@@ -77,19 +80,18 @@ function CloudonixTrunkFields({
           disabled={disabled}
         />
         <p className="text-xs text-muted-foreground">
-          Your carrier or PBX. Used for both the SIP To header and the
-          Request-URI.
+          {t("telephony.trunks.sipDomainHelp")}
         </p>
       </div>
       <div className="space-y-2">
-        <Label htmlFor="trunk-region">Region</Label>
+        <Label htmlFor="trunk-region">{t("telephony.trunks.region")}</Label>
         <Select
           value={region}
           onValueChange={(next) => onChange({ region: next })}
           disabled={disabled}
         >
-          <SelectTrigger id="trunk-region" aria-label="Trunk region">
-            <SelectValue placeholder="Select a region" />
+          <SelectTrigger id="trunk-region" aria-label={t("telephony.trunks.regionAria")}>
+            <SelectValue placeholder={t("telephony.trunks.regionPlaceholder")} />
           </SelectTrigger>
           <SelectContent>
             {regions.map((candidate) => (
@@ -100,10 +102,9 @@ function CloudonixTrunkFields({
           </SelectContent>
         </Select>
         <p className="text-xs text-muted-foreground">
-          Sets the remote peer VoiceWorker dials for this trunk.
           {originIp
-            ? ` Calls leave from ${originIp} — allow it on your side.`
-            : ""}
+            ? t("telephony.trunks.regionHelpWithIp", { ip: originIp })
+            : t("telephony.trunks.regionHelp")}
         </p>
       </div>
     </>
@@ -119,12 +120,12 @@ const CLOUDONIX: TrunkProviderUi = {
     return { region: preferred?.region ?? "", sip_domain: "" };
   },
   Fields: CloudonixTrunkFields,
-  validate: (name, settings) => {
+  validate: (t, name, settings) => {
     if (!CLOUDONIX_TRUNK_NAME_PATTERN.test(name)) {
-      return "Trunk name may only contain letters, digits and hyphens";
+      return t("telephony.trunks.namePattern");
     }
-    if (!settings.sip_domain) return "SIP domain is required";
-    if (!settings.region) return "Region is required";
+    if (!settings.sip_domain) return t("telephony.trunks.sipDomainRequired");
+    if (!settings.region) return t("telephony.trunks.regionRequired");
     return null;
   },
   summarize: (settings) =>

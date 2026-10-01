@@ -1,5 +1,8 @@
+"use client";
+
 import { Check, ChevronDown, Copy, ExternalLink, Loader2, MessageCircle, Mic, Plus, Rocket, Send, Trash2 } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import {
@@ -73,44 +76,47 @@ const WIDGET_TYPE_DEFAULTS: Record<WidgetType, { buttonText: string; callToActio
 // below is presentation: which key goes in which group, and what to call it.
 type WidgetTextKey = keyof WidgetTexts;
 
+type WidgetTextHintId = "nextToConfirmation" | "screenReadersOnly" | "pairedWithCta";
+
 interface WidgetTextField {
     key: WidgetTextKey;
-    label: string;
-    hint?: string;
+    hint?: WidgetTextHintId;
 }
 
+// Field labels resolve at render via workflow.embed.fields.<key> — the field
+// keys match the i18n leaf names 1:1.
 const CHAT_TEXT_FIELDS: WidgetTextField[] = [
-    { key: "endChatText", label: "End Chat Button" },
-    { key: "endChatConfirmText", label: "End Chat Confirmation" },
-    { key: "endChatCancelText", label: "Cancel Button", hint: "shown next to the confirmation" },
-    { key: "endingChatText", label: "Ending Chat Status" },
-    { key: "conversationEndedText", label: "Conversation Ended Message" },
-    { key: "startNewChatText", label: "Start New Chat Button" },
-    { key: "chatRetryText", label: "Retry Button" },
-    { key: "chatInputPlaceholder", label: "Message Input Placeholder" },
-    { key: "sendMessageLabel", label: "Send Button Label", hint: "screen readers only" },
-    { key: "closeChatLabel", label: "Close Button Label", hint: "screen readers only" },
+    { key: "endChatText" },
+    { key: "endChatConfirmText" },
+    { key: "endChatCancelText", hint: "nextToConfirmation" },
+    { key: "endingChatText" },
+    { key: "conversationEndedText" },
+    { key: "startNewChatText" },
+    { key: "chatRetryText" },
+    { key: "chatInputPlaceholder" },
+    { key: "sendMessageLabel", hint: "screenReadersOnly" },
+    { key: "closeChatLabel", hint: "screenReadersOnly" },
 ];
 
 // Floating voice widgets only ever show the CTA pill, so they get the button
 // labels alone; the status headings below are inline-only.
 const VOICE_BUTTON_TEXT_FIELDS: WidgetTextField[] = [
-    { key: "voiceConnectingText", label: "Connecting" },
-    { key: "voiceEndCallText", label: "End Call Button" },
-    { key: "voiceRetryText", label: "Retry Button" },
+    { key: "voiceConnectingText" },
+    { key: "voiceEndCallText" },
+    { key: "voiceRetryText" },
 ];
 
 const VOICE_STATUS_TEXT_FIELDS: WidgetTextField[] = [
-    { key: "voiceReadyTitle", label: "Ready Heading", hint: "paired with Call to Action Text" },
-    { key: "voiceConnectingSubtext", label: "Connecting Subtext" },
-    { key: "voiceConnectedTitle", label: "Connected Heading" },
-    { key: "voiceConnectedSubtext", label: "Connected Subtext" },
-    { key: "voiceCallEndedTitle", label: "Call Ended Heading" },
-    { key: "voiceCallEndedSubtext", label: "Call Ended Subtext" },
-    { key: "voiceConnectionFailedTitle", label: "Connection Failed Heading" },
-    { key: "voiceConnectionFailedSubtext", label: "Connection Failed Subtext" },
-    { key: "voiceConnectionLostTitle", label: "Connection Lost Heading" },
-    { key: "voiceConnectionLostSubtext", label: "Connection Lost Subtext" },
+    { key: "voiceReadyTitle", hint: "pairedWithCta" },
+    { key: "voiceConnectingSubtext" },
+    { key: "voiceConnectedTitle" },
+    { key: "voiceConnectedSubtext" },
+    { key: "voiceCallEndedTitle" },
+    { key: "voiceCallEndedSubtext" },
+    { key: "voiceConnectionFailedTitle" },
+    { key: "voiceConnectionFailedSubtext" },
+    { key: "voiceConnectionLostTitle" },
+    { key: "voiceConnectionLostSubtext" },
 ];
 
 const WIDGET_TEXT_KEYS: WidgetTextKey[] = [
@@ -139,6 +145,39 @@ function WidgetTextSection({
     onChange: (key: WidgetTextKey, value: string) => void;
 }) {
     const [open, setOpen] = useState(false);
+    const { t } = useTranslation();
+
+    // Typed lookups — field keys mirror the workflow.embed.fields.* leaf names.
+    const fieldLabels: Record<WidgetTextKey, string> = {
+        endChatText: t("workflow.embed.fields.endChatText"),
+        endChatConfirmText: t("workflow.embed.fields.endChatConfirmText"),
+        endChatCancelText: t("workflow.embed.fields.endChatCancelText"),
+        endingChatText: t("workflow.embed.fields.endingChatText"),
+        conversationEndedText: t("workflow.embed.fields.conversationEndedText"),
+        startNewChatText: t("workflow.embed.fields.startNewChatText"),
+        chatRetryText: t("workflow.embed.fields.chatRetryText"),
+        chatInputPlaceholder: t("workflow.embed.fields.chatInputPlaceholder"),
+        sendMessageLabel: t("workflow.embed.fields.sendMessageLabel"),
+        closeChatLabel: t("workflow.embed.fields.closeChatLabel"),
+        voiceConnectingText: t("workflow.embed.fields.voiceConnectingText"),
+        voiceEndCallText: t("workflow.embed.fields.voiceEndCallText"),
+        voiceRetryText: t("workflow.embed.fields.voiceRetryText"),
+        voiceReadyTitle: t("workflow.embed.fields.voiceReadyTitle"),
+        voiceConnectingSubtext: t("workflow.embed.fields.voiceConnectingSubtext"),
+        voiceConnectedTitle: t("workflow.embed.fields.voiceConnectedTitle"),
+        voiceConnectedSubtext: t("workflow.embed.fields.voiceConnectedSubtext"),
+        voiceCallEndedTitle: t("workflow.embed.fields.voiceCallEndedTitle"),
+        voiceCallEndedSubtext: t("workflow.embed.fields.voiceCallEndedSubtext"),
+        voiceConnectionFailedTitle: t("workflow.embed.fields.voiceConnectionFailedTitle"),
+        voiceConnectionFailedSubtext: t("workflow.embed.fields.voiceConnectionFailedSubtext"),
+        voiceConnectionLostTitle: t("workflow.embed.fields.voiceConnectionLostTitle"),
+        voiceConnectionLostSubtext: t("workflow.embed.fields.voiceConnectionLostSubtext"),
+    };
+    const fieldHints: Record<WidgetTextHintId, string> = {
+        nextToConfirmation: t("workflow.embed.fieldHints.nextToConfirmation"),
+        screenReadersOnly: t("workflow.embed.fieldHints.screenReadersOnly"),
+        pairedWithCta: t("workflow.embed.fieldHints.pairedWithCta"),
+    };
 
     return (
         <Collapsible open={open} onOpenChange={setOpen} className="rounded-lg border bg-muted/20">
@@ -160,13 +199,13 @@ function WidgetTextSection({
                             </div>
                         )}
                         <div className="grid grid-cols-2 gap-4">
-                            {group.fields.map(({ key, label, hint }) => (
+                            {group.fields.map(({ key, hint }) => (
                                 <div key={key} className="space-y-2">
                                     <Label htmlFor={`widget-text-${key}`} className="text-sm">
-                                        {label}
+                                        {fieldLabels[key]}
                                         {hint && (
                                             <span className="ml-1 text-xs font-normal text-muted-foreground">
-                                                ({hint})
+                                                ({fieldHints[hint]})
                                             </span>
                                         )}
                                     </Label>
@@ -214,6 +253,7 @@ export function EmbedDialog({
     widgetTextDefaults,
     onSaveWorkflowConfigurations,
 }: EmbedDialogProps) {
+    const { t } = useTranslation();
     const [loading, setLoading] = useState(false);
     const [saving, setSaving] = useState(false);
     const [embedToken, setEmbedToken] = useState<EmbedToken | null>(null);
@@ -266,8 +306,11 @@ export function EmbedDialog({
                 parsedTextChatInactivitySeconds <=
                     maximumTextChatInactivitySeconds));
     const textChatInactivityValidationMessage = hasTextChatInactivityBounds
-        ? `Chat inactivity timeout must be a whole number between ${minimumTextChatInactivityMinutes} and ${maximumTextChatInactivityMinutes} minutes`
-        : "Chat inactivity timeout must be a whole number of minutes";
+        ? t("workflow.embed.timeoutRange", {
+            min: minimumTextChatInactivityMinutes,
+            max: maximumTextChatInactivityMinutes,
+        })
+        : t("workflow.embed.timeoutWhole");
 
     const handleWidgetTextChange = useCallback((key: WidgetTextKey, value: string) => {
         setWidgetTexts((prev) => ({ ...prev, [key]: value }));
@@ -360,7 +403,7 @@ export function EmbedDialog({
                 });
                 if (response.error) {
                     throw new Error(
-                        detailFromError(response.error, "Failed to disable embedding"),
+                        detailFromError(response.error, t("workflow.embed.disableFailed")),
                     );
                 }
                 setEmbedToken(null);
@@ -396,7 +439,7 @@ export function EmbedDialog({
 
                 if (response.error) {
                     throw new Error(
-                        detailFromError(response.error, "Failed to save widget configuration"),
+                        detailFromError(response.error, t("workflow.embed.saveFailed")),
                     );
                 }
                 if (response.data) {
@@ -404,14 +447,12 @@ export function EmbedDialog({
                 }
             }
 
-            toast.success(
-                "Widget configuration saved. Publish the agent to apply the changes.",
-            );
+            toast.success(t("workflow.embed.saveSuccess"));
             // Don't close modal after saving - let user copy the embed code
         } catch (error) {
             console.error("Failed to save embed token:", error);
             toast.error(
-                error instanceof Error ? error.message : "Failed to save widget configuration",
+                error instanceof Error ? error.message : t("workflow.embed.saveFailed"),
             );
         } finally {
             setSaving(false);
@@ -424,7 +465,7 @@ export function EmbedDialog({
             setCopied(true);
             setTimeout(() => setCopied(false), 2000);
         } catch {
-            toast.error("Failed to copy embed code");
+            toast.error(t("workflow.embed.copyFailed"));
         }
     };
 
@@ -453,7 +494,7 @@ export function EmbedDialog({
                     <div className="flex items-center justify-between">
                         <DialogTitle className="flex items-center gap-2">
                             <Rocket className="h-5 w-5" />
-                            Configure Widget
+                            {t("workflow.embed.title")}
                         </DialogTitle>
                         <a
                             href={WIDGET_MODE_DOCUMENTATION_URLS[embedMode]}
@@ -461,12 +502,12 @@ export function EmbedDialog({
                             rel="noopener noreferrer"
                             className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors pr-6"
                         >
-                            Docs
+                            {t("workflow.embed.docs")}
                             <ExternalLink className="h-3.5 w-3.5" />
                         </a>
                     </div>
                     <DialogDescription>
-                        Add &quot;{workflowName}&quot; to any website with a simple script tag.
+                        {t("workflow.embed.description", { name: workflowName })}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -479,9 +520,9 @@ export function EmbedDialog({
                         {/* Enable/Disable Toggle */}
                         <div className="flex items-center justify-between">
                             <div className="space-y-0.5">
-                                <Label htmlFor="embed-enabled">Enable Embedding</Label>
+                                <Label htmlFor="embed-enabled">{t("workflow.embed.enableEmbedding")}</Label>
                                 <p className="text-sm text-muted-foreground">
-                                    Allow this workflow to be embedded on external websites
+                                    {t("workflow.embed.enableEmbeddingHelp")}
                                 </p>
                             </div>
                             <Switch
@@ -498,16 +539,16 @@ export function EmbedDialog({
                                 {/* Allowed Domains */}
                                 <div className="space-y-3">
                                     <Label>
-                                        Allowed Domains
+                                        {t("workflow.embed.allowedDomains")}
                                         <span className="text-xs text-muted-foreground ml-2">
-                                            (leave empty to allow all domains)
+                                            {t("workflow.embed.allowedDomainsHint")}
                                         </span>
                                     </Label>
 
                                     {/* Domain Input */}
                                     <div className="flex gap-2">
                                         <Input
-                                            placeholder="example.com or *.example.com"
+                                            placeholder={t("workflow.embed.domainPlaceholder")}
                                             value={newDomain}
                                             onChange={(e) => setNewDomain(e.target.value)}
                                             onKeyPress={handleKeyPress}
@@ -549,7 +590,7 @@ export function EmbedDialog({
 
                                 {/* Widget Type Selection */}
                                 <div className="space-y-4">
-                                    <Label>Widget Type</Label>
+                                    <Label>{t("workflow.embed.widgetType")}</Label>
                                     <div className="grid grid-cols-2 gap-4">
                                         <button
                                             type="button"
@@ -563,10 +604,10 @@ export function EmbedDialog({
                                             <div className="space-y-2">
                                                 <div className="flex items-center justify-center gap-2 font-medium">
                                                     <Mic className="h-4 w-4" />
-                                                    Voice Agent
+                                                    {t("workflow.embed.voiceAgent")}
                                                 </div>
                                                 <div className="text-xs text-muted-foreground">
-                                                    Visitors talk to your agent by voice
+                                                    {t("workflow.embed.voiceAgentHelp")}
                                                 </div>
                                             </div>
                                         </button>
@@ -582,10 +623,10 @@ export function EmbedDialog({
                                             <div className="space-y-2">
                                                 <div className="flex items-center justify-center gap-2 font-medium">
                                                     <MessageCircle className="h-4 w-4" />
-                                                    Chat Agent
+                                                    {t("workflow.embed.chatAgent")}
                                                 </div>
                                                 <div className="text-xs text-muted-foreground">
-                                                    Visitors type messages to your agent
+                                                    {t("workflow.embed.chatAgentHelp")}
                                                 </div>
                                             </div>
                                         </button>
@@ -595,7 +636,7 @@ export function EmbedDialog({
                                 {widgetType === "chat" && (
                                     <div className="space-y-2 rounded-lg border bg-muted/20 p-4">
                                         <Label htmlFor="text-chat-inactivity-timeout">
-                                            Chat Inactivity Timeout
+                                            {t("workflow.embed.chatInactivityTimeout")}
                                         </Label>
                                         <div className="flex items-center gap-2">
                                             <Input
@@ -612,11 +653,11 @@ export function EmbedDialog({
                                                 className="w-32"
                                             />
                                             <span className="text-sm text-muted-foreground">
-                                                minutes
+                                                {t("workflow.embed.minutes")}
                                             </span>
                                         </div>
                                         <p className="text-xs text-muted-foreground">
-                                            End a text chat and trigger its completion webhook after this long without chat activity.
+                                            {t("workflow.embed.timeoutHelp")}
                                         </p>
                                         {!textChatInactivityIsValid && (
                                             <p className="text-xs text-destructive">
@@ -628,7 +669,7 @@ export function EmbedDialog({
 
                                 {/* Embed Mode Selection */}
                                 <div className="space-y-4">
-                                    <Label>Embed Mode</Label>
+                                    <Label>{t("workflow.embed.embedMode")}</Label>
                                     <div className="grid grid-cols-3 gap-4">
                                         <button
                                             type="button"
@@ -640,9 +681,9 @@ export function EmbedDialog({
                                             }`}
                                         >
                                             <div className="space-y-2">
-                                                <div className="font-medium">Floating Widget</div>
+                                                <div className="font-medium">{t("workflow.embed.floatingWidget")}</div>
                                                 <div className="text-xs text-muted-foreground">
-                                                    Shows as a button in corner of the page
+                                                    {t("workflow.embed.floatingWidgetHelp")}
                                                 </div>
                                             </div>
                                         </button>
@@ -656,9 +697,9 @@ export function EmbedDialog({
                                             }`}
                                         >
                                             <div className="space-y-2">
-                                                <div className="font-medium">Inline Component</div>
+                                                <div className="font-medium">{t("workflow.embed.inlineComponent")}</div>
                                                 <div className="text-xs text-muted-foreground">
-                                                    Embeds directly in your page content
+                                                    {t("workflow.embed.inlineComponentHelp")}
                                                 </div>
                                             </div>
                                         </button>
@@ -672,9 +713,9 @@ export function EmbedDialog({
                                             }`}
                                         >
                                             <div className="space-y-2">
-                                                <div className="font-medium">Headless (Bring Your Own UI)</div>
+                                                <div className="font-medium">{t("workflow.embed.headless")}</div>
                                                 <div className="text-xs text-muted-foreground">
-                                                    No UI - drive calls from your own buttons via the JS API
+                                                    {t("workflow.embed.headlessHelp")}
                                                 </div>
                                             </div>
                                         </button>
@@ -683,13 +724,13 @@ export function EmbedDialog({
 
                                 {/* Configuration based on mode */}
                                 <div className="space-y-4">
-                                    <Label>Configuration</Label>
+                                    <Label>{t("workflow.embed.configuration")}</Label>
 
                                     {/* Shared: Button Text + Button Color (skipped in headless — host renders its own UI) */}
                                     {embedMode !== "headless" && (
                                         <div className="grid grid-cols-2 gap-4">
                                             <div className="space-y-2">
-                                                <Label htmlFor="button-text" className="text-sm">Button Text</Label>
+                                                <Label htmlFor="button-text" className="text-sm">{t("workflow.embed.buttonText")}</Label>
                                                 <Input
                                                     id="button-text"
                                                     value={buttonText}
@@ -699,7 +740,7 @@ export function EmbedDialog({
                                                 />
                                             </div>
                                             <div className="space-y-2">
-                                                <Label htmlFor="button-color" className="text-sm">Button Color</Label>
+                                                <Label htmlFor="button-color" className="text-sm">{t("workflow.embed.buttonColor")}</Label>
                                                 <div className="flex gap-2">
                                                     <Input
                                                         id="button-color-picker"
@@ -723,16 +764,16 @@ export function EmbedDialog({
                                     {/* Floating mode: Position */}
                                     {embedMode === "floating" && (
                                         <div className="space-y-2">
-                                            <Label htmlFor="position" className="text-sm">Position</Label>
+                                            <Label htmlFor="position" className="text-sm">{t("workflow.embed.position")}</Label>
                                             <Select value={position} onValueChange={setPosition}>
                                                 <SelectTrigger id="position">
                                                     <SelectValue />
                                                 </SelectTrigger>
                                                 <SelectContent>
-                                                    <SelectItem value="bottom-right">Bottom Right</SelectItem>
-                                                    <SelectItem value="bottom-left">Bottom Left</SelectItem>
-                                                    <SelectItem value="top-right">Top Right</SelectItem>
-                                                    <SelectItem value="top-left">Top Left</SelectItem>
+                                                    <SelectItem value="bottom-right">{t("workflow.embed.positionBottomRight")}</SelectItem>
+                                                    <SelectItem value="bottom-left">{t("workflow.embed.positionBottomLeft")}</SelectItem>
+                                                    <SelectItem value="top-right">{t("workflow.embed.positionTopRight")}</SelectItem>
+                                                    <SelectItem value="top-left">{t("workflow.embed.positionTopLeft")}</SelectItem>
                                                 </SelectContent>
                                             </Select>
                                         </div>
@@ -741,7 +782,7 @@ export function EmbedDialog({
                                     {/* Inline mode: Call to Action Text */}
                                     {embedMode === "inline" && (
                                         <div className="space-y-2">
-                                            <Label htmlFor="cta-text" className="text-sm">Call to Action Text</Label>
+                                            <Label htmlFor="cta-text" className="text-sm">{t("workflow.embed.callToActionText")}</Label>
                                             <Input
                                                 id="cta-text"
                                                 value={callToActionText}
@@ -755,8 +796,8 @@ export function EmbedDialog({
                                         Headless renders no UI of ours, so it has nothing to translate. */}
                                     {embedMode !== "headless" && widgetType === "chat" && (
                                         <WidgetTextSection
-                                            title="Chat Panel Text"
-                                            description="Wording visitors see inside the chat panel."
+                                            title={t("workflow.embed.chatPanelText")}
+                                            description={t("workflow.embed.chatPanelTextHelp")}
                                             groups={[{ fields: CHAT_TEXT_FIELDS }]}
                                             values={widgetTexts}
                                             defaults={widgetTextDefaults}
@@ -766,17 +807,17 @@ export function EmbedDialog({
 
                                     {embedMode !== "headless" && widgetType === "voice" && (
                                         <WidgetTextSection
-                                            title="Voice Call Text"
+                                            title={t("workflow.embed.voiceCallText")}
                                             description={
                                                 embedMode === "inline"
-                                                    ? "Wording visitors see on the call panel across the call lifecycle."
-                                                    : "Wording the call button cycles through while a call connects and runs."
+                                                    ? t("workflow.embed.voiceCallTextHelpInline")
+                                                    : t("workflow.embed.voiceCallTextHelpFloating")
                                             }
                                             groups={
                                                 embedMode === "inline"
                                                     ? [
-                                                        { heading: "Button labels", fields: VOICE_BUTTON_TEXT_FIELDS },
-                                                        { heading: "Status messages", fields: VOICE_STATUS_TEXT_FIELDS },
+                                                        { heading: t("workflow.embed.buttonLabels"), fields: VOICE_BUTTON_TEXT_FIELDS },
+                                                        { heading: t("workflow.embed.statusMessages"), fields: VOICE_STATUS_TEXT_FIELDS },
                                                     ]
                                                     : [{ fields: VOICE_BUTTON_TEXT_FIELDS }]
                                             }
@@ -812,13 +853,13 @@ export function EmbedDialog({
                                                 </div>
                                                 <div className="p-4 space-y-2 bg-muted/20">
                                                     <div className="max-w-[80%] rounded-lg rounded-bl-sm bg-muted px-3 py-2 text-sm">
-                                                        Hi! How can I help you today?
+                                                        {t("workflow.embed.previewGreeting")}
                                                     </div>
                                                     <div
                                                         className="max-w-[80%] ml-auto rounded-lg rounded-br-sm px-3 py-2 text-sm text-white"
                                                         style={{ backgroundColor: buttonColor }}
                                                     >
-                                                        I have a question…
+                                                        {t("workflow.embed.previewQuestion")}
                                                     </div>
                                                 </div>
                                                 <div className="flex items-center gap-2 border-t px-3 py-2">
@@ -859,21 +900,21 @@ export function EmbedDialog({
                                     {embedMode === "headless" && widgetType === "chat" && (
                                         <div className="space-y-3">
                                             <div className="rounded-lg bg-muted/50 p-4">
-                                                <h4 className="font-medium mb-2">Integration Instructions</h4>
+                                                <h4 className="font-medium mb-2">{t("workflow.embed.integrationInstructions")}</h4>
                                                 <ul className="text-sm space-y-2 text-muted-foreground">
-                                                    <li>• Add the embed script tag to your page (see below).</li>
-                                                    <li>• The widget renders no UI - render your own chat interface.</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.startChat()</code> to start a conversation (the agent greeting arrives via <code className="text-xs">onMessage</code>).</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.sendMessage(text)</code> to send a visitor message; it resolves with the updated transcript, or <code className="text-xs">null</code> if the message could not be delivered.</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.endChat()</code> to end the active conversation and trigger its completion webhook.</li>
-                                                    <li>• Use <code className="text-xs">getMessages()</code> to read the transcript at any time.</li>
-                                                    <li>• Subscribe to <code className="text-xs">onMessage</code> and <code className="text-xs">onChatStateChange</code> to drive your UI. States are <code className="text-xs">idle</code>, <code className="text-xs">starting</code>, <code className="text-xs">ready</code>, <code className="text-xs">waiting</code>, <code className="text-xs">ended</code>, <code className="text-xs">expired</code>, <code className="text-xs">error</code>.</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.setContext({"{ ... }"})</code> before <code className="text-xs">startChat()</code> to pass visitor details the page learned after load.</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet1")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet2")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet3")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet4")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet5")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet6")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet7")}</li>
+                                                    <li>• {t("workflow.embed.headlessChatBullet8")}</li>
                                                 </ul>
                                             </div>
 
                                             <div className="rounded-lg bg-blue-50 dark:bg-blue-950/20 p-4 border border-blue-200 dark:border-blue-800">
-                                                <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">Example - drive your own chat UI</h4>
+                                                <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">{t("workflow.embed.exampleDriveChatUi")}</h4>
                                                 <pre className="text-xs overflow-x-auto">
                                                     <code className="text-blue-800 dark:text-blue-200">{HEADLESS_CHAT_EXAMPLE}</code>
                                                 </pre>
@@ -885,22 +926,22 @@ export function EmbedDialog({
                                     {embedMode === "headless" && widgetType === "voice" && (
                                         <div className="space-y-3">
                                             <div className="rounded-lg bg-muted/50 p-4">
-                                                <h4 className="font-medium mb-2">Integration Instructions</h4>
+                                                <h4 className="font-medium mb-2">{t("workflow.embed.integrationInstructions")}</h4>
                                                 <ul className="text-sm space-y-2 text-muted-foreground">
-                                                    <li>• Add the embed script tag to your page (see below).</li>
-                                                    <li>• The widget renders no UI - render your own buttons.</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.start()</code> to begin a call.</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.end()</code> to end it.</li>
-                                                    <li>• Subscribe to <code className="text-xs">onCallStart</code>, <code className="text-xs">onCallEnd</code>, <code className="text-xs">onStatusChange</code>, <code className="text-xs">onError</code> to drive your UI.</li>
-                                                    <li>• <code className="text-xs">start()</code> must run inside a user-gesture handler (click) so the browser grants microphone access.</li>
-                                                    <li>• Call <code className="text-xs">window.DograhWidget.setContext({"{ ... }"})</code> before <code className="text-xs">start()</code> to pass visitor details the page learned after load.</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet1")}</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet2")}</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet3")}</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet4")}</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet5")}</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet6")}</li>
+                                                    <li>• {t("workflow.embed.headlessVoiceBullet7")}</li>
                                                 </ul>
                                             </div>
 
                                             <div className="rounded-lg bg-blue-50 dark:bg-blue-950/20 p-4 border border-blue-200 dark:border-blue-800">
-                                                <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">Example - track status in your own state</h4>
+                                                <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">{t("workflow.embed.exampleTrackStatus")}</h4>
                                                 <p className="text-xs text-blue-900/80 dark:text-blue-100/80 mb-2">
-                                                    Mirror the call status into a variable you control, then render whatever UI you like from it. The status values are <code className="text-xs">idle</code>, <code className="text-xs">connecting</code>, <code className="text-xs">connected</code>, <code className="text-xs">failed</code>.
+                                                    {t("workflow.embed.headlessVoiceProse")}
                                                 </p>
                                                 <pre className="text-xs overflow-x-auto">
                                                     <code className="text-blue-800 dark:text-blue-200">{`// Vanilla JS - keep your own state, render however you want
@@ -944,17 +985,17 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                     {embedMode === "inline" && (
                                         <div className="space-y-3">
                                             <div className="rounded-lg bg-muted/50 p-4">
-                                                <h4 className="font-medium mb-2">Integration Instructions</h4>
+                                                <h4 className="font-medium mb-2">{t("workflow.embed.integrationInstructions")}</h4>
                                                 <ul className="text-sm space-y-2 text-muted-foreground">
-                                                    <li>• Add a div with id=&quot;dograh-inline-container&quot; where you want the widget</li>
-                                                    <li>• The widget will render inside this container</li>
-                                                    <li>• You have full control over the container&apos;s styling</li>
+                                                    <li>• {t("workflow.embed.inlineBullet1")}</li>
+                                                    <li>• {t("workflow.embed.inlineBullet2")}</li>
+                                                    <li>• {t("workflow.embed.inlineBullet3")}</li>
                                                     {widgetType === "chat" ? (
-                                                        <li>• The chat panel renders in the container; the conversation starts when the visitor clicks the button</li>
+                                                        <li>• {t("workflow.embed.inlineBulletChat")}</li>
                                                     ) : (
                                                         <>
-                                                            <li>• Call window.DograhWidget.start() to begin the call</li>
-                                                            <li>• Call window.DograhWidget.end() to end the call</li>
+                                                            <li>• {t("workflow.embed.inlineBulletVoiceStart")}</li>
+                                                            <li>• {t("workflow.embed.inlineBulletVoiceEnd")}</li>
                                                         </>
                                                     )}
                                                 </ul>
@@ -962,7 +1003,7 @@ document.getElementById('talk-btn').addEventListener('click', () => {
 
                                             {widgetType === "chat" ? (
                                                 <div className="rounded-lg bg-blue-50 dark:bg-blue-950/20 p-4 border border-blue-200 dark:border-blue-800">
-                                                    <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">Example</h4>
+                                                    <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">{t("workflow.embed.example")}</h4>
                                                     <pre className="text-xs overflow-x-auto">
                                                         <code className="text-blue-800 dark:text-blue-200">{`<h2>Chat with Our Agent</h2>
 <div id="dograh-inline-container" style="min-height: 480px">
@@ -972,7 +1013,7 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                                 </div>
                                             ) : (
                                                 <div className="rounded-lg bg-blue-50 dark:bg-blue-950/20 p-4 border border-blue-200 dark:border-blue-800">
-                                                    <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">Example React Component</h4>
+                                                    <h4 className="font-medium mb-2 text-blue-900 dark:text-blue-100">{t("workflow.embed.exampleReactComponent")}</h4>
                                                     <pre className="text-xs overflow-x-auto">
                                                         <code className="text-blue-800 dark:text-blue-200">{`export function DograhAgent() {
   const [isCallActive, setIsCallActive] = useState(false);
@@ -1024,10 +1065,10 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                         {saving ? (
                                             <>
                                                 <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-                                                Saving...
+                                                {t("common.saving")}
                                             </>
                                         ) : (
-                                            "Save Configurations"
+                                            t("workflow.embed.saveConfigurations")
                                         )}
                                     </Button>
                                 </div>
@@ -1038,7 +1079,7 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                         <Separator />
                                         <div className="space-y-3">
                                             <div className="flex items-center justify-between">
-                                                <Label>Embed Code</Label>
+                                                <Label>{t("workflow.embed.embedCode")}</Label>
                                                 <Button
                                                     size="sm"
                                                     variant="outline"
@@ -1047,12 +1088,12 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                                     {copied ? (
                                                         <>
                                                             <Check className="h-4 w-4 mr-1" />
-                                                            Copied!
+                                                            {t("common.copied")}
                                                         </>
                                                     ) : (
                                                         <>
                                                             <Copy className="h-4 w-4 mr-1" />
-                                                            Copy Code
+                                                            {t("workflow.embed.copyCode")}
                                                         </>
                                                     )}
                                                 </Button>
@@ -1063,23 +1104,28 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                                 </pre>
                                             </div>
                                             <p className="text-xs text-muted-foreground">
-                                                Add this script to your website&apos;s HTML to enable the widget.
-                                                Configuration changes will apply automatically without re-embedding.
+                                                {t("workflow.embed.embedCodeHelp")}
                                             </p>
                                             <p className="text-xs text-muted-foreground">
-                                                To pass visitor details to the agent, edit the{" "}
-                                                <code className="text-xs">data-dograh-context</code> values above — or call{" "}
-                                                <code className="text-xs">{"window.DograhWidget.setContext({ ... })"}</code> for
-                                                details your page learns later. Each one is available in your prompts as{" "}
-                                                <code className="text-xs">{"{{initial_context.page_url}}"}</code>.{" "}
-                                                <a
-                                                    href={WIDGET_CONTEXT_DOC_URL}
-                                                    target="_blank"
-                                                    rel="noopener noreferrer"
-                                                    className="underline underline-offset-2 hover:text-foreground"
-                                                >
-                                                    Learn more
-                                                </a>
+                                                <Trans
+                                                    i18nKey="workflow.embed.visitorDetails"
+                                                    components={[
+                                                        <code key="c1" className="text-xs" />,
+                                                        <code key="c2" className="text-xs" />,
+                                                        <code key="c3" className="text-xs" />,
+                                                        <a
+                                                            key="docs"
+                                                            href={WIDGET_CONTEXT_DOC_URL}
+                                                            target="_blank"
+                                                            rel="noopener noreferrer"
+                                                            className="underline underline-offset-2 hover:text-foreground"
+                                                        />,
+                                                    ]}
+                                                    values={{
+                                                        setContextExample: "window.DograhWidget.setContext({ ... })",
+                                                        pageContextExample: "{{initial_context.page_url}}",
+                                                    }}
+                                                />
                                             </p>
                                         </div>
                                     </>
@@ -1087,9 +1133,12 @@ document.getElementById('talk-btn').addEventListener('click', () => {
                                     <>
                                         <Separator />
                                         <div className="space-y-3">
-                                            <Label className="text-muted-foreground">Embed Code</Label>
+                                            <Label className="text-muted-foreground">{t("workflow.embed.embedCode")}</Label>
                                             <div className="rounded-lg border border-dashed bg-muted/30 px-4 py-8 text-center text-sm text-muted-foreground">
-                                                Click <span className="font-medium">Save Configurations</span> to generate your embed script.
+                                                <Trans
+                                                    i18nKey="workflow.embed.clickSaveToGenerate"
+                                                    components={[<span key="cta" className="font-medium" />]}
+                                                />
                                             </div>
                                         </div>
                                     </>

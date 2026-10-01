@@ -1,8 +1,10 @@
 "use client";
 
+import type { TFunction } from "i18next";
 import { ExternalLink, Plus, X } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
 import { useForm } from "react-hook-form";
+import { useTranslation } from "react-i18next";
 
 import { getDefaultConfigurationsApiV1UserConfigurationsDefaultsGet } from '@/client/sdk.gen';
 import { Button } from "@/components/ui/button";
@@ -15,8 +17,9 @@ import { Switch } from "@/components/ui/switch";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { Textarea } from "@/components/ui/textarea";
 import { VoiceSelector } from "@/components/VoiceSelector";
-import { LANGUAGE_DISPLAY_NAMES } from "@/constants/languages";
+import { getLanguageDisplayName } from "@/constants/languages";
 import { useUserConfig } from "@/context/UserConfigContext";
+import { serverText } from "@/i18n/serverText";
 import type { ModelOverrides } from "@/types/workflow-configurations";
 
 export type ServiceSegment = "llm" | "tts" | "stt" | "embeddings" | "realtime";
@@ -63,28 +66,28 @@ export interface ServiceConfigurationDefaults {
     default_providers: Partial<Record<ServiceSegment, string>>;
 }
 
-const STANDARD_TABS: { key: ServiceSegment; label: string }[] = [
-    { key: "llm", label: "LLM" },
-    { key: "tts", label: "Voice" },
-    { key: "stt", label: "Transcriber" },
-    { key: "embeddings", label: "Embedding" },
+const STANDARD_TABS: { key: ServiceSegment; labelKey: string }[] = [
+    { key: "llm", labelKey: "modelConfigs.form.tabs.llm" },
+    { key: "tts", labelKey: "modelConfigs.form.tabs.tts" },
+    { key: "stt", labelKey: "modelConfigs.form.tabs.stt" },
+    { key: "embeddings", labelKey: "modelConfigs.form.tabs.embeddings" },
 ];
 
-const REALTIME_TABS: { key: ServiceSegment; label: string }[] = [
-    { key: "realtime", label: "Realtime Model" },
-    { key: "llm", label: "LLM" },
-    { key: "embeddings", label: "Embedding" },
+const REALTIME_TABS: { key: ServiceSegment; labelKey: string }[] = [
+    { key: "realtime", labelKey: "modelConfigs.form.tabs.realtime" },
+    { key: "llm", labelKey: "modelConfigs.form.tabs.llm" },
+    { key: "embeddings", labelKey: "modelConfigs.form.tabs.embeddings" },
 ];
 
-const OVERRIDE_STANDARD_TABS: { key: ServiceSegment; label: string }[] = [
-    { key: "llm", label: "LLM" },
-    { key: "tts", label: "Voice" },
-    { key: "stt", label: "Transcriber" },
+const OVERRIDE_STANDARD_TABS: { key: ServiceSegment; labelKey: string }[] = [
+    { key: "llm", labelKey: "modelConfigs.form.tabs.llm" },
+    { key: "tts", labelKey: "modelConfigs.form.tabs.tts" },
+    { key: "stt", labelKey: "modelConfigs.form.tabs.stt" },
 ];
 
-const OVERRIDE_REALTIME_TABS: { key: ServiceSegment; label: string }[] = [
-    { key: "realtime", label: "Realtime Model" },
-    { key: "llm", label: "LLM" },
+const OVERRIDE_REALTIME_TABS: { key: ServiceSegment; labelKey: string }[] = [
+    { key: "realtime", labelKey: "modelConfigs.form.tabs.realtime" },
+    { key: "llm", labelKey: "modelConfigs.form.tabs.llm" },
 ];
 
 // Display names for Sarvam voices
@@ -118,20 +121,22 @@ export interface ServiceConfigurationFormProps {
 function getProviderDisplayName(
     provider: string | undefined,
     providerSchema: ProviderSchema | undefined,
+    t: TFunction,
 ): string | undefined {
     if (!provider) return provider;
-    return providerSchema?.title || provider;
+    return serverText(t, `modelConfigs.providerTitle.${provider}`, providerSchema?.title || provider);
 }
 
 function getGlobalSummary(
     config: Record<string, unknown> | null | undefined,
     providerSchema: ProviderSchema | undefined,
+    t: TFunction,
 ): string {
-    if (!config) return "Not configured";
+    if (!config) return t("flow.common.notConfigured");
     const provider = config.provider as string | undefined;
     const model = config.model as string | undefined;
-    if (!provider) return "Not configured";
-    const providerLabel = getProviderDisplayName(provider, providerSchema);
+    if (!provider) return t("flow.common.notConfigured");
+    const providerLabel = getProviderDisplayName(provider, providerSchema, t);
     return model ? `${providerLabel} / ${model}` : providerLabel || provider;
 }
 
@@ -167,6 +172,7 @@ export function ServiceConfigurationForm({
     initialConfig,
     forceRealtime,
 }: ServiceConfigurationFormProps) {
+    const { t } = useTranslation();
     const [apiError, setApiError] = useState<string | null>(null);
     const [isSaving, setIsSaving] = useState(false);
     const [isRealtime, setIsRealtime] = useState(forceRealtime ?? false);
@@ -555,7 +561,7 @@ export function ServiceConfigurationForm({
             if (error instanceof Error) {
                 setApiError(error.message);
             } else {
-                setApiError('An unknown error occurred');
+                setApiError(t("modelConfigs.form.unknownError"));
             }
         } finally {
             setIsSaving(false);
@@ -583,7 +589,7 @@ export function ServiceConfigurationForm({
             <div className="space-y-6">
                 <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                        <Label>Provider</Label>
+                        <Label>{t("modelConfigs.form.provider")}</Label>
                         <Select
                             value={currentProvider}
                             onValueChange={(providerName) => {
@@ -591,19 +597,19 @@ export function ServiceConfigurationForm({
                             }}
                         >
                             <SelectTrigger className="w-full">
-                                <SelectValue placeholder="Select provider" />
+                                <SelectValue placeholder={t("modelConfigs.form.selectProvider")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {availableProviders.map((provider) => (
                                     <SelectItem key={provider} value={provider}>
-                                        {getProviderDisplayName(provider, schemas?.[service]?.[provider])}
+                                        {getProviderDisplayName(provider, schemas?.[service]?.[provider], t)}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
                         </Select>
                         {(providerSchema?.description || providerSchema?.provider_docs_url) && (
                             <p className="text-xs text-muted-foreground">
-                                {providerSchema?.description}{" "}
+                                {serverText(t, `modelConfigs.providerDesc.${currentProvider}`, providerSchema?.description)}{" "}
                                 {providerSchema?.provider_docs_url && (
                                     <a
                                         href={providerSchema.provider_docs_url}
@@ -611,7 +617,7 @@ export function ServiceConfigurationForm({
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-0.5 underline"
                                     >
-                                        Learn more <ExternalLink className="h-3 w-3" />
+                                        {t("common.learnMore")} <ExternalLink className="h-3 w-3" />
                                     </a>
                                 )}
                             </p>
@@ -620,7 +626,7 @@ export function ServiceConfigurationForm({
 
                     {currentProvider && providerSchema && configFields[0] && (
                         <div className="space-y-2">
-                            <Label className="capitalize">{configFields[0].replace(/_/g, ' ')}</Label>
+                            <Label className="capitalize">{serverText(t, `modelConfigs.fieldLabel.${configFields[0]}`, configFields[0].replace(/_/g, ' '))}</Label>
                             {renderField(service, configFields[0], providerSchema)}
                         </div>
                     )}
@@ -636,7 +642,7 @@ export function ServiceConfigurationForm({
                             const fullWidth = actualFieldSchema?.multiline;
                             return (
                                 <div key={field} className={`space-y-2 ${fullWidth ? "col-span-2" : ""}`}>
-                                    <Label className="capitalize">{field.replace(/_/g, ' ')}</Label>
+                                    <Label className="capitalize">{serverText(t, `modelConfigs.fieldLabel.${field}`, field.replace(/_/g, ' '))}</Label>
                                     {renderField(service, field, providerSchema)}
                                 </div>
                             );
@@ -646,13 +652,13 @@ export function ServiceConfigurationForm({
 
                 {currentProvider && providerSchema && providerSchema.properties.api_key && (
                     <div className="space-y-2">
-                        <Label>{mode === 'override' ? 'API Key (leave empty to use global)' : 'API Key(s)'}</Label>
-                        {renderFieldDescription("api_key", providerSchema)}
+                        <Label>{mode === 'override' ? t("modelConfigs.form.apiKeyOverride") : t("modelConfigs.form.apiKeys")}</Label>
+                        {renderFieldDescription("api_key", providerSchema, service)}
                         {apiKeys[service].map((key, index) => (
                             <div key={index} className="flex gap-2">
                                 <Input
                                     type="text"
-                                    placeholder="Enter API key"
+                                    placeholder={t("modelConfigs.form.enterApiKey")}
                                     value={key}
                                     onChange={(e) => {
                                         const newKeys = [...apiKeys[service]];
@@ -690,7 +696,7 @@ export function ServiceConfigurationForm({
                                     }));
                                 }}
                             >
-                                <Plus className="h-4 w-4 mr-1" /> Add API Key
+                                <Plus className="h-4 w-4 mr-1" /> {t("modelConfigs.form.addApiKey")}
                             </Button>
                         )}
                     </div>
@@ -699,16 +705,30 @@ export function ServiceConfigurationForm({
         );
     };
 
-    const renderFieldDescription = (field: string, providerSchema: ProviderSchema) => {
+    const renderFieldDescription = (field: string, providerSchema: ProviderSchema, service: ServiceSegment) => {
         const schema = providerSchema.properties[field];
         if (!schema) return null;
         const actualSchema = schema.$ref && providerSchema.$defs
             ? providerSchema.$defs[schema.$ref.split('/').pop() || '']
             : schema;
         if (!actualSchema?.description && !actualSchema?.docs_url) return null;
+        const provider = serviceProviders[service];
+        // Lookup order: service-qualified provider mapping (same provider can
+        // describe a field differently for LLM/TTS/STT/embeddings), then the
+        // unqualified provider mapping, then the generic per-field mapping,
+        // then the backend English text.
+        const description = serverText(
+            t,
+            `modelConfigs.providerFieldDesc.${service}.${provider}.${field}`,
+            serverText(
+                t,
+                `modelConfigs.providerFieldDesc.${provider}.${field}`,
+                serverText(t, `modelConfigs.fieldDesc.${field}`, actualSchema?.description),
+            ),
+        );
         return (
             <p className="text-xs text-muted-foreground">
-                {actualSchema?.description}{" "}
+                {description}{" "}
                 {actualSchema?.docs_url && (
                     <a
                         href={actualSchema.docs_url}
@@ -716,7 +736,7 @@ export function ServiceConfigurationForm({
                         rel="noopener noreferrer"
                         className="inline-flex items-center gap-0.5 underline"
                     >
-                        Supported languages <ExternalLink className="h-3 w-3" />
+                        {t("modelConfigs.form.supportedLanguages")} <ExternalLink className="h-3 w-3" />
                     </a>
                 )}
             </p>
@@ -727,7 +747,7 @@ export function ServiceConfigurationForm({
         return (
             <>
                 {renderFieldInput(service, field, providerSchema)}
-                {renderFieldDescription(field, providerSchema)}
+                {renderFieldDescription(field, providerSchema, service)}
             </>
         );
     };
@@ -768,7 +788,7 @@ export function ServiceConfigurationForm({
                     <div className="space-y-2">
                         <Input
                             type="text"
-                            placeholder={`Enter ${field}`}
+                            placeholder={t("modelConfigs.form.enterField", { field })}
                             value={currentValue}
                             onChange={(e) => {
                                 setValue(fieldKey, e.target.value, { shouldDirty: true });
@@ -786,7 +806,7 @@ export function ServiceConfigurationForm({
                                 }}
                             />
                             <Label htmlFor={`custom-input-${fieldKey}`} className="text-sm font-normal cursor-pointer">
-                                Enter Custom Value
+                                {t("modelConfigs.form.enterCustomValue")}
                             </Label>
                         </div>
                     </div>
@@ -803,7 +823,7 @@ export function ServiceConfigurationForm({
                         }}
                     >
                         <SelectTrigger className="w-full">
-                            <SelectValue placeholder={`Select ${field}`} />
+                            <SelectValue placeholder={t("modelConfigs.form.selectField", { field })} />
                         </SelectTrigger>
                         <SelectContent>
                             {options.map((value: string) => (
@@ -822,7 +842,7 @@ export function ServiceConfigurationForm({
                             }}
                         />
                         <Label htmlFor={`custom-input-${fieldKey}-dropdown`} className="text-sm font-normal cursor-pointer">
-                            Enter Custom Value
+                            {t("modelConfigs.form.enterCustomValue")}
                         </Label>
                     </div>
                 </div>
@@ -832,7 +852,7 @@ export function ServiceConfigurationForm({
         if (dropdownOptions && dropdownOptions.length > 0) {
             const getDisplayName = (value: string) => {
                 if (field === "language") {
-                    return LANGUAGE_DISPLAY_NAMES[value] || value;
+                    return getLanguageDisplayName(value);
                 }
                 if (field === "voice") {
                     return VOICE_DISPLAY_NAMES[value] || value.charAt(0).toUpperCase() + value.slice(1);
@@ -849,7 +869,7 @@ export function ServiceConfigurationForm({
                     }}
                 >
                     <SelectTrigger className="w-full">
-                        <SelectValue placeholder={`Select ${field}`} />
+                        <SelectValue placeholder={t("modelConfigs.form.selectField", { field })} />
                     </SelectTrigger>
                     <SelectContent>
                         {dropdownOptions.map((value: string) => (
@@ -867,7 +887,7 @@ export function ServiceConfigurationForm({
                 <Textarea
                     rows={6}
                     className="font-mono text-xs"
-                    placeholder={`Enter ${field}`}
+                    placeholder={t("modelConfigs.form.enterField", { field })}
                     {...register(`${service}_${field}`, {
                         required: service !== "embeddings" && providerSchema.required?.includes(field),
                     })}
@@ -883,7 +903,7 @@ export function ServiceConfigurationForm({
                     min: numberSchema.minimum,
                     max: numberSchema.maximum,
                 })}
-                placeholder={`Enter ${field}`}
+                placeholder={t("modelConfigs.form.enterField", { field })}
                 {...register(`${service}_${field}`, {
                     required: service !== "embeddings" && providerSchema.required?.includes(field),
                     ...(numberSchema && {
@@ -908,11 +928,11 @@ export function ServiceConfigurationForm({
             <div className="flex items-center justify-between p-3 border rounded-md bg-muted/20 mb-4">
                 <div className="space-y-0.5">
                     <Label htmlFor={`override-${service}`} className="text-sm cursor-pointer font-medium">
-                        Override {label}
+                        {t("modelConfigs.form.overrideLabel", { label })}
                     </Label>
                     {!isEnabled && (
                         <p className="text-xs text-muted-foreground">
-                            Using global: {getGlobalSummary(globalVal, globalProviderSchema)}
+                            {t("modelConfigs.form.usingGlobal", { summary: getGlobalSummary(globalVal, globalProviderSchema, t) })}
                         </p>
                     )}
                 </div>
@@ -942,10 +962,10 @@ export function ServiceConfigurationForm({
                 <div className="flex items-center justify-between mb-4 p-4 border rounded-lg">
                     <div>
                         <Label htmlFor="realtime-toggle" className="text-sm font-medium">
-                            Realtime Mode
+                            {t("modelConfigs.form.realtimeMode")}
                         </Label>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Uses a single speech-to-speech model (no separate STT/TTS). An LLM is still required for variable extraction and QA.
+                            {t("modelConfigs.form.realtimeModeHelp")}
                         </p>
                     </div>
                     <Switch
@@ -960,16 +980,16 @@ export function ServiceConfigurationForm({
                 <CardContent className="pt-6">
                     <Tabs key={defaultTab} defaultValue={defaultTab} className="w-full">
                         <TabsList className="grid w-full mb-6" style={{ gridTemplateColumns: `repeat(${visibleTabs.length}, 1fr)` }}>
-                            {visibleTabs.map(({ key, label }) => (
+                            {visibleTabs.map(({ key, labelKey }) => (
                                 <TabsTrigger key={key} value={key}>
-                                    {label}
+                                    {t(labelKey)}
                                 </TabsTrigger>
                             ))}
                         </TabsList>
 
-                        {visibleTabs.map(({ key, label }) => (
+                        {visibleTabs.map(({ key, labelKey }) => (
                             <TabsContent key={key} value={key} className="mt-0">
-                                {mode === 'override' && renderOverrideToggle(key, label)}
+                                {mode === 'override' && renderOverrideToggle(key, t(labelKey))}
                                 {(mode === 'global' || enabledOverrides[key]) && renderServiceFields(key)}
                             </TabsContent>
                         ))}
@@ -980,7 +1000,7 @@ export function ServiceConfigurationForm({
             {apiError && <p className="text-red-500 mt-4">{apiError}</p>}
 
             <Button type="submit" className="w-full mt-6" disabled={isSaving}>
-                {isSaving ? "Saving..." : (submitLabel || "Save Configuration")}
+                {isSaving ? t("common.saving") : (submitLabel || t("modelConfigs.saveConfiguration"))}
             </Button>
         </form>
     );

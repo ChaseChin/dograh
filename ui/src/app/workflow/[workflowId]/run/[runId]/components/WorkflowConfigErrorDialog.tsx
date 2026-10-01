@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslation } from "react-i18next";
+
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 
@@ -14,18 +18,20 @@ export const WorkflowConfigErrorDialog = ({
     error,
     onNavigateToWorkflow
 }: WorkflowConfigErrorProps) => {
+    const { t } = useTranslation();
+
     return (
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent>
                 <DialogHeader>
-                    <DialogTitle>Workflow Error</DialogTitle>
+                    <DialogTitle>{t("workflow.run.configError.title")}</DialogTitle>
                     <DialogDescription className="text-red-500 whitespace-pre-line">
                         {error}
                     </DialogDescription>
                 </DialogHeader>
                 <DialogFooter>
                     <Button onClick={onNavigateToWorkflow}>
-                        Go to Workflow
+                        {t("workflow.run.configError.goToWorkflow")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

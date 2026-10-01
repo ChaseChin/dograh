@@ -5,6 +5,8 @@
 // the two stay identical and submit through the same /api/v1/leads/enterprise
 // path. Controlled: the parent owns the values + the submit/captcha flow.
 
+import { useTranslation } from "react-i18next";
+
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import {
@@ -63,30 +65,31 @@ export function EnterpriseLeadFields({
   showDeployment,
   emailError,
 }: EnterpriseLeadFieldsProps) {
+  const { t } = useTranslation();
   return (
     <div className="grid gap-4">
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-name`}>Name</Label>
-          <Input id={`${p}-name`} placeholder="Your full name" value={value.name} onChange={(e) => onChange({ name: e.target.value })} />
+          <Label htmlFor={`${p}-name`}>{t("leadForms.fields.name")}</Label>
+          <Input id={`${p}-name`} placeholder={t("leadForms.fields.namePlaceholder")} value={value.name} onChange={(e) => onChange({ name: e.target.value })} />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-company`}>Company name</Label>
-          <Input id={`${p}-company`} placeholder="Acme Inc." value={value.company} onChange={(e) => onChange({ company: e.target.value })} />
+          <Label htmlFor={`${p}-company`}>{t("leadForms.fields.company")}</Label>
+          <Input id={`${p}-company`} placeholder={t("leadForms.fields.companyPlaceholder")} value={value.company} onChange={(e) => onChange({ company: e.target.value })} />
         </div>
       </div>
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-title`}>Job title</Label>
-          <Input id={`${p}-title`} placeholder="VP Operations" value={value.jobTitle} onChange={(e) => onChange({ jobTitle: e.target.value })} />
+          <Label htmlFor={`${p}-title`}>{t("leadForms.fields.jobTitle")}</Label>
+          <Input id={`${p}-title`} placeholder={t("leadForms.fields.jobTitlePlaceholder")} value={value.jobTitle} onChange={(e) => onChange({ jobTitle: e.target.value })} />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-email`}>Work email</Label>
+          <Label htmlFor={`${p}-email`}>{t("leadForms.fields.workEmail")}</Label>
           <Input
             id={`${p}-email`}
             type="email"
-            placeholder="you@company.com"
+            placeholder={t("leadForms.fields.emailPlaceholder")}
             value={value.workEmail}
             onChange={(e) => onChange({ workEmail: e.target.value })}
           />
@@ -96,16 +99,16 @@ export function EnterpriseLeadFields({
 
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-phone`}>Phone</Label>
+          <Label htmlFor={`${p}-phone`}>{t("leadForms.fields.phone")}</Label>
           <PhoneField id={`${p}-phone`} value={value.phone} onChange={(phone) => onChange({ phone })} required />
         </div>
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-volume`}>Monthly call volume</Label>
+          <Label htmlFor={`${p}-volume`}>{t("leadForms.fields.volumeMonthly")}</Label>
           <Select value={value.volume} onValueChange={(v) => onChange({ volume: v })}>
-            <SelectTrigger id={`${p}-volume`}><SelectValue placeholder="Select" /></SelectTrigger>
+            <SelectTrigger id={`${p}-volume`}><SelectValue placeholder={t("leadForms.fields.select")} /></SelectTrigger>
             <SelectContent>
               {ENTERPRISE_VOLUME_OPTIONS.map((o) => (
-                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                <SelectItem key={o.value} value={o.value}>{t(o.labelKey)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -114,12 +117,12 @@ export function EnterpriseLeadFields({
 
       {showDeployment && (
         <div className="space-y-1.5">
-          <Label htmlFor={`${p}-deployment`}>Need enterprise deployment (SSO, on-prem, data residency)?</Label>
+          <Label htmlFor={`${p}-deployment`}>{t("leadForms.fields.deploymentQuestion")}</Label>
           <Select value={value.deployment} onValueChange={(v) => onChange({ deployment: v })}>
-            <SelectTrigger id={`${p}-deployment`}><SelectValue placeholder="Select" /></SelectTrigger>
+            <SelectTrigger id={`${p}-deployment`}><SelectValue placeholder={t("leadForms.fields.select")} /></SelectTrigger>
             <SelectContent>
               {ENTERPRISE_DEPLOYMENT_OPTIONS.map((o) => (
-                <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                <SelectItem key={o.value} value={o.value}>{t(o.labelKey)}</SelectItem>
               ))}
             </SelectContent>
           </Select>
@@ -128,13 +131,13 @@ export function EnterpriseLeadFields({
 
       <div className="space-y-1.5">
         <Label htmlFor={`${p}-goal`}>
-          What do you want the voice agent to do? <span className="text-muted-foreground">(optional)</span>
+          {t("leadForms.fields.goal")} <span className="text-muted-foreground">({t("common.optional")})</span>
         </Label>
         <Textarea
           id={`${p}-goal`}
           value={value.agentGoal}
           onChange={(e) => onChange({ agentGoal: e.target.value })}
-          placeholder="Use case, regulatory context, current stack…"
+          placeholder={t("leadForms.fields.goalPlaceholderEnterprise")}
           rows={3}
         />
       </div>

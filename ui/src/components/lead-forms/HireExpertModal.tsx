@@ -3,6 +3,7 @@
 import Cal from "@calcom/embed-react";
 import { Sparkles } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { Input } from "@/components/ui/input";
@@ -34,6 +35,7 @@ interface HireExpertModalProps {
 }
 
 export function HireExpertModal({ open, onOpenChange, source, onOpenEnterprise }: HireExpertModalProps) {
+  const { t } = useTranslation();
   const { user } = useAuth();  // logged-in identity (prefills the email field)
   const { config } = useAppConfig();
   // Deployment provenance (analytics only): cloud → cloud_app, else oss_app. OSS submits the
@@ -81,7 +83,7 @@ export function HireExpertModal({ open, onOpenChange, source, onOpenEnterprise }
   // Validate, then pop the anti-spam check on top of the modal.
   const handleSubmit = () => {
     if (!baseValid) {
-      toast.error("Please fill in all required fields");
+      toast.error(t("leadForms.toasts.fillRequired"));
       return;
     }
     setCaptchaActive(true);
@@ -104,12 +106,12 @@ export function HireExpertModal({ open, onOpenChange, source, onOpenEnterprise }
         setSubmitting(false);
         setCalLink(result.cal_link);
       } else {
-        toast.success("Check your inbox - we just emailed you the next steps (give it a minute).");
+        toast.success(t("leadForms.toasts.emailSent"));
         reset();
         onOpenChange(false);
       }
     } catch {
-      toast.error("Something went wrong. Please try again.");
+      toast.error(t("leadForms.toasts.submitFailed"));
       setSubmitting(false);
     }
   };
@@ -121,10 +123,10 @@ export function HireExpertModal({ open, onOpenChange, source, onOpenEnterprise }
         open={open}
         onOpenChange={(o) => { if (!o) reset(); onOpenChange(o); }}
         icon={Sparkles}
-        eyebrow="Done-for-you"
-        title="Grab a time with our team"
-        description="Pick a time that works for you."
-        primary={{ label: "Done", onClick: () => { reset(); onOpenChange(false); } }}
+        eyebrow={t("leadForms.hire.eyebrow")}
+        title={t("leadForms.hire.bookTitle")}
+        description={t("leadForms.bookDescription")}
+        primary={{ label: t("leadForms.done"), onClick: () => { reset(); onOpenChange(false); } }}
       >
         {/* Compact, zoomed-out calendar: render it larger, scale to 0.8, and clip the layout box left behind. */}
         <div className="overflow-hidden" style={{ height: "440px" }}>
@@ -143,18 +145,18 @@ export function HireExpertModal({ open, onOpenChange, source, onOpenEnterprise }
       open={open}
       onOpenChange={(o) => { if (!o) reset(); onOpenChange(o); }}
       icon={Sparkles}
-      eyebrow="Done-for-you"
-      title="Let us build your voice agent"
-      description="Building good voice agents is nuanced. Tell us what you need and we'll take it end-to-end."
-      primary={{ label: "Submit", onClick: handleSubmit, disabled: !canSubmit, loading: submitting }}
-      secondary={{ label: "Cancel", onClick: () => onOpenChange(false), disabled: submitting }}
+      eyebrow={t("leadForms.hire.eyebrow")}
+      title={t("leadForms.hire.title")}
+      description={t("leadForms.hire.description")}
+      primary={{ label: t("leadForms.submit"), onClick: handleSubmit, disabled: !canSubmit, loading: submitting }}
+      secondary={{ label: t("common.cancel"), onClick: () => onOpenChange(false), disabled: submitting }}
       helper={
         <button
           type="button"
           onClick={onOpenEnterprise}
           className="underline decoration-dashed underline-offset-4 hover:text-foreground"
         >
-          Need enterprise deployment? (SSO, on-prem, data residency)
+          {t("leadForms.hire.enterpriseHelper")}
         </button>
       }
       trustLine={<FormTrustLine />}
@@ -163,48 +165,48 @@ export function HireExpertModal({ open, onOpenChange, source, onOpenEnterprise }
       <div className="grid gap-4">
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="hire-name">Name</Label>
-            <Input id="hire-name" placeholder="Your full name" value={name} onChange={(e) => setName(e.target.value)} />
+            <Label htmlFor="hire-name">{t("leadForms.fields.name")}</Label>
+            <Input id="hire-name" placeholder={t("leadForms.fields.namePlaceholder")} value={name} onChange={(e) => setName(e.target.value)} />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="hire-company">Company name</Label>
-            <Input id="hire-company" placeholder="Acme Inc." value={company} onChange={(e) => setCompany(e.target.value)} />
+            <Label htmlFor="hire-company">{t("leadForms.fields.company")}</Label>
+            <Input id="hire-company" placeholder={t("leadForms.fields.companyPlaceholder")} value={company} onChange={(e) => setCompany(e.target.value)} />
           </div>
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="hire-email">Email</Label>
-          <Input id="hire-email" type="email" placeholder="you@company.com" value={email} onChange={(e) => setEmail(e.target.value)} />
+          <Label htmlFor="hire-email">{t("leadForms.fields.email")}</Label>
+          <Input id="hire-email" type="email" placeholder={t("leadForms.fields.emailPlaceholder")} value={email} onChange={(e) => setEmail(e.target.value)} />
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="hire-title">Job title</Label>
-          <Input id="hire-title" placeholder="VP Operations" value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
+          <Label htmlFor="hire-title">{t("leadForms.fields.jobTitle")}</Label>
+          <Input id="hire-title" placeholder={t("leadForms.fields.jobTitlePlaceholder")} value={jobTitle} onChange={(e) => setJobTitle(e.target.value)} />
         </div>
 
         <div className="space-y-1.5">
-          <Label htmlFor="hire-goal">What do you want the voice agent to do?</Label>
+          <Label htmlFor="hire-goal">{t("leadForms.fields.goal")}</Label>
           <Textarea
             id="hire-goal"
             value={agentGoal}
             onChange={(e) => setAgentGoal(e.target.value)}
-            placeholder="Use case, target outcomes, any remarks…"
+            placeholder={t("leadForms.fields.goalPlaceholderHire")}
             rows={3}
           />
         </div>
 
         <div className="grid gap-4 sm:grid-cols-2">
           <div className="space-y-1.5">
-            <Label htmlFor="hire-phone">Phone</Label>
+            <Label htmlFor="hire-phone">{t("leadForms.fields.phone")}</Label>
             <PhoneField id="hire-phone" value={phone} onChange={setPhone} required />
           </div>
           <div className="space-y-1.5">
-            <Label htmlFor="hire-volume">Expected monthly call volume</Label>
+            <Label htmlFor="hire-volume">{t("leadForms.fields.volumeExpected")}</Label>
             <Select value={volume} onValueChange={setVolume}>
-              <SelectTrigger id="hire-volume"><SelectValue placeholder="Select" /></SelectTrigger>
+              <SelectTrigger id="hire-volume"><SelectValue placeholder={t("leadForms.fields.select")} /></SelectTrigger>
               <SelectContent>
                 {HIRE_VOLUME_OPTIONS.map((o) => (
-                  <SelectItem key={o.value} value={o.value}>{o.label}</SelectItem>
+                  <SelectItem key={o.value} value={o.value}>{t(o.labelKey)}</SelectItem>
                 ))}
               </SelectContent>
             </Select>

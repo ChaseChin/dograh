@@ -1,5 +1,6 @@
 "use client";
 
+import type { TFunction } from "i18next";
 import { ArrowLeftRight, Calculator, Cog, Globe, type LucideIcon, PhoneForwarded, PhoneOff, Puzzle } from "lucide-react";
 import { type ReactNode } from "react";
 
@@ -81,12 +82,15 @@ export function ruleRowsToContextMappingRules(
 
 export interface ToolCategoryConfig {
     value: ToolCategory;
-    label: string;
-    description: string;
+    labelKey: string;
+    descriptionKey: string;
     icon: LucideIcon;
     iconName: string; // String name for storing in database
     iconColor: string;
     disabled?: boolean;
+    // NOTE: autoFill name/description are sent to the LLM as the tool's
+    // prompt-facing identity — they must stay in English and are never
+    // translated.
     autoFill?: {
         name: string;
         description: string;
@@ -96,16 +100,16 @@ export interface ToolCategoryConfig {
 export const TOOL_CATEGORIES: ToolCategoryConfig[] = [
     {
         value: "http_api",
-        label: "External HTTP API",
-        description: "Make HTTP requests to external APIs",
+        labelKey: "tools.categories.http_api.label",
+        descriptionKey: "tools.categories.http_api.description",
         icon: Globe,
         iconName: "globe",
         iconColor: "#3B82F6",
     },
     {
         value: "end_call",
-        label: "End Call",
-        description: "End the call when conditions are met",
+        labelKey: "tools.categories.end_call.label",
+        descriptionKey: "tools.categories.end_call.description",
         icon: PhoneOff,
         iconName: "phone-off",
         iconColor: "#EF4444",
@@ -116,8 +120,8 @@ export const TOOL_CATEGORIES: ToolCategoryConfig[] = [
     },
     {
         value: "transfer_call",
-        label: "Transfer Call",
-        description: "Transfer the call to another phone number (Twilio, Plivo)",
+        labelKey: "tools.categories.transfer_call.label",
+        descriptionKey: "tools.categories.transfer_call.description",
         icon: PhoneForwarded,
         iconName: "phone-forwarded",
         iconColor: "#10B981",
@@ -128,8 +132,8 @@ export const TOOL_CATEGORIES: ToolCategoryConfig[] = [
     },
     {
         value: "transfer_agent",
-        label: "Transfer To Agent",
-        description: "Hand the live call to another VoiceWorker agent, without dropping the caller",
+        labelKey: "tools.categories.transfer_agent.label",
+        descriptionKey: "tools.categories.transfer_agent.description",
         icon: ArrowLeftRight,
         iconName: "arrow-left-right",
         iconColor: "#0EA5E9",
@@ -140,8 +144,8 @@ export const TOOL_CATEGORIES: ToolCategoryConfig[] = [
     },
     {
         value: "calculator",
-        label: "Calculator",
-        description: "Built-in calculator for arithmetic operations",
+        labelKey: "tools.categories.calculator.label",
+        descriptionKey: "tools.categories.calculator.description",
         icon: Calculator,
         iconName: "calculator",
         iconColor: "#F59E0B",
@@ -152,16 +156,16 @@ export const TOOL_CATEGORIES: ToolCategoryConfig[] = [
     },
     {
         value: "mcp",
-        label: "MCP Server",
-        description: "Connect a customer MCP server; its tools become available to the agent",
+        labelKey: "tools.categories.mcp.label",
+        descriptionKey: "tools.categories.mcp.description",
         icon: Puzzle,
         iconName: "puzzle",
         iconColor: "#8B5CF6",
     },
     {
         value: "native",
-        label: "Native (Coming Soon)",
-        description: "Built-in tools like call transfer, DTMF input",
+        labelKey: "tools.categories.native.label",
+        descriptionKey: "tools.categories.native.description",
         icon: Cog,
         iconName: "cog",
         iconColor: "#6B7280",
@@ -169,8 +173,8 @@ export const TOOL_CATEGORIES: ToolCategoryConfig[] = [
     },
     {
         value: "integration",
-        label: "Integration (Coming Soon)",
-        description: "Third-party integrations like Google Calendar",
+        labelKey: "tools.categories.integration.label",
+        descriptionKey: "tools.categories.integration.description",
         icon: Puzzle,
         iconName: "puzzle",
         iconColor: "#8B5CF6",
@@ -197,26 +201,26 @@ export function renderToolIcon(category: string, className: string = "w-5 h-5 te
     return <Icon className={className} />;
 }
 
-export function getToolTypeLabel(category: string): string {
+export function getToolTypeLabel(t: TFunction, category: string): string {
     switch (category) {
         case "end_call":
-            return "End Call Tool";
+            return t("tools.typeLabels.end_call");
         case "transfer_call":
-            return "Transfer Call Tool";
+            return t("tools.typeLabels.transfer_call");
         case "transfer_agent":
-            return "Transfer To Agent Tool";
+            return t("tools.typeLabels.transfer_agent");
         case "http_api":
-            return "HTTP API Tool";
+            return t("tools.typeLabels.http_api");
         case "calculator":
-            return "Calculator Tool";
+            return t("tools.typeLabels.calculator");
         case "native":
-            return "Native Tool";
+            return t("tools.typeLabels.native");
         case "integration":
-            return "Integration Tool";
+            return t("tools.typeLabels.integration");
         case "mcp":
-            return "MCP Server Tool";
+            return t("tools.typeLabels.mcp");
         default:
-            return "Tool";
+            return t("tools.typeLabels.default");
     }
 }
 

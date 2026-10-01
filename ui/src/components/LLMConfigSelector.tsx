@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { getDefaultConfigurationsApiV1UserConfigurationsDefaultsGet } from "@/client/sdk.gen";
 import { Checkbox } from "@/components/ui/checkbox";
@@ -13,6 +14,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from "@/components/ui/select";
+import { serverText } from "@/i18n/serverText";
 
 interface SchemaProperty {
     type?: string;
@@ -23,6 +25,7 @@ interface SchemaProperty {
 }
 
 interface ProviderSchema {
+    title?: string;
     properties: Record<string, SchemaProperty>;
     required?: string[];
     $defs?: Record<string, SchemaProperty>;
@@ -45,6 +48,7 @@ export function LLMConfigSelector({
     apiKey,
     onApiKeyChange,
 }: LLMConfigSelectorProps) {
+    const { t } = useTranslation();
     const [schemas, setSchemas] = useState<Record<string, ProviderSchema>>({});
     const [isManualModelInput, setIsManualModelInput] = useState(false);
 
@@ -104,15 +108,15 @@ export function LLMConfigSelector({
         <div className="space-y-4 p-3 border rounded-md bg-muted/10">
             <div className="grid grid-cols-2 gap-4">
                 <div className="space-y-2">
-                    <Label>Provider</Label>
+                    <Label>{t("modelConfigs.form.provider")}</Label>
                     <Select value={provider} onValueChange={handleProviderChange}>
                         <SelectTrigger className="w-full">
-                            <SelectValue placeholder="Select provider" />
+                            <SelectValue placeholder={t("modelConfigs.form.selectProvider")} />
                         </SelectTrigger>
                         <SelectContent>
                             {availableProviders.map((p) => (
                                 <SelectItem key={p} value={p}>
-                                    {p}
+                                    {serverText(t, `modelConfigs.providerTitle.${p}`, schemas[p]?.title || p)}
                                 </SelectItem>
                             ))}
                         </SelectContent>
@@ -120,12 +124,12 @@ export function LLMConfigSelector({
                 </div>
 
                 <div className="space-y-2">
-                    <Label>Model</Label>
+                    <Label>{t("modelConfigs.llmSelector.model")}</Label>
                     {isManualModelInput ? (
                         <div className="space-y-2">
                             <Input
                                 type="text"
-                                placeholder="Enter model name"
+                                placeholder={t("modelConfigs.llmSelector.enterModel")}
                                 value={model}
                                 onChange={(e) => onModelChange(e.target.value)}
                             />
@@ -144,7 +148,7 @@ export function LLMConfigSelector({
                                     htmlFor="qa-manual-model"
                                     className="text-sm font-normal cursor-pointer"
                                 >
-                                    Add Model Manually
+                                    {t("modelConfigs.llmSelector.addModelManually")}
                                 </Label>
                             </div>
                         </div>
@@ -157,7 +161,7 @@ export function LLMConfigSelector({
                                 }}
                             >
                                 <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="Select model" />
+                                    <SelectValue placeholder={t("modelConfigs.llmSelector.selectModel")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {modelOptions.map((m) => (
@@ -179,14 +183,14 @@ export function LLMConfigSelector({
                                     htmlFor="qa-manual-model-dropdown"
                                     className="text-sm font-normal cursor-pointer"
                                 >
-                                    Add Model Manually
+                                    {t("modelConfigs.llmSelector.addModelManually")}
                                 </Label>
                             </div>
                         </div>
                     ) : (
                         <Input
                             type="text"
-                            placeholder="Enter model name"
+                            placeholder={t("modelConfigs.llmSelector.enterModel")}
                             value={model}
                             onChange={(e) => onModelChange(e.target.value)}
                         />
@@ -195,10 +199,10 @@ export function LLMConfigSelector({
             </div>
 
             <div className="space-y-2">
-                <Label>API Key</Label>
+                <Label>{t("modelConfigs.llmSelector.apiKeyLabel")}</Label>
                 <Input
                     type="text"
-                    placeholder="Enter API key"
+                    placeholder={t("modelConfigs.form.enterApiKey")}
                     value={apiKey}
                     onChange={(e) => onApiKeyChange(e.target.value)}
                 />

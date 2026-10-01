@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 import type { RecordingResponseSchema } from "@/client/types.gen";
 import { RecordingSelect, StaticTextWarning } from "@/components/flow/TextOrAudioInput";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -46,36 +48,38 @@ export function EndCallToolConfig({
     endCallReasonDescription,
     onEndCallReasonDescriptionChange,
 }: EndCallToolConfigProps) {
+    const { t } = useTranslation();
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>End Call Configuration</CardTitle>
+                <CardTitle>{t("tools.endCall.title")}</CardTitle>
                 <CardDescription>
-                    Configure the behavior when the call ends
+                    {t("tools.endCall.description")}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="grid gap-2">
-                    <Label>Tool Name</Label>
+                    <Label>{t("tools.endCall.nameLabel")}</Label>
                     <Label className="text-xs text-muted-foreground">
-                        A descriptive name for this tool
+                        {t("tools.endCall.nameHelp")}
                     </Label>
                     <Input
                         value={name}
                         onChange={(e) => onNameChange(e.target.value)}
-                        placeholder="e.g., End Call"
+                        placeholder={t("tools.endCall.namePlaceholder")}
                     />
                 </div>
 
                 <div className="grid gap-2">
-                    <Label>Description</Label>
+                    <Label>{t("tools.endCall.descriptionLabel")}</Label>
                     <Label className="text-xs text-muted-foreground">
-                        Helps the LLM understand when to use this tool
+                        {t("tools.endCall.descriptionHelp")}
                     </Label>
                     <Textarea
                         value={description}
                         onChange={(e) => onDescriptionChange(e.target.value)}
-                        placeholder="When should the AI end the call?"
+                        placeholder={t("tools.endCall.descriptionPlaceholder")}
                         rows={3}
                     />
                 </div>
@@ -87,22 +91,21 @@ export function EndCallToolConfig({
                             checked={endCallReason}
                             onCheckedChange={onEndCallReasonChange}
                         />
-                        <Label htmlFor="end-call-reason">Capture End Call Reason</Label>
+                        <Label htmlFor="end-call-reason">{t("tools.endCall.captureReason")}</Label>
                     </div>
                     <Label className="text-xs text-muted-foreground">
-                        When enabled, the AI will provide a reason for ending the call.
-                        The reason will be set as the call disposition and added to call tags for analytics.
+                        {t("tools.endCall.captureReasonHelp")}
                     </Label>
                     {endCallReason && (
                         <div className="grid gap-2 pt-2">
-                            <Label>Reason Description</Label>
+                            <Label>{t("tools.endCall.reasonDescription")}</Label>
                             <Label className="text-xs text-muted-foreground">
-                                Instructions shown to the AI for what kind of reason to provide
+                                {t("tools.endCall.reasonDescriptionHelp")}
                             </Label>
                             <Textarea
                                 value={endCallReasonDescription}
                                 onChange={(e) => onEndCallReasonDescriptionChange(e.target.value)}
-                                placeholder="e.g., The reason for ending the call (e.g., 'voicemail_detected', 'issue_resolved', 'customer_requested')"
+                                placeholder={t("tools.endCall.reasonPlaceholder")}
                                 rows={2}
                             />
                         </div>
@@ -110,9 +113,9 @@ export function EndCallToolConfig({
                 </div>
 
                 <div className="grid gap-4 pt-4 border-t">
-                    <Label>Goodbye Message</Label>
+                    <Label>{t("tools.endCall.goodbyeMessage")}</Label>
                     <Label className="text-xs text-muted-foreground">
-                        Choose whether to play a message before disconnecting
+                        {t("tools.endCall.goodbyeMessageHelp")}
                     </Label>
                     <RadioGroup
                         value={messageType}
@@ -125,18 +128,18 @@ export function EndCallToolConfig({
                         >
                             <RadioGroupItem value="none" id="none" />
                             <div className="flex-1">
-                                <span className="font-medium">No Message</span>
+                                <span className="font-medium">{t("tools.endCall.noMessage")}</span>
                                 <p className="text-xs text-muted-foreground">
-                                    End the call immediately without any message
+                                    {t("tools.endCall.noMessageHelp")}
                                 </p>
                             </div>
                         </label>
                         <div className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50">
                             <RadioGroupItem value="custom" id="custom" className="mt-1" />
                             <label htmlFor="custom" className="flex-1 space-y-2 cursor-pointer">
-                                <span className="font-medium">Custom Message</span>
+                                <span className="font-medium">{t("tools.endCall.customMessage")}</span>
                                 <p className="text-xs text-muted-foreground">
-                                    Play a custom message before disconnecting
+                                    {t("tools.endCall.customMessageHelp")}
                                 </p>
                             </label>
                         </div>
@@ -146,7 +149,7 @@ export function EndCallToolConfig({
                                 <Textarea
                                     value={customMessage}
                                     onChange={(e) => onCustomMessageChange(e.target.value)}
-                                    placeholder="e.g., Thank you for calling. Goodbye!"
+                                    placeholder={t("tools.endCall.customMessagePlaceholder")}
                                     rows={2}
                                 />
                             </div>
@@ -154,9 +157,9 @@ export function EndCallToolConfig({
                         <div className="flex items-start space-x-3 p-3 border rounded-lg hover:bg-muted/50">
                             <RadioGroupItem value="audio" id="audio" className="mt-1" />
                             <label htmlFor="audio" className="flex-1 space-y-2 cursor-pointer">
-                                <span className="font-medium">Pre-recorded Audio</span>
+                                <span className="font-medium">{t("tools.endCall.prerecordedAudio")}</span>
                                 <p className="text-xs text-muted-foreground">
-                                    Play a pre-recorded audio file before disconnecting
+                                    {t("tools.endCall.prerecordedAudioHelp")}
                                 </p>
                             </label>
                         </div>

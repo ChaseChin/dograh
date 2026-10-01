@@ -12,7 +12,6 @@ import { cn } from "@/lib/utils";
 // regardless of the font metrics on the platform rendering it.
 export function BrandLogo({
   className,
-  inverse = false,
   mark = false,
 }: {
   className?: string;

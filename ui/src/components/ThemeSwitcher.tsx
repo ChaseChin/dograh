@@ -2,6 +2,7 @@
 
 import { Moon, Sun } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -19,6 +20,7 @@ export default function ThemeToggle({
   variant = "ghost",
   size = "icon"
 }: ThemeToggleProps) {
+  const { t } = useTranslation();
   // Start with null to avoid hydration mismatch - theme is set by inline script in layout.tsx
   const [theme, setTheme] = useState<"light" | "dark" | null>(null);
 
@@ -54,9 +56,9 @@ export default function ThemeToggle({
         !showLabel && "absolute"
       )} />
       {showLabel && theme && (
-        <span className="ml-2">{theme === "light" ? "Light" : "Dark"} Mode</span>
+        <span className="ml-2">{theme === "light" ? t("nav.lightMode") : t("nav.darkMode")}</span>
       )}
-      <span className="sr-only">Toggle theme</span>
+      <span className="sr-only">{t("nav.toggleTheme")}</span>
     </Button>
   );
 }

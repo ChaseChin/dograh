@@ -1,3 +1,5 @@
+import { useTranslation } from "react-i18next";
+
 import { Label } from "@/components/ui/label";
 import {
   Select,
@@ -22,21 +24,22 @@ export const NumberSelectFilter: React.FC<NumberSelectFilterProps> = ({
   value,
   onChange,
   error,
-  label = "Option",
-  placeholder = "Select an option",
+  label,
+  placeholder,
   options,
   isLoading = false,
 }) => {
+  const { t } = useTranslation();
   const selectedOptionExists = options.some(option => option.value === value.value);
   const unavailableSelection =
     value.value !== null && !selectedOptionExists
-      ? { label: `Unavailable agent (#${value.value})`, value: value.value }
+      ? { label: t("filters.numberSelect.unavailable", { id: value.value }), value: value.value }
       : null;
 
   return (
     <div className="space-y-2">
       <div className="space-y-2">
-        <Label>{label}</Label>
+        <Label>{label ?? t("filters.numberSelect.option")}</Label>
         <Select
           value={value.value === null ? "" : value.value.toString()}
           onValueChange={(selectedValue) => {
@@ -46,7 +49,7 @@ export const NumberSelectFilter: React.FC<NumberSelectFilterProps> = ({
           disabled={isLoading || options.length === 0}
         >
           <SelectTrigger className={error ? "border-red-500" : ""}>
-            <SelectValue placeholder={isLoading ? "Loading options..." : placeholder} />
+            <SelectValue placeholder={isLoading ? t("filters.numberSelect.loading") : (placeholder ?? t("filters.numberSelect.placeholder"))} />
           </SelectTrigger>
           <SelectContent>
             {unavailableSelection && (
@@ -56,7 +59,7 @@ export const NumberSelectFilter: React.FC<NumberSelectFilterProps> = ({
             )}
             {options.length === 0 ? (
               <div className="px-2 py-1.5 text-sm text-muted-foreground">
-                No options found
+                {t("filters.numberSelect.empty")}
               </div>
             ) : (
               options.map((option) => (

@@ -2,6 +2,7 @@
 
 import { ExternalLink, Upload } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
@@ -20,6 +21,7 @@ import DocumentUpload from "./DocumentUpload";
 
 export default function FilesPage() {
     const { user, redirectToLogin, loading } = useAuth();
+    const { t } = useTranslation();
     const [refreshKey, setRefreshKey] = useState(0);
     const [isUploadOpen, setIsUploadOpen] = useState(false);
 
@@ -49,11 +51,11 @@ export default function FilesPage() {
     return (
         <div className="container mx-auto px-4 py-8">
             <div className="mb-8">
-                <h1 className="text-3xl font-bold mb-2">Knowledge Base Files</h1>
+                <h1 className="text-3xl font-bold mb-2">{t("files.title")}</h1>
                 <p className="text-muted-foreground">
-                    Upload and manage documents for your voice agents to reference.{" "}
+                    {t("files.subtitle")}{" "}
                     <a href="https://docs.dograh.com/voice-agent/knowledge-base" target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">
-                        Learn more <ExternalLink className="h-3 w-3" />
+                        {t("common.learnMore")} <ExternalLink className="h-3 w-3" />
                     </a>
                 </p>
             </div>
@@ -62,14 +64,14 @@ export default function FilesPage() {
                 <CardHeader>
                     <div className="flex justify-between items-center">
                         <div>
-                            <CardTitle>Your Documents</CardTitle>
+                            <CardTitle>{t("files.yourDocuments")}</CardTitle>
                             <CardDescription>
-                                Documents shared across all agents in your organization
+                                {t("files.yourDocumentsDescription")}
                             </CardDescription>
                         </div>
                         <Button onClick={() => setIsUploadOpen(true)}>
                             <Upload className="w-4 h-4 mr-2" />
-                            Upload Document
+                            {t("files.uploadDocument")}
                         </Button>
                     </div>
                 </CardHeader>
@@ -81,9 +83,9 @@ export default function FilesPage() {
             <Dialog open={isUploadOpen} onOpenChange={setIsUploadOpen}>
                 <DialogContent>
                     <DialogHeader>
-                        <DialogTitle>Upload Document</DialogTitle>
+                        <DialogTitle>{t("files.uploadDialogTitle")}</DialogTitle>
                         <DialogDescription>
-                            Upload a PDF or document file to add to your knowledge base
+                            {t("files.uploadDialogDescription")}
                         </DialogDescription>
                     </DialogHeader>
                     <DocumentUpload onUploadSuccess={handleUploadSuccess} />

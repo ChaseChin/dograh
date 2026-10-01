@@ -3,6 +3,7 @@
 import { ExternalLink, RefreshCw } from "lucide-react";
 import Link from "next/link";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { renderToolIcon } from "@/app/tools/config";
 import { useWorkflowOptional } from "@/app/workflow/[workflowId]/contexts/WorkflowContext";
@@ -13,7 +14,7 @@ import { Label } from "@/components/ui/label";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TOOLS_INTRODUCTION_DOC_URL } from "@/constants/documentation";
 
-import { type McpDiscoveredTool, refreshMcpTools } from "./mcpRefresh";
+import { MCP_REFRESH_REQUEST_FAILED, type McpDiscoveredTool, refreshMcpTools } from "./mcpRefresh";
 
 interface ToolSelectorProps {
     value: string[];
@@ -70,13 +71,16 @@ export function ToolSelector({
     onChange,
     tools,
     disabled = false,
-    label = "Tools",
-    description = "Select tools that the agent can use during the conversation.",
+    label,
+    description,
     showLabel = true,
     mcpToolFilters = {},
     onMcpToolFiltersChange = () => {},
 }: ToolSelectorProps) {
+    const { t } = useTranslation();
     const workflow = useWorkflowOptional();
+    const resolvedLabel = label ?? t("flow.tools.label");
+    const resolvedDescription = description ?? t("flow.tools.description");
     const activeTools = tools.filter((t) => t.status === "active");
     const httpTools = activeTools.filter((t) => !isMcp(t));
     const mcpTools = activeTools.filter(isMcp);
@@ -116,7 +120,11 @@ export function ToolSelector({
         const res = await refreshMcpTools(toolUuid);
         setRefreshing((r) => ({ ...r, [toolUuid]: false }));
         if (res.error && res.discovered_tools.length === 0) {
-            setRefreshError((e) => ({ ...e, [toolUuid]: res.error as string }));
+            const message =
+                res.error === MCP_REFRESH_REQUEST_FAILED
+                    ? t("flow.tools.refreshFailed")
+                    : res.error;
+            setRefreshError((e) => ({ ...e, [toolUuid]: message }));
             return;
         }
         workflow?.updateTool?.(toolUuid, (tool) =>
@@ -135,17 +143,17 @@ export function ToolSelector({
         <div className="grid gap-2">
             {showLabel && (
                 <>
-                    <Label>{label}</Label>
-                    {description && (
+                    <Label>{resolvedLabel}</Label>
+                    {resolvedDescription && (
                         <Label className="text-xs text-muted-foreground">
-                            {description}{" "}
+                            {resolvedDescription}{" "}
                             <a
                                 href={TOOLS_INTRODUCTION_DOC_URL}
                                 target="_blank"
                                 rel="noopener noreferrer"
                                 className="underline"
                             >
-                                Learn more
+                                {t("common.learnMore")}
                             </a>
                         </Label>
                     )}
@@ -155,12 +163,12 @@ export function ToolSelector({
             {activeTools.length === 0 ? (
                 <div className="p-4 border rounded-md text-center">
                     <p className="text-sm text-muted-foreground mb-2">
-                        No tools available.
+                        {t("flow.tools.empty")}
                     </p>
                     <Button variant="outline" size="sm" asChild>
                         <Link href="/tools" target="_blank">
                             <ExternalLink className="h-4 w-4 mr-2" />
-                            Create a Tool
+                            {t("flow.tools.create")}
                         </Link>
                     </Button>
                 </div>
@@ -168,10 +176,10 @@ export function ToolSelector({
                 <Tabs defaultValue="http">
                     <TabsList>
                         <TabsTrigger value="http">
-                            HTTP &amp; Tools ({httpTools.length})
+                            {t("flow.tools.httpTab", { count: httpTools.length })}
                         </TabsTrigger>
                         <TabsTrigger value="mcp">
-                            MCP ({mcpTools.length})
+                            {t("flow.tools.mcpTab", { count: mcpTools.length })}
                         </TabsTrigger>
                     </TabsList>
 
@@ -179,7 +187,7 @@ export function ToolSelector({
                         <div className="border rounded-md divide-y">
                             {httpTools.length === 0 && (
                                 <div className="p-3 text-sm text-muted-foreground">
-                                    No HTTP/native tools.
+                                    {t("flow.tools.noHttp")}
                                 </div>
                             )}
                             {httpTools.map((tool) => {
@@ -226,7 +234,7 @@ export function ToolSelector({
                         <div className="border rounded-md divide-y">
                             {mcpTools.length === 0 && (
                                 <div className="p-3 text-sm text-muted-foreground">
-                                    No MCP tools.
+                                    {t("flow.tools.noMcp")}
                                 </div>
                             )}
                             {mcpTools.map((tool) => {
@@ -256,7 +264,7 @@ export function ToolSelector({
                                                 )}
                                             </div>
                                             <span className="text-xs text-muted-foreground shrink-0">
-                                                {selected.length}/{fns.length} tools
+                                                {t("flow.tools.selectedFns", { selected: selected.length, total: fns.length })}
                                             </span>
                                         </summary>
 
@@ -272,7 +280,7 @@ export function ToolSelector({
                                                     <RefreshCw
                                                         className={`h-3 w-3 mr-2 ${busy ? "animate-spin" : ""}`}
                                                     />
-                                                    Refresh tools
+                                                    {t("flow.tools.refresh")}
                                                 </Button>
                                             </div>
                                             {err && (
@@ -280,7 +288,7 @@ export function ToolSelector({
                                             )}
                                             {fns.length === 0 && !err && (
                                                 <p className="text-xs text-muted-foreground">
-                                                    No tools discovered - Refresh.
+                                                    {t("flow.tools.noDiscovered")}
                                                 </p>
                                             )}
                                             {fns.map((fn) => {
@@ -325,7 +333,7 @@ export function ToolSelector({
                                                             }
                                                         />
                                                         <span className="text-sm line-through">
-                                                            {n} (unavailable)
+                                                            {n} {t("flow.tools.unavailable")}
                                                         </span>
                                                     </label>
                                                 ))}
@@ -343,7 +351,7 @@ export function ToolSelector({
                             className="flex items-center gap-2 text-sm text-muted-foreground hover:text-foreground"
                         >
                             <ExternalLink className="h-4 w-4" />
-                            Manage Tools
+                            {t("flow.tools.manage")}
                         </Link>
                     </div>
                 </Tabs>
@@ -351,7 +359,7 @@ export function ToolSelector({
 
             {selectedCount > 0 && (
                 <p className="text-xs text-muted-foreground">
-                    {selectedCount} tool{selectedCount !== 1 ? "s" : ""} selected
+                    {t("flow.tools.selected", { count: selectedCount })}
                 </p>
             )}
         </div>

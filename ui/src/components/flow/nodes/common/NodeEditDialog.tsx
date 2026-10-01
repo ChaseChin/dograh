@@ -1,5 +1,8 @@
+"use client";
+
 import { AlertCircle, ExternalLink } from "lucide-react";
 import { ReactNode, useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { useWorkflowOptional } from "@/app/workflow/[workflowId]/contexts/WorkflowContext";
 import { FlowNodeData } from "@/components/flow/types";
@@ -39,6 +42,7 @@ export const NodeEditDialog = ({
     isDirty = false,
     documentationUrl,
 }: NodeEditDialogProps) => {
+    const { t } = useTranslation();
     const readOnly = useWorkflowOptional()?.readOnly ?? false;
     const [showDiscardAlert, setShowDiscardAlert] = useState(false);
 
@@ -98,13 +102,13 @@ export const NodeEditDialog = ({
                                 rel="noopener noreferrer"
                                 className="flex items-center gap-1 text-sm text-muted-foreground hover:text-foreground transition-colors pr-6"
                             >
-                                Docs
+                                {t("flow.common.docs")}
                                 <ExternalLink className="h-3.5 w-3.5" />
                             </a>
                         )}
                     </div>
                     <DialogDescription>
-                        Configure the settings for this node in your workflow.
+                        {t("flow.node.editDescription")}
                     </DialogDescription>
                     {nodeData.invalid && nodeData.validationMessage && (
                         <div className="mt-2 flex items-center gap-2 rounded-md bg-red-50 p-2 text-sm text-red-500 border border-red-200">
@@ -128,10 +132,10 @@ export const NodeEditDialog = ({
                             variant="outline"
                             onClick={isDirty ? () => setShowDiscardAlert(true) : handleClose}
                         >
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button onClick={handleSave} disabled={readOnly}>
-                            {readOnly ? "Read Only" : "Save"}
+                            {readOnly ? t("flow.common.readOnly") : t("common.save")}
                         </Button>
                     </div>
                 </DialogFooter>
@@ -141,18 +145,18 @@ export const NodeEditDialog = ({
             <AlertDialog open={showDiscardAlert} onOpenChange={setShowDiscardAlert}>
                 <AlertDialogContent>
                     <AlertDialogHeader>
-                        <AlertDialogTitle>Discard changes?</AlertDialogTitle>
+                        <AlertDialogTitle>{t("flow.node.discardTitle")}</AlertDialogTitle>
                         <AlertDialogDescription>
-                            You have unsaved changes. Are you sure you want to discard them?
+                            {t("flow.node.discardDescription")}
                         </AlertDialogDescription>
                     </AlertDialogHeader>
                     <AlertDialogFooter>
-                        <AlertDialogCancel>Keep Editing</AlertDialogCancel>
+                        <AlertDialogCancel>{t("flow.node.keepEditing")}</AlertDialogCancel>
                         <AlertDialogAction
                             onClick={handleConfirmDiscard}
                             className="bg-destructive text-destructive-foreground hover:bg-destructive/90"
                         >
-                            Discard
+                            {t("flow.node.discard")}
                         </AlertDialogAction>
                     </AlertDialogFooter>
                 </AlertDialogContent>

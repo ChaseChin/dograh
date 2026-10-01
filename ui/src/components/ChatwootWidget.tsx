@@ -3,6 +3,8 @@
 import { usePathname } from "next/navigation";
 import { useEffect } from "react";
 
+import i18n from "@/i18n";
+
 declare global {
   interface Window {
     chatwootSDK?: {
@@ -53,7 +55,7 @@ export default function ChatwootWidget() {
     window.chatwootSettings = {
       position: "right",
       type: "standard",
-      launcherTitle: "Chat with us",
+      launcherTitle: i18n.t("common.chatWithUs"),
     };
 
     // Check if script is already loaded

@@ -2,6 +2,7 @@
 
 import { AlertTriangle, Loader2, Pencil } from "lucide-react";
 import { useEffect, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 
 import { testToolApiV1ToolsToolUuidTestPost } from "@/client/sdk.gen";
 import type { ToolTestResponse } from "@/client/types.gen";
@@ -95,8 +96,10 @@ function ParameterFields({
     onValueChange,
     onEditJson,
 }: ParameterFieldsProps) {
+    const { t } = useTranslation();
+
     if (parameters.length === 0) {
-        return <p className="text-sm text-muted-foreground">No parameters configured.</p>;
+        return <p className="text-sm text-muted-foreground">{t("tools.testDialog.noParameters")}</p>;
     }
 
     return (
@@ -114,14 +117,18 @@ function ParameterFields({
                             <span className="rounded bg-muted px-1.5 py-0.5 text-xs text-muted-foreground">
                                 {parameter.type}
                             </span>
-                            {parameter.required && <span className="text-xs text-destructive">required</span>}
+                            {parameter.required && <span className="text-xs text-destructive">{t("tools.testDialog.requiredBadge")}</span>}
                         </div>
                         {"description" in parameter && parameter.description && (
                             <p className="text-xs text-muted-foreground">{parameter.description}</p>
                         )}
                         {"valueTemplate" in parameter && parameter.valueTemplate && (
                             <p className="break-all text-xs text-muted-foreground">
-                                Configured preset: <code>{parameter.valueTemplate}</code>
+                                <Trans
+                                    i18nKey="tools.testDialog.configuredPreset"
+                                    values={{ value: parameter.valueTemplate }}
+                                    components={{ 1: <code /> }}
+                                />
                             </p>
                         )}
                         {parameter.type === "boolean" ? (
@@ -149,7 +156,7 @@ function ParameterFields({
                                     className="h-9 flex-1 truncate rounded-md border border-input bg-background px-3 py-1 text-left font-mono text-sm shadow-sm hover:bg-accent"
                                 >
                                     {!value || value === (parameter.type === "array" ? "[]" : "{}") ? (
-                                        <span className="text-muted-foreground">Empty</span>
+                                        <span className="text-muted-foreground">{t("tools.testDialog.emptyJson")}</span>
                                     ) : (
                                         value
                                     )}
@@ -159,7 +166,7 @@ function ParameterFields({
                                     variant="outline"
                                     size="icon"
                                     onClick={() => onEditJson(parameter.name)}
-                                    aria-label={`Edit ${parameter.name}`}
+                                    aria-label={t("tools.testDialog.editParamAria", { name: parameter.name })}
                                 >
                                     <Pencil className="h-4 w-4" />
                                 </Button>
@@ -169,7 +176,7 @@ function ParameterFields({
                                 id={inputId}
                                 value={value}
                                 onChange={(event) => onValueChange(parameter.name, event.target.value)}
-                                placeholder={`Enter ${parameter.name}`}
+                                placeholder={t("tools.testDialog.enterParam", { name: parameter.name })}
                             />
                         )}
                     </div>
@@ -189,6 +196,7 @@ export function HttpToolTestDialog({
     presetParameters,
 }: HttpToolTestDialogProps) {
     const { getAccessToken } = useAuth();
+    const { t } = useTranslation();
     const [llmParamValues, setLlmParamValues] = useState<Record<string, string>>({});
     const [presetParamValues, setPresetParamValues] = useState<Record<string, string>>({});
     const [result, setResult] = useState<ToolTestResponse | null>(null);
@@ -257,7 +265,7 @@ export function HttpToolTestDialog({
             setJsonEditDraft(JSON.stringify(parsed, null, 2));
             setJsonEditError(null);
         } catch (caughtError) {
-            setJsonEditError(caughtError instanceof Error ? caughtError.message : "Invalid JSON");
+            setJsonEditError(caughtError instanceof Error ? caughtError.message : t("tools.testDialog.invalidJson"));
         }
     };
 
@@ -271,7 +279,7 @@ export function HttpToolTestDialog({
             setValues((previous) => ({ ...previous, [target.name]: JSON.stringify(parsed) }));
             closeJsonEditDialog();
         } catch (caughtError) {
-            setJsonEditError(caughtError instanceof Error ? caughtError.message : "Invalid JSON");
+            setJsonEditError(caughtError instanceof Error ? caughtError.message : t("tools.testDialog.invalidJson"));
         }
     };
 
@@ -295,13 +303,13 @@ export function HttpToolTestDialog({
             });
 
             if (response.error) {
-                setTestError(detailFromError(response.error, "Failed to test tool"));
+                setTestError(detailFromError(response.error, t("tools.testDialog.testFailed")));
                 return;
             }
 
             if (response.data) setResult(response.data);
         } catch (caughtError) {
-            setTestError(caughtError instanceof Error ? caughtError.message : "Failed to test tool");
+            setTestError(caughtError instanceof Error ? caughtError.message : t("tools.testDialog.testFailed"));
         } finally {
             setIsTesting(false);
         }
@@ -310,23 +318,27 @@ export function HttpToolTestDialog({
     const isSuccess =
         result?.status === "success" &&
         (result.status_code == null || (result.status_code >= 200 && result.status_code < 300));
-    const resultBadgeLabel = isSuccess ? "success" : result?.status === "success" ? "failed" : "error";
+    const resultBadgeLabel = isSuccess
+        ? t("tools.testDialog.badges.success")
+        : result?.status === "success"
+          ? t("tools.testDialog.badges.failed")
+          : t("tools.testDialog.badges.error");
 
     return (
         <>
             <Dialog open={open} onOpenChange={onOpenChange}>
                 <DialogContent className="max-h-[90vh] max-w-3xl grid-rows-[auto_minmax(0,1fr)]">
                     <DialogHeader>
-                        <DialogTitle>Test Tool</DialogTitle>
+                        <DialogTitle>{t("tools.testDialog.title")}</DialogTitle>
                         <DialogDescription>
-                            Run the saved configuration against the real endpoint.
+                            {t("tools.testDialog.description")}
                         </DialogDescription>
                     </DialogHeader>
 
                     <div className="space-y-6 overflow-y-auto pr-1">
                         <div className="rounded-lg border bg-muted/40 p-4">
                             <p className="mb-2 text-xs font-medium uppercase tracking-wide text-muted-foreground">
-                                Request
+                                {t("tools.testDialog.request")}
                             </p>
                             <div className="flex items-start gap-3">
                                 <span className="rounded bg-foreground px-2 py-1 font-mono text-xs font-semibold text-background">
@@ -343,10 +355,9 @@ export function HttpToolTestDialog({
                             >
                                 <AlertTriangle className="mt-0.5 h-5 w-5 shrink-0" />
                                 <div className="space-y-1">
-                                    <p className="text-sm font-medium">This performs a real external request</p>
+                                    <p className="text-sm font-medium">{t("tools.testDialog.realRequestTitle")}</p>
                                     <p className="text-sm">
-                                        Testing sends an actual {httpMethod} request to this endpoint. Any configured
-                                        credential is used for the request, and the operation may modify external data.
+                                        {t("tools.testDialog.realRequestBody", { method: httpMethod })}
                                     </p>
                                 </div>
                             </div>
@@ -355,9 +366,9 @@ export function HttpToolTestDialog({
                         <div className="space-y-3">
                             <div className="flex items-center justify-between">
                                 <div>
-                                    <p className="text-sm font-medium">Parameters</p>
+                                    <p className="text-sm font-medium">{t("tools.testDialog.parametersTitle")}</p>
                                     <p className="text-xs text-muted-foreground">
-                                        Supply the values that would normally come from the model and configured presets.
+                                        {t("tools.testDialog.parametersHelp")}
                                     </p>
                                 </div>
                                 {(parameters.length > 0 || presetParameters.length > 0) && (
@@ -367,7 +378,7 @@ export function HttpToolTestDialog({
                                         size="sm"
                                         onClick={handleFillSampleValues}
                                     >
-                                        Fill sample values
+                                        {t("tools.testDialog.fillSample")}
                                     </Button>
                                 )}
                             </div>
@@ -375,9 +386,9 @@ export function HttpToolTestDialog({
 
                         <div className="space-y-3 border-t pt-4">
                             <div>
-                                <p className="text-sm font-medium">LLM Parameters</p>
+                                <p className="text-sm font-medium">{t("tools.testDialog.llmTitle")}</p>
                                 <p className="text-xs text-muted-foreground">
-                                    Values the model would provide at call time.
+                                    {t("tools.testDialog.llmHelp")}
                                 </p>
                             </div>
                             <ParameterFields
@@ -393,9 +404,9 @@ export function HttpToolTestDialog({
 
                         <div className="space-y-3 border-t pt-4">
                             <div>
-                                <p className="text-sm font-medium">Preset Parameters</p>
+                                <p className="text-sm font-medium">{t("tools.testDialog.presetTitle")}</p>
                                 <p className="text-xs text-muted-foreground">
-                                    Resolved values that VoiceWorker would normally derive from each configured preset.
+                                    {t("tools.testDialog.presetHelp")}
                                 </p>
                             </div>
                             <ParameterFields
@@ -414,10 +425,10 @@ export function HttpToolTestDialog({
                                 {isTesting ? (
                                     <>
                                         <Loader2 className="mr-2 h-4 w-4 animate-spin" />
-                                        Testing...
+                                        {t("tools.testDialog.testing")}
                                     </>
                                 ) : (
-                                    "Test Tool"
+                                    t("tools.testDialog.title")
                                 )}
                             </Button>
                         </div>
@@ -437,17 +448,17 @@ export function HttpToolTestDialog({
                                         </p>
                                         {result.request_headers && Object.keys(result.request_headers).length > 0 && (
                                             <pre className="whitespace-pre-wrap">
-                                                Headers: {JSON.stringify(result.request_headers, null, 2)}
+                                                {t("tools.testDialog.headersLabel")} {JSON.stringify(result.request_headers, null, 2)}
                                             </pre>
                                         )}
                                         {result.request_body != null && (
                                             <pre className="whitespace-pre-wrap">
-                                                Body: {JSON.stringify(result.request_body, null, 2)}
+                                                {t("tools.testDialog.bodyLabel")} {JSON.stringify(result.request_body, null, 2)}
                                             </pre>
                                         )}
                                         {result.request_params != null && Object.keys(result.request_params).length > 0 && (
                                             <pre className="whitespace-pre-wrap">
-                                                Query:{" "}
+                                                {t("tools.testDialog.queryLabel")}{" "}
                                                 {Object.entries(result.request_params)
                                                     .map(([key, value]) => `${key}=${value}`)
                                                     .join("  ")}
@@ -504,9 +515,9 @@ export function HttpToolTestDialog({
             >
                 <DialogContent className="max-w-2xl">
                     <DialogHeader>
-                        <DialogTitle>Edit {jsonEditTarget?.name}</DialogTitle>
+                        <DialogTitle>{t("tools.testDialog.editJsonTitle", { name: jsonEditTarget?.name })}</DialogTitle>
                         <DialogDescription>
-                            Edit the JSON value sent for this parameter when testing.
+                            {t("tools.testDialog.editJsonDescription")}
                         </DialogDescription>
                     </DialogHeader>
                     <textarea
@@ -524,13 +535,13 @@ export function HttpToolTestDialog({
                             onClick={handleFormatJson}
                             disabled={jsonEditDraft.length === 0}
                         >
-                            Format JSON
+                            {t("tools.testDialog.formatJson")}
                         </Button>
                         <Button type="button" variant="outline" onClick={closeJsonEditDialog}>
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button type="button" onClick={handleSaveJsonEdit}>
-                            Save
+                            {t("common.save")}
                         </Button>
                     </div>
                 </DialogContent>

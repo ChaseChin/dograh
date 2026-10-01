@@ -3,15 +3,11 @@ import { Suspense } from 'react';
 import { getWorkflowsApiV1WorkflowFetchGet, listFoldersApiV1FolderGet } from '@/client/sdk.gen';
 import type { FolderResponse, WorkflowListResponse } from '@/client/types.gen';
 import { Card, CardContent } from '@/components/ui/card';
-import { CreateWorkflowButton } from "@/components/workflow/CreateWorkflowButton";
-import { AgentFolderView } from '@/components/workflow/folders/AgentFolderView';
-import { CreateFolderButton } from '@/components/workflow/folders/CreateFolderButton';
-import { FolderSection } from '@/components/workflow/folders/FolderSection';
-import { UploadWorkflowButton } from '@/components/workflow/UploadWorkflowButton';
 import { getServerAccessToken, getServerAuthProvider } from '@/lib/auth/server';
 import logger from '@/lib/logger';
 
 import WorkflowLayout from "./WorkflowLayout";
+import { WorkflowAuthRequired, WorkflowListView, WorkflowLoadFailed, WorkflowsPageShell } from './WorkflowListClient';
 
 export const dynamic = 'force-dynamic';
 
@@ -27,11 +23,7 @@ async function WorkflowList() {
             redirect('/');
         } else {
             // For OSS mode, this shouldn't happen as token is auto-generated
-            return (
-                <div className="text-red-500">
-                    Authentication required. Please refresh the page.
-                </div>
-            );
+            return <WorkflowAuthRequired />;
         }
     }
 
@@ -72,36 +64,15 @@ async function WorkflowList() {
         }
 
         return (
-            <>
-                {/* Active Workflows Section */}
-                <div className="mb-8">
-                    <h2 className="text-xl font-semibold mb-4">Active Agents</h2>
-                    {activeWorkflows.length > 0 || folders.length > 0 ? (
-                        <AgentFolderView workflows={activeWorkflows} folders={folders} />
-                    ) : (
-                        <Card>
-                            <CardContent className="p-8 text-center text-muted-foreground">
-                                No active workflows found. Create your first workflow to get started.
-                            </CardContent>
-                        </Card>
-                    )}
-                </div>
-
-                {/* Archived Section — collapsible, same design as the folder/Uncategorized sections */}
-                {archivedWorkflows.length > 0 && (
-                    <div className="mb-8">
-                        <FolderSection kind="archived" workflows={archivedWorkflows} />
-                    </div>
-                )}
-            </>
+            <WorkflowListView
+                activeWorkflows={activeWorkflows}
+                folders={folders}
+                archivedWorkflows={archivedWorkflows}
+            />
         );
     } catch (err) {
         logger.error(`Error fetching workflows: ${err}`);
-        return (
-            <div className="text-red-500">
-                Failed to load Workflows. Please Try Again Later.
-            </div>
-        );
+        return <WorkflowLoadFailed />;
     }
 }
 
@@ -110,20 +81,9 @@ async function PageContent() {
     const workflowList = await WorkflowList();
 
     return (
-        <div className="container mx-auto px-4 py-8">
-            {/* Your Workflows Section */}
-            <div className="mb-6">
-                <div className="flex justify-between items-center mb-6">
-                    <h1 className="text-2xl font-bold">Your Agents</h1>
-                    <div className="flex gap-2">
-                        <UploadWorkflowButton />
-                        <CreateFolderButton />
-                        <CreateWorkflowButton />
-                    </div>
-                </div>
-                {workflowList}
-            </div>
-        </div>
+        <WorkflowsPageShell>
+            {workflowList}
+        </WorkflowsPageShell>
     );
 }
 

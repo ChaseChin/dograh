@@ -2,6 +2,7 @@
 
 import { Copy, ExternalLink } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import {
@@ -36,6 +37,12 @@ import {
 } from "@/components/ui/select";
 import { Switch } from "@/components/ui/switch";
 import { Textarea } from "@/components/ui/textarea";
+import {
+  telephonyDisplayName,
+  telephonyFieldText,
+  telephonyOptionText,
+  telephonySectionText,
+} from "@/i18n/telephonyServerText";
 import { detailFromError } from "@/lib/apiError";
 import { useAuth } from "@/lib/auth";
 import { copyTextToClipboard } from "@/lib/clipboard";
@@ -104,6 +111,7 @@ export function ConfigFormDialog({
   suggestDefaultOutbound = false,
   onSaved,
 }: ConfigFormDialogProps) {
+  const { t } = useTranslation();
   const { user, getAccessToken } = useAuth();
   const [providers, setProviders] = useState<TelephonyProviderMetadata[]>([]);
   const [providerName, setProviderName] = useState<string>("");
@@ -188,7 +196,7 @@ export function ConfigFormDialog({
   const handleSubmit = async () => {
     if (!currentProvider) return;
     if (!isEdit && !name.trim()) {
-      toast.error("Name is required");
+      toast.error(t("telephony.configForm.nameRequired"));
       return;
     }
 
@@ -210,8 +218,8 @@ export function ConfigFormDialog({
             body: { name: name || undefined, config: configPayload },
           },
         );
-        if (res.error) throw new Error(detailFromError(res.error, "Failed to save configuration"));
-        toast.success("Configuration updated");
+        if (res.error) throw new Error(detailFromError(res.error, t("telephony.configForm.saveFailed")));
+        toast.success(t("telephony.configForm.updated"));
       } else {
         const res = await createTelephonyConfigurationApiV1OrganizationsTelephonyConfigsPost(
           {
@@ -223,13 +231,13 @@ export function ConfigFormDialog({
             },
           },
         );
-        if (res.error) throw new Error(detailFromError(res.error, "Failed to save configuration"));
-        toast.success("Configuration created");
+        if (res.error) throw new Error(detailFromError(res.error, t("telephony.configForm.saveFailed")));
+        toast.success(t("telephony.configForm.created"));
       }
       onOpenChange(false);
       onSaved();
     } catch (err) {
-      toast.error(err instanceof Error ? err.message : "Failed to save");
+      toast.error(err instanceof Error ? err.message : t("telephony.configForm.saveFailedGeneric"));
     } finally {
       setSubmitting(false);
     }
@@ -240,27 +248,27 @@ export function ConfigFormDialog({
       <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>
-            {isEdit ? "Edit telephony configuration" : "Add telephony configuration"}
+            {isEdit ? t("telephony.configForm.editTitle") : t("telephony.configForm.addTitle")}
           </DialogTitle>
           <DialogDescription>
             {isEdit
-              ? "Update credentials for this configuration. Phone numbers are managed separately."
-              : "Connect a telephony provider account. Phone numbers are added after the configuration is created."}
+              ? t("telephony.configForm.editDescription")
+              : t("telephony.configForm.addDescription")}
           </DialogDescription>
         </DialogHeader>
 
         <div className="space-y-4">
           {isEdit && existing && (
             <div className="space-y-1">
-              <Label>Configuration ID</Label>
+              <Label>{t("telephony.common.configIdLabel")}</Label>
               <button
                 type="button"
                 onClick={() => {
                   copyTextToClipboard(String(existing.id))
-                    .then(() => toast.success("Configuration ID copied"))
-                    .catch(() => toast.error("Failed to copy ID"));
+                    .then(() => toast.success(t("telephony.common.configIdCopied")))
+                    .catch(() => toast.error(t("telephony.common.copyIdFailed")));
                 }}
-                title="Click to copy"
+                title={t("common.clickToCopy")}
                 className="group flex w-full items-center gap-2 rounded-md border bg-muted/20 p-2 text-left font-mono text-xs transition-colors hover:bg-muted/40"
               >
                 <code className="flex-1 truncate">{existing.id}</code>
@@ -270,36 +278,36 @@ export function ConfigFormDialog({
           )}
 
           <div className="space-y-2">
-            <Label htmlFor="cfg-name">Name</Label>
+            <Label htmlFor="cfg-name">{t("telephony.configForm.name")}</Label>
             <Input
               id="cfg-name"
-              placeholder="e.g. Twilio US prod"
+              placeholder={t("telephony.configForm.namePlaceholder")}
               value={name}
               onChange={(e) => setName(e.target.value)}
             />
           </div>
 
           <div className="space-y-2">
-            <Label htmlFor="cfg-provider">Provider</Label>
+            <Label htmlFor="cfg-provider">{t("telephony.configForm.provider")}</Label>
             <Select
               value={providerName}
               onValueChange={setProviderName}
               disabled={lockedProvider || providers.length === 0}
             >
               <SelectTrigger id="cfg-provider">
-                <SelectValue placeholder="Select a provider" />
+                <SelectValue placeholder={t("telephony.configForm.providerPlaceholder")} />
               </SelectTrigger>
               <SelectContent>
                 {providers.map((p) => (
                   <SelectItem key={p.provider} value={p.provider}>
-                    {p.display_name}
+                    {telephonyDisplayName(t, p.provider, p.display_name)}
                   </SelectItem>
                 ))}
               </SelectContent>
             </Select>
             {lockedProvider && (
               <p className="text-xs text-muted-foreground">
-                Provider cannot be changed after creation.
+                {t("telephony.configForm.providerLocked")}
               </p>
             )}
             {currentProvider?.docs_url && (
@@ -309,7 +317,7 @@ export function ConfigFormDialog({
                 rel="noopener noreferrer"
                 className="inline-flex items-center gap-1 text-xs text-blue-600 underline"
               >
-                {currentProvider.display_name} docs <ExternalLink className="h-3 w-3" />
+                {t("telephony.configForm.providerDocs", { name: telephonyDisplayName(t, currentProvider.provider, currentProvider.display_name) })} <ExternalLink className="h-3 w-3" />
               </a>
             )}
           </div>
@@ -317,12 +325,11 @@ export function ConfigFormDialog({
           {!isEdit && (
             <div className="flex items-center justify-between rounded border p-3">
               <div>
-                <Label className="text-sm">Set as default for outbound calls</Label>
+                <Label className="text-sm">{t("telephony.configForm.setDefaultLabel")}</Label>
                 <p className="text-xs text-muted-foreground">
-                  Used by test calls and campaigns when no specific config is selected.
                   {suggestDefaultOutbound
-                    ? " Your organization has no default yet."
-                    : ""}
+                    ? t("telephony.configForm.setDefaultHelpSuggest")
+                    : t("telephony.configForm.setDefaultHelp")}
                 </p>
               </div>
               <Switch checked={isDefault} onCheckedChange={setIsDefault} />
@@ -335,25 +342,30 @@ export function ConfigFormDialog({
                 <div className="space-y-1" key={field.name}>
                   {field.section && field.section !== visibleFields[index - 1]?.section && (
                     <div className="pb-2 pt-3">
-                      <h3 className="text-sm font-semibold">{field.section}</h3>
+                      <h3 className="text-sm font-semibold">
+                        {telephonySectionText(t, currentProvider.provider, field.section)}
+                      </h3>
                     </div>
                   )}
                   <Label htmlFor={`cfg-field-${field.name}`}>
-                    {field.label}
+                    {telephonyFieldText(t, currentProvider.provider, field.name, "label", field.label)}
                     {!field.required && field.type !== "readonly" && (
                       <span className="ml-1 text-xs text-muted-foreground">
-                        (optional)
+                        ({t("common.optional")})
                       </span>
                     )}
                   </Label>
                   <FieldInput
                     field={field}
+                    provider={currentProvider.provider}
                     value={values[field.name]}
                     onChange={(v) => updateField(field.name, v)}
                     isEdit={isEdit}
                   />
                   {field.description && (
-                    <p className="text-xs text-muted-foreground">{field.description}</p>
+                    <p className="text-xs text-muted-foreground">
+                      {telephonyFieldText(t, currentProvider.provider, field.name, "description", field.description)}
+                    </p>
                   )}
                 </div>
               ))}
@@ -363,10 +375,10 @@ export function ConfigFormDialog({
 
         <DialogFooter>
           <Button variant="outline" onClick={() => onOpenChange(false)} disabled={submitting}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button onClick={handleSubmit} disabled={submitting || !currentProvider}>
-            {submitting ? "Saving..." : isEdit ? "Save changes" : "Create"}
+            {submitting ? t("common.saving") : isEdit ? t("telephony.configForm.saveChanges") : t("common.create")}
           </Button>
         </DialogFooter>
       </DialogContent>
@@ -376,6 +388,7 @@ export function ConfigFormDialog({
 
 interface FieldInputProps {
   field: TelephonyProviderMetadata["fields"][number];
+  provider: string;
   value: FieldValue;
   onChange: (v: FieldValue) => void;
   isEdit: boolean;
@@ -383,18 +396,19 @@ interface FieldInputProps {
 
 // Skip from_numbers in the metadata-driven form — phone numbers are managed
 // via the dedicated phone-numbers endpoints and a different UI.
-function FieldInput({ field, value, onChange, isEdit }: FieldInputProps) {
+function FieldInput({ field, provider, value, onChange, isEdit }: FieldInputProps) {
+  const { t } = useTranslation();
   if (field.name === "from_numbers") {
     return (
       <p className="text-xs text-muted-foreground">
-        Phone numbers are managed separately on the configuration page.
+        {t("telephony.configForm.phoneNumbersManaged")}
       </p>
     );
   }
 
   const placeholder =
     field.placeholder ??
-    (field.sensitive && isEdit ? "Leave masked to keep existing" : "");
+    (field.sensitive && isEdit ? t("telephony.configForm.leaveMasked") : "");
 
   // Server-generated and not editable. Shown because the customer has to copy
   // it into configuration we do not control, so it cannot be hidden the way
@@ -407,10 +421,10 @@ function FieldInput({ field, value, onChange, isEdit }: FieldInputProps) {
         type="button"
         onClick={() => {
           copyTextToClipboard(generated)
-            .then(() => toast.success(`${field.label} copied`))
-            .catch(() => toast.error("Failed to copy"));
+            .then(() => toast.success(t("telephony.configForm.fieldCopied", { label: telephonyFieldText(t, provider, field.name, "label", field.label) })))
+            .catch(() => toast.error(t("telephony.common.copyFailed")));
         }}
-        title="Click to copy"
+        title={t("common.clickToCopy")}
         className="group flex w-full items-center gap-2 rounded-md border bg-muted/20 p-2 text-left font-mono text-xs transition-colors hover:bg-muted/40"
       >
         <code className="flex-1 truncate">{generated}</code>
@@ -457,13 +471,13 @@ function FieldInput({ field, value, onChange, isEdit }: FieldInputProps) {
         onValueChange={(next) => onChange(next === "__none__" ? undefined : next)}
       >
         <SelectTrigger id={`cfg-field-${field.name}`}>
-          <SelectValue placeholder={placeholder || "Select an option"} />
+          <SelectValue placeholder={placeholder || t("telephony.configForm.selectOption")} />
         </SelectTrigger>
         <SelectContent>
-          {!field.required && <SelectItem value="__none__">Not configured</SelectItem>}
+          {!field.required && <SelectItem value="__none__">{t("flow.common.notConfigured")}</SelectItem>}
           {(field.options ?? []).map((option) => (
             <SelectItem key={option.value} value={option.value}>
-              {option.label}
+              {telephonyOptionText(t, provider, field.name, option.value, option.label)}
             </SelectItem>
           ))}
         </SelectContent>

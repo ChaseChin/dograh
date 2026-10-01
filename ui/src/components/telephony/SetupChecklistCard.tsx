@@ -1,6 +1,7 @@
 "use client";
 
 import { AlertTriangle, Check, Circle, ExternalLink } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import type {
   ProviderSetupChecklist,
@@ -13,11 +14,18 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import {
+  checklistStepText,
+  telephonyBlockedReason,
+} from "@/i18n/telephonyServerText";
 
 interface SetupChecklistCardProps {
   checklist: ProviderSetupChecklist;
   /** "sip" connections need the customer's own carrier; "api" ones don't. */
   connectivity?: TelephonyConfigurationDetail["connectivity"];
+  /** Provider name (e.g. "twilio"); localizes backend step text and
+   * interpolates the provider's display name where the backend embeds it. */
+  provider?: string;
 }
 
 /**
@@ -31,18 +39,30 @@ interface SetupChecklistCardProps {
 export function SetupChecklistCard({
   checklist,
   connectivity,
+  provider,
 }: SetupChecklistCardProps) {
+  const { t } = useTranslation();
   const remaining = checklist.steps.filter((step) => !step.complete).length;
 
   // Nothing left to do: a wall of green checks on every working configuration
   // is noise, and the page already shows the phone numbers and endpoints.
   if (remaining === 0) return null;
 
+  // The backend reports the blocked reason as the first blocking step's
+  // description — derive it from the steps so it localizes the same way, and
+  // fall back to source-text matching when the steps don't carry it.
+  const blockingStep = checklist.steps.find(
+    (step) => step.blocks_outbound && !step.complete,
+  );
+  const blockedReason = blockingStep
+    ? checklistStepText(t, blockingStep, "description", provider)
+    : telephonyBlockedReason(t, checklist.outbound_blocked_reason, provider);
+
   return (
     <Card>
       <CardHeader className="space-y-1">
         <div className="flex flex-wrap items-center justify-between gap-2">
-          <CardTitle>Setup checklist</CardTitle>
+          <CardTitle>{t("telephony.checklist.title")}</CardTitle>
           {checklist.docs_url && (
             <a
               href={checklist.docs_url}
@@ -50,14 +70,14 @@ export function SetupChecklistCard({
               rel="noopener noreferrer"
               className="inline-flex items-center gap-1 text-sm underline"
             >
-              Setup guide <ExternalLink className="h-3 w-3" />
+              {t("telephony.checklist.setupGuide")} <ExternalLink className="h-3 w-3" />
             </a>
           )}
         </div>
         <CardDescription>
           {connectivity === "sip"
-            ? "VoiceWorker provides the SIP connection; you connect your own carrier and numbers to it."
-            : "Finish these steps to place and receive calls on this configuration."}
+            ? t("telephony.checklist.descriptionSip")
+            : t("telephony.checklist.descriptionApi")}
         </CardDescription>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -65,8 +85,8 @@ export function SetupChecklistCard({
           <div className="flex items-start gap-3 rounded-md border border-amber-300 bg-amber-50 p-4 text-amber-900 dark:border-amber-800 dark:bg-amber-950 dark:text-amber-200">
             <AlertTriangle className="h-5 w-5 shrink-0 mt-0.5" />
             <div className="space-y-1 text-sm">
-              <p className="font-medium">Outbound calls will not work yet</p>
-              <p>{checklist.outbound_blocked_reason}</p>
+              <p className="font-medium">{t("telephony.checklist.blockedTitle")}</p>
+              <p>{blockedReason}</p>
             </div>
           </div>
         )}
@@ -98,10 +118,10 @@ export function SetupChecklistCard({
                       step.complete ? "text-muted-foreground" : ""
                     }`}
                   >
-                    {step.title}
+                    {checklistStepText(t, step, "title", provider)}
                   </p>
                   <p className="text-sm text-muted-foreground">
-                    {step.description}
+                    {checklistStepText(t, step, "description", provider)}
                   </p>
                 </div>
               </li>

@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 import type { ConversationItem } from "../types";
 
 interface TextChatMessageLike {
@@ -31,6 +33,7 @@ function asString(value: unknown) {
 function conversationItemsFromTextChatEvents(
     events: Array<Record<string, unknown>>,
     turnId: string,
+    t: TFunction,
     fallbackTimestamp?: string,
 ) {
     const items: ConversationItem[] = [];
@@ -47,7 +50,7 @@ function conversationItemsFromTextChatEvents(
         const timestamp = asString(event.created_at) ?? fallbackTimestamp;
 
         if (eventType === "node_transition") {
-            const nodeName = asString(payload.node_name) ?? "Node";
+            const nodeName = asString(payload.node_name) ?? t("workflow.run.rtc.nodeFallback");
             items.push({
                 kind: "node-transition",
                 id: `${turnId}-node-${index}`,
@@ -69,15 +72,15 @@ function conversationItemsFromTextChatEvents(
                 turnId,
                 timestamp,
                 tone: "error",
-                title: "Execution Error",
-                text: asString(payload.message) ?? "Execution error",
+                title: t("conversation.notice.executionError"),
+                text: asString(payload.message) ?? t("conversation.notice.executionErrorText"),
                 fatal: true,
             });
             return;
         }
 
         if (eventType === "tool_call_started") {
-            const functionName = asString(payload.function_name) ?? "tool";
+            const functionName = asString(payload.function_name) ?? t("workflow.run.rtc.toolFallback");
             const toolCallId = asString(payload.tool_call_id);
             items.push({
                 kind: "tool-call",
@@ -96,7 +99,7 @@ function conversationItemsFromTextChatEvents(
         }
 
         if (eventType === "tool_call_result") {
-            const functionName = asString(payload.function_name) ?? "tool";
+            const functionName = asString(payload.function_name) ?? t("workflow.run.rtc.toolFallback");
             const toolCallId = asString(payload.tool_call_id);
             const existingIndex = toolCallId ? toolCallIndexById.get(toolCallId) : undefined;
 
@@ -128,7 +131,7 @@ function conversationItemsFromTextChatEvents(
     return items;
 }
 
-export function conversationItemsFromTextChatTurns(turns: TextChatTurnLike[]) {
+export function conversationItemsFromTextChatTurns(turns: TextChatTurnLike[], t: TFunction) {
     const items: ConversationItem[] = [];
 
     turns.forEach((turn) => {
@@ -147,6 +150,7 @@ export function conversationItemsFromTextChatTurns(turns: TextChatTurnLike[]) {
             ...conversationItemsFromTextChatEvents(
                 turn.events ?? [],
                 turn.id,
+                t,
                 turn.created_at,
             ),
         );
@@ -170,7 +174,7 @@ export function conversationItemsFromTextChatTurns(turns: TextChatTurnLike[]) {
                 turnId: turn.id,
                 timestamp: turn.created_at,
                 role: "assistant",
-                text: "Agent turn failed",
+                text: t("conversation.agentTurnFailed"),
                 tone: "muted",
             });
         }

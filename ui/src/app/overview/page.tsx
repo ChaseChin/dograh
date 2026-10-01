@@ -1,14 +1,17 @@
 "use client";
 
 import Link from 'next/link';
+import { useTranslation } from 'react-i18next';
 
 import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import { useAuth } from '@/lib/auth';
 
 export default function OverviewPage() {
+    const { t } = useTranslation();
     const { user, provider } = useAuth();
     const isOSSMode = provider !== 'stack';
+    const firstName = user?.displayName?.split(' ')[0];
 
     return (
         <div className="container mx-auto px-4 py-8">
@@ -17,18 +20,16 @@ export default function OverviewPage() {
                 <Card className="mb-8">
                     <CardHeader>
                         <CardTitle className="text-3xl">
-                            {isOSSMode ? (
-                                "Welcome to VoiceWorker"
-                            ) : (
-                                `Welcome${user?.displayName ? `, ${user.displayName.split(' ')[0]}` : ''}!`
-                            )}
+                            {isOSSMode
+                                ? t("overview.welcomeOss")
+                                : firstName
+                                  ? t("overview.welcomeNamed", { name: firstName })
+                                  : t("overview.welcome")}
                         </CardTitle>
                         <CardDescription className="text-lg mt-2">
-                            {isOSSMode ? (
-                                "VoiceWorker is a platform for building and deploying AI voice agents."
-                            ) : (
-                                "Get started with building voice AI workflows"
-                            )}
+                            {isOSSMode
+                                ? t("overview.subtitleOss")
+                                : t("overview.subtitleCloud")}
                         </CardDescription>
                     </CardHeader>
                 </Card>
@@ -37,15 +38,15 @@ export default function OverviewPage() {
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     <Card>
                         <CardHeader>
-                            <CardTitle>Create and Manage your Voice Agents</CardTitle>
+                            <CardTitle>{t("overview.agentsTitle")}</CardTitle>
                             <CardDescription>
-                                Build powerful AI Voice Agents with our visual editor
+                                {t("overview.agentsDesc")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Button asChild>
                                 <Link href="/workflow">
-                                    Go to Agents
+                                    {t("overview.goToAgents")}
                                 </Link>
                             </Button>
                         </CardContent>
@@ -53,15 +54,15 @@ export default function OverviewPage() {
 
                     <Card>
                         <CardHeader>
-                            <CardTitle>Configure Services</CardTitle>
+                            <CardTitle>{t("overview.servicesTitle")}</CardTitle>
                             <CardDescription>
-                                Set up your AI services like LLM, TTS, and STT providers
+                                {t("overview.servicesDesc")}
                             </CardDescription>
                         </CardHeader>
                         <CardContent>
                             <Button asChild variant="outline">
                                 <Link href="/model-configurations">
-                                    Configure Models
+                                    {t("overview.configureModels")}
                                 </Link>
                             </Button>
                         </CardContent>
@@ -71,9 +72,9 @@ export default function OverviewPage() {
                 {/* Resources Section */}
                 <Card className="mt-8">
                     <CardHeader>
-                        <CardTitle>Resources</CardTitle>
+                        <CardTitle>{t("overview.resourcesTitle")}</CardTitle>
                         <CardDescription>
-                            Get help and learn more about VoiceWorker
+                            {t("overview.resourcesDesc")}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -84,7 +85,7 @@ export default function OverviewPage() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    Documentation
+                                    {t("overview.documentation")}
                                 </a>
                             </Button>
                             <Button asChild variant="outline">
@@ -93,7 +94,7 @@ export default function OverviewPage() {
                                     target="_blank"
                                     rel="noopener noreferrer"
                                 >
-                                    Report an Issue
+                                    {t("overview.reportIssue")}
                                 </a>
                             </Button>
                         </div>

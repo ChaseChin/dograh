@@ -1,5 +1,7 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+
+import i18n from "@/i18n";
 
 import { EmbeddedVoiceTester } from "./EmbeddedVoiceTester";
 
@@ -62,6 +64,10 @@ function baseHookReturn(opts: {
         refreshAppConfig: opts.refreshAppConfig,
     };
 }
+
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 describe("EmbeddedVoiceTester auto-start", () => {
     const props = {

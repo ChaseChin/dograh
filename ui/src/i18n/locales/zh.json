@@ -1,0 +1,3683 @@
+{
+  "common": {
+    "save": "保存",
+    "saving": "保存中…",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "create": "创建",
+    "close": "关闭",
+    "back": "返回",
+    "loading": "加载中…",
+    "retry": "重试",
+    "confirm": "确认",
+    "search": "搜索",
+    "copy": "复制",
+    "copied": "已复制",
+    "enabled": "已启用",
+    "disabled": "已禁用",
+    "yes": "是",
+    "no": "否",
+    "none": "无",
+    "optional": "可选",
+    "required": "必填",
+    "learnMore": "了解更多",
+    "clickToCopy": "点击复制",
+    "tryAgain": "重试",
+    "somethingWentWrong": "出错了",
+    "openMenu": "打开菜单",
+    "toggleSidebar": "切换侧边栏",
+    "sidebarDescription": "显示移动端侧边栏。",
+    "backendConnectionFailed": "后端连接失败",
+    "jsonCopyFailed": "复制 JSON 失败",
+    "unsavedChanges": {
+      "title": "未保存的更改",
+      "description": "您有未保存的更改，离开后将会丢失。确定要离开吗？",
+      "stay": "留在本页",
+      "discard": "放弃更改"
+    },
+    "languages": {
+      "multi": "多语言（自动检测）",
+      "autoDetect": "自动检测"
+    },
+    "sidebarTitle": "侧边栏",
+    "backendUnreachable": "无法连接到后端服务 {{url}}。",
+    "configuredBackend": "已配置的后端",
+    "chatWithUs": "在线客服"
+  },
+  "usage": {
+    "title": "智能体运行记录",
+    "subtitle": "查看所有语音智能体的运行记录,可使用筛选器过滤出需要的运行记录。",
+    "selectTimezone": "选择时区",
+    "loadAgentsFailed": "加载智能体失败",
+    "untitledAgent": "未命名智能体",
+    "downloadReportFailed": "下载报表失败",
+    "preparing": "准备中…",
+    "downloadFiltered": "下载筛选结果",
+    "allRunsTitle": "所有运行",
+    "allRunsDescription": "组织内每一次智能体运行,含用量详情",
+    "headerRunId": "运行 ID",
+    "headerAgentName": "智能体名称",
+    "headerCallType": "呼叫类型",
+    "headerPhoneNumber": "电话号码",
+    "headerDisposition": "通话结果",
+    "headerDate": "日期",
+    "headerDuration": "时长",
+    "headerCostUsd": "费用(USD)",
+    "headerActions": "操作",
+    "unknown": "未知",
+    "totalForFiltered": "筛选时段合计:{{tokens}} 个 VoiceWorker Token • {{duration}}",
+    "pageOf": "第 {{page}} / {{totalPages}} 页(共 {{totalCount}} 条运行)",
+    "empty": "未找到运行记录",
+    "filterAgentLabel": "智能体",
+    "filterAgentPlaceholder": "选择一个智能体",
+    "daily": {
+      "title": "每日用量明细",
+      "description": "最近 7 天用量",
+      "empty": "暂无用量数据",
+      "headerDate": "日期",
+      "headerUsageMinutes": "用量(分钟)",
+      "headerCostUsd": "费用(USD)",
+      "headerCalls": "呼叫数",
+      "total": "合计"
+    }
+  },
+  "billing": {
+    "title": "账单",
+    "subtitle": "查看组织的额度、余额与账户用量。",
+    "refresh": "刷新",
+    "opening": "正在打开…",
+    "addCredits": "添加额度",
+    "fetchFailed": "获取账单额度失败",
+    "checkoutFailed": "打开结账页面失败",
+    "ossTitle": "OSS 模式下无法购买额度",
+    "ossBody": "无法在此自托管应用中购买额度。请前往 <0>app.dograh.com</0> 注册并购买额度,然后在 <1>模型配置</1> 中添加生成的服务密钥。该服务密钥的用量在 app.dograh.com 中可见。",
+    "creditsRemaining": "剩余额度",
+    "creditBalance": "额度余额",
+    "creditEqualsCent": "1 额度 = 1 美分",
+    "creditsUsed": "已用额度",
+    "currentAllocationUsage": "当前配额用量",
+    "totalLedgerDebits": "账本扣减合计",
+    "ledgerTitle": "额度账本",
+    "ledgerDescription": "最近的赠送、购买和用量扣减。",
+    "headerDate": "日期",
+    "headerActivity": "活动",
+    "headerOrigin": "来源",
+    "headerRun": "运行",
+    "headerDelta": "变动",
+    "headerBalance": "余额",
+    "headerAmount": "金额",
+    "noEntries": "暂无账本记录",
+    "pageOf": "第 {{page}} / {{totalPages}} 页(共 {{totalCount}} 条记录)",
+    "usageTitle": "额度用量",
+    "percentUsed": "已用 {{percent}}%",
+    "remainingOf": "剩余 {{remaining}} / 共 {{total}}",
+    "metricLabels": {
+      "voice_minutes": "语音用量",
+      "platform_usage": "平台用量"
+    },
+    "creditGrant": "额度赠送",
+    "creditPurchase": "额度购买",
+    "buyCredits": {
+      "buy": "购买额度",
+      "title": "充值额度",
+      "pickAmount": "选择金额(最低 ${{min}})。",
+      "customPlaceholder": "自定义",
+      "customAria": "自定义金额(最低 ${{min}})",
+      "comingSoon": "自助充值即将上线。请暂时使用“专家服务”或联系我们。",
+      "starting": "正在发起…",
+      "buyAmount": "购买 ${{amount}}"
+    }
+  },
+  "apiKeys": {
+    "title": "开发者门户",
+    "subtitle": "管理用于以编程方式访问 VoiceWorker 服务的 API 密钥",
+    "fetchFailed": "获取 API 密钥失败",
+    "fetchServiceFailed": "获取服务密钥失败",
+    "nameRequired": "请输入 API 密钥名称",
+    "serviceNameRequired": "请输入服务密钥名称",
+    "createFailed": "创建 API 密钥失败",
+    "createServiceFailed": "创建服务密钥失败",
+    "archiveFailed": "归档 API 密钥失败",
+    "archiveServiceFailed": "归档服务密钥失败",
+    "reactivateFailed": "重新启用 API 密钥失败",
+    "copySuccess": "密钥已复制到剪贴板",
+    "copyFailed": "复制密钥失败",
+    "never": "从未",
+    "apiKeysTitle": "API 密钥",
+    "apiKeysDescription": "为你的组织创建和管理 API 密钥",
+    "hideArchived": "隐藏已归档",
+    "showArchived": "显示已归档",
+    "createNewKey": "创建新密钥",
+    "emptyTitle": "未找到 API 密钥",
+    "createFirst": "创建你的第一个 API 密钥",
+    "badgeArchived": "已归档",
+    "badgeActive": "活跃",
+    "badgeInactive": "未激活",
+    "expiresBadge": "过期:{{date}}",
+    "fullKeyHidden": "(完整密钥出于安全原因已隐藏)",
+    "metaLine": "创建:{{created}} • 最近使用:{{lastUsed}}",
+    "reactivate": "重新启用",
+    "serviceKeysTitle": "VoiceWorker 服务密钥",
+    "serviceKeysDescription": "管理用于访问 VoiceWorker AI 服务(LLM、TTS、STT)的服务密钥",
+    "createServiceKey": "创建服务密钥",
+    "ossMoreKeys": "要生成更多服务密钥,请<0>前往 app.dograh.com 注册</0>",
+    "emptyServiceTitle": "未找到服务密钥",
+    "createFirstService": "创建你的第一个服务密钥",
+    "securityNote": "<0>重要:</0>请妥善保管你的 API 密钥。切勿公开分享或提交到版本控制。API 密钥提供对组织资源的完全访问权限。",
+    "createDialogTitle": "创建新 API 密钥",
+    "createDialogDescription": "为 API 密钥输入一个描述性名称,便于日后识别。",
+    "keyNameLabel": "密钥名称",
+    "keyNamePlaceholder": "例如:生产服务器、开发环境",
+    "createKey": "创建密钥",
+    "createdDialogTitle": "API 密钥创建成功",
+    "createdDialogDescription": "请立即复制你的 API 密钥,之后将无法再次查看!",
+    "yourApiKey": "你的 API 密钥:",
+    "storeSecurely": "请安全保存此密钥。它只会显示一次,之后无法找回。",
+    "done": "完成",
+    "createServiceDialogTitle": "创建新服务密钥",
+    "createServiceDialogDescription": "创建用于访问 VoiceWorker AI 服务(LLM、TTS、STT)的服务密钥",
+    "serviceKeyNameLabel": "服务密钥名称",
+    "serviceKeyNamePlaceholder": "例如:生产 AI 服务、开发 LLM 访问",
+    "serviceCreatedDialogTitle": "服务密钥创建成功",
+    "serviceCreatedDialogDescription": "请立即复制你的服务密钥,之后将无法再次查看!",
+    "yourServiceKey": "你的服务密钥:",
+    "serviceKeyAccess": "此密钥可访问 VoiceWorker AI 服务,包括 LLM、语音合成和语音转写。",
+    "expiresOn": "过期时间:{{date}}"
+  },
+  "tools": {
+    "title": "工具",
+    "subtitle": "管理可在工作流中复用的工具。<0>了解更多</0>",
+    "fetchFailed": "获取工具失败",
+    "archiveConfirm": "确定要归档此工具吗?",
+    "archiveFailed": "归档工具失败",
+    "unarchiveFailed": "取消归档工具失败",
+    "yourTools": "你的工具",
+    "yourToolsDescription": "为组织创建和管理工具",
+    "createTool": "创建工具",
+    "searchPlaceholder": "搜索工具…",
+    "noMatch": "没有匹配的工具",
+    "empty": "暂无工具",
+    "createFirst": "创建你的第一个工具",
+    "noActive": "暂无活跃工具",
+    "archivedTitle": "已归档的工具",
+    "restoreTitle": "恢复工具",
+    "badges": {
+      "endCall": "结束呼叫",
+      "calculator": "计算器",
+      "native": "原生",
+      "integration": "集成",
+      "active": "活跃",
+      "draft": "草稿",
+      "archived": "已归档",
+      "httpApi": "HTTP API"
+    },
+    "categories": {
+      "http_api": {
+        "label": "外部 HTTP API",
+        "description": "向外部 API 发起 HTTP 请求"
+      },
+      "end_call": {
+        "label": "结束呼叫",
+        "description": "满足条件时结束呼叫"
+      },
+      "transfer_call": {
+        "label": "呼叫转移",
+        "description": "将呼叫转移到另一个电话号码(Twilio、Plivo)"
+      },
+      "transfer_agent": {
+        "label": "转接给智能体",
+        "description": "把进行中的呼叫交给另一个 VoiceWorker 智能体,主叫不掉线"
+      },
+      "calculator": {
+        "label": "计算器",
+        "description": "内置算术计算器"
+      },
+      "mcp": {
+        "label": "MCP 服务器",
+        "description": "连接客户 MCP 服务器;其工具将对智能体可用"
+      },
+      "native": {
+        "label": "原生(即将推出)",
+        "description": "内置工具,如呼叫转移、DTMF 输入"
+      },
+      "integration": {
+        "label": "集成(即将推出)",
+        "description": "第三方集成,如 Google Calendar"
+      }
+    },
+    "typeLabels": {
+      "end_call": "结束呼叫工具",
+      "transfer_call": "呼叫转移工具",
+      "transfer_agent": "转接智能体工具",
+      "http_api": "HTTP API 工具",
+      "calculator": "计算器工具",
+      "native": "原生工具",
+      "integration": "集成工具",
+      "mcp": "MCP 服务器工具",
+      "default": "工具"
+    },
+    "createDialog": {
+      "title": "创建新工具",
+      "description": "创建一个可在工作流中使用的新工具。",
+      "typeLabel": "工具类型",
+      "nameLabel": "工具名称",
+      "nameHelp": "使用描述性名称,例如获取天气的工具可叫“Get Weather using API”",
+      "namePlaceholder": "例如:预约、查询库存",
+      "descriptionLabel": "描述(可选)",
+      "descriptionHelp": "提供便于 LLM 理解此工具用途的描述",
+      "descriptionPlaceholder": "这个工具是做什么的?",
+      "transferToAgent": "转接给智能体",
+      "transferToAgentHelp": "此工具将来电者交接给该智能体。如需多个目标,请为每个智能体创建一个工具。",
+      "selectAgent": "选择智能体",
+      "mcpUrl": "MCP 服务器 URL",
+      "transport": "传输方式",
+      "credentialLabel": "凭证(可选)",
+      "credentialHelp": "选择用于 MCP 服务器认证的凭证,留空则不认证。",
+      "toolsFilter": "工具过滤(可选)",
+      "toolsFilterHelp": "允许的工具名称,用逗号分隔。留空则暴露服务器上的所有工具。",
+      "creating": "创建中…",
+      "errors": {
+        "nameRequired": "请输入工具名称",
+        "chooseAgent": "请选择要转接的智能体",
+        "mcpUrlRequired": "请输入 MCP 服务器 URL",
+        "mcpUrlInvalid": "MCP 服务器 URL 必须以 http:// 或 https:// 开头",
+        "createFailed": "创建工具失败"
+      }
+    },
+    "detail": {
+      "notFound": "未找到工具",
+      "backToTools": "返回工具列表",
+      "viewCode": "查看代码",
+      "docs": "文档",
+      "saveSuccess": "工具保存成功!",
+      "testTool": "测试工具",
+      "saveBeforeTest": "请先保存工具再测试。",
+      "codePreviewTitle": "代码预览",
+      "codePreviewDescription": "发起此 API 调用的 JavaScript 代码",
+      "fetchFailed": "获取工具失败",
+      "saveFailed": "保存工具失败",
+      "errors": {
+        "chooseAgent": "请选择要转接的智能体",
+        "destinationRequired": "请输入转移目标",
+        "invalidResolverUrl": "无效的解析器 URL",
+        "resolverArgsIncomplete": "所有解析器参数都必须有名称和描述",
+        "resolverArgsUnique": "解析器参数名称必须唯一",
+        "resolverPresetIncomplete": "所有解析器预设参数都必须有名称和值",
+        "resolverPresetUnique": "解析器预设参数名称必须唯一",
+        "ruleRequired": "请至少添加一条上下文路由规则",
+        "ruleContextField": "请输入规则 {{index}} 的上下文字段",
+        "ruleMappingIncomplete": "请在规则 {{index}} 中至少添加一条完整的“上下文值 → 目标”映射",
+        "ruleValuesUnique": "规则 {{index}} 中的映射上下文值必须唯一",
+        "mcpUrlRequired": "请输入 MCP 服务器 URL",
+        "mcpUrlInvalid": "MCP 服务器 URL 必须以 http:// 或 https:// 开头",
+        "invalidUrl": "无效的 URL",
+        "paramsNeedName": "所有参数都必须有名称",
+        "paramsUnique": "参数名称必须唯一",
+        "presetIncomplete": "所有预设参数都必须有名称和值",
+        "bodyTemplateInvalid": "请求体模板必须是有效的 JSON 对象"
+      }
+    },
+    "mcpConfig": {
+      "title": "MCP 服务器配置",
+      "description": "配置 MCP 服务器端点。其工具将对智能体可用。",
+      "nameLabel": "工具名称",
+      "namePlaceholder": "例如:客户 MCP 服务器",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "提供便于 LLM 理解此工具用途的描述",
+      "descriptionPlaceholder": "这个 MCP 服务器提供什么?",
+      "mcpUrl": "MCP 服务器 URL",
+      "transport": "传输方式",
+      "credentialLabel": "凭证(可选)",
+      "credentialHelp": "选择用于 MCP 服务器认证的凭证,留空则不认证。",
+      "toolsFilter": "工具过滤(可选)",
+      "toolsFilterHelp": "允许的工具名称,用逗号分隔。留空则暴露服务器上的所有工具。"
+    },
+    "builtin": {
+      "calculatorTitle": "计算器配置",
+      "calculatorSubtitle": "内置算术计算器,无需额外配置。",
+      "nameLabel": "工具名称",
+      "namePlaceholder": "工具名称",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "提供便于 LLM 理解此工具用途的描述",
+      "descriptionPlaceholder": "描述这个工具的用途…"
+    },
+    "endCall": {
+      "title": "结束呼叫配置",
+      "description": "配置呼叫结束时的行为",
+      "nameLabel": "工具名称",
+      "nameHelp": "此工具的描述性名称",
+      "namePlaceholder": "例如:结束呼叫",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "帮助 LLM 理解何时使用此工具",
+      "descriptionPlaceholder": "AI 应在何时结束呼叫?",
+      "captureReason": "捕获结束呼叫原因",
+      "captureReasonHelp": "启用后,AI 会提供结束呼叫的原因。该原因会被记录为通话结果并加入呼叫标签用于分析。",
+      "reasonDescription": "原因描述",
+      "reasonDescriptionHelp": "向 AI 展示的指令,说明应提供何种原因",
+      "reasonPlaceholder": "例如:结束呼叫的原因(如 'voicemail_detected'、'issue_resolved'、'customer_requested')",
+      "goodbyeMessage": "告别消息",
+      "goodbyeMessageHelp": "选择是否在挂断前播放一段消息",
+      "noMessage": "不播放消息",
+      "noMessageHelp": "立即结束呼叫,不播放任何消息",
+      "customMessage": "自定义消息",
+      "customMessageHelp": "挂断前播放一段自定义消息",
+      "customMessagePlaceholder": "例如:感谢您的来电,再见!",
+      "prerecordedAudio": "预录音频",
+      "prerecordedAudioHelp": "挂断前播放一段预录的音频文件"
+    },
+    "httpApi": {
+      "title": "工具配置",
+      "description": "配置 HTTP API 端点和请求设置",
+      "tabSettings": "设置",
+      "tabAuth": "认证",
+      "tabParameters": "参数",
+      "nameLabel": "工具名称",
+      "nameHelp": "使用描述性名称,例如获取天气的工具可叫“Get Weather using API”",
+      "namePlaceholder": "例如:预约",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "提供便于 LLM 理解此工具用途的描述",
+      "descriptionPlaceholder": "这个工具是做什么的?",
+      "httpMethod": "HTTP 方法",
+      "timeoutMs": "超时(毫秒)",
+      "endpointUrl": "端点 URL",
+      "hostnameParamsDetected": "检测到主机名参数:{{params}}。运行时将从工具调用参数或工作流上下文解析其值。",
+      "pathParamsDetected": "检测到路径参数:{{params}}。运行时将从工具调用参数或工作流上下文解析其值。",
+      "customMessage": "自定义消息",
+      "customMessageHelp": "可选消息,AI 会在执行此工具前朗读或播放。",
+      "customMessagePlaceholder": "例如:让我为您查一下,请稍等。",
+      "llmParameters": "LLM 参数",
+      "llmParametersHelp": "定义 LLM 调用此工具时提供的参数。POST/PUT/PATCH 时作为 JSON 请求体发送,GET/DELETE 时作为 URL 查询参数发送。",
+      "presetParameters": "预设参数",
+      "presetParametersHelp": "添加 VoiceWorker 在运行时注入的值。这些不会暴露给 LLM,可以使用 {{example}} 之类的工作流模板或固定字面量。",
+      "bodyTemplate": "工具请求体模板",
+      "bodyTemplateHelp": "启用自定义 JSON 请求体。",
+      "customHeaders": "自定义请求头",
+      "customHeadersHelp": "添加请求中包含的自定义请求头(可选)",
+      "headerKeyPlaceholder": "请求头名称",
+      "headerValuePlaceholder": "请求头值",
+      "addHeader": "添加请求头"
+    },
+    "transferAgent": {
+      "title": "转接智能体配置",
+      "description": "把进行中的呼叫交给另一个智能体。主叫保持连接,在下一个智能体准备期间听到铃声,此前的对话会作为交接备注传递。",
+      "nameLabel": "工具名称",
+      "nameHelp": "同时会成为智能体调用的函数名。按目标命名,例如“转接到账单部门”。",
+      "namePlaceholder": "例如:转接到账单部门",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "智能体据此决定是否转接。如需多个目标,请再添加一个带独立描述的转接工具。",
+      "descriptionPlaceholder": "当来电者询问账单、付款或余额时使用",
+      "transferToAgent": "转接给智能体",
+      "loadingAgents": "正在加载智能体…",
+      "selectAgent": "选择智能体",
+      "handoverMessage": "交接消息",
+      "handoverMessageHelp": "用当前智能体自己的声音朗读,并在交接来电者之前等待播放完毕。留空则直接交接,不说任何内容。",
+      "handoverMessagePlaceholder": "让我为您转接给合适的人,请稍等。"
+    },
+    "transferCall": {
+      "title": "呼叫转移配置",
+      "description": "配置呼叫转移设置。支持电话号码(Twilio、Plivo)和 SIP 端点(Asterisk ARI)。",
+      "nameLabel": "工具名称",
+      "nameHelp": "此工具的描述性名称",
+      "namePlaceholder": "例如:呼叫转移",
+      "descriptionLabel": "描述",
+      "descriptionHelp": "帮助 LLM 理解何时使用此工具",
+      "descriptionPlaceholder": "AI 应在何时转移呼叫?",
+      "preTransferMessage": "转移前消息",
+      "preTransferMessageHelp": "选择是否在转移前播放一段配置好的消息。动态模式下,解析器返回的 custom_message 会覆盖此设置。",
+      "noMessage": "不播放消息",
+      "noMessageHelp": "立即转移呼叫,不播放任何消息",
+      "customMessage": "自定义消息",
+      "customMessageHelp": "转移前播放一段自定义消息",
+      "customMessagePlaceholder": "例如:请稍等,正在为您转接。",
+      "prerecordedAudio": "预录音频",
+      "prerecordedAudioHelp": "转移前播放一段预录的音频文件",
+      "timeout": "转移超时",
+      "timeoutHelp": "转移开始后等待目标接听的最长时间(5-120 秒)",
+      "timeoutDefault": "默认:30 秒",
+      "dispositionLabel": "转移成功后的通话结果",
+      "dispositionHelp": "可选。仅在转移成功时记录该值。留空则使用默认的转移结果。",
+      "dispositionPlaceholder": "例如:transferred_to_sales",
+      "destinationSource": "目标来源",
+      "destinationSourceHelp": "选择配置好的目标、有序的上下文规则或 HTTP 解析器。",
+      "tabStatic": "静态 / 模板",
+      "tabDynamic": "动态 HTTP 解析器",
+      "tabContextMapping": "上下文映射",
+      "destinationLabel": "转移目标",
+      "destinationHelp": "使用固定号码、SIP 端点或上下文模板。",
+      "destinationSipExample": "SIP 端点,例如 PJSIP/1234",
+      "destinationE164Example": "E.164 电话号码,例如 +1234567890",
+      "destinationTemplateExample": "模板变量,例如 {{example}}",
+      "resolverTitle": "动态转移解析器",
+      "resolverHelp": "VoiceWorker 会把解析后的参数字典发送到此端点。端点必须返回 transfer_context.destination,并可返回 transfer_context.custom_message。<0>文档</0>",
+      "resolverUrl": "解析器 URL",
+      "resolverUrlHelp": "VoiceWorker 会发送携带解析后参数字典的 POST 请求。",
+      "resolverTimeout": "解析器超时",
+      "resolverTimeoutHelp": "默认:3000 毫秒。最大:5000 毫秒。",
+      "resolverCredentialLabel": "解析器凭证(可选)",
+      "resolverCredentialHelp": "选择用于解析器端点的凭证,留空则不认证。",
+      "resolverWaitMessage": "解析器等待消息",
+      "resolverWaitMessagePlaceholder": "请稍等,正在为您查找合适的团队。",
+      "resolverWaitMessageHelp": "VoiceWorker 等待解析器响应时朗读。",
+      "llmParameters": "LLM 参数",
+      "llmParametersHelp": "定义智能体调用此转移工具时应提供的值,例如州、部门或原因。<0>文档</0>",
+      "presetParameters": "预设参数",
+      "presetParametersHelp": "添加 VoiceWorker 在运行时注入的值。这些不会暴露给 LLM,可以使用 {{example1}} 或 {{example2}} 之类的模板。<0>文档</0>",
+      "customHeaders": "自定义请求头",
+      "customHeadersHelp": "添加用于认证或路由元数据的自定义请求头。",
+      "headerKeyPlaceholder": "请求头名称",
+      "headerValuePlaceholder": "请求头值",
+      "addHeader": "添加请求头",
+      "contextRoutingTitle": "有序上下文路由",
+      "contextRoutingHelp1": "规则自上而下评估。第一个匹配的值选定其目标;匹配忽略大小写和首尾空白。",
+      "contextRoutingHelp2": "不带前缀的字段(如 <0>department</0>)会先检查 <1>gathered_context.department</1>,再检查 <2>initial_context.department</2>。使用显式前缀则只读取其中一个上下文。",
+      "contextRoutingHelp3": "目标可以是 SIP 端点、E.164 PSTN 号码、运营商支持的其他目标,或 {{example}} 之类的模板。<0>文档</0>",
+      "ruleLabel": "规则 {{index}}",
+      "moveRuleUpAria": "上移规则 {{index}}",
+      "moveRuleDownAria": "下移规则 {{index}}",
+      "removeRuleAria": "删除规则 {{index}}",
+      "contextField": "上下文字段",
+      "contextFieldAria": "规则 {{index}} 的上下文字段",
+      "contextFieldPlaceholder": "department 或 initial_context.department",
+      "mappingsLabel": "值到目标的映射",
+      "addMapping": "添加映射",
+      "addMappingAria": "为规则 {{index}} 添加映射",
+      "contextValueAria": "规则 {{ruleIndex}} 上下文值 {{index}}",
+      "contextValuePlaceholder": "上下文值",
+      "destinationAria": "规则 {{ruleIndex}} 转移目标 {{index}}",
+      "destinationPlaceholder": "PJSIP/1001、+1234567890 或 {{example}}",
+      "removeMappingAria": "删除规则 {{ruleIndex}} 的映射 {{index}}",
+      "mappingRequired": "请至少添加一条映射。",
+      "addRoutingRule": "添加路由规则",
+      "routingRuleRequired": "请至少添加一条路由规则。",
+      "fallbackDestination": "回退目标(可选)",
+      "fallbackDestinationPlaceholder": "运营商目标或 {{example}}",
+      "fallbackDestinationHelp": "仅在以上规则都不匹配时使用。"
+    },
+    "credentials": {
+      "title": "添加凭证",
+      "description": "创建用于鉴权的新凭证。",
+      "nameLabel": "名称",
+      "namePlaceholder": "我的 API 密钥",
+      "descriptionLabel": "描述",
+      "descriptionPlaceholder": "可选描述",
+      "typeLabel": "凭证类型",
+      "types": {
+        "bearerToken": "Bearer 令牌",
+        "apiKey": "API 密钥",
+        "basicAuth": "Basic 认证",
+        "customHeader": "自定义请求头"
+      },
+      "fields": {
+        "headerName": "请求头名称",
+        "apiKey": "API 密钥",
+        "token": "令牌",
+        "username": "用户名",
+        "password": "密码",
+        "headerValue": "请求头值"
+      },
+      "placeholders": {
+        "apiKeyHeader": "X-API-Key",
+        "apiKey": "你的 API 密钥",
+        "token": "你的 Bearer 令牌",
+        "username": "用户名",
+        "password": "密码",
+        "customHeaderName": "X-Custom-Header",
+        "headerValue": "请求头值"
+      },
+      "createFailed": "创建凭证失败",
+      "unexpectedError": "发生意外错误",
+      "creating": "创建中…"
+    },
+    "credentialSelector": {
+      "defaultLabel": "凭证",
+      "defaultDescription": "选择用于鉴权的凭证,或留空表示不使用鉴权。",
+      "defaultPlaceholder": "不使用鉴权",
+      "loading": "加载中…",
+      "addNew": "添加新凭证",
+      "empty": "暂无凭证。点击 + 按钮创建。"
+    },
+    "parameterEditor": {
+      "empty": "尚未定义参数。添加参数以指定此工具所需的数据。",
+      "parameterTitle": "参数 {{index}}",
+      "nameLabel": "名称",
+      "nameHelp": "参数名称,如 “order_id” 或 “customer_name”",
+      "namePlaceholder": "例如 customer_name",
+      "typeLabel": "类型",
+      "typeHelp": "参数类型,如 “string”、“number” 或 “boolean”",
+      "selectType": "选择类型",
+      "types": {
+        "string": "字符串",
+        "number": "数字",
+        "boolean": "布尔值",
+        "object": "对象",
+        "array": "数组"
+      },
+      "descriptionLabel": "描述",
+      "descriptionHelp": "参数描述,便于 LLM 理解,如 “要获取订单详情的客户 ID”",
+      "descriptionPlaceholder": "描述此参数的用途…",
+      "required": "必填",
+      "addParameter": "添加参数",
+      "presetEmpty": "尚未定义预置参数。添加一个以在请求中注入固定值或工作流上下文。",
+      "presetTitle": "预置参数 {{index}}",
+      "presetNameHelp": "发送给 API 的键,如 “phone_number” 或 “customer_id”",
+      "presetNamePlaceholder": "例如 phone_number",
+      "presetTypeHelp": "发送给 API 的 JSON 类型",
+      "valueTemplateLabel": "值或模板",
+      "valueTemplateHelp": "使用固定值或模板,如 {{example1}} 或 {{example2}}",
+      "valueTemplatePlaceholder": "例如 {{example}}",
+      "addPresetParameter": "添加预置参数"
+    },
+    "bodyTemplate": {
+      "label": "JSON Body 模板",
+      "help": "使用上方定义的 LLM 参数 {{param}},或初始上下文 {{context}}。",
+      "invalidJson": "请输入有效的 JSON 对象。"
+    },
+    "keyValueEditor": {
+      "key": "键",
+      "value": "值",
+      "add": "添加"
+    },
+    "urlErrors": {
+      "required": "URL 为必填项",
+      "mustStartHttp": "URL 格式无效。必须以 http:// 或 https:// 开头",
+      "invalidTemplate": "URL 模板格式无效",
+      "invalid": "URL 格式无效"
+    },
+    "testDialog": {
+      "title": "测试工具",
+      "description": "使用已保存的配置对真实端点发起请求。",
+      "request": "请求",
+      "realRequestTitle": "这会发起真实的外部请求",
+      "realRequestBody": "测试会向该端点发送真实的 {{method}} 请求。请求会使用已配置的凭证,且该操作可能修改外部数据。",
+      "parametersTitle": "参数",
+      "parametersHelp": "提供通常由模型和已配置预置参数给出的值。",
+      "fillSample": "填充示例值",
+      "llmTitle": "LLM 参数",
+      "llmHelp": "模型在调用时会提供的值。",
+      "presetTitle": "预置参数",
+      "presetHelp": "VoiceWorker 通常会根据各预置参数解析出的值。",
+      "testing": "测试中…",
+      "testFailed": "测试工具失败",
+      "noParameters": "未配置参数。",
+      "requiredBadge": "必填",
+      "configuredPreset": "已配置的预置值:<1>{{value}}</1>",
+      "emptyJson": "空",
+      "editParamAria": "编辑 {{name}}",
+      "enterParam": "输入 {{name}}",
+      "headersLabel": "请求头:",
+      "bodyLabel": "请求体:",
+      "queryLabel": "查询参数:",
+      "badges": {
+        "success": "成功",
+        "failed": "失败",
+        "error": "错误"
+      },
+      "editJsonTitle": "编辑 {{name}}",
+      "editJsonDescription": "编辑测试时为此参数发送的 JSON 值。",
+      "formatJson": "格式化 JSON",
+      "invalidJson": "无效的 JSON"
+    }
+  },
+  "flow": {
+    "common": {
+      "readOnly": "只读",
+      "docs": "文档",
+      "generating": "生成中…",
+      "notConfigured": "未配置",
+      "configured": "已配置",
+      "noPrompt": "未配置提示词",
+      "details": "详情",
+      "prompt": "提示词",
+      "node": "节点"
+    },
+    "addNode": {
+      "title": "添加新节点",
+      "viewDocs": "查看节点文档",
+      "limitReached": "此工作流中 {{name}} 的数量已达上限",
+      "sections": {
+        "triggers": "触发器",
+        "agentNodes": "智能体节点",
+        "globalNodes": "全局节点",
+        "webhook": "Webhook",
+        "qa": "QA",
+        "integrations": "集成"
+      }
+    },
+    "node": {
+      "badge": {
+        "node": "节点",
+        "start": "开始节点",
+        "agent": "智能体节点",
+        "end": "结束节点",
+        "global": "全局节点",
+        "trigger": "API 触发器",
+        "webhook": "Webhook",
+        "qa": "QA 分析"
+      },
+      "editTitle": "编辑 {{name}}",
+      "editFallback": "编辑节点",
+      "editDescription": "配置工作流中此节点的设置。",
+      "discardTitle": "放弃更改?",
+      "discardDescription": "你有未保存的更改。确定要放弃吗?",
+      "keepEditing": "继续编辑",
+      "discard": "放弃",
+      "deleteNode": "删除节点",
+      "copyFailed": "复制值失败",
+      "copyTriggerFailed": "复制触发 URL 失败",
+      "clickToCopy": "点击复制",
+      "clickToCopyUrl": "点击复制 URL",
+      "clickToCopyCurl": "点击复制 curl",
+      "apiEndpoint": "API 端点:",
+      "toolsLabel": "工具:",
+      "documentsLabel": "文档:",
+      "workflowLlm": "工作流 LLM",
+      "webhookUrls": "Webhook URL",
+      "webhookHelp": "测试模式运行最新草稿,便于在发布前验证更改。生产模式运行已发布的智能体。两者都需要在 X-API-Key 请求头中提供 API 密钥。<0>获取你的 API 密钥</0>",
+      "testUrl": "测试 URL",
+      "productionUrl": "生产 URL",
+      "exampleRequest": "示例请求",
+      "testHelper": "运行最新草稿;没有草稿时回退到已发布的智能体。",
+      "productionHelper": "运行已发布的智能体。"
+    },
+    "edge": {
+      "editCondition": "编辑条件",
+      "conditionLabel": "条件标签",
+      "conditionLabelHelp": "输入一个简短标签,便于在日志中识别此路径",
+      "characters": "{{count}}/64 个字符",
+      "condition": "条件",
+      "conditionHelp": "描述一个条件,系统将评估它以决定是否走此路径",
+      "transitionSpeech": "过渡语音",
+      "transitionSpeechHelp": "在跳转到该节点之前,助手会播放的可选文本或音频。它不会附加到对话上下文中。可用作简单的填充语以降低延迟。",
+      "transitionPlaceholder": "例如:让我为您转接到账单部门……",
+      "clickToSet": "点击设置条件",
+      "noCondition": "无条件"
+    },
+    "documents": {
+      "label": "知识库文档",
+      "description": "选择智能体在对话中可以引用的文档。",
+      "empty": "暂无可用文档。请先上传文档到知识库。",
+      "upload": "上传文档",
+      "manage": "管理文档",
+      "fullDocument": "完整文档",
+      "chunks": "{{count}} 个分块",
+      "selected_one": "已选择 {{count}} 个文档",
+      "selected_other": "已选择 {{count}} 个文档"
+    },
+    "tools": {
+      "label": "工具",
+      "description": "选择智能体在对话中可以使用的工具。",
+      "empty": "暂无可用工具。",
+      "create": "创建工具",
+      "httpTab": "HTTP 与工具 ({{count}})",
+      "mcpTab": "MCP ({{count}})",
+      "noHttp": "暂无 HTTP/原生工具。",
+      "noMcp": "暂无 MCP 工具。",
+      "refresh": "刷新工具",
+      "refreshFailed": "刷新请求失败。请检查 MCP 服务器后重试。",
+      "noDiscovered": "未发现工具 — 请点击刷新。",
+      "selectedFns": "已选 {{selected}}/{{total}} 个工具",
+      "unavailable": "(不可用)",
+      "manage": "管理工具",
+      "selected_one": "已选择 {{count}} 个工具",
+      "selected_other": "已选择 {{count}} 个工具"
+    },
+    "recordings": {
+      "select": "选择录音",
+      "selectHelp": "选择要播放的预录音频文件。",
+      "empty": "暂无可用录音",
+      "searchPlaceholder": "按 ID、转写或文件名搜索……",
+      "noMatch": "没有匹配“{{query}}”的录音",
+      "emptyMention": "未找到录音。请通过录音面板上传录音。"
+    },
+    "textOrAudio": {
+      "text": "文本",
+      "audio": "音频",
+      "staticWarning": "这段文本将按原文朗读。多语言工作流请仔细斟酌措辞。实时(语音到语音)模型无法播放静态文本。"
+    },
+    "form": {
+      "add": "添加",
+      "removeRow": "删除第 {{index}} 行",
+      "unknownType": "未知属性类型:{{type}}"
+    }
+  },
+  "conversation": {
+    "status": {
+      "ready": "就绪",
+      "live": "通话中",
+      "ended": "已结束"
+    },
+    "messageCount_one": "{{count}} 条消息",
+    "messageCount_other": "{{count}} 条消息",
+    "speaking": "说话中…",
+    "toolCall": {
+      "running": "运行中",
+      "completed": "已完成",
+      "details": "详情",
+      "arguments": "参数",
+      "result": "结果"
+    },
+    "latency": {
+      "total": "总计",
+      "reasoningDelay": "推理延迟:"
+    },
+    "notice": {
+      "interruptionDisabled": "已禁用打断",
+      "pipelineError": "管道错误",
+      "fatalPipelineError": "致命管道错误",
+      "executionError": "执行错误",
+      "executionErrorText": "执行出错"
+    },
+    "agentTurnFailed": "智能体本轮回复失败",
+    "realtime": {
+      "historicalTitle": "通话转写",
+      "historicalEmptyTitle": "未记录到对话",
+      "historicalEmptySubtitle": "此次通话未捕获实时反馈事件",
+      "liveTitle": "实时转写",
+      "liveEmptyTitle": "暂无消息",
+      "liveEmptyActiveSubtitle": "开始说话即可看到转写",
+      "liveEmptyIdleSubtitle": "开始呼叫后即可开始对话"
+    }
+  },
+  "workflowList": {
+    "create": {
+      "createFailed": "创建工作流失败",
+      "useAgentBuilder": "使用智能体构建器",
+      "useAgentBuilderDesc": "AI 根据你的描述生成工作流",
+      "blankCanvas": "空白画布",
+      "blankCanvasDesc": "从空工作流开始搭建"
+    },
+    "card": {
+      "created": "创建:{{date}}"
+    },
+    "upload": {
+      "button": "上传智能体定义",
+      "dialogTitle": "上传智能体定义",
+      "dropHint": "将工作流 JSON 文件拖到此处,或点击选择",
+      "selectFile": "选择文件",
+      "invalidJson": "请上传有效的 JSON 文件",
+      "uploadFailed": "上传工作流失败,请检查文件是否有效。"
+    },
+    "template": {
+      "duplicate": "复制工作流模板"
+    },
+    "table": {
+      "headerName": "智能体名称",
+      "headerCreatedAt": "创建时间",
+      "headerTotalRuns": "总运行次数",
+      "headerActions": "操作",
+      "move": "移动",
+      "moveToFolder": "移动到文件夹",
+      "uncategorized": "未分类",
+      "archiving": "归档中…",
+      "restoring": "恢复中…",
+      "archive": "归档",
+      "restore": "恢复",
+      "archiveSuccess": "工作流已归档",
+      "restoreSuccess": "工作流已恢复",
+      "archiveFailed": "归档工作流失败",
+      "restoreFailed": "恢复工作流失败",
+      "movedToUncategorized": "已移到未分类",
+      "moveSuccess": "智能体已移动",
+      "moveFailed": "移动智能体失败"
+    },
+    "folders": {
+      "newFolder": "新建文件夹",
+      "createDialogTitle": "创建文件夹",
+      "renameDialogTitle": "重命名文件夹",
+      "renameSubmit": "重命名",
+      "nameLabel": "文件夹名称",
+      "namePlaceholder": "例如:销售、支持、入职",
+      "archived": "已归档",
+      "uncategorized": "未分类",
+      "toggleAria": "展开或折叠 {{title}}",
+      "folderActions": "文件夹操作",
+      "rename": "重命名",
+      "createFailed": "创建文件夹失败",
+      "renameFailed": "重命名文件夹失败",
+      "deleteFailed": "删除文件夹失败",
+      "created": "文件夹“{{name}}”已创建",
+      "renamed": "文件夹已重命名",
+      "deleted": "文件夹“{{name}}”已删除",
+      "emptyArchived": "暂无已归档的智能体。",
+      "emptyFolder": "此文件夹为空。在智能体上使用“移动到文件夹”将其添加到此处。",
+      "emptyUncategorized": "暂无未分类的智能体。",
+      "deleteDialogTitle": "删除“{{name}}”?",
+      "deleteDialogBody_one": "此文件夹中的 {{count}} 个智能体不会被删除 — 它会被移到未分类。",
+      "deleteDialogBody_other": "此文件夹中的 {{count}} 个智能体不会被删除 — 它们会被移到未分类。",
+      "deleting": "删除中…",
+      "deleteFolder": "删除文件夹"
+    }
+  },
+  "runs": {
+    "defaultTitle": "工作流运行历史",
+    "cardTitle": "工作流运行",
+    "showingOf": "显示 {{shown}} 条,共 {{total}} 条",
+    "loading": "正在加载运行记录…",
+    "emptyDefault": "暂无工作流运行记录",
+    "reload": "重新加载",
+    "headerStatus": "状态",
+    "headerCreatedAt": "创建时间",
+    "headerCallType": "呼叫类型",
+    "headerDuration": "时长",
+    "headerDisposition": "通话结果",
+    "headerActions": "操作",
+    "statusCompleted": "已完成",
+    "statusInProgress": "进行中",
+    "durationSeconds": "{{secs}} 秒",
+    "pageOf": "第 {{current}} / {{total}} 页",
+    "previous": "上一页",
+    "next": "下一页",
+    "campaignTitle": "活动工作流运行",
+    "campaignEmpty": "该活动暂无工作流运行记录",
+    "loadFailed": "加载运行记录失败",
+    "channelPhone": "电话呼叫",
+    "channelWeb": "网页呼叫",
+    "channelChat": "文字聊天",
+    "directionInbound": "呼入",
+    "directionOutbound": "呼出"
+  },
+  "nav": {
+    "overview": "概览",
+    "sections": {
+      "build": "构建",
+      "manage": "管理"
+    },
+    "voiceAgents": "语音智能体",
+    "campaigns": "外呼活动",
+    "models": "模型",
+    "telephony": "电话线路",
+    "tools": "工具",
+    "files": "文件",
+    "recordings": "录音",
+    "developers": "开发者",
+    "agentRuns": "运行记录",
+    "billing": "账单",
+    "reports": "报表",
+    "telephonyWarning": "需要处理",
+    "platformSettings": "平台设置",
+    "accountSettings": "账号设置",
+    "signOut": "退出登录",
+    "hireExpert": "专家服务",
+    "toggleTheme": "切换主题",
+    "update": "有更新",
+    "updateTooltip": "最新版本:{{version}} — 点击查看升级指南",
+    "latest": "已最新",
+    "latestTooltip": "当前已是最新版本",
+    "teamSwitchFailed": "切换团队失败,请重试。",
+    "lightMode": "浅色模式",
+    "darkMode": "深色模式",
+    "switchingTeams": "正在切换团队…"
+  },
+  "auth": {
+    "headline": "VoiceWorker — 为你工作的 AI 语音智能体。",
+    "highlights": ["语音到语音", "MCP 原生", "BYOK — 任意模型"],
+    "enterpriseTitle": "需要私有化部署、数据驻留和数据边界?",
+    "enterpriseBody": "我们把 VoiceWorker 部署在你的环境内,服务受监管和高规模的团队。",
+    "enterpriseCta": "企业咨询",
+    "signIn": "登录",
+    "signInSubtitle": "输入邮箱和密码继续",
+    "signingIn": "登录中…",
+    "signUp": "注册",
+    "createAccount": "创建账号",
+    "createAccountSubtitle": "填写信息开始使用",
+    "creatingAccount": "创建中…",
+    "email": "邮箱",
+    "password": "密码",
+    "passwordPlaceholder": "请输入密码",
+    "passwordRulePlaceholder": "至少 8 位",
+    "confirmPassword": "确认密码",
+    "confirmPasswordPlaceholder": "再次输入密码",
+    "noAccount": "还没有账号?",
+    "haveAccount": "已有账号?",
+    "goBack": "返回",
+    "localAuthTitle": "本地认证模式",
+    "localAuthBody": "使用本地认证时,Stack Auth 处理器已禁用。",
+    "toasts": {
+      "passwordTooShort": "密码至少 8 位",
+      "passwordMismatch": "两次输入的密码不一致",
+      "loginFailed": "登录失败",
+      "signupFailed": "注册失败",
+      "genericError": "出错了,请重试"
+    }
+  },
+  "overview": {
+    "welcomeOss": "欢迎使用 VoiceWorker",
+    "welcome": "欢迎!",
+    "welcomeNamed": "欢迎,{{name}}!",
+    "subtitleOss": "VoiceWorker 是一个构建和部署 AI 语音智能体的平台。",
+    "subtitleCloud": "开始构建语音 AI 工作流",
+    "agentsTitle": "创建和管理你的语音智能体",
+    "agentsDesc": "用可视化编辑器构建强大的 AI 语音智能体",
+    "goToAgents": "进入智能体",
+    "servicesTitle": "配置服务",
+    "servicesDesc": "设置 LLM、TTS、STT 等 AI 服务提供商",
+    "configureModels": "配置模型",
+    "resourcesTitle": "资源",
+    "resourcesDesc": "获取帮助,进一步了解 VoiceWorker",
+    "documentation": "文档",
+    "reportIssue": "报告问题"
+  },
+  "settings": {
+    "title": "平台设置",
+    "subtitle": "管理平台配置与集成。",
+    "language": {
+      "title": "语言",
+      "description": "选择界面显示语言,即时生效。",
+      "label": "界面语言",
+      "updated": "界面语言已切换"
+    },
+    "preferences": {
+      "title": "偏好设置",
+      "description": "设置组织级默认值,如测试手机号和时区。",
+      "intro": "设置供测试和调度流程使用的组织级默认值。",
+      "testPhoneNumber": "测试手机号",
+      "timezone": "时区",
+      "externalPbx": "外部 PBX 集成",
+      "externalPbxHelp": "显示并启用 Asterisk、转接工具和工作流的高级外部 PBX 配置。禁用后保留已有配置。",
+      "dispositionMapping": "通话结果映射",
+      "dispositionMappingHelp": "用你自己的结果代码上报呼叫结果,替代 VoiceWorker 的默认代码。适用于 webhook、运行筛选、报表和外部 PBX 回写。禁用后保留配置。",
+      "configureMapping": "配置映射",
+      "noOverrides": "暂无覆盖",
+      "mapped_one": "已映射 {{count}} 个结果",
+      "mapped_other": "已映射 {{count}} 个结果",
+      "loadFailed": "加载组织偏好失败",
+      "saveFailed": "保存偏好失败",
+      "saved": "偏好已保存",
+      "mappingSaved": "结果映射已保存"
+    },
+    "mcp": {
+      "title": "MCP 服务器",
+      "description": "让 AI 智能体通过 Model Context Protocol 访问你的 VoiceWorker 工作区和文档。<0>了解更多</0>",
+      "endpointLabel": "MCP 端点",
+      "endpointHelp": "通过 Streamable HTTP 将兼容 MCP 的 AI 助手连接到此 URL。需要在 X-API-Key 请求头中提供 API 密钥。<0>获取你的 API 密钥</0>",
+      "publicUrlLabel": "公网 URL(Cloudflare 隧道)",
+      "backendUrlLabel": "后端 URL",
+      "tunnelHint": "外部托管的助手使用公网 URL;后端 URL 可在部署所在网络内使用。",
+      "guideText": "关于 Claude Code、Claude Desktop、Cursor 等客户端的分步设置,请参阅 <0>MCP 集成指南</0>。",
+      "copyFailed": "复制 MCP 端点失败"
+    },
+    "telemetry": {
+      "title": "追踪",
+      "description": "为语音智能体通话配置 Langfuse 追踪。<0>了解更多</0>",
+      "intro": "连接你的 Langfuse 项目以接收呼叫追踪数据。",
+      "host": "主机",
+      "publicKey": "公钥",
+      "secretKey": "密钥",
+      "projectId": "项目 ID",
+      "projectIdHelp": "可在你的 Langfuse URL 中找到:/project/<project-id>/traces。用于生成指向追踪的链接。",
+      "tracesPublic": "公开查看追踪",
+      "tracesPublicHelp": "默认关闭。开启后,任何持有追踪 URL 的人无需登录 Langfuse 即可打开它——包括完整的通话转写、提示词和工具负载。仅在需要向 Langfuse 项目外部分享追踪链接时才开启。",
+      "remove": "移除",
+      "saved": "追踪凭证已保存",
+      "saveFailed": "保存追踪凭证失败",
+      "removed": "追踪凭证已移除",
+      "removeFailed": "移除追踪凭证失败"
+    },
+    "dispositionMapping": {
+      "title": "配置 disposition 映射",
+      "description": "无论在哪里上报呼叫结果(webhook、运行筛选、报告以及外部 PBX 回写),每个 VoiceWorker disposition 都会以你自己的代码发送。保持某行不变即按原样发送该 disposition。保存后映射立即生效。",
+      "loading": "加载 disposition 中…",
+      "sourceColumn": "VoiceWorker disposition",
+      "targetColumn": "你的代码",
+      "sourcePlaceholder": "例如 no_medicare_card",
+      "newDisposition": "新 disposition",
+      "targetAria": "{{source}} 的代码",
+      "resetTitle": "重置为 VoiceWorker disposition",
+      "resetSr": "将 {{source}} 重置为默认值",
+      "removeTitle": "移除此 disposition",
+      "removeSr": "移除 {{source}}",
+      "thisDisposition": "此 disposition",
+      "addRow": "添加 disposition",
+      "noOverrides": "没有覆盖——所有 disposition 均按原样发送。",
+      "overrideCount_one": "{{count}} 个覆盖",
+      "overrideCount_other": "{{count}} 个覆盖",
+      "saveMapping": "保存映射"
+    }
+  },
+  "onboarding": {
+    "defaultTitle": "还有一件事…",
+    "closeAria": "关闭提示",
+    "next": "下一步"
+  },
+  "eventBanner": {
+    "live": "直播",
+    "liveVirtualSession": "线上直播活动",
+    "register": "报名",
+    "registerFreeSuffix": "(免费)",
+    "registerAria": "免费报名:{{title}} — 线上直播活动(在新标签页打开)",
+    "dismissAria": "关闭活动公告"
+  },
+  "toasts": {
+    "common": {
+      "error": "出错了,请重试",
+      "saved": "已保存",
+      "deleted": "已删除"
+    }
+  },
+  "modelConfigs": {
+    "title": "AI 模型配置",
+    "subtitle": "组织级模型设置。",
+    "loadDefaultsFailed": "加载模型配置默认值失败",
+    "loadFailed": "加载模型配置失败",
+    "saveFailed": "保存模型配置失败",
+    "saved": "模型配置已保存",
+    "saveConfiguration": "保存配置",
+    "tabs": {
+      "realtime": "语音到语音",
+      "byok": "BYOK"
+    },
+    "realtime": {
+      "description": "由单个语音到语音模型实时处理对话(无需独立的转写或音色)。变量提取和质检仍需配置 LLM。"
+    },
+    "dograh": {
+      "description": "VoiceWorker 提供托管的转写、LLM 和语音管道。选择音色和语言即可,底层模型服务商由 VoiceWorker 管理。我们提供定制定价和按月承诺的 15 秒脉冲计费。<0>联系我们</0>。",
+      "voice": "音色",
+      "language": "语言",
+      "selectLanguage": "选择语言",
+      "autoDetects": "自动检测 {{names}}。",
+      "speed": "语速",
+      "apiKey": "API 密钥",
+      "speedRangeError": "VoiceWorker 语速必须在 {{min}} 到 {{max}} 之间。"
+    },
+    "byok": {
+      "description": "使用你自己的 API 密钥分别配置转写、LLM 和语音服务商。还可以配置用于知识检索的嵌入模型。"
+    },
+    "thirdPartyNotice": {
+      "title": "第三方服务商数据提示",
+      "body": "VoiceWorker 会向所选模型服务发送其所需的数据。根据服务商和服务类型,可能包括提示词、转写、音频、生成的文本、工具数据和请求元数据。在处理敏感数据前,请查阅服务商的数据与保留政策。"
+    },
+    "pricing": {
+      "title": "用量定价",
+      "platformUsage": "平台用量",
+      "dograhModelUsage": "VoiceWorker 模型用量",
+      "thirdPartyNote": "你选择的模型服务商可能会就其用量单独收费。"
+    },
+    "form": {
+      "tabs": {
+        "llm": "LLM",
+        "tts": "语音",
+        "stt": "转写",
+        "embeddings": "嵌入",
+        "realtime": "实时模型"
+      },
+      "provider": "服务商",
+      "selectProvider": "选择服务商",
+      "supportedLanguages": "支持的语言",
+      "apiKeys": "API 密钥",
+      "apiKeyOverride": "API 密钥(留空则使用全局配置)",
+      "enterApiKey": "输入 API 密钥",
+      "addApiKey": "添加 API 密钥",
+      "enterField": "输入{{field}}",
+      "selectField": "选择{{field}}",
+      "enterCustomValue": "输入自定义值",
+      "realtimeMode": "实时模式",
+      "realtimeModeHelp": "使用单个语音到语音模型(无独立 STT/TTS)。变量提取和质检仍需配置 LLM。",
+      "overrideLabel": "覆盖 {{label}}",
+      "usingGlobal": "正在使用全局配置:{{summary}}",
+      "serviceRequired": "必须配置 {{service}}",
+      "unknownError": "发生未知错误"
+    },
+    "providerTitle": {
+      "bailian": "阿里云百炼",
+      "tencent": "腾讯云",
+      "speaches": "本地模型 (Speaches)",
+      "minimax": "MiniMax"
+    },
+    "providerDesc": {
+      "atlascloud": "Atlas Cloud 兼容 OpenAI 的 LLM API。",
+      "deepseek": "DeepSeek 官方 API(兼容 OpenAI)。",
+      "bailian": "阿里云百炼(Model Studio),通过 DashScope 兼容 OpenAI 的端点接入。",
+      "inworld": "Inworld AI 流式语音合成,支持内置与克隆音色。默认使用 inworld-tts-2 上的 Ashley 系统音色。",
+      "speaches": "自托管的 OpenAI 兼容本地模型。部署方式与支持的后端请参见 Speaches 项目。",
+      "huggingface": "托管版 Hugging Face Inference Providers API,按用量计费推理。",
+      "azure_speech": "Azure 认知服务语音——通过 Azure Speech SDK 提供 TTS 与 STT。",
+      "azure_realtime": "Azure OpenAI Realtime API——低延迟语音到语音对话。",
+      "tencent": "腾讯云实时语音识别(ASR)——通过 websocket 进行流式语音识别。",
+      "aws_nova_sonic": "Amazon Bedrock 的实时语音到语音模型。使用 AWS IAM 凭据而非 Bedrock API 密钥。",
+      "smallest": "Smallest AI 超低延迟 TTS(Waves)与 STT(Pulse)API。"
+    },
+    "fieldLabel": {
+      "model": "模型",
+      "base_url": "Base URL",
+      "api_key": "API 密钥",
+      "voice": "音色",
+      "language": "语言",
+      "speed": "语速",
+      "endpoint": "端点",
+      "project_id": "项目 ID",
+      "location": "区域",
+      "credentials": "凭据",
+      "aws_access_key": "AWS Access Key",
+      "aws_secret_key": "AWS Secret Key",
+      "aws_session_token": "AWS 会话令牌",
+      "aws_region": "AWS 区域",
+      "bill_to": "计费对象",
+      "temperature": "温度",
+      "backend_model": "后端模型",
+      "endpointing_sensitivity": "端点检测灵敏度",
+      "max_tokens": "最大 Token 数",
+      "top_p": "Top P",
+      "volume": "音量",
+      "delivery_mode": "生成模式",
+      "group_id": "Group ID",
+      "region": "区域",
+      "tencent_secret_id": "腾讯云 SecretId",
+      "tencent_secret_key": "腾讯云 SecretKey",
+      "tencent_app_id": "腾讯云 APPID",
+      "return_timestamps": "返回时间戳",
+      "api_version": "API 版本"
+    },
+    "fieldDesc": {
+      "endpoint": "Azure OpenAI 资源端点(如 https://<resource>.openai.azure.com)。",
+      "project_id": "Vertex AI 使用的 Google Cloud 项目 ID。",
+      "credentials": "粘贴完整的服务账号 JSON 文件内容。留空则回退到应用默认凭据(ADC)。",
+      "aws_access_key": "具有 bedrock:InvokeModel 权限的 AWS Access Key ID。",
+      "aws_secret_key": "与 Access Key ID 配对的 AWS Secret Access Key。",
+      "aws_region": "Bedrock 模型可用的 AWS 区域。",
+      "aws_session_token": "可选,用于临时 IAM 凭据的 AWS 会话令牌。",
+      "bill_to": "可选,通过 X-HF-Bill-To 计费的 Hugging Face 组织或用户。",
+      "speed": "语速倍率。",
+      "max_tokens": "最大响应 Token 数。",
+      "top_p": "核采样(Nucleus Sampling)阈值。",
+      "volume": "生成语音的音量倍率。",
+      "delivery_mode": "控制 inworld-tts-2 的稳定性与表现力(STABLE、BALANCED 或 CREATIVE)。",
+      "group_id": "MiniMax Group ID(在 MiniMax 控制台的 Account → Group 中查看)。",
+      "region": "Speech Services 所在的 Azure 区域(如 'eastus'、'westeurope')。",
+      "tencent_secret_id": "腾讯云 CAM SecretId(访问管理 → API 密钥管理)。",
+      "tencent_secret_key": "与 SecretId 配对的腾讯云 CAM SecretKey。",
+      "tencent_app_id": "腾讯云账号 APPID——ASR websocket URL 中必填。",
+      "return_timestamps": "在所选提供商/模型支持时请求返回时间戳分段。",
+      "backend_model": "遵循你的工作流并调用工具的 OpenAI Responses 模型。使用同一个 API 密钥;后端用量与语音分开计费。",
+      "endpointing_sensitivity": "Nova 判定用户停止说话的速度。留空则使用模型默认值。"
+    },
+    "providerFieldDesc": {
+      "tts": {
+        "openai": {
+          "model": "OpenAI TTS 模型。",
+          "base_url": "仅在使用 OpenAI 兼容 API(如本地 TTS、代理)时覆盖。"
+        },
+        "google": {
+          "model": "Google Cloud 低延迟 TTS 引擎。Dograh 会将其映射到 Pipecat 的流式 Google TTS 服务,适用于 Chirp 3 HD 和 Journey 音色。"
+        },
+        "bailian": {
+          "model": "百炼 TTS 模型(CosyVoice)。",
+          "base_url": "DashScope websocket 推理端点。默认中国大陆端点;国际站使用 wss://dashscope-intl.aliyuncs.com/api-ws/v1/inference。"
+        },
+        "dograh": {
+          "model": "Dograh TTS 档位。"
+        },
+        "speaches": {
+          "model": "你的 TTS 端点所提供的模型名称(如 Kokoro-FastAPI)。",
+          "base_url": "OpenAI 兼容 TTS 端点(Kokoro-FastAPI 等)。",
+          "api_key": "自托管 TTS 通常不需要。除非服务端强制要求,否则留空。"
+        },
+        "minimax": {
+          "model": "MiniMax TTS 模型。",
+          "base_url": "MiniMax TTS API 端点(必须包含 /v1/t2a_v2 路径)。默认全球端点;可覆盖为 https://api.minimaxi.chat/v1/t2a_v2(中国大陆)或 https://api-uw.minimax.io/v1/t2a_v2(美西)。"
+        },
+        "sarvam": {
+          "model": "Sarvam TTS 模型(音色列表取决于此)。"
+        }
+      },
+      "stt": {
+        "openai": {
+          "model": "OpenAI 转写模型。",
+          "base_url": "仅在使用 OpenAI 兼容 API(如本地 STT、代理)时覆盖。"
+        },
+        "google": {
+          "model": "Google Cloud Speech-to-Text V2 识别模型。",
+          "language": "主要识别语言的 BCP-47 语言代码。",
+          "api_key": "Google Cloud STT 不使用。留空。",
+          "location": "Google Cloud Speech-to-Text 区域(如 'global' 或 'us-central1')。"
+        },
+        "dograh": {
+          "model": "Dograh STT 档位。"
+        },
+        "speaches": {
+          "model": "你的 STT 端点所提供的 Whisper 模型标识。",
+          "base_url": "OpenAI 兼容 STT 端点(Speaches 等)。",
+          "api_key": "自托管 STT 通常不需要。除非服务端强制要求,否则留空。"
+        },
+        "huggingface": {
+          "model": "通过 Inference Providers 提供的 Hugging Face ASR 模型标识。",
+          "base_url": "Hugging Face Inference Providers 路由 base URL。"
+        },
+        "sarvam": {
+          "model": "Sarvam STT 模型。saarika:v2.5 按所说语言转写;saaras:v3 是推荐模型,输出模式更灵活。",
+          "language": "BCP-47 语言代码。使用 unknown 自动检测语言。"
+        },
+        "cartesia": {
+          "model": "Cartesia STT 模型。",
+          "language": "ISO 639-1 语言代码。ink-2 目前仅支持英语。"
+        },
+        "azure_speech": {
+          "model": "Azure Speech 识别模型(连续识别用 'latest_long')。",
+          "language": "识别语言的 BCP-47 语言代码。"
+        },
+        "smallest": {
+          "model": "Smallest AI STT 模型。支持 38 种语言的实时流式转写。",
+          "language": "转写语言的 ISO 639-1 语言代码。"
+        }
+      },
+      "embeddings": {
+        "openai": {
+          "model": "OpenAI 嵌入模型。"
+        },
+        "openrouter": {
+          "model": "OpenRouter 托管的嵌入模型 slug。"
+        },
+        "azure": {
+          "model": "Azure OpenAI 嵌入部署名称。该部署必须返回 1536 维嵌入向量。"
+        },
+        "dograh": {
+          "model": "Dograh 托管的嵌入模型。"
+        }
+      },
+      "openai": {
+        "model": "要使用的 OpenAI 聊天模型。",
+        "base_url": "仅在使用 OpenAI 兼容 API(如本地 LLM、代理)时覆盖。",
+        "voice": "OpenAI TTS 语音名称。"
+      },
+      "atlascloud": {
+        "model": "Atlas Cloud 兼容 OpenAI 的聊天模型标识符。",
+        "base_url": "Atlas Cloud 兼容 OpenAI 的 API 端点。"
+      },
+      "google": {
+        "model": "Google AI Studio 上的 Gemini 模型(非 Vertex)。",
+        "voice": "Google Cloud 语音名称。流式 TTS 请使用 Chirp 3 HD 或 Journey 语音。",
+        "language": "用于语音合成的 BCP-47 语言代码。",
+        "api_key": "Google Cloud TTS 不使用。留空。",
+        "location": "可选的 Google Cloud 区域 Text-to-Speech 端点(如 'us-central1')。留空则使用默认端点。"
+      },
+      "google_vertex": {
+        "model": "Vertex AI 上的 Gemini 模型。",
+        "api_key": "Vertex AI 不使用——通过 `credentials` 中的服务账号(或 ADC)认证。留空。",
+        "location": "Vertex AI 位置,决定请求的处理地。'eu' 和 'us' 是多区域,处理保持在对应地理范围内;'europe-west4' 等单区域则进一步固定;'global' 可路由到全球任意地点,不提供数据驻留保证。可用模型因位置而异。"
+      },
+      "groq": {
+        "model": "Groq 托管的模型标识符。"
+      },
+      "openrouter": {
+        "model": "OpenRouter 模型标识,格式为 'vendor/model'。",
+        "base_url": "仅在通过自有网关代理 OpenRouter 时覆盖。"
+      },
+      "deepseek": {
+        "model": "DeepSeek 模型 id。'deepseek-chat' 支持函数调用,适合语音代理;'deepseek-reasoner' 是不支持工具调用的慢速推理模型,实时通话请避免使用。",
+        "base_url": "DeepSeek API base URL。仅在通过自有网关代理时覆盖。"
+      },
+      "bailian": {
+        "model": "百炼(DashScope)模型 id,如低延迟语音代理常用 'qwen-plus' 或 'qwen-turbo'。其他模型(qwen3 系列、托管的 deepseek-* 等)可手动输入。",
+        "base_url": "DashScope 兼容 OpenAI 的端点。国际站请使用 https://dashscope-intl.aliyuncs.com/compatible-mode/v1。",
+        "voice": "百炼 CosyVoice 音色 ID。cosyvoice-v2 音色带 _v2 后缀(如 longxiaochun_v2);cosyvoice-v1 音色不带。"
+      },
+      "azure": {
+        "model": "Azure 部署名称(不是上游 OpenAI 模型 id)。",
+        "api_version": "用于嵌入的 Azure OpenAI API 版本。"
+      },
+      "dograh": {
+        "model": "Dograh 托管的模型档位。",
+        "voice": "音色预设。",
+        "language": "语言代码;自动检测请用 'multi'。"
+      },
+      "aws_bedrock": {
+        "model": "Bedrock 模型 ID——需包含区域推理配置前缀(如 'us.')。",
+        "api_key": "Bedrock 不使用——通过上方的 AWS 凭据认证。留空。"
+      },
+      "speaches": {
+        "model": "你的 OpenAI 兼容服务器所暴露的模型名称。",
+        "base_url": "OpenAI 兼容端点(Ollama、vLLM 等)。",
+        "api_key": "自托管端点通常不需要。除非你的服务器强制要求,否则留空。",
+        "voice": "TTS 引擎的音色 ID。",
+        "language": "ISO 639-1 语言代码。"
+      },
+      "huggingface": {
+        "model": "Hugging Face 聊天补全模型标识符,可选带提供商后缀。",
+        "base_url": "Hugging Face 兼容 OpenAI 的 chat-completions 路由 base URL。"
+      },
+      "minimax": {
+        "model": "MiniMax 聊天模型。",
+        "base_url": "MiniMax 兼容 OpenAI 的 API 端点。",
+        "temperature": "采样温度。MiniMax 要求 > 0。",
+        "voice": "MiniMax 音色 ID。"
+      },
+      "sarvam": {
+        "model": "Sarvam 聊天模型。",
+        "temperature": "采样温度。Sarvam 推荐 0.5,对话回复更均衡。",
+        "voice": "Sarvam 音色名称或自定义音色 ID。",
+        "language": "BCP-47 印度语言代码(如 hi-IN、en-IN)。"
+      },
+      "openai_realtime": {
+        "model": "选择 GPT-Live 进行全双工语音,或选择 GPT-Realtime 模型。",
+        "voice": "模型说话所用的语音。",
+        "language": "输入音频转写的 ISO 639-1 语言代码(如 'pt'、'es')。可提升转写准确率并降低延迟。留空则自动检测。"
+      },
+      "aws_nova_sonic": {
+        "model": "Amazon Nova 2 Sonic 模型 ID。",
+        "voice": "模型说话所用的语音。Tiffany 和 Matthew 是多语言语音。",
+        "api_key": "Nova 2 Sonic 不使用——通过上方的 AWS 凭据认证。留空。",
+        "temperature": "Nova 2 Sonic 的采样温度(大于 0,最大 1)。"
+      },
+      "grok_realtime": {
+        "model": "Grok 实时语音代理模型。",
+        "voice": "模型说话所用的语音。"
+      },
+      "ultravox_realtime": {
+        "model": "Ultravox 实时语音代理模型。",
+        "voice": "Ultravox 语音名称或语音 ID。"
+      },
+      "google_realtime": {
+        "model": "Google AI Studio 上的 Gemini Live 模型(非 Vertex)。",
+        "voice": "模型说话所用的语音。",
+        "language": "ISO 639-1 语言代码。"
+      },
+      "google_vertex_realtime": {
+        "model": "Vertex AI publisher/model 标识符。",
+        "voice": "模型说话所用的语音。",
+        "language": "BCP-47 语言代码(如 'en-US')。",
+        "api_key": "Vertex AI 不使用——通过 `credentials` 中的服务账号(或 ADC)认证。留空。",
+        "location": "Vertex AI 位置,决定请求的处理地。'eu' 和 'us' 是多区域,处理保持在对应地理范围内;'europe-west4' 等单区域则进一步固定;'global' 可路由到全球任意地点,不提供数据驻留保证。可用模型因位置而异。"
+      },
+      "azure_realtime": {
+        "model": "Azure OpenAI realtime 部署名称。",
+        "voice": "模型说话所用的语音。",
+        "api_version": "Azure OpenAI Realtime 协议版本。GA API 请用 'v1';按日期命名的版本会选择已弃用的 preview 端点。"
+      },
+      "deepgram": {
+        "base_url": "Deepgram API 端点。它决定你的文本在何处处理:使用 https://api.eu.deepgram.com 可将处理保持在欧盟境内,使用 https://api.au.deepgram.com 则为澳大利亚。同一个 API 密钥在所有区域端点通用。",
+        "voice": "Deepgram 语音 ID(根据 'aura-N' 前缀推断模型)。",
+        "model": "Deepgram STT 模型。",
+        "language": "语言代码。'multi' 启用 Nova-3 自动检测,并为 Flux 多语言自动检测省略语言提示。"
+      },
+      "elevenlabs": {
+        "model": "ElevenLabs TTS 模型。",
+        "base_url": "ElevenLabs API base URL。覆盖可使用数据驻留端点(如 https://api.eu.residency.elevenlabs.io),以满足 GDPR / HIPAA / 区域合规。",
+        "voice": "来自你的 Voice Library 的 ElevenLabs 语音 ID。",
+        "language": "转写的 ISO 639-1 语言代码。用 'auto' 可让 ElevenLabs 自动检测语言。"
+      },
+      "cartesia": {
+        "model": "Cartesia TTS 模型。",
+        "voice": "来自你的 Cartesia 控制台的 Cartesia 语音 UUID。",
+        "language": "Cartesia TTS 合成的语言代码(如 'en'、'tr'、'fr'、'de')。"
+      },
+      "inworld": {
+        "model": "Inworld TTS 模型。",
+        "voice": "Inworld 音色 ID。默认暖色英文语音用 Ashley;克隆/自定义音色用工作区音色 ID。",
+        "language": "用于语音合成的 BCP-47 语言代码。"
+      },
+      "camb": {
+        "model": "Camb.ai TTS 模型。",
+        "voice": "Camb.ai 音色 ID。",
+        "language": "BCP-47 语言代码。"
+      },
+      "rime": {
+        "model": "Rime TTS 模型。",
+        "voice": "Rime 音色 ID。",
+        "language": "ISO 639-1 语言代码。"
+      },
+      "azure_speech": {
+        "model": "Azure Speech 合成引擎(仅神经网络语音)。",
+        "voice": "Azure 神经网络语音名称(如 'en-US-AriaNeural')。",
+        "language": "用于语音合成的 BCP-47 语言代码。"
+      },
+      "smallest": {
+        "model": "Smallest AI TTS 模型。lightning_v3.1_pro 是高级音色池(美式、英式、印度口音);lightning_v3.1 是标准池,覆盖 12 种语言的 217 个音色。",
+        "voice": "Smallest AI 音色 ID。可用音色因模型而异:lightning_v3.1 有丰富的多语言音色池;lightning_v3.1_pro 是高级美式、英式、印度口音音色(仅英语 + 印地语)。",
+        "language": "用于语音合成的 ISO 639-1 语言代码。"
+      },
+      "xai": {
+        "voice": "xAI 语音角色。",
+        "language": "用于语音合成的 BCP-47 语言代码(如 'en'、'fr'、'de'),或用 'auto' 自动检测语言。"
+      },
+      "lmnt": {
+        "model": "LMNT TTS 模型。'aurora' 是通用模型;'blizzard' 面向更有表现力、更口语化的语音。",
+        "voice": "LMNT 音色 ID。可用内置音色名或你 LMNT 账户中的自定义音色 ID。",
+        "language": "合成语言代码(如 'en'、'es'、'fr'、'de'、'pt'、'zh'、'ko'、'hi')。"
+      },
+      "speechify": {
+        "model": "Speechify TTS 模型。'simba-3.2' 是延迟最低的流式原生英语模型;'simba-3.0' 增加德语、西班牙语、法语、意大利语和葡萄牙语。",
+        "voice": "Speechify 音色 ID。选项会过滤为所选模型可用的音色;自定义或克隆音色 ID 必须支持所选模型(见 GET /v1/voices),否则合成失败。",
+        "language": "合成语言代码(如 'en'、'de'、'es'、'fr'、'it'、'pt-BR')。选项会过滤为所选模型文档记载的语言;simba-3.2 文档记载仅支持英语。"
+      },
+      "speechmatics": {
+        "model": "Speechmatics Agent STT 模型。",
+        "language": "ISO 639-1 语言代码。"
+      },
+      "assemblyai": {
+        "model": "AssemblyAI 实时 STT 模型。",
+        "language": "ISO 639-1 语言代码。"
+      },
+      "gladia": {
+        "model": "Gladia STT 模型。",
+        "language": "ISO 639-1 语言代码。"
+      },
+      "tencent": {
+        "model": "腾讯云 ASR 引擎模型类型。'8k_zh' 是电话模型;其他引擎类型可手动输入。",
+        "api_key": "腾讯云不使用——通过上方的 SecretId/SecretKey 认证。留空。"
+      }
+    },
+    "llmSelector": {
+      "model": "模型",
+      "selectModel": "选择模型",
+      "enterModel": "输入模型名称",
+      "addModelManually": "手动添加模型",
+      "apiKeyLabel": "API 密钥"
+    }
+  },
+  "telephony": {
+    "common": {
+      "configIdLabel": "配置 ID",
+      "configId": "配置 ID:{{id}}",
+      "configIdCopied": "配置 ID 已复制",
+      "copyIdFailed": "复制 ID 失败",
+      "copyFailed": "复制失败",
+      "copyUrlFailed": "复制 URL 失败",
+      "reactivate": "重新启用",
+      "reactivateFailed": "重新启用配置失败",
+      "setDefaultFailed": "设置默认配置失败"
+    },
+    "badges": {
+      "default": "默认",
+      "inactive": "已停用",
+      "setupIncomplete": "设置未完成"
+    },
+    "list": {
+      "title": "电话线路配置",
+      "description": "连接一个或多个电话运营商账号。每个活动使用一个配置;呼入呼叫按账号 ID 路由到对应配置。",
+      "addConfiguration": "添加配置",
+      "emptyTitle": "暂无电话线路配置",
+      "emptyBody": "添加配置即可拨打电话并接收呼入呼叫。",
+      "phoneCount_one": "{{count}} 个电话号码",
+      "phoneCount_other": "{{count}} 个电话号码",
+      "disabledAfterFailures": "因多次连接失败已禁用",
+      "disabledAfterFailuresReason": "因多次连接失败已禁用:{{reason}}",
+      "reactivateTitle": "立即重新连接此配置",
+      "reactivated": "{{name}} 已重新启用 — 将在一分钟内重新连接",
+      "setDefaultTitle": "设为默认外呼配置",
+      "setDefaultSuccess": "{{name}} 已设为默认外呼配置",
+      "managePhoneNumbers": "管理电话号码",
+      "managePhoneNumbersAria": "管理 {{name}} 的电话号码",
+      "loadFailed": "加载配置失败",
+      "loadOneFailed": "加载配置失败",
+      "deleteTitle": "删除配置?",
+      "deleteBody": "{{name}} 及其所有电话号码将被移除。引用此配置的活动需要先重新指派,才能删除。",
+      "deleteSuccess": "配置已删除",
+      "deleteFailed": "删除配置失败"
+    },
+    "warnings": {
+      "telnyxTitle": "未配置 Webhook 公钥",
+      "telnyxBody_one": "{{count}} 个 Telnyx 配置缺少 Webhook 公钥。缺少公钥时,Telnyx 的呼叫状态更新和呼入呼叫会被拒绝。请从 <0>Mission Control Portal → Keys & Credentials → Public Key</0> 复制公钥,并粘贴到下方对应的 Telnyx 配置中。",
+      "telnyxBody_other": "{{count}} 个 Telnyx 配置缺少 Webhook 公钥。缺少公钥时,Telnyx 的呼叫状态更新和呼入呼叫会被拒绝。请从 <0>Mission Control Portal → Keys & Credentials → Public Key</0> 复制公钥,并粘贴到下方对应的 Telnyx 配置中。",
+      "vonageTitle": "未配置签名密钥",
+      "vonageBody_one": "{{count}} 个 Vonage 配置缺少签名密钥。缺少密钥时,Vonage 的签名 Webhook 会被拒绝,呼入呼叫和呼叫状态更新将无法工作。请从你的 Vonage 账号复制签名密钥,并粘贴到下方对应的 Vonage 配置中。",
+      "vonageBody_other": "{{count}} 个 Vonage 配置缺少签名密钥。缺少密钥时,Vonage 的签名 Webhook 会被拒绝,呼入呼叫和呼叫状态更新将无法工作。请从你的 Vonage 账号复制签名密钥,并粘贴到下方对应的 Vonage 配置中。"
+    },
+    "detail": {
+      "notFound": "未找到配置。",
+      "allConfigurations": "所有配置",
+      "updated": "更新于 {{date}}",
+      "setAsDefault": "设为默认",
+      "setDefaultSuccess": "已设为默认外呼配置",
+      "editCredentials": "编辑凭证",
+      "disabledTitle": "此配置已禁用",
+      "disabledBody": "多次连接失败后,VoiceWorker 已停止重连。重新连接前呼叫无法工作。请更正下方设置,然后选择“重新启用”重试。",
+      "disabledBodyReason": "多次连接失败后,VoiceWorker 已停止重连:{{reason}}。重新连接前呼叫无法工作。请更正下方设置,然后选择“重新启用”重试。",
+      "disabledSince": "禁用于 {{date}}",
+      "stasisTitle": "将呼叫路由到此 Stasis 应用",
+      "stasisHelp": "把这行添加到你的 Asterisk <0>extensions.conf</0>,然后运行 <1>dialplan reload</1>。在此之前,呼叫能到达 Asterisk,但不会到达 VoiceWorker。",
+      "dialplanCopied": "拨号计划行已复制",
+      "inboundWebhookUrl": "呼入 Webhook URL",
+      "webhookCopied": "呼入 Webhook URL 已复制",
+      "copyWebhookTitle": "点击复制呼入 Webhook URL",
+      "copyWebhookAria": "复制呼入 Webhook URL",
+      "loadFailed": "加载配置失败",
+      "reactivated": "已重新启用 — 将在一分钟内重新连接"
+    },
+    "numbers": {
+      "title": "电话号码",
+      "description": "用作外呼主叫号码、并用于呼入匹配的号码。除 PSTN 号码外,也支持 SIP URI 和分机。",
+      "inboundDocs": "呼入文档",
+      "add": "添加电话号码",
+      "empty": "暂无电话号码。添加一个即可在此配置上拨打或接听呼叫。",
+      "headerAddress": "地址",
+      "headerId": "电话号码 ID",
+      "headerType": "类型",
+      "headerLabel": "标签",
+      "headerStatus": "状态",
+      "headerInboundWorkflow": "呼入工作流",
+      "headerOutboundTrunk": "外呼中继",
+      "headerActions": "操作",
+      "idCopied": "电话号码 ID 已复制",
+      "copyIdTitle": "点击复制电话号码 ID",
+      "copyIdAria": "复制电话号码 ID {{id}}",
+      "active": "活跃",
+      "defaultCaller": "默认主叫",
+      "unassigned": "未分配",
+      "setDefaultCallerTitle": "设为默认主叫号码",
+      "setDefaultCallerSuccess": "{{address}} 已设为默认主叫号码",
+      "setDefaultCallerFailed": "设置默认主叫号码失败",
+      "deleteSuccess": "电话号码已删除",
+      "deleteFailed": "删除电话号码失败",
+      "deleteTitle": "删除电话号码?",
+      "deleteBody": "{{address}} 将不再接收呼入呼叫,也不能再作为此配置的主叫号码。"
+    },
+    "configForm": {
+      "addTitle": "添加电话线路配置",
+      "editTitle": "编辑电话线路配置",
+      "addDescription": "连接电话运营商账号。配置创建后再添加电话号码。",
+      "editDescription": "更新此配置的凭证。电话号码单独管理。",
+      "name": "名称",
+      "namePlaceholder": "例如:Twilio 美国生产",
+      "nameRequired": "名称为必填项",
+      "provider": "运营商",
+      "providerPlaceholder": "选择运营商",
+      "providerLocked": "创建后无法更改运营商。",
+      "providerDocs": "{{name}} 文档",
+      "setDefaultLabel": "设为外呼默认配置",
+      "setDefaultHelp": "未指定具体配置时,测试呼叫和活动将使用此配置。",
+      "setDefaultHelpSuggest": "未指定具体配置时,测试呼叫和活动将使用此配置。你的组织还没有默认配置。",
+      "created": "配置已创建",
+      "updated": "配置已更新",
+      "saveFailed": "保存配置失败",
+      "saveFailedGeneric": "保存失败",
+      "saveChanges": "保存更改",
+      "phoneNumbersManaged": "电话号码在配置页面单独管理。",
+      "leaveMasked": "保持掩码不变则沿用现有值",
+      "fieldCopied": "{{label}}已复制",
+      "selectOption": "请选择"
+    },
+    "phoneForm": {
+      "addTitle": "添加电话号码",
+      "editTitle": "编辑电话号码",
+      "description": "支持 PSTN 号码(E.164)、SIP URI(sip:user@host)和 SIP 分机。",
+      "address": "地址",
+      "addressRequired": "地址为必填项",
+      "addressNeedsCountry": "不带“+”前缀的 PSTN 地址需要填写国家(ISO-2)提示,或在地址中包含国家代码(例如 +14155551234)。",
+      "addressImmutable": "地址无法更改。如需修改,请删除此号码并重新创建。",
+      "storedAs": "存储为 <0>{{address}}</0>({{type}})",
+      "country": "国家(ISO-2)",
+      "label": "标签",
+      "labelPlaceholder": "例如:波士顿主叫号码",
+      "inboundWorkflow": "呼入工作流",
+      "none": "(无)",
+      "inboundWorkflowHelp": "在启用按号码呼入路由时使用。目前,呼入呼叫仍按 Webhook URL 中的 workflow_id 路由。",
+      "outboundTrunk": "外呼中继",
+      "trunkItem": "{{name}}",
+      "trunkItemDisabled": "{{name}}(已禁用)",
+      "trunkHelpMulti": "此号码的呼叫经由此中继呼出。请选择号码所属运营商对应的中继 — 运营商会拒绝不属于他们的主叫号码。",
+      "trunkHelpSingle": "此号码的呼叫经由此中继呼出。只有一个中继时,VoiceWorker 会自动回退到它。",
+      "active": "活跃",
+      "defaultCallerLabel": "此配置的默认主叫号码",
+      "defaultCallerHelp": "设置后,测试呼叫将用它作为主叫号码。",
+      "updated": "电话号码已更新",
+      "added": "电话号码已添加",
+      "saveFailed": "保存电话号码失败",
+      "syncWarning": "已保存,但同步呼入 Webhook 到运营商失败。",
+      "add": "添加",
+      "saveChanges": "保存更改"
+    },
+    "checklist": {
+      "title": "设置清单",
+      "setupGuide": "设置指南",
+      "descriptionSip": "VoiceWorker 提供 SIP 连接;你需要把自己的运营商和号码接入它。",
+      "descriptionApi": "完成这些步骤后即可在此配置上拨打和接听呼叫。",
+      "blockedTitle": "暂时无法拨打电话",
+      "caller_id": {
+        "title": "添加一个用作主叫号码的电话号码",
+        "description": "外呼需要一个号码作为主叫。在下方的“电话号码”中,从你的 {{name}} 账户添加至少一个号码。",
+        "cloudonix": {
+          "description": "至少添加一个你的运营商分配给你的号码。Cloudonix 要求每次外呼都带主叫号码,否则会拒绝呼叫。"
+        }
+      },
+      "sip_domain": {
+        "managed": {
+          "title": "SIP 域名已开通",
+          "description": "VoiceWorker 已为该组织开通了 Cloudonix SIP 域名。其呼入主机名和呼出源 IP 列在下方“SIP 连接”中 — 配置你的运营商时会用到。"
+        },
+        "self_serve": {
+          "title": "Cloudonix 凭证已保存",
+          "description": "你的 Cloudonix Bearer 令牌和域名已保存,并将用于此配置上的每一次呼叫。"
+        }
+      },
+      "outbound_trunk": {
+        "title": "接入你的 SIP 运营商以拨打电话",
+        "managed": {
+          "description": "在“外呼中继”下添加一个指向你的 SIP 运营商或 PBX 的中继,并在你的一侧放行其源 IP。没有中继,VoiceWorker 无处可发外呼。"
+        },
+        "self_serve": {
+          "description": "可选:在“外呼中继”下添加中继,将 VoiceWorker 的呼叫固定到一条路由。不添加时,Cloudonix 会在你域名下的活跃中继中自行选择。"
+        }
+      },
+      "trunk_assignment": {
+        "title": "告诉 VoiceWorker 每个号码经哪个中继呼出",
+        "description": "此配置有多个中继,号码所属的运营商不再明确。请将每个电话号码分配到授权该号码的运营商对应的中继 — 否则 VoiceWorker 无法固定路由,Cloudonix 会在你的活跃中继中自行选择。"
+      },
+      "inbound_routing": {
+        "title": "将号码指向智能体以接听呼入",
+        "description": "仅在需要接听呼叫时才需要:在下方为电话号码设置呼入工作流,并在你的 Cloudonix Cockpit 中将其 DNID 绑定到 Voice 应用。"
+      }
+    },
+    "fields": {
+      "account_sid": {
+        "label": "账户 SID"
+      },
+      "auth_token": {
+        "label": "认证令牌"
+      },
+      "api_key": {
+        "label": "API 密钥"
+      },
+      "application_id": {
+        "label": "应用 ID"
+      },
+      "from_numbers": {
+        "label": "电话号码"
+      }
+    },
+    "providers": {
+      "twilio": {
+        "field": {
+          "account_sid": {
+            "description": "Twilio 账户 SID(以 AC 开头)"
+          },
+          "auth_token": {
+            "description": "Twilio 认证令牌"
+          },
+          "from_numbers": {
+            "description": "用于外呼的 E.164 格式 Twilio 电话号码"
+          }
+        }
+      },
+      "telnyx": {
+        "field": {
+          "connection_id": {
+            "label": "Call Control 应用 ID",
+            "description": "Telnyx Call Control 应用 ID(connection_id)。留空则保存时自动为你创建。"
+          },
+          "webhook_public_key": {
+            "label": "Webhook 公钥",
+            "description": "来自 Mission Control Portal → Keys & Credentials → Public Key 的公钥。用于验证 Telnyx Webhook 签名。没有它,来自 Telnyx 的 Webhook 将被拒绝。"
+          },
+          "from_numbers": {
+            "description": "E.164 格式的 Telnyx 电话号码"
+          }
+        }
+      },
+      "exotel": {
+        "field": {
+          "account_sid": {
+            "description": "用于 API 路径和呼入匹配的 Exotel 账户 SID"
+          },
+          "api_token": {
+            "label": "API 令牌"
+          },
+          "api_base_url": {
+            "label": "API 基础 URL",
+            "description": "默认为 https://api.in.exotel.com。非印度账户请使用 https://api.exotel.com。"
+          }
+        }
+      },
+      "vonage": {
+        "field": {
+          "private_key": {
+            "label": "私钥",
+            "description": "用于生成 JWT 的 Vonage RSA 私钥"
+          },
+          "api_secret": {
+            "label": "API Secret"
+          },
+          "signature_secret": {
+            "label": "签名密钥",
+            "description": "用于验证签名 Webhook 的 Vonage 签名密钥"
+          },
+          "from_numbers": {
+            "description": "Vonage 电话号码(不带 + 前缀)"
+          }
+        }
+      },
+      "plivo": {
+        "field": {
+          "auth_id": {
+            "label": "认证 ID"
+          },
+          "application_id": {
+            "description": "当呼入工作流绑定到该账户下的号码时,其 answer_url 会被更新的 Plivo 应用 ID。留空则保存时自动为你创建。"
+          },
+          "from_numbers": {
+            "description": "用于外呼的 E.164 格式 Plivo 电话号码"
+          }
+        }
+      },
+      "vobiz": {
+        "field": {
+          "auth_id": {
+            "label": "账户 ID",
+            "description": "Vobiz 账户 ID(例如 MA_SYQRLN1K)"
+          },
+          "application_id": {
+            "description": "当呼入工作流绑定到该账户下的号码时,其 answer_url 会被更新的 Vobiz 应用 ID。留空则保存时自动为你创建。"
+          },
+          "from_numbers": {
+            "description": "E.164 格式的电话号码(不带 + 前缀)"
+          }
+        }
+      },
+      "cloudonix": {
+        "field": {
+          "bearer_token": {
+            "label": "Bearer 令牌",
+            "description": "Cloudonix API Bearer 令牌"
+          },
+          "domain_id": {
+            "label": "域名",
+            "description": "你的 Cloudonix 域名(例如 acme.cloudonix.net)。VoiceWorker 会自动获取并存储其 UUID。"
+          },
+          "application_name": {
+            "label": "应用名称",
+            "description": "当呼入工作流绑定到该域名下的号码时,其 url 会被更新的 Cloudonix Voice 应用名称。留空则保存时自动为你创建。"
+          }
+        }
+      },
+      "ari": {
+        "sections": {
+          "External PBX": "外部 PBX"
+        },
+        "field": {
+          "ari_endpoint": {
+            "label": "ARI 端点",
+            "description": "ARI 基础 URL(例如 http://asterisk.example.com:8088)"
+          },
+          "app_name": {
+            "label": "ARI 用户名",
+            "description": "ARI 用户名,需与 ari.conf 中的 section 名一致"
+          },
+          "app_password": {
+            "label": "ARI 密码"
+          },
+          "ws_client_name": {
+            "label": "websocket_client.conf 名称",
+            "description": "用于 externalMedia 的 websocket_client.conf 连接名"
+          },
+          "stasis_app_name": {
+            "label": "Stasis 应用名",
+            "description": "由系统生成,且对此配置唯一。在 extensions.conf 中用 Stasis(<此名称>) 将呼叫路由进来。"
+          },
+          "dial_string_template": {
+            "label": "拨号串模板",
+            "description": "被叫号码如何到达你的中继。{number} 会被替换为实际拨打的号码。使用 PJSIP/{number}@my-trunk 直接拨打中继,或使用 Local/{number}@from-internal 让拨号方案的外呼路由来选择。当你的端点以所拨分机命名时,保持 PJSIP/{number} 即可。"
+          },
+          "from_numbers": {
+            "label": "呼出分机",
+            "description": "用于外呼的 SIP 分机/号码"
+          },
+          "external_pbx": {
+            "type": {
+              "label": "外部 PBX 类型",
+              "description": "为经此 Asterisk 配置接入 VoiceWorker 的呼叫启用 PBX 专属呼叫控制。"
+            },
+            "agent_api": {
+              "url": {
+                "label": "坐席 API URL",
+                "description": "完整的 VICIdial 远程坐席 API URL,以 agc/api.php 结尾"
+              },
+              "username": {
+                "label": "坐席 API 用户"
+              },
+              "password": {
+                "label": "坐席 API 密码"
+              }
+            },
+            "non_agent_api": {
+              "url": {
+                "label": "非坐席 API URL",
+                "description": "可选。仅当工作流需要更新 VICIdial 线索字段时才需要。"
+              },
+              "username": {
+                "label": "非坐席 API 用户"
+              },
+              "password": {
+                "label": "非坐席 API 密码"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sip": {
+      "title": "SIP 连接",
+      "description": "提供给你的 SIP 运营商或 PBX 的端点。选择区域以查看该区域使用的地址。",
+      "viewDetails": "查看详情",
+      "hideDetails": "隐藏详情",
+      "selectRegion": "选择区域",
+      "regionAria": "SIP 区域",
+      "inbound": "呼入",
+      "inboundBody": "使用此 SIP 端点将呼叫路由到 {{provider}}/VoiceWorker。",
+      "hostname": "主机名",
+      "ports": "端口",
+      "outbound": "呼出",
+      "outboundBody": "从 {{provider}}/VoiceWorker 向你的 SIP 运营商或 PBX 发送呼叫。",
+      "originIp": "源 IP 地址",
+      "copied": "{{label}}已复制",
+      "copyFailed": "复制{{label}}失败",
+      "copyHostname": "复制呼入主机名",
+      "copyOriginIp": "复制呼出源 IP 地址"
+    },
+    "trunks": {
+      "title": "外呼中继",
+      "description": "每个中继是通往运营商或 PBX 的一条路由。中继下的号码经由它呼出;未分配中继的号码在下方的“电话号码”中管理。",
+      "add": "添加中继",
+      "empty": "暂无中继。添加一个指向你的 SIP 运营商或 PBX 的中继,即可在此配置上拨打电话。",
+      "noNumbers": "此中继下暂无号码。",
+      "addNumber": "添加号码",
+      "editTitle": "编辑中继",
+      "editAria": "编辑中继 {{name}}",
+      "deleteButtonTitle": "删除中继",
+      "deleteAria": "删除中继 {{name}}",
+      "editNumberAria": "编辑 {{address}}",
+      "editNumberTitle": "编辑电话号码",
+      "addDialogTitle": "添加中继",
+      "editDialogTitle": "编辑中继",
+      "dialogDescription": "VoiceWorker 会在 {{provider}} 上配置此中继,并通过它拨打你的运营商。",
+      "name": "名称",
+      "enabledHelp": "呼叫不会经由已禁用的中继路由。",
+      "save": "保存中继",
+      "nameRequired": "中继名称为必填项",
+      "namePattern": "中继名称只能包含字母、数字和连字符",
+      "sipDomainRequired": "SIP 域名为必填项",
+      "regionRequired": "区域为必填项",
+      "added": "中继已添加",
+      "updated": "中继已更新",
+      "saveFailed": "保存中继失败",
+      "deleted": "中继“{{name}}”已删除",
+      "deleteFailed": "删除中继失败",
+      "deleteDialogTitle": "删除中继?",
+      "deleteBody": "{{name}} 将在 {{provider}} 上停用,呼叫将不再经由它路由。仍分配在它下面的号码需要先移走。",
+      "sipDomain": "SIP 域名",
+      "sipDomainHelp": "你的运营商或 PBX。同时用于 SIP To 头和 Request-URI。",
+      "region": "区域",
+      "regionPlaceholder": "选择区域",
+      "regionAria": "中继区域",
+      "regionHelp": "设置 VoiceWorker 为此中继拨打的对端。",
+      "regionHelpWithIp": "设置 VoiceWorker 为此中继拨打的对端。呼叫将从 {{ip}} 发出 — 请在你的一侧放行该地址。"
+    }
+  },
+  "nodeSpecs": {
+    "common": {
+      "name": {
+        "label": "名称"
+      },
+      "prompt": {
+        "label": "提示词"
+      },
+      "allow_interrupt": {
+        "label": "允许打断"
+      },
+      "add_global_prompt": {
+        "label": "添加全局提示词",
+        "description": "为 true 且存在全局节点时,运行时会将全局提示词前置到此节点的提示词之前。"
+      },
+      "extraction_enabled": {
+        "label": "启用变量提取",
+        "description": "为 true 时,为此节点运行一次 LLM 提取。"
+      },
+      "extraction_prompt": {
+        "label": "提取提示词",
+        "description": "指导变量提取的总体指令。"
+      },
+      "extraction_variables": {
+        "label": "待提取变量",
+        "description": "每个条目声明一个要捕获的变量,包括名称、数据类型和提取提示。呼叫结果在工作流设置中单独配置。",
+        "items": {
+          "name": {
+            "label": "变量名",
+            "description": "下游使用的 snake_case 标识符。"
+          },
+          "type": {
+            "label": "类型",
+            "description": "提取值的数据类型。",
+            "options": {
+              "string": "字符串",
+              "number": "数字",
+              "boolean": "布尔值"
+            }
+          },
+          "prompt": {
+            "label": "提取提示",
+            "description": "针对该变量的提示,描述要查找的内容。"
+          }
+        }
+      },
+      "tool_uuids": {
+        "label": "工具"
+      },
+      "document_uuids": {
+        "label": "知识库文档"
+      },
+      "enabled": {
+        "label": "启用"
+      }
+    },
+    "startCall": {
+      "displayName": "开始通话",
+      "description": "工作流的入口 —— 播放开场白并开启对话。",
+      "props": {
+        "name": {
+          "description": "在画布和通话日志中显示的简短标识符。"
+        },
+        "greeting_type": {
+          "label": "开场白类型",
+          "description": "可选开场白是通过 TTS 从文本朗读,还是播放预录音频文件。",
+          "options": {
+            "text": "文本 (TTS)",
+            "audio": "预录音频"
+          }
+        },
+        "greeting": {
+          "label": "开场白文本",
+          "description": "通话开始时通过 TTS 朗读的文本。支持 {{template_variables}}。留空则跳过开场白。",
+          "placeholder": "您好 {{first_name}},我是来自 Acme 的 Sarah。"
+        },
+        "greeting_recording_id": {
+          "label": "开场白录音",
+          "description": "通话开始时播放的预录音频文件。"
+        },
+        "prompt": {
+          "description": "开场轮次的智能体系统提示词。支持来自呼叫前数据获取和初始上下文的 {{template_variables}}。",
+          "placeholder": "热情问候来电者,并询问今天可以如何帮忙。"
+        },
+        "allow_interrupt": {
+          "description": "为 true 时,用户可以在智能体说话中途打断。"
+        },
+        "delayed_start": {
+          "label": "延迟开始",
+          "description": "设置外呼语音信箱和筛选处理的初始聆听窗口。简短的人声问候可以提早结束等待。"
+        },
+        "delayed_start_duration": {
+          "label": "延迟时长 (秒)",
+          "description": "在开场前聆听无声应答的秒数。0.1–10。替代默认的 1.2 秒聆听窗口。"
+        },
+        "tool_uuids": {
+          "description": "智能体在开场轮次可以调用的工具。"
+        },
+        "document_uuids": {
+          "description": "智能体可以引用的文档。"
+        },
+        "pre_call_fetch_mode": {
+          "label": "呼叫前数据获取",
+          "description": "控制在 Start 节点开启前,何时发起 POST 请求以丰富呼叫上下文。",
+          "options": {
+            "disabled": "禁用",
+            "always": "总是",
+            "inbound": "仅呼入电话",
+            "outbound": "仅呼出电话"
+          }
+        },
+        "pre_call_fetch_url": {
+          "label": "端点 URL",
+          "description": "呼叫前 POST 请求发送到的 URL。请求体包含主叫和被叫号码。"
+        },
+        "pre_call_fetch_credential_uuid": {
+          "label": "身份验证",
+          "description": "附加到呼叫前请求的可选凭据。"
+        }
+      }
+    },
+    "agentNode": {
+      "displayName": "智能体节点",
+      "description": "对话步骤 —— LLM 执行一次聚焦的交互。",
+      "props": {
+        "name": {
+          "description": "此步骤的简短标识符(如 'Qualify Budget')。出现在通话日志和边缘过渡工具中。"
+        },
+        "prompt": {
+          "description": "此步骤的智能体系统提示词。支持来自变量提取或呼叫前数据获取的 {{template_variables}}。",
+          "placeholder": "询问来电者的预算和时间计划。"
+        },
+        "allow_interrupt": {
+          "description": "为 true 时,用户可以在智能体说话中途打断。对于不可打断的声明条款请设为 false。"
+        },
+        "tool_uuids": {
+          "description": "智能体在此步骤可以调用的工具。"
+        },
+        "document_uuids": {
+          "description": "智能体在此步骤可以引用的文档。"
+        }
+      }
+    },
+    "endCall": {
+      "displayName": "结束通话",
+      "description": "结束对话并挂断。",
+      "props": {
+        "name": {
+          "description": "在通话日志中显示的简短标识符。应描述结束场景(如 'Successful close'、'Polite decline')。"
+        },
+        "prompt": {
+          "description": "结束交流的智能体系统提示词。支持来自变量提取或呼叫前数据获取的 {{template_variables}}。",
+          "placeholder": "感谢来电者,并在结束通话前确认后续步骤。"
+        },
+        "extraction_enabled": {
+          "description": "为 true 时,在挂断前运行一次 LLM 提取,从对话中捕获变量。"
+        },
+        "extraction_prompt": {
+          "description": "指导如何从对话中提取变量的总体指令。"
+        },
+        "extraction_variables": {
+          "description": "每个条目声明一个要从对话中捕获的变量,包括名称、数据类型和针对该变量的提取提示。"
+        }
+      }
+    },
+    "globalNode": {
+      "displayName": "全局节点",
+      "description": "附加到每个智能体节点提示词的人设/语气。",
+      "props": {
+        "name": {
+          "description": "在画布和通话日志中显示的简短标识符。无运行时影响。"
+        },
+        "prompt": {
+          "label": "全局提示词",
+          "description": "当节点的 add_global_prompt=true 时,附加到每个带提示词节点的系统提示词的文本。支持 {{template_variables}}。",
+          "placeholder": "你是代表 {{company_name}} 来电的友好助手。"
+        }
+      }
+    },
+    "trigger": {
+      "displayName": "API 触发器",
+      "description": "公开的 HTTP 端点,用于触发智能体并通过电话发起呼叫。",
+      "props": {
+        "name": {
+          "description": "在画布中显示的简短标识符。无运行时影响。"
+        },
+        "enabled": {
+          "description": "为 false 时,触发 URL 返回 404。"
+        },
+        "trigger_path": {
+          "label": "触发路径",
+          "description": "唯一标识此触发器的路径段。用于两个 URL:\n  • 生产:`/api/v1/public/agent/<trigger_path>` —— 执行已发布的智能体。\n  • 测试:`/api/v1/public/agent/test/<trigger_path>` —— 执行最新草稿。\n可自定义为描述性的值,最长 36 个字符,可使用字母、数字、连字符或下划线。"
+        }
+      }
+    },
+    "webhook": {
+      "displayName": "Webhook",
+      "description": "通话结束后,将对话中提取的数据同步回你的系统。",
+      "props": {
+        "name": {
+          "description": "在画布和运行日志中显示的简短标识符。"
+        },
+        "enabled": {
+          "description": "为 false 时,运行时跳过该 Webhook。"
+        },
+        "http_method": {
+          "label": "HTTP 方法",
+          "description": "出站请求使用的 HTTP 动词。"
+        },
+        "endpoint_url": {
+          "label": "端点 URL",
+          "description": "请求发送到的 URL。"
+        },
+        "credential_uuid": {
+          "label": "身份验证",
+          "description": "作为 Authorization 请求头应用的可选凭据。"
+        },
+        "custom_headers": {
+          "label": "自定义请求头",
+          "description": "随请求附加的额外 HTTP 请求头。",
+          "items": {
+            "key": {
+              "label": "请求头名称",
+              "description": "HTTP 请求头名称(如 'X-Source')。"
+            },
+            "value": {
+              "label": "请求头值",
+              "description": "请求头值(支持 {{template_variables}})。"
+            }
+          }
+        },
+        "payload_template": {
+          "label": "负载模板",
+          "description": "请求的 JSON 主体。值基于运行上下文进行 Jinja 渲染 —— `{{workflow_run_id}}`、`{{gathered_context.foo}}`、`{{annotations.qa_xxx}}` 等。"
+        }
+      }
+    },
+    "qa": {
+      "displayName": "QA 分析",
+      "description": "对通话转写运行 LLM 质量分析。",
+      "props": {
+        "name": {
+          "description": "此 QA 配置的简短标识符。"
+        },
+        "qa_enabled": {
+          "label": "启用",
+          "description": "为 false 时,跳过 QA 运行。"
+        },
+        "qa_system_prompt": {
+          "label": "系统提示词",
+          "description": "给 QA 审查 LLM 的指令。支持占位符:`{node_summary}`、`{previous_conversation_summary}`、`{transcript}`、`{metrics}`。"
+        },
+        "qa_min_call_duration": {
+          "label": "最短通话时长 (秒)",
+          "description": "短于此时间的通话将被跳过。"
+        },
+        "qa_voicemail_calls": {
+          "label": "包含语音信箱通话",
+          "description": "为 false 时,跳过被标记为语音信箱的通话。"
+        },
+        "qa_sample_rate": {
+          "label": "采样率 (%)",
+          "description": "参与 QA 的合格通话百分比。100 表示每通电话;更低的值使用随机采样。"
+        },
+        "qa_use_workflow_llm": {
+          "label": "使用工作流的 LLM",
+          "description": "为 true 时,QA 过程使用与工作流相同的 LLM。设为 false 可指定单独的提供商/模型。"
+        },
+        "qa_provider": {
+          "label": "QA LLM 提供商",
+          "description": "QA 过程使用的 LLM 提供商。"
+        },
+        "qa_model": {
+          "label": "QA 模型",
+          "description": "模型标识符(如 'gpt-4o'、'claude-sonnet-4-6')。因提供商而异。"
+        },
+        "qa_api_key": {
+          "label": "API 密钥",
+          "description": "所选提供商的 API 密钥。"
+        },
+        "qa_endpoint": {
+          "label": "Azure 端点",
+          "description": "Azure 提供商必需。"
+        }
+      }
+    }
+  },
+  "workflow": {
+    "list": {
+      "authRequired": "需要登录。请刷新页面。",
+      "activeAgents": "活跃智能体",
+      "emptyActive": "暂无活跃的工作流。创建你的第一个工作流开始使用。",
+      "loadFailed": "加载工作流失败,请稍后重试。",
+      "yourAgents": "你的智能体"
+    },
+    "create": {
+      "fillAllFields": "请填写所有字段",
+      "mustBeLoggedIn": "必须登录后才能创建工作流",
+      "createFailed": "创建工作流失败,请重试。",
+      "title": "创建语音智能体",
+      "subtitle": "告诉我们你的使用场景,我们将为你创建定制的语音智能体",
+      "cardTitle": "智能体详情",
+      "cardDescription": "配置你的语音智能体设置",
+      "callType": "呼叫类型",
+      "callTypePlaceholder": "选择类型",
+      "callTypeInbound": "呼入(用户呼叫 AI)",
+      "callTypeOutbound": "呼出(AI 呼叫用户)",
+      "callTypeHelp": "选择是用户呼叫你的 AI,还是由 AI 呼叫用户",
+      "useCase": "使用场景",
+      "useCasePlaceholder": "例如:线索筛选、HR 初筛、客户支持",
+      "useCaseHelp": "描述你的语音智能体的主要用途",
+      "activityDescription": "业务描述",
+      "activityPlaceholder": "简要描述你的语音智能体要做什么(例如:为房产行业筛选线索、为招聘岗位初筛候选人、处理客户支持)。这段内容将作为提示词提供给大模型。",
+      "activityHelp": "该描述将用于为你的语音智能体生成 AI 提示词",
+      "creating": "创建中…",
+      "createAgent": "创建智能体",
+      "creatingTitle": "正在创建你的工作流",
+      "creatingBody": "我们正在按你的需求配置语音智能体,请稍候…",
+      "successTitle": "工作流创建成功!",
+      "successP1": "已根据你的使用场景生成了语音智能体工作流,包含一些示例数据和示例动作。",
+      "successP2": "语音机器人默认使用美式口音的英语进行交流。",
+      "successP3": "下一步可以在编辑器中测试语音机器人,然后根据你的使用场景进行修改。",
+      "openAndTest": "打开并测试智能体"
+    },
+    "editor": {
+      "serviceUnavailable": "VoiceWorker 暂时不可用,请稍后重试。",
+      "fetchFailed": "获取工作流失败",
+      "notFound": "未找到工作流",
+      "configNotLoaded": "工作流配置尚未加载",
+      "nodeLimitReached": "已达到 {{name}} 的数量上限。请先删除多余的节点再保存。",
+      "saveVariablesFailed": "保存模板变量失败",
+      "saveDictionaryFailed": "保存词典失败",
+      "saveConfigFailed": "保存工作流配置失败",
+      "tooltips": {
+        "addNode": "添加节点",
+        "settings": "工作流设置",
+        "zoomIn": "放大",
+        "zoomOut": "缩小",
+        "fitView": "适应视图",
+        "tidyUp": "自动整理"
+      },
+      "header": {
+        "publishing": "发布中…",
+        "publishSuccess": "工作流发布成功",
+        "publishFailed": "发布工作流失败",
+        "duplicating": "正在复制工作流…",
+        "duplicatingMenu": "复制中…",
+        "duplicateSuccess": "工作流复制成功",
+        "duplicateFailed": "复制工作流失败",
+        "uuidNotAvailable": "Agent UUID 不可用",
+        "uuidCopied": "Agent UUID 已复制",
+        "uuidCopyFailed": "复制 Agent UUID 失败",
+        "nameEmpty": "名称不能为空",
+        "renameFailed": "重命名工作流失败",
+        "openMenu": "打开菜单",
+        "workflowName": "工作流名称",
+        "rename": "重命名工作流",
+        "viewingReadOnly": "正在查看 {{version}} — 只读",
+        "backToDraft": "返回草稿",
+        "unsavedChanges": "有未保存的更改",
+        "errorCount_one": "{{count}} 个错误",
+        "errorCount_other": "{{count}} 个错误",
+        "validationErrors": "校验错误",
+        "nodeLabel": "节点:{{id}}",
+        "edgeLabel": "连线:{{id}}",
+        "publish": "发布",
+        "phoneCall": "电话呼叫",
+        "testAgent": "测试智能体",
+        "viewRuns": "查看运行记录",
+        "duplicateWorkflow": "复制工作流",
+        "downloadWorkflow": "下载工作流",
+        "copyAgentUuid": "复制 Agent UUID"
+      },
+      "versions": {
+        "loadFailed": "加载版本历史失败",
+        "loadMoreFailed": "加载更多版本失败",
+        "compareFailed": "比较工作流版本失败",
+        "versionMissing": "该工作流版本已不在历史列表中",
+        "historyChanged": "版本历史已变化,请重新进行比较。",
+        "noPrevious": "v{{version}} 没有更早的版本",
+        "draftLabel": "v{{version}}(草稿)",
+        "publishedLabel": "v{{version}}(已发布)",
+        "versionLabel": "v{{version}}",
+        "title": "版本历史",
+        "close": "关闭版本历史",
+        "empty": "暂无版本。",
+        "statusDraft": "草稿",
+        "statusPublished": "已发布",
+        "statusArchived": "已归档",
+        "compareWith": "比较 v{{version}} 与 v{{previous}}",
+        "compareWithPrevious": "比较 v{{version}} 与其前一个版本",
+        "loadMore": "加载更多"
+      },
+      "diff": {
+        "title": "{{from}} → {{to}} 的变更",
+        "changeCount_one": "{{count}} 处变更",
+        "changeCount_other": "{{count}} 处变更",
+        "previous": "上一处变更",
+        "next": "下一处变更",
+        "description": "工作流版本 {{from}} 与 {{to}} 之间的差异。",
+        "noChanges": "没有变更"
+      }
+    },
+    "tester": {
+      "createRunFailed": "创建浏览器测试运行失败",
+      "authRequired": "需要先登录才能开始测试。",
+      "authRequiredBrowser": "需要先登录才能开始浏览器测试。",
+      "tabAudio": "语音测试",
+      "tabChat": "文字测试",
+      "close": "关闭测试面板",
+      "emptyTitle": "在浏览器中呼叫此智能体",
+      "emptyDescription": "通过语音通话测试智能体。部分仅电话线路支持的工具(如呼叫转接)暂不支持在此使用。",
+      "starting": "正在启动测试…",
+      "runTest": "运行测试",
+      "reset": "重置",
+      "onboardingTitle": "尝试你的第一次网页呼叫",
+      "onboardingMessage": "在这里发起浏览器呼叫,试听智能体、查看转写记录,并在进一步定制前验证工作流。",
+      "paused": "测试已暂停",
+      "pausedReason": "测试已暂停。",
+      "returnToDraft": "先返回草稿,再开始新的测试会话。",
+      "saveDraftFirst": "先保存最新草稿再测试,以便会话使用你正在查看的工作流。",
+      "resolveErrors": "请先解决当前的校验错误,再开始新的测试。",
+      "voice": {
+        "endCall": "结束呼叫",
+        "startAnother": "开始另一次测试",
+        "retryCall": "重试呼叫",
+        "retryConnection": "重试连接",
+        "starting": "正在启动测试…",
+        "backendUnreachable": "无法连接后端以确认呼叫设置。待其恢复后点击重试。"
+      },
+      "chat": {
+        "modeManual": "手动",
+        "modeSimulated": "模拟",
+        "emptyTitle": "与此智能体对话",
+        "emptyDescription": "通过文字对话测试智能体。发送消息并查看它的回应,支持工具调用、节点跳转和回退。",
+        "startTest": "开始测试",
+        "sendToStart": "发送一条消息开始对话。",
+        "noConversation": "暂无对话记录",
+        "conversationEnded": "此对话已结束。",
+        "endHelp": "结束对话并运行其完成后的集成。",
+        "confirmEnd": "结束此对话?结束后将无法再发送消息。",
+        "ending": "结束中",
+        "endChat": "结束对话",
+        "chatEnded": "对话已结束",
+        "editHint": "编辑选中的用户消息,然后按回车从该处重新运行。",
+        "placeholderEnded": "对话已结束",
+        "placeholderEdit": "编辑并重新运行此消息…",
+        "placeholderSend": "发送消息…",
+        "placeholderPreparing": "正在准备对话…",
+        "sending": "发送中",
+        "rerunning": "重跑中",
+        "send": "发送",
+        "rerun": "重跑",
+        "rerunTurn": "重新运行此轮",
+        "editRerunTurn": "编辑并重新运行此轮",
+        "createFailed": "创建对话会话失败",
+        "rewindFailed": "回退会话失败",
+        "sendFailed": "发送消息失败",
+        "endFailed": "结束对话会话失败",
+        "genericError": "出错了",
+        "simulatorHelp": "用人设提示词驱动多轮、智能体对智能体的测试。",
+        "simulatorPlaceholder": "描述模拟用户…",
+        "comingSoon": "即将推出"
+      }
+    },
+    "runs": {
+      "loadFailed": "加载工作流运行记录失败"
+    },
+    "run": {
+      "durationNA": "N/A",
+      "durationSecs": "{{secs}}秒",
+      "durationMinsSecs": "{{mins}}分{{secs}}秒",
+      "copyFailed": "复制{{label}}失败",
+      "copyAria": "复制{{label}}",
+      "splitTracks": "分轨",
+      "playbackTracks": "播放轨道",
+      "playBoth": "播放双轨",
+      "playUserOnly": "仅播放用户轨",
+      "playBotOnly": "仅播放机器人轨",
+      "user": "用户",
+      "bot": "机器人",
+      "targetSplit": "分轨",
+      "targetUser": "用户轨",
+      "targetBot": "机器人轨",
+      "pause": "暂停{{target}}",
+      "play": "播放{{target}}",
+      "loading": "加载中",
+      "metrics": "运行指标",
+      "duration": "时长",
+      "userTurns": "用户轮次",
+      "botTurns": "机器人轮次",
+      "toolCalls": "工具调用",
+      "nodesVisited": "经过节点",
+      "copyContextFailed": "复制上下文失败",
+      "noData": "暂无数据",
+      "agent": "智能体",
+      "textChatSession": "文字对话会话",
+      "runCompleted": "智能体运行已完成",
+      "callTime": "呼叫时间:{{time}}",
+      "customizeAgent": "定制智能体",
+      "descriptionChat": "查看此文字会话的对话历史、指标和捕获的上下文。",
+      "descriptionCall": "你的语音智能体运行已成功完成。可以预览或下载转写和录音。",
+      "preview": "预览:",
+      "download": "下载:",
+      "transcript": "转写",
+      "recording": "录音",
+      "trace": "追踪:",
+      "viewTrace": "查看追踪",
+      "initialContext": "初始上下文",
+      "gatheredContext": "收集的上下文",
+      "qaResults": "质检结果",
+      "detailsUnavailable": "运行详情不可用",
+      "detailsUnavailableBody": "此运行还没有详情视图。返回工作流继续测试或修改。",
+      "agentId": "智能体 ID",
+      "runId": "运行 ID",
+      "onboardingTitle": "定制你的工作流",
+      "onboardingMessage": "编辑工作流以调整语音智能体的行为、添加新步骤或修改对话流程。",
+      "context": {
+        "noValue": "无值",
+        "noTitleAvailable": "暂无{{title}}"
+      },
+      "apiKeyError": {
+        "insufficientCredits": "额度不足",
+        "accountMismatch": "服务令牌账号不匹配",
+        "configError": "API 配置错误",
+        "goToBilling": "前往账单",
+        "goToDevelopers": "前往开发者",
+        "goToModelConfig": "前往模型配置",
+        "purchaseCredits": "请从账单页购买额度,以继续使用 Dograh 托管模型。"
+      },
+      "audio": {
+        "micDeniedTitle": "麦克风访问被拒绝",
+        "micDeniedBody": "要使用语音智能体,需要允许麦克风访问。请在浏览器设置中启用后重试。",
+        "waitingPermission": "等待授权…",
+        "tryAgain": "重试",
+        "permissionsRequired": "需要音频权限",
+        "allowInDialog": "请在浏览器弹窗中允许麦克风访问",
+        "clickToGrant": "点击下方按钮授予麦克风访问权限",
+        "grantPermissions": "授予音频权限",
+        "startCall": "开始呼叫",
+        "callInProgress": "呼叫进行中",
+        "endCall": "结束呼叫"
+      },
+      "connection": {
+        "establishing": "正在建立连接…",
+        "connected": "已连接",
+        "failed": "连接失败"
+      },
+      "configError": {
+        "title": "工作流错误",
+        "goToWorkflow": "前往工作流"
+      },
+      "rtc": {
+        "quotaExceeded": "服务额度已超限",
+        "runFinished": "此测试运行已结束。",
+        "serverError": "服务器错误",
+        "interruptionDisabled": "此步骤已禁用打断。机器人会先把话说完再处理你的输入。你可以在工作流编辑器中启用打断。",
+        "apiKeyError": "API 密钥错误",
+        "validationFailed": "工作流校验失败",
+        "acquireMediaFailed": "无法获取媒体设备",
+        "enumerateDevicesFailed": "无法枚举设备",
+        "toolFallback": "工具",
+        "nodeFallback": "节点"
+      }
+    },
+    "phoneCall": {
+      "loadPreferencesFailed": "加载电话偏好失败",
+      "savePreferencesFailed": "保存电话偏好失败",
+      "initiateFailed": "发起呼叫失败",
+      "callInitiated": "呼叫发起成功!",
+      "title": "电话呼叫",
+      "connectTitle": "连接电话服务",
+      "connectDescription": "VoiceWorker 不出售电话号码或通话时长。请选择此智能体拨打和接听电话的方式。",
+      "useProvider": "使用电话运营商",
+      "recommended": "推荐",
+      "providerBody": "在 {{providers}} 开户,把凭证粘贴到这里,即可使用他们的号码拨打电话。最快的上手方式。",
+      "defaultProviderName": "某个电话运营商",
+      "addProvider": "添加运营商",
+      "byoSip": "自带 SIP",
+      "byoSipBody": "已经有 SIP 中继或 PBX?把它指向 VoiceWorker,保留你现有的运营商和号码。",
+      "sipProvisioned": "“{{name}}” 已完成配置,正在等待你的运营商信息。",
+      "setupSip": "设置 SIP",
+      "addSipConnection": "添加 SIP 连接",
+      "doItLater": "稍后处理",
+      "formDescription": "输入要拨打的电话号码或 SIP 端点。号码会自动保存。",
+      "configLabel": "电话配置",
+      "configPlaceholder": "选择配置",
+      "configItemDefault": "{{name}} - 默认",
+      "configItemIncomplete": "{{name}} - 配置未完成",
+      "configItemDefaultIncomplete": "{{name}} - 默认 - 配置未完成",
+      "blockedDisabled": "此配置因多次连接失败已被禁用。",
+      "blockedNotReady": "此配置尚未就绪,无法外呼。",
+      "openConfiguration": "打开配置",
+      "finishSetup": "完成设置",
+      "callerId": "主叫号码(来自)",
+      "loadingNumbers": "正在加载电话号码…",
+      "numberPlaceholder": "选择电话号码",
+      "phoneItemLabeled": "{{label}} - {{address}}",
+      "phoneItemLabeledDefault": "{{label}} - {{address}} - 默认",
+      "phoneItemDefault": "{{address}} - 默认",
+      "noNumbers": "此配置下没有电话号码。",
+      "noNumbersAuto": "此配置下没有电话号码。运营商将自动选择一个。",
+      "sipPlaceholder": "PJSIP/1234 or SIP/1234",
+      "usePhoneInstead": "改用电话号码",
+      "useSipInstead": "改用 SIP 端点",
+      "configureTelephony": "配置电话线路",
+      "calling": "呼叫中…",
+      "startCall": "开始呼叫",
+      "callAgain": "再次呼叫"
+    },
+    "recordings": {
+      "loadFailed": "加载录音失败",
+      "transcriptionFailed": "自动转写失败",
+      "fileTooLargeSkipped": "{{name}}({{size}}MB)超过 5MB 限制 — 已跳过。",
+      "recordingTooLarge": "录音({{size}}MB)超过允许的最大 5MB。",
+      "micDenied": "麦克风访问被拒绝。请允许麦克风权限。",
+      "ttsRequired": "上传前必须先在用户配置中设置 TTS 配置(服务商、模型、音色)。",
+      "uploadUrlsFailed": "获取上传地址失败",
+      "fileUploadFailed": "{{name}} 上传失败",
+      "uploadFailed": "上传录音失败",
+      "deleteFailed": "删除录音失败",
+      "playFailed": "播放录音失败",
+      "dialogTitle": "工作流录音",
+      "description": "上传或录制用于混合提示词的音频。录音按当前 TTS 配置隔离。在提示词输入框中使用 <0>@</0> 插入录音。",
+      "ttsConfigTitle": "当前 TTS 配置",
+      "providerTag": "服务商:{{value}}",
+      "modelTag": "模型:{{value}}",
+      "voiceTag": "音色 ID:{{value}}",
+      "noTtsConfig": "未找到 TTS 配置。请在模型配置中设置。",
+      "addNew": "添加新录音",
+      "audioFiles": "音频文件",
+      "chooseFiles": "选择音频文件(每个最大 5MB)",
+      "record": "录制",
+      "recordingName": "录音名称",
+      "namePlaceholder": "例如:问候语、等待提示音",
+      "startRecording": "开始录制",
+      "stop": "停止",
+      "pending_one": "待上传({{count}} 个文件)",
+      "pending_other": "待上传({{count}} 个文件)",
+      "transcribing": "转写中…",
+      "transcriptPlaceholder": "这段录音说了什么?",
+      "language": "语言",
+      "uploading": "上传中…",
+      "uploadRecordings_one": "上传 {{count}} 个录音",
+      "uploadRecordings_other": "上传 {{count}} 个录音",
+      "listTitle": "录音",
+      "empty": "当前 TTS 配置下还没有录音。"
+    },
+    "embed": {
+      "timeoutRange": "文字对话不活跃超时必须是 {{min}} 到 {{max}} 分钟之间的整数",
+      "timeoutWhole": "文字对话不活跃超时必须是整数分钟",
+      "disableFailed": "禁用嵌入失败",
+      "saveFailed": "保存组件配置失败",
+      "saveSuccess": "组件配置已保存。发布智能体以应用更改。",
+      "copyFailed": "复制嵌入代码失败",
+      "title": "配置组件",
+      "docs": "文档",
+      "description": "用一个简单的 script 标签把 \"{{name}}\" 添加到任何网站。",
+      "enableEmbedding": "启用嵌入",
+      "enableEmbeddingHelp": "允许将此工作流嵌入外部网站",
+      "allowedDomains": "允许的域名",
+      "allowedDomainsHint": "(留空则允许所有域名)",
+      "domainPlaceholder": "example.com or *.example.com",
+      "widgetType": "组件类型",
+      "voiceAgent": "语音智能体",
+      "voiceAgentHelp": "访客通过语音与你的智能体交流",
+      "chatAgent": "对话智能体",
+      "chatAgentHelp": "访客通过文字消息与你的智能体交流",
+      "chatInactivityTimeout": "文字对话不活跃超时",
+      "minutes": "分钟",
+      "timeoutHelp": "文字对话超过该时长无活动后,结束对话并触发其完成 webhook。",
+      "embedMode": "嵌入模式",
+      "floatingWidget": "浮动组件",
+      "floatingWidgetHelp": "在页面角落显示为按钮",
+      "inlineComponent": "内联组件",
+      "inlineComponentHelp": "直接嵌入你的页面内容",
+      "headless": "无界面(自带 UI)",
+      "headlessHelp": "无 UI — 通过 JS API 用你自己的按钮驱动呼叫",
+      "configuration": "配置",
+      "buttonText": "按钮文字",
+      "buttonColor": "按钮颜色",
+      "position": "位置",
+      "positionBottomRight": "右下",
+      "positionBottomLeft": "左下",
+      "positionTopRight": "右上",
+      "positionTopLeft": "左上",
+      "callToActionText": "行动号召文字",
+      "chatPanelText": "对话面板文字",
+      "chatPanelTextHelp": "访客在对话面板内看到的文案。",
+      "voiceCallText": "语音呼叫文字",
+      "voiceCallTextHelpInline": "访客在呼叫面板各个阶段看到的文案。",
+      "voiceCallTextHelpFloating": "呼叫连接和进行过程中呼叫按钮轮播的文案。",
+      "buttonLabels": "按钮标签",
+      "statusMessages": "状态消息",
+      "previewGreeting": "你好!有什么可以帮你的?",
+      "previewQuestion": "我有一个问题…",
+      "integrationInstructions": "集成说明",
+      "exampleDriveChatUi": "示例 — 驱动你自己的聊天 UI",
+      "exampleTrackStatus": "示例 — 在你自己的状态中跟踪状态",
+      "example": "示例",
+      "exampleReactComponent": "示例 React 组件",
+      "headlessChatBullet1": "把嵌入 script 标签添加到你的页面(见下文)。",
+      "headlessChatBullet2": "组件不渲染任何 UI — 渲染你自己的聊天界面。",
+      "headlessChatBullet3": "调用 window.DograhWidget.startChat() 开始对话(智能体问候语通过 onMessage 送达)。",
+      "headlessChatBullet4": "调用 window.DograhWidget.sendMessage(text) 发送访客消息;它返回更新后的对话记录,消息无法送达时返回 null。",
+      "headlessChatBullet5": "调用 window.DograhWidget.endChat() 结束当前对话并触发其完成 webhook。",
+      "headlessChatBullet6": "使用 getMessages() 随时读取对话记录。",
+      "headlessChatBullet7": "订阅 onMessage 和 onChatStateChange 来驱动你的 UI。状态包括 idle、starting、ready、waiting、ended、expired、error。",
+      "headlessChatBullet8": "在 startChat() 之前调用 window.DograhWidget.setContext({ ... }),传入页面加载后获取的访客信息。",
+      "headlessVoiceBullet1": "把嵌入 script 标签添加到你的页面(见下文)。",
+      "headlessVoiceBullet2": "组件不渲染任何 UI — 渲染你自己的按钮。",
+      "headlessVoiceBullet3": "调用 window.DograhWidget.start() 开始呼叫。",
+      "headlessVoiceBullet4": "调用 window.DograhWidget.end() 结束呼叫。",
+      "headlessVoiceBullet5": "订阅 onCallStart、onCallEnd、onStatusChange、onError 来驱动你的 UI。",
+      "headlessVoiceBullet6": "start() 必须在用户手势处理器(点击)中运行,浏览器才会授予麦克风权限。",
+      "headlessVoiceBullet7": "在 start() 之前调用 window.DograhWidget.setContext({ ... }),传入页面加载后获取的访客信息。",
+      "headlessVoiceProse": "把呼叫状态镜像到你自己控制的变量中,然后基于它渲染任意 UI。状态值为 idle、connecting、connected、failed。",
+      "inlineBullet1": "在希望显示组件的位置添加一个 id=\"dograh-inline-container\" 的 div",
+      "inlineBullet2": "组件将渲染在该容器内",
+      "inlineBullet3": "你可以完全控制容器的样式",
+      "inlineBulletChat": "聊天面板渲染在容器内;访客点击按钮后对话开始",
+      "inlineBulletVoiceStart": "调用 window.DograhWidget.start() 开始呼叫",
+      "inlineBulletVoiceEnd": "调用 window.DograhWidget.end() 结束呼叫",
+      "saveConfigurations": "保存配置",
+      "embedCode": "嵌入代码",
+      "copyCode": "复制代码",
+      "embedCodeHelp": "把这段 script 添加到你网站的 HTML 中以启用组件。配置更改会自动生效,无需重新嵌入。",
+      "visitorDetails": "要向智能体传递访客信息,请编辑上面的 <0>data-dograh-context</0> 值 — 或调用 <1>{{setContextExample}}</1> 传入页面后续获取的信息。每个值都可以在提示词中以 <2>{{pageContextExample}}</2> 使用。<3>了解更多</3>",
+      "clickSaveToGenerate": "点击 <0>保存配置</0> 生成你的嵌入脚本。",
+      "fields": {
+        "endChatText": "结束聊天按钮",
+        "endChatConfirmText": "结束聊天确认文案",
+        "endChatCancelText": "取消按钮",
+        "endingChatText": "结束聊天状态",
+        "conversationEndedText": "对话结束消息",
+        "startNewChatText": "开始新聊天按钮",
+        "chatRetryText": "重试按钮",
+        "chatInputPlaceholder": "消息输入占位文字",
+        "sendMessageLabel": "发送按钮标签",
+        "closeChatLabel": "关闭按钮标签",
+        "voiceConnectingText": "连接中",
+        "voiceEndCallText": "结束呼叫按钮",
+        "voiceRetryText": "重试按钮",
+        "voiceReadyTitle": "就绪标题",
+        "voiceConnectingSubtext": "连接中副文案",
+        "voiceConnectedTitle": "已连接标题",
+        "voiceConnectedSubtext": "已连接副文案",
+        "voiceCallEndedTitle": "呼叫结束标题",
+        "voiceCallEndedSubtext": "呼叫结束副文案",
+        "voiceConnectionFailedTitle": "连接失败标题",
+        "voiceConnectionFailedSubtext": "连接失败副文案",
+        "voiceConnectionLostTitle": "连接中断标题",
+        "voiceConnectionLostSubtext": "连接中断副文案"
+      },
+      "fieldHints": {
+        "nextToConfirmation": "显示在确认文案旁",
+        "screenReadersOnly": "仅供屏幕阅读器",
+        "pairedWithCta": "与行动号召文字搭配"
+      }
+    },
+    "configurations": {
+      "title": "配置",
+      "agentName": "智能体名称",
+      "agentNameHelp": "你的智能体的名称",
+      "nameLabel": "名称",
+      "namePlaceholder": "输入智能体名称",
+      "ambientNoise": "环境噪音",
+      "ambientNoiseHelp": "添加办公室背景环境音,让对话听起来更自然。",
+      "useAmbientNoise": "使用环境噪音",
+      "volume": "音量",
+      "turnDetection": "轮次检测",
+      "turnDetectionHelp": "配置智能体如何检测用户已说完。",
+      "detectionStrategy": "检测策略",
+      "selectStrategy": "选择策略",
+      "transcriptionBased": "基于转写",
+      "smartTurnAnalyzer": "智能轮次分析器",
+      "transcriptionHelp": "适合简短回复(1-2 个词)。当转写表明说完时结束轮次。",
+      "turnAnalyzerHelp": "适合带自然停顿的较长回复。使用 ML 模型检测轮次结束。",
+      "incompleteTurnTimeout": "未完成轮次超时(秒)",
+      "incompleteTurnTimeoutHelp": "结束未完成轮次前的最长静音时长。默认:2 秒",
+      "interruption": "打断",
+      "interruptionHelp": "配置智能体说话时,用户语音何时可以打断它。",
+      "interruptionStrategy": "打断策略",
+      "minWords": "打断前最少词数",
+      "minWordsHelp": "机器人说话时需要多少个转写词才能打断。默认:{{count}}",
+      "contextCompaction": "上下文压缩",
+      "contextCompactionHelp": "在节点间切换时自动总结对话上下文。移除过期的工具调用,为新节点保持上下文整洁。",
+      "enableContextCompaction": "启用上下文压缩",
+      "callManagement": "呼叫管理",
+      "callManagementHelp": "配置呼叫时长限制和空闲超时设置。",
+      "maxCallDuration": "最长呼叫时长(秒)",
+      "maxCallDurationDefault": "默认:600(10 分钟)",
+      "maxIdleTimeout": "用户最长空闲超时(秒)",
+      "maxIdleTimeoutDefault": "默认:10 秒",
+      "externalPbx": "外部 PBX 字段更新",
+      "externalPbxHelp": "可选:在转接或挂断前,把最终收集的上下文值复制到运营商原生字段。",
+      "fieldMappings": "字段映射",
+      "addMapping": "添加映射",
+      "contextFieldAria": "收集上下文字段 {{index}}",
+      "destinationFieldAria": "外部 PBX 目标字段 {{index}}",
+      "removeMappingAria": "删除外部 PBX 字段映射 {{index}}",
+      "noExternalFields": "不会更新任何外部字段。上下文名称可以是直接的提取变量名,也可以是 extracted_variables.qualified 之类的路径。",
+      "mappingInvalid": "每个映射都需要一个上下文字段和一个仅含字母、数字和下划线的目标字段。"
+    },
+    "dictionary": {
+      "title": "词典",
+      "description": "添加你希望机器人主动监听的特定词语。语音智能体会学习你的专有词汇和名称。添加预期出现的词语和短语、公司行话、命名实体或行业术语。",
+      "descriptionExample": "例如:billing department、tretinoin 等。",
+      "descriptionCost": "(可能根据服务商产生额外费用)",
+      "words": "词语",
+      "placeholder": "输入词语,用逗号分隔",
+      "save": "保存词典"
+    },
+    "contextVariables": {
+      "title": "模板上下文变量",
+      "description": "添加或删除可在工作流中使用的模板上下文变量。你可以在工作流节点中用双大括号引用这些变量。示例:{{example}}。",
+      "currentVariables": "当前变量",
+      "addNewVariable": "添加新变量",
+      "key": "键",
+      "value": "值",
+      "keyPlaceholder": "输入变量键",
+      "valuePlaceholder": "输入变量值",
+      "addVariable": "添加变量",
+      "add": "添加",
+      "saveVariables": "保存变量",
+      "duplicateKey": "已存在相同键的变量"
+    },
+    "answerSupervisor": {
+      "messageFormat": "消息格式",
+      "formatText": "文字",
+      "formatRecording": "录音",
+      "voicemailPlaceholder": "你好,我是 Acme 的 Alex。请回电…",
+      "screeningPlaceholder": "Acme 的 Alex,来电是关于你的预约。",
+      "loadRecordingsFailed": "无法加载录音。",
+      "whenVoicemail": "检测到语音信箱时",
+      "disconnectCall": "挂断电话",
+      "leaveMessage": "留言",
+      "voicemailMessage": "语音信箱留言",
+      "voicemailMessageHelp": "智能体播放这段留言,然后挂断电话。",
+      "voicemailMessageRequired": "请输入语音信箱留言或选择一段录音。",
+      "screeningMessage": "筛查消息",
+      "screeningMessageHelp": "说明你的姓名和来电原因。播放此消息后,智能体会安静等待本人接听。留空则结束被筛查的呼叫。",
+      "timing": "时机",
+      "timingHelp": "使用开始节点的“延迟启动”设置来配置智能体在问候安静接听方之前监听多久。默认 1.2 秒。一句简短的人声问候可以更早结束等待。",
+      "screeningWait": "筛查等待(秒)",
+      "screeningWaitHelp": "筛查消息播放完毕后,等待本人接听的时间。"
+    },
+    "settings": {
+      "pageTitle": "工作流设置",
+      "onThisPage": "本页内容",
+      "unsavedChanges": "有未保存的更改",
+      "nav": {
+        "general": "常规",
+        "models": "模型覆盖",
+        "variables": "模板变量",
+        "dictionary": "词典",
+        "voicemail": "语音信箱与筛查",
+        "recordings": "录音",
+        "deployment": "添加到网站",
+        "report": "报表",
+        "identity": "Agent UUID"
+      },
+      "report": {
+        "title": "报表",
+        "description": "下载此智能体已完成运行的 CSV 报表,可按日期范围筛选。",
+        "downloadFailed": "下载报表失败",
+        "downloadReport": "下载报表",
+        "filterTitle": "按日期范围筛选",
+        "from": "从",
+        "to": "到",
+        "startDate": "开始日期",
+        "endDate": "结束日期",
+        "clear": "清除",
+        "downloadFiltered": "下载筛选结果",
+        "downloadAll": "全部下载"
+      },
+      "general": {
+        "title": "常规",
+        "description": "智能体名称、呼叫行为和轮次检测。<0>了解更多</0>",
+        "saved": "常规设置已保存。发布智能体以应用更改。",
+        "agentName": "智能体名称",
+        "agentNamePlaceholder": "输入智能体名称",
+        "ambientNoise": "环境噪音",
+        "ambientNoiseHelp": "添加背景环境音,让对话听起来更自然。",
+        "useAmbientNoise": "使用环境噪音",
+        "volume": "音量",
+        "customAudioFile": "自定义音频文件",
+        "customAudioHelp": "上传你自己的音频文件,或使用默认的办公室环境音。",
+        "customAudioFallback": "自定义音频",
+        "fileTooLarge": "文件过大({{size}}MB)。最大允许 10MB。",
+        "uploadUrlFailed": "获取上传地址失败",
+        "fileUploadFailed": "文件上传失败",
+        "uploadFailed": "上传失败",
+        "playFailed": "播放音频失败",
+        "uploading": "上传中…",
+        "uploadButton": "上传音频文件(最大 10MB)",
+        "usingDefault": "正在使用默认办公室环境音",
+        "turnDetection": "轮次检测",
+        "turnDetectionHelp": "配置智能体如何检测用户已说完。",
+        "detectionStrategy": "检测策略",
+        "selectStrategy": "选择策略",
+        "transcriptionBased": "基于转写",
+        "smartTurnAnalyzer": "智能轮次分析器",
+        "transcriptionHelp": "适合简短回复(1-2 个词)。当转写表明说完时结束轮次。",
+        "turnAnalyzerHelp": "适合带自然停顿的较长回复。使用 ML 模型检测轮次结束。",
+        "incompleteTurnTimeout": "未完成轮次超时(秒)",
+        "incompleteTurnTimeoutHelp": "结束未完成轮次前的最长静音时长。默认:2 秒",
+        "interruption": "打断",
+        "interruptionHelp": "配置智能体说话时,用户语音何时可以打断它。",
+        "interruptionStrategy": "打断策略",
+        "minWords": "打断前最少词数",
+        "minWordsHelp": "机器人说话时需要多少个转写词才能打断。默认:{{count}}",
+        "transcript": "转写",
+        "transcriptHelp": "在上传的转写中为每位说话人包含开始和结束时间戳。",
+        "enhancedTimestamps": "增强时间戳转写",
+        "contextCompaction": "上下文压缩",
+        "contextCompactionHelp": "在节点间切换时自动总结对话上下文。在 Realtime 模式下不适用 — 语音到语音服务自行管理对话状态,此设置会被忽略。",
+        "enableContextCompaction": "启用上下文压缩",
+        "callManagement": "呼叫管理",
+        "callManagementHelp": "配置呼叫时长限制和空闲超时设置。",
+        "maxCallDuration": "最长呼叫时长(秒)",
+        "maxCallDurationDefault": "默认:600(10 分钟)",
+        "maxIdleTimeout": "用户最长空闲超时(秒)",
+        "maxIdleTimeoutDefault": "默认:10 秒",
+        "externalPbx": "外部 PBX 字段更新",
+        "externalPbxHelp": "可选:在转接或挂断前,把最终收集的上下文值复制到运营商原生字段。",
+        "fieldMappings": "字段映射",
+        "addMapping": "添加映射",
+        "contextFieldAria": "收集上下文字段 {{index}}",
+        "destinationFieldAria": "外部 PBX 目标字段 {{index}}",
+        "removeMappingAria": "删除外部 PBX 字段映射 {{index}}",
+        "noExternalFields": "不会更新任何外部字段。上下文名称可以是直接的提取变量名,也可以是 extracted_variables.qualified 之类的路径。",
+        "mappingInvalid": "每个映射都需要一个上下文字段和一个仅含字母、数字和下划线的目标字段。",
+        "leadFieldsTitle": "要捕获的线索字段",
+        "leadFieldsHelp": "从呼入呼叫中额外读取的线索字段,命名不带请求头前缀(first_name 读取 X-VICIDIAL-first_name)。捕获的值可在提示词中通过 {{example}} 引用。每个字段在呼叫建立时会增加一次请求,请只列出智能体用到的字段。",
+        "leadFields": "线索字段",
+        "addField": "添加字段",
+        "leadFieldAria": "外部 PBX 线索字段 {{index}}",
+        "removeLeadFieldAria": "删除外部 PBX 线索字段 {{index}}",
+        "noLeadFields": "仅捕获转接或挂断呼叫所需的身份字段。",
+        "leadFieldInvalid": "每个线索字段必须以字母开头,且只含字母、数字和下划线。",
+        "saveButton": "保存常规设置"
+      },
+      "variables": {
+        "title": "模板变量",
+        "description": "可在工作流提示词中通过 {{example}} 语法使用的变量,用于测试工作流。<0>了解更多</0>",
+        "saved": "模板变量已保存。发布智能体以应用更改。",
+        "saveButton": "保存变量"
+      },
+      "dictionary": {
+        "title": "词典",
+        "description": "添加智能体应主动监听的词语 — 公司行话、名称、行业术语。可能根据服务商产生额外费用。",
+        "placeholder": "输入词语,用逗号分隔(例如:billing department、tretinoin)",
+        "saved": "词典已保存。发布智能体以应用更改。",
+        "saveButton": "保存词典"
+      },
+      "voicemail": {
+        "title": "语音信箱与筛查",
+        "description": "选择智能体如何处理语音信箱和呼叫筛查。适用于使用独立语音和语言模型的外呼。",
+        "descriptionRealtime": "这些设置不适用于实时语音到语音(realtime)模型。对 realtime 模型的支持即将推出。",
+        "enableLabel": "启用语音信箱和筛查处理",
+        "classificationModel": "分类模型",
+        "useWorkflowLlm": "使用工作流 LLM",
+        "useWorkflowLlmHelp": "使用你账号设置中配置的 LLM。",
+        "classifierInstructions": "分类器指令",
+        "classifierPlaceholder": "留空则使用内置指令。",
+        "classifierHelp": "这些指令决定接听方是人、语音信箱、筛查服务还是 IVR 菜单。当你的呼叫不是英语时请编辑它们:描述主叫方实际听到的问候语和运营商提示音。保持不变即可跟随内置指令的持续改进;清空输入框即可恢复。回复必须是单个标签 — CONVERSATION、VOICEMAIL、NO_MESSAGE、SCREENER、SCREENING_WAIT、IVR 或 UNKNOWN。其他任何内容都会被当作 UNKNOWN 处理,这会让呼叫直接交给智能体,因此只会回答 CONVERSATION 或 VOICEMAIL 的指令会悄悄禁用筛查和 IVR 处理。",
+        "saved": "语音信箱设置已保存。发布智能体以应用更改。",
+        "saveButton": "保存语音信箱设置"
+      },
+      "models": {
+        "title": "模型覆盖",
+        "description": "为此工作流覆盖完整的组织模型配置。<0>了解更多</0>",
+        "loading": "正在加载模型配置",
+        "loadDefaultsFailed": "加载模型配置默认值失败",
+        "loadFailed": "加载模型配置失败",
+        "setupFirst": "请先设置组织模型配置,再按工作流覆盖。",
+        "configureModels": "配置模型",
+        "overrideToggle": "为此工作流覆盖",
+        "overrideOn": "此工作流使用自己的完整模型配置。",
+        "overrideOff": "此工作流使用组织模型配置。",
+        "usingOrg": "正在使用组织模型配置。",
+        "saveOrgConfiguration": "保存组织配置",
+        "saveOverride": "保存模型覆盖",
+        "savedOverride": "模型覆盖已保存。发布智能体以应用更改。",
+        "savedOrg": "组织模型配置已保存。发布智能体以应用更改。"
+      },
+      "recordingsCard": {
+        "title": "录音",
+        "description": "录音现在在组织级别管理,并在所有智能体间共享。在提示词输入框中使用 <0>@</0> 插入录音。<1>了解更多</1>",
+        "goToRecordings": "前往录音"
+      },
+      "deployment": {
+        "title": "添加到网站",
+        "description": "配置一个组件,把此语音智能体添加到你的网站。<0>了解更多</0>",
+        "configureWidget": "配置组件"
+      },
+      "loadFailed": "获取工作流失败",
+      "notFound": "工作流不存在",
+      "identity": {
+        "title": "Agent UUID",
+        "description": "此智能体的稳定标识符。用于 agent-stream URL 以及其他数字工作流 ID 不便携带的集成场景。",
+        "clickToCopy": "点击复制",
+        "copyUuid": "复制 UUID",
+        "copied": "Agent UUID 已复制",
+        "copyFailed": "复制 Agent UUID 失败"
+      }
+    },
+    "dispositions": {
+      "toggleLabel": "在通话结束时提取通话结果",
+      "enabledSummary_one": "已配置 {{count}} 个结果。VoiceWorker 会将已完成的对话归类到其中之一。",
+      "enabledSummary_other": "已配置 {{count}} 个结果。VoiceWorker 会将已完成的对话归类到其中之一。",
+      "disabledSummary": "已禁用。VoiceWorker 将保留由结束通话事件记录的结果。",
+      "configureOptions": "配置选项",
+      "dialogTitle": "通话结果提取",
+      "dialogDescription": "配置可供模型选择的代码和描述对。代码会在组织级结果映射应用之前记录。",
+      "optionsLabel": "结果选项",
+      "addCustom": "添加自定义结果",
+      "dispositionNumber": "结果 {{index}}",
+      "codeLabel": "结果代码",
+      "codePlaceholder": "qualified",
+      "descriptionLabel": "描述",
+      "descriptionPlaceholder": "当客户符合资格标准并希望继续推进时使用。",
+      "removeAria": "删除结果 {{index}}",
+      "emptyTitle": "至少添加一个结果",
+      "emptyBody": "提取需要一个封闭的结果列表供选择。",
+      "charCounter": "{{used}} / {{max}} 个描述字符",
+      "saveOptions": "保存选项",
+      "enableExtraction": "启用提取",
+      "errors": {
+        "codeRequired": "结果代码为必填项。",
+        "codeTooLong": "结果代码最多 {{max}} 个字符。",
+        "codePattern": "以字母开头,只使用字母、数字、下划线或连字符。",
+        "codeDuplicate": "结果代码必须唯一。",
+        "descriptionRequired": "描述为必填项。",
+        "descriptionTooLong": "描述最多 {{max}} 个字符。",
+        "totalTooLong": "所有描述合计最多 {{max}} 个字符。"
+      }
+    }
+  },
+  "campaigns": {
+    "title": "活动",
+    "subtitle": "管理您的批量工作流执行活动",
+    "createCampaign": "创建活动",
+    "allCampaigns": "全部活动",
+    "allCampaignsDescription": "查看和管理您的活动",
+    "headerId": "ID",
+    "headerName": "名称",
+    "headerWorkflow": "工作流",
+    "headerState": "状态",
+    "headerProgress": "进度",
+    "headerCreated": "创建时间",
+    "headerAction": "操作",
+    "view": "查看",
+    "empty": "未找到活动",
+    "createFirst": "创建您的第一个活动",
+    "backToCampaigns": "返回活动列表",
+    "backToCampaign": "返回活动",
+    "notFound": "未找到活动",
+    "editCampaign": "编辑活动",
+    "startCampaign": "启动活动",
+    "pauseCampaign": "暂停活动",
+    "resumeCampaign": "恢复活动",
+    "redialCampaign": "重拨活动",
+    "busy": "忙音",
+    "noAnswer": "无人接听",
+    "voicemail": "语音信箱",
+    "retryDelayLabel": "重试间隔",
+    "states": {
+      "created": "已创建",
+      "running": "进行中",
+      "paused": "已暂停",
+      "completed": "已完成",
+      "failed": "失败"
+    },
+    "csv": {
+      "label": "CSV 文件",
+      "selectCsv": "请选择 CSV 文件",
+      "sizeLimit": "文件大小必须小于 10MB",
+      "uploadUrlFailed": "获取上传地址失败",
+      "storageFailed": "上传文件到存储失败",
+      "uploaded": "文件已上传：{{name}}",
+      "uploadFailed": "上传 CSV 文件失败",
+      "uploading": "上传中... {{progress}}%",
+      "uploadButton": "上传 CSV 文件",
+      "selected": "已选择：",
+      "help": "上传包含联系人数据的 CSV 文件。必须包含 phone_number 列。这些列可在工作流节点中作为 initial_context 访问。最大 10MB。"
+    },
+    "advanced": {
+      "title": "高级设置",
+      "maxConcurrency": "最大并发呼叫数",
+      "defaultPlaceholder": "默认：{{limit}}",
+      "maxConcurrencyHelp": "同时进行的最大呼叫数量。留空则使用 {{limit}}。",
+      "cliInfo_one": "您有 {{count}} 个 CLI，组织上限为 {{orgLimit}}。",
+      "cliInfo_other": "您有 {{count}} 个 CLI，组织上限为 {{orgLimit}}。",
+      "callerIdRotation": "主叫号码在呼叫之间轮换，并可能在并发呼叫中重复使用。",
+      "openTelephony": "打开电话配置",
+      "dialRate": "每秒发起呼叫数",
+      "dialRateHelp": "此活动每秒可发起的新呼叫上限。默认值：1。您的账户最多允许 {{limit}}。",
+      "enableRetries": "启用重试",
+      "enableRetriesHelp": "自动重试失败的呼叫",
+      "maxRetries": "最大重试次数",
+      "retryDelay": "重试间隔（秒）",
+      "retryOn": "重试条件",
+      "busySignal": "忙音",
+      "noAnswer": "无人接听",
+      "voicemail": "语音信箱",
+      "callSchedule": "呼叫计划",
+      "callScheduleHelp": "限制呼叫发起的时间",
+      "timezone": "时区",
+      "timeSlots": "时间段",
+      "days": ["周一", "周二", "周三", "周四", "周五", "周六", "周日"],
+      "to": "至",
+      "addTimeSlot": "添加时间段",
+      "circuitBreaker": "熔断器",
+      "circuitBreakerHelp": "失败率过高时自动暂停活动",
+      "failureThreshold": "失败阈值（%）",
+      "failureThresholdHelp": "当失败率超过此百分比时暂停",
+      "windowSeconds": "时间窗口（秒）",
+      "minCalls": "窗口内最少呼叫数"
+    },
+    "new": {
+      "title": "创建新活动",
+      "subtitle": "设置新活动以大规模执行工作流",
+      "cardTitle": "活动详情",
+      "cardDescription": "配置您的活动设置",
+      "nameLabel": "活动名称",
+      "namePlaceholder": "输入活动名称",
+      "nameHelp": "为您的活动选择一个描述性名称",
+      "workflowLabel": "工作流",
+      "workflowPlaceholder": "选择工作流",
+      "workflowsLoading": "加载工作流中...",
+      "workflowsEmpty": "未找到工作流",
+      "workflowHelp": "选择对数据源中每一行执行的工作流",
+      "telephonyLabel": "电话配置",
+      "telephonyNone": "还没有电话配置。<1>添加一个</1>以创建活动。",
+      "telephonyPlaceholder": "选择电话配置",
+      "telephonyLoading": "加载配置中...",
+      "telephonyDefault": "默认",
+      "telephonyHelp": "此活动的外呼将使用此配置的主叫号码",
+      "sourceTypeLabel": "数据源类型",
+      "sourceTypePlaceholder": "选择数据源类型",
+      "sourceCsv": "CSV 文件",
+      "sourceTypeHelp": "选择联系人数据的存储位置",
+      "creating": "创建中...",
+      "loadWorkflowsFailed": "加载工作流失败",
+      "loadTelephonyFailed": "加载电话配置失败",
+      "fillAllFields": "请填写所有字段",
+      "maxConcurrencyRange": "最大并发呼叫数必须在 1 与您的组织上限（{{limit}}）之间",
+      "dialRateRange": "每秒发起呼叫数必须在 1 与 {{limit}} 之间",
+      "createFailed": "创建活动失败",
+      "created": "活动创建成功"
+    },
+    "edit": {
+      "title": "编辑活动",
+      "subtitle": "修改活动设置",
+      "cardTitle": "活动设置",
+      "cardDescription": "更新名称、并发、重试和计划配置",
+      "nameLabel": "活动名称",
+      "namePlaceholder": "输入活动名称",
+      "saving": "保存中...",
+      "saveChanges": "保存更改",
+      "loadFailed": "加载活动失败",
+      "loadLimitsFailed": "加载活动限制失败",
+      "loadTelephonyFailed": "加载电话配置失败",
+      "configMissing": "找不到该活动的电话配置",
+      "nameRequired": "活动名称为必填项",
+      "maxConcurrencyRange": "最大并发呼叫数必须在 1 与您的组织上限（{{limit}}）之间",
+      "dialRateRange": "每秒发起呼叫数必须在 1 与 {{limit}} 之间",
+      "addTimeSlot": "至少添加一个时间段",
+      "slotOrder": "每个时间段的开始时间必须早于结束时间",
+      "updateFailed": "更新活动失败",
+      "updated": "活动更新成功"
+    },
+    "detail": {
+      "loadFailed": "加载活动详情失败",
+      "downloadUrlFailed": "获取下载地址失败",
+      "downloadCsvFailed": "下载 CSV 文件失败",
+      "downloadReportFailed": "下载报告失败",
+      "started": "活动已启动",
+      "startFailed": "启动活动失败",
+      "resumed": "活动已恢复",
+      "resumeFailed": "恢复活动失败",
+      "redialReasonRequired": "请至少选择一个重拨原因",
+      "redialCreated": "重拨活动已创建",
+      "redialFailed": "创建重拨活动失败",
+      "paused": "活动已暂停",
+      "pauseFailed": "暂停活动失败",
+      "redialNameSuffix": "（重拨）",
+      "createdAt": "创建于 {{date}}",
+      "downloadReport": "下载报告",
+      "filterByDateRange": "按日期范围筛选",
+      "from": "从",
+      "to": "到",
+      "startDate": "开始日期",
+      "endDate": "结束日期",
+      "clear": "清除",
+      "downloadFiltered": "下载筛选结果",
+      "downloadAll": "全部下载",
+      "detailsTitle": "活动详情",
+      "detailsDescription": "配置和数据源信息",
+      "workflow": "工作流",
+      "sourceType": "数据源类型",
+      "sourceFile": "源文件",
+      "sourceSheet": "源表格",
+      "telephonyConfig": "电话配置",
+      "configNumber": "配置 #{{id}}",
+      "notAssigned": "未分配",
+      "state": "状态",
+      "progress": "进度",
+      "redialOf": "重拨自",
+      "redialedAs": "重拨为",
+      "campaignNumber": "活动 #{{id}}",
+      "startedAt": "开始时间",
+      "completedAt": "完成时间",
+      "settingsTitle": "活动设置",
+      "settingsDescription": "并发和重试配置",
+      "orgDefault": "使用组织默认值",
+      "retriesEnabled": "已启用重试",
+      "notConfigured": "未配置",
+      "activityTitle": "活动日志",
+      "activityDescription": "最近的状态变更和失败记录，最新在前。",
+      "activityEmpty": "暂无事件记录。",
+      "detailsToggle": "详情",
+      "redial": {
+        "title": "重拨活动",
+        "description": "创建一个新活动，重新拨打最后一次呼叫以所选结果结束的唯一联系人。重试中已成功接通的联系人将被跳过。",
+        "nameLabel": "名称",
+        "namePlaceholder": "活动名称",
+        "redialWhen": "当最后一次呼叫为以下结果时重拨",
+        "creating": "创建中...",
+        "create": "创建重拨活动"
+      }
+    }
+  },
+  "files": {
+    "title": "知识库文件",
+    "subtitle": "上传并管理供您的语音代理参考的文档。",
+    "yourDocuments": "您的文档",
+    "yourDocumentsDescription": "您组织内所有代理共享的文档",
+    "uploadDocument": "上传文档",
+    "uploadDialogTitle": "上传文档",
+    "uploadDialogDescription": "上传 PDF 或文档文件以添加到您的知识库",
+    "upload": {
+      "ossNoticeTitle": "由外部服务处理",
+      "ossNoticeBody": "上传的文档将发送至 VoiceWorker 托管的模型代理服务进行解析和分块。VoiceWorker 模型代理服务不会存储或读取您的文档——提取的文本和向量将返回并存储在您自托管的数据库中。",
+      "unsupportedType": "请选择支持的文件类型：{{types}}",
+      "sizeLimit": "文件大小必须小于 5MB",
+      "uploadUrlFailed": "获取上传地址失败",
+      "storageFailed": "上传文件到存储失败",
+      "processingFailed": "触发处理失败",
+      "uploaded": "文件已上传：{{name}}。处理已开始。",
+      "uploadFailed": "上传文档失败",
+      "retrievalQuestion": "代理应如何使用此文档？",
+      "fullDocument": "完整文档",
+      "fullDocumentHelp": "每次检索时向代理提供整个文档。适合菜单、价目表、常见问题等小型参考文档。",
+      "chunked": "分块搜索",
+      "chunkedHelp": "文档将被拆分为多个块，并检索最相关的部分。更适合手册或政策等大型文档。",
+      "uploadAndProcess": "上传并处理",
+      "uploading": "上传中...",
+      "dropHere": "将文档拖放到此处",
+      "orBrowse": "或点击浏览",
+      "supportedFormats": "支持的格式：{{types}}（最大 5MB）",
+      "chooseFile": "选择文件"
+    },
+    "list": {
+      "fetchFailed": "获取文档失败",
+      "deleteConfirm": "确定要删除“{{name}}”吗？",
+      "deleteFailed": "删除文档失败",
+      "deleted": "已删除“{{name}}”",
+      "searchPlaceholder": "搜索文档...",
+      "noMatch": "没有匹配搜索的文档",
+      "empty": "尚未上传文档",
+      "statusCompleted": "已完成",
+      "statusProcessing": "处理中",
+      "statusPending": "待处理",
+      "statusFailed": "失败",
+      "fullDocument": "完整文档",
+      "chunked": "分块",
+      "chunks": "{{count}} 个块",
+      "errorPrefix": "错误：",
+      "duplicate": "与另一文档重复"
+    }
+  },
+  "recordings": {
+    "title": "录音",
+    "subtitle": "管理您组织的音频录音。在提示词字段中使用 <1>@</1> 插入录音，或作为工具调用的过渡消息。",
+    "allRecordings": "全部录音",
+    "allRecordingsDescription": "您组织内所有代理共享的音频录音",
+    "uploadRecording": "上传录音",
+    "list": {
+      "fetchFailed": "获取录音失败",
+      "deleteConfirm": "确定要删除此录音吗？",
+      "deleteFailed": "删除录音失败",
+      "deleted": "录音已删除",
+      "playFailed": "播放录音失败",
+      "idEmpty": "ID 不能为空",
+      "idInvalid": "只能使用字母、数字、连字符和下划线",
+      "updateFailed": "更新录音 ID 失败",
+      "updated": "录音 ID 已更新为“{{id}}”。所有工作流引用已同步更新。",
+      "searchPlaceholder": "按文件名、转写文本或 ID 搜索...",
+      "count_one": "{{count}} 条录音",
+      "count_other": "{{count}} 条录音",
+      "matching": "匹配“{{query}}”",
+      "noMatch": "没有匹配搜索的录音",
+      "empty": "暂无录音",
+      "editId": "编辑 ID"
+    },
+    "upload": {
+      "title": "上传录音",
+      "description": "上传或录制音频文件。在提示词字段中使用 <1>@</1> 将其插入到您的代理中。",
+      "transcribeFailed": "自动转写失败",
+      "fileTooLargeSkipped": "{{name}}（{{size}}MB）超过 5MB 限制——已跳过。",
+      "recordingTooLarge": "录音（{{size}}MB）超过允许的最大大小 5MB。",
+      "micDenied": "麦克风访问被拒绝。请允许麦克风权限。",
+      "uploadUrlsFailed": "获取上传地址失败",
+      "fileUploadFailed": "{{name}} 上传失败",
+      "uploadFailed": "上传录音失败",
+      "audioFiles": "音频文件",
+      "chooseFiles": "选择音频文件（每个最大 5MB）",
+      "record": "录制",
+      "recordingName": "录音名称",
+      "recordingNamePlaceholder": "例如 greeting、hold-message",
+      "startRecording": "开始录制",
+      "stop": "停止",
+      "pending_one": "待上传（{{count}} 个文件）",
+      "pending_other": "待上传（{{count}} 个文件）",
+      "transcribing": "转写中...",
+      "transcriptPlaceholder": "这段录音说了什么？",
+      "language": "语言",
+      "uploading": "上传中...",
+      "uploadCount_one": "上传 {{count}} 条录音",
+      "uploadCount_other": "上传 {{count}} 条录音"
+    },
+    "preview": {
+      "title": "运行预览",
+      "runSuffix": " - 运行 #{{id}}",
+      "empty": "没有可用的录音或转录文本。",
+      "downloadRecording": "下载录音",
+      "downloadTranscript": "下载转录文本"
+    }
+  },
+  "reports": {
+    "title": "每日报表",
+    "selectWorkflow": "选择工作流",
+    "allWorkflows": "全部工作流",
+    "showingTimezone": "显示 {{timezone}} 时区的数据",
+    "filteredBy": " • 筛选：{{name}}",
+    "downloadCsv": "下载 CSV",
+    "csvHeaders": ["电话号码", "结果", "时长（秒）", "工作流运行链接"],
+    "noDataToDownload": "没有可下载的数据",
+    "downloadFailed": "下载 CSV 数据失败",
+    "loadFailed": "加载报表数据失败",
+    "noRuns": "{{date}} 没有工作流运行记录",
+    "noRunsForWorkflow": "（所选工作流）",
+    "metrics": {
+      "totalRuns": "工作流运行总数",
+      "totalRunsDescription": "今日处理的呼叫总数",
+      "transferDispositions": "转接结果数",
+      "transferDispositionsDescription": "已转接的呼叫（XFER）"
+    },
+    "charts": {
+      "callDuration": "呼叫时长分布",
+      "noDurationData": "暂无时长数据",
+      "calls": "呼叫数：{{count}}",
+      "percentOfTotal": "占总数 {{pct}}%",
+      "disposition": "结果分布",
+      "noDispositionData": "暂无结果数据",
+      "count": "数量：{{count}}"
+    }
+  },
+  "automation": {
+    "title": "自动化",
+    "subtitle": "自动化你的工作流与流程",
+    "comingSoon": "即将推出",
+    "underDevelopment": "自动化功能正在开发中",
+    "workingOn": "我们正在打造强大的自动化功能，帮助你简化工作流程。",
+    "description": "自动化重复任务、基于事件触发动作，并构建智能工作流管道。",
+    "checkBack": "敬请期待更新！"
+  },
+  "superadmin": {
+    "title": "超级管理员控制台",
+    "subtitle": "管理用户并查看全系统数据",
+    "enterProviderId": "请输入 Provider 用户 ID。",
+    "enterEmail": "请输入邮箱地址。",
+    "notAuthenticated": "用户未登录，请登录后重试。",
+    "impersonateFailed": "模拟用户失败，请重试。",
+    "processing": "处理中...",
+    "providerCard": {
+      "title": "Provider 用户 ID",
+      "description": "使用 Stack provider 用户 ID 进行模拟登录",
+      "label": "Provider 用户 ID",
+      "placeholder": "Provider 用户 ID",
+      "button": "按 Provider ID 模拟"
+    },
+    "emailCard": {
+      "title": "邮箱",
+      "description": "使用主邮箱地址进行模拟登录",
+      "label": "邮箱地址",
+      "placeholder": "user@example.com",
+      "button": "按邮箱模拟"
+    },
+    "runsCard": {
+      "title": "工作流运行",
+      "description": "查看并管理所有组织的工作流运行",
+      "button": "查看全部运行"
+    },
+    "runs": {
+      "fetchFailed": "获取工作流运行失败，请重试。",
+      "impersonateFailed": "模拟用户失败，请重试。",
+      "loading": "正在加载工作流运行...",
+      "title": "工作流运行",
+      "subtitle": "查看并管理所有组织的工作流运行",
+      "allRuns": "全部工作流运行",
+      "showingCount": "显示 {{shown}} / 共 {{total}} 条运行",
+      "refreshing": "刷新中...",
+      "empty": "未找到工作流运行。",
+      "headerId": "ID",
+      "headerWorkflow": "工作流",
+      "headerStatus": "状态",
+      "headerDisposition": "结果",
+      "headerTags": "标签",
+      "headerDuration": "时长",
+      "headerDetails": "详情",
+      "headerCreatedAt": "创建时间",
+      "headerActions": "操作",
+      "unknownWorkflow": "未知工作流",
+      "initialContext": "初始上下文",
+      "gatheredContext": "收集的上下文",
+      "usageInfo": "用量信息",
+      "openWorkflowAsUser": "以该用户身份打开工作流",
+      "openRunAsUser": "以该用户身份打开运行详情",
+      "pageOf": "第 {{page}} / {{totalPages}} 页（共 {{total}} 条运行）"
+    }
+  },
+  "leadForms": {
+    "fields": {
+      "name": "姓名",
+      "namePlaceholder": "你的姓名",
+      "company": "公司名称",
+      "companyPlaceholder": "某某公司",
+      "email": "邮箱",
+      "workEmail": "工作邮箱",
+      "emailPlaceholder": "you@company.com",
+      "jobTitle": "职位",
+      "jobTitlePlaceholder": "运营副总裁",
+      "phone": "电话",
+      "volumeExpected": "预期每月呼叫量",
+      "volumeMonthly": "每月呼叫量",
+      "select": "请选择",
+      "selectOne": "请选择一项",
+      "goal": "你希望语音助手做什么？",
+      "goalPlaceholderHire": "使用场景、目标效果、其他说明…",
+      "goalPlaceholderEnterprise": "使用场景、合规背景、现有技术栈…",
+      "deploymentQuestion": "需要企业级部署吗（SSO、私有化、数据驻留）？"
+    },
+    "options": {
+      "volume": {
+        "0-5k": "0–5k",
+        "5k-100k": "5k–100k",
+        "100k+": "100k+",
+        "not-sure": "不确定"
+      },
+      "deployment": {
+        "yes": "是",
+        "no": "否",
+        "maybe": "可能"
+      },
+      "migration": {
+        "no": "不，我没有在迁移",
+        "vapi": "Vapi",
+        "retell": "Retell",
+        "bland": "Bland",
+        "elevenlabs": "ElevenLabs",
+        "synthflow": "Synthflow",
+        "other": "其他"
+      },
+      "heard": {
+        "github": "GitHub",
+        "search_engine": "搜索引擎",
+        "social_media": "社交媒体（Twitter、LinkedIn）",
+        "youtube": "YouTube",
+        "ai_tool": "AI 工具（ChatGPT、Claude）",
+        "referral": "有人推荐",
+        "other": "其他"
+      },
+      "onboardingVolume": {
+        "0-5k": "0–5k",
+        "5k-100k": "5k–100k",
+        "100k+": "100k+",
+        "exploring": "探索中"
+      },
+      "persona": {
+        "enterprise_midmarket": "企业 / 中型市场",
+        "agency": "代理机构 / 为客户构建的咨询公司",
+        "local_business": "本地商家",
+        "startup": "创业公司",
+        "solo": "独立创始人 / 开发者"
+      },
+      "onprem": {
+        "yes": "是",
+        "no": "否",
+        "not_sure": "不确定"
+      }
+    },
+    "toasts": {
+      "fillRequired": "请填写所有必填项",
+      "emailSent": "请查收收件箱——我们刚刚给你发送了后续步骤邮件（可能需要一分钟）。",
+      "submitFailed": "出错了，请重试。",
+      "providerRequired": "请告诉我们你要从哪个服务商迁移",
+      "answerAll": "请回答所有问题",
+      "completeOnprem": "请完成下方的私有化部署信息，或移除该部分。"
+    },
+    "errors": {
+      "workEmailRequired": "工作邮箱为必填项",
+      "invalidEmail": "请输入有效的邮箱地址",
+      "useWorkEmail": "请使用你的工作邮箱"
+    },
+    "hire": {
+      "eyebrow": "全流程托管",
+      "title": "让我们为你构建语音助手",
+      "description": "构建优秀的语音助手需要经验。告诉我们你的需求，我们为你端到端完成。",
+      "bookTitle": "预约与我们的团队会面",
+      "enterpriseHelper": "需要企业级部署？（SSO、私有化、数据驻留）"
+    },
+    "enterprise": {
+      "eyebrow": "企业版",
+      "title": "预约策略咨询",
+      "description": "SSO、私有化部署、数据驻留、承诺呼叫量。告诉我们你的环境情况。"
+    },
+    "bookDescription": "选择一个适合你的时间。",
+    "done": "完成",
+    "submit": "提交",
+    "onboarding": {
+      "eyebrow": "欢迎",
+      "title": "欢迎使用 VoiceWorker",
+      "description": "几个快速问题，帮助我们为你定制体验。约需 20 秒。",
+      "getStarted": "开始使用",
+      "persona": "哪一项最符合你的情况？",
+      "onpremQuestion": "你是否需要满足合规与数据驻留要求的私有化部署？",
+      "managedNote": "我们提供 <1>Managed On-Prem</1>（托管私有化）部署，满足合规与数据驻留要求。",
+      "remove": "移除",
+      "talkOnprem": "与我们咨询私有化部署 →",
+      "onpremFollowup": "我们的团队会就私有化部署与你联系。不需要了？点击“{{remove}}”。",
+      "migrating": "你是否正在从其他服务商迁移？",
+      "otherProvider": "其他服务商",
+      "otherProviderPlaceholder": "在此输入服务商名称",
+      "switchReason": "为什么想要更换？",
+      "switchReasonPlaceholder": "例如：成本、自托管、并发、数据安全、延迟",
+      "heard": "你从哪里了解到我们？"
+    },
+    "captcha": {
+      "title": "快速验证",
+      "body": "发送前请确认你是真人。",
+      "question": "{{a}} + {{b}} 等于多少？",
+      "inlineQuestion": "快速验证：{{a}} + {{b}} 等于多少？",
+      "answerPlaceholder": "答案",
+      "confirm": "确认并提交",
+      "wrong": "不太对，再试一次。"
+    },
+    "shell": {
+      "submitting": "提交中…"
+    },
+    "trustLine": "平均响应时间：工作时间内 10 分钟以内。",
+    "nudge": {
+      "title": "聘请专家",
+      "body": "我们为你构建语音助手",
+      "dismiss": "关闭"
+    }
+  },
+  "filters": {
+    "title": "筛选工作流运行",
+    "subtitle": "构建自定义筛选条件以查找特定的工作流运行",
+    "templates": "模板",
+    "templatesLabel": "筛选模板",
+    "selectAttribute": "选择要筛选的属性",
+    "activeFilters": "已启用的筛选",
+    "clearAll": "全部清除",
+    "autoRefresh": "每 5 秒自动刷新",
+    "apply": "应用（{{modifier}}+Enter）",
+    "applying": "应用中...",
+    "applyTitle": "应用筛选",
+    "summary": {
+      "noOptions": "未选择任何选项",
+      "more": "+{{count}} 项",
+      "noValue": "无值",
+      "noTags": "无标签",
+      "noDateRange": "未选择日期范围",
+      "noRange": "未选择范围",
+      "rangeTo": "{{from}} 至 {{to}}"
+    },
+    "date": {
+      "selectDate": "选择日期",
+      "from": "开始",
+      "to": "结束",
+      "time": "时间",
+      "presets": {
+        "today": "今天",
+        "yesterday": "昨天",
+        "last7days": "最近 7 天",
+        "last30days": "最近 30 天"
+      }
+    },
+    "multi": {
+      "label": "选择选项",
+      "placeholder": "请选择选项",
+      "search": "搜索选项...",
+      "selectAll": "全选",
+      "selectNone": "全不选",
+      "empty": "未找到选项",
+      "selected": "已选 {{count}} 项"
+    },
+    "number": {
+      "value": "数值",
+      "enterValue": "输入数值"
+    },
+    "numberRange": {
+      "min": "最小值",
+      "max": "最大值",
+      "minPlaceholder": "最小{{unit}}",
+      "maxPlaceholder": "最大{{unit}}",
+      "valueUnit": "值"
+    },
+    "numberSelect": {
+      "option": "选项",
+      "placeholder": "选择一个选项",
+      "unavailable": "不可用的智能体（#{{id}}）",
+      "loading": "加载选项中...",
+      "empty": "未找到选项"
+    },
+    "radio": {
+      "selectPrefix": "选择{{label}}",
+      "defaultLabel": "选择状态"
+    },
+    "tags": {
+      "label": "标签",
+      "placeholder": "输入标签（逗号分隔）"
+    },
+    "text": {
+      "placeholder": "输入文本"
+    },
+    "units": {
+      "seconds": "秒",
+      "tokens": "Token"
+    },
+    "attributes": {
+      "dateRange": "日期和时间范围",
+      "dispositionCode": "结果代码",
+      "duration": "呼叫时长",
+      "status": "完成状态",
+      "callTags": "标签",
+      "tokenUsage": "Token 用量",
+      "runId": "工作流运行 ID",
+      "workflowId": "工作流 ID",
+      "callerNumber": "主叫号码",
+      "calledNumber": "被叫号码",
+      "callDirection": "呼叫方向",
+      "callChannel": "呼叫类型",
+      "campaignId": "活动 ID",
+      "usageRunId": "运行 ID",
+      "usageWorkflowId": "智能体 ID",
+      "usageDateRange": "日期范围",
+      "usageDisposition": "结果",
+      "usageDuration": "时长"
+    },
+    "attributePlaceholders": {
+      "runId": "输入运行 ID",
+      "workflowId": "输入工作流 ID",
+      "callerNumber": "输入主叫号码（部分匹配）",
+      "calledNumber": "输入被叫号码（部分匹配）",
+      "campaignId": "输入活动 ID",
+      "callTags": "输入标签"
+    },
+    "options": {
+      "status": {
+        "completed": "已完成",
+        "in_progress": "进行中",
+        "all": "全部"
+      },
+      "callDirection": {
+        "inbound": "呼入",
+        "outbound": "呼出",
+        "all": "全部"
+      },
+      "callChannel": {
+        "telephony": "电话",
+        "web": "网页呼叫",
+        "chat": "文本聊天",
+        "all": "全部"
+      }
+    },
+    "presets": {
+      "under1min": "< 1 分钟",
+      "1to5min": "1-5 分钟",
+      "over5min": "> 5 分钟",
+      "under30sec": "< 30 秒",
+      "30secTo1min": "30 秒 - 1 分钟",
+      "1to3min": "1-3 分钟",
+      "3to5min": "3-5 分钟"
+    },
+    "templatesList": {
+      "failedCallsToday": {
+        "name": "今日失败呼叫",
+        "description": "今天结果代码为失败的呼叫"
+      },
+      "longDurationCalls": {
+        "name": "长时长呼叫",
+        "description": "超过 5 分钟的已完成呼叫"
+      },
+      "highCostCalls": {
+        "name": "高成本呼叫",
+        "description": "使用超过 100 个 Token 的已完成呼叫"
+      },
+      "recentActivity": {
+        "name": "最近活动",
+        "description": "最近 24 小时的所有呼叫"
+      },
+      "transferredCalls": {
+        "name": "已转接呼叫",
+        "description": "结果为 XFER 的呼叫"
+      },
+      "activeCalls": {
+        "name": "进行中的呼叫",
+        "description": "当前正在进行的呼叫"
+      }
+    },
+    "validation": {
+      "bothDates": "两个日期都必须填写",
+      "endAfterStart": "结束日期必须晚于开始日期",
+      "maxRange": "日期范围不能超过 {{days}} 天",
+      "selectOne": "至少选择一个选项",
+      "maxSelections": "最多选择 {{max}} 个选项",
+      "bothValues": "两个值都必须填写",
+      "minLessThanMax": "最小值必须小于最大值",
+      "minNotLess": "最小值不能小于 {{min}}",
+      "maxNotGreater": "最大值不能大于 {{max}}",
+      "valueRequired": "必须填写数值",
+      "valueNotLess": "数值不能小于 {{min}}",
+      "valueNotGreater": "数值不能大于 {{max}}",
+      "statusRequired": "必须选择状态",
+      "tagRequired": "至少输入一个标签",
+      "textRequired": "必须填写文本"
+    }
+  },
+  "voiceSelector": {
+    "failedToLoad": "加载音色失败",
+    "selectVoice": "选择音色",
+    "selectVoiceTitle": "选择音色",
+    "enterVoiceId": "输入音色 ID",
+    "addManually": "手动添加音色 ID",
+    "loadingVoices": "加载音色中…",
+    "searchPlaceholder": "搜索音色…",
+    "gender": "性别",
+    "allGenders": "全部性别",
+    "language": "语言",
+    "allLanguages": "全部语言",
+    "accent": "口音",
+    "allAccents": "全部口音",
+    "noVoices": "未找到音色",
+    "countSummary": "共 {{total}} 个音色,已筛选 {{filtered}} 个",
+    "customVoiceId": "自定义音色 ID",
+    "customVoiceIdHelp": "使用上方目录中没有的音色 ID。",
+    "noMatch": "没有符合这些筛选条件的音色",
+    "playPreview": "播放试听",
+    "stopPreview": "停止试听",
+    "browseCatalog": "浏览目录",
+    "useThisVoice": "使用此音色",
+    "voiceCount_one": "{{count}} 个音色",
+    "voiceCount_other": "{{count}} 个音色",
+    "genders": {
+      "female": "女声",
+      "male": "男声",
+      "neutral": "中性"
+    }
+  },
+  "footer": {
+    "privacyPolicy": "隐私政策",
+    "termsOfService": "服务条款"
+  }
+}

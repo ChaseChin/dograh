@@ -1,6 +1,8 @@
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 export const useDeviceInputs = () => {
+    const { t } = useTranslation();
     const [audioInputs, setAudioInputs] = useState<MediaDeviceInfo[]>([]);
     const [selectedAudioInput, setSelectedAudioInput] = useState('');
     const [permissionError, setPermissionError] = useState<string | null>(null);
@@ -16,9 +18,9 @@ export const useDeviceInputs = () => {
                 setSelectedAudioInput(defaultAudioInput.deviceId);
             }
         } catch {
-            setPermissionError('Could not enumerate devices');
+            setPermissionError(t('workflow.run.rtc.enumerateDevicesFailed'));
         }
-    }, []);
+    }, [t]);
 
     useEffect(() => {
         getAudioInputDevices();

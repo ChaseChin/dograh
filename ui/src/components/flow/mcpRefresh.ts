@@ -12,6 +12,13 @@ export interface McpRefreshResult {
     error: string | null;
 }
 
+/**
+ * Sentinel returned as `error` when the refresh request itself failed (no
+ * server-provided message). Callers map it to a localized message — this
+ * module is UI-agnostic and must not carry user-visible copy.
+ */
+export const MCP_REFRESH_REQUEST_FAILED = "__mcp_refresh_request_failed__";
+
 function normalizeDiscoveredTools(
     discoveredTools: McpRefreshResponse["discovered_tools"],
 ): McpDiscoveredTool[] {
@@ -57,7 +64,7 @@ export async function refreshMcpTools(
             error:
                 typeof error === "string"
                     ? error
-                    : "Refresh request failed. Check the MCP server and try again.",
+                    : MCP_REFRESH_REQUEST_FAILED,
         };
     }
     return {

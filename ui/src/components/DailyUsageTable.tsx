@@ -1,3 +1,7 @@
+"use client";
+
+import { useTranslation } from 'react-i18next';
+
 import type { DailyUsageBreakdownResponse } from '@/client/types.gen';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
 import {
@@ -17,12 +21,14 @@ interface DailyUsageTableProps {
 }
 
 export function DailyUsageTable({ data, isLoading }: DailyUsageTableProps) {
+    const { t } = useTranslation();
+
     if (isLoading) {
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>Daily Usage Breakdown</CardTitle>
-                    <CardDescription>Last 7 days of usage</CardDescription>
+                    <CardTitle>{t('usage.daily.title')}</CardTitle>
+                    <CardDescription>{t('usage.daily.description')}</CardDescription>
                 </CardHeader>
                 <CardContent>
                     <div className="animate-pulse space-y-3">
@@ -39,11 +45,11 @@ export function DailyUsageTable({ data, isLoading }: DailyUsageTableProps) {
         return (
             <Card>
                 <CardHeader>
-                    <CardTitle>Daily Usage Breakdown</CardTitle>
-                    <CardDescription>Last 7 days of usage</CardDescription>
+                    <CardTitle>{t('usage.daily.title')}</CardTitle>
+                    <CardDescription>{t('usage.daily.description')}</CardDescription>
                 </CardHeader>
                 <CardContent>
-                    <p className="text-center py-8 text-gray-500">No usage data available</p>
+                    <p className="text-center py-8 text-gray-500">{t('usage.daily.empty')}</p>
                 </CardContent>
             </Card>
         );
@@ -52,18 +58,18 @@ export function DailyUsageTable({ data, isLoading }: DailyUsageTableProps) {
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Daily Usage Breakdown</CardTitle>
-                <CardDescription>Last 7 days of usage</CardDescription>
+                <CardTitle>{t('usage.daily.title')}</CardTitle>
+                <CardDescription>{t('usage.daily.description')}</CardDescription>
             </CardHeader>
             <CardContent>
                 <div className="bg-white border rounded-lg overflow-hidden shadow-sm">
                     <Table>
                         <TableHeader>
                             <TableRow className="bg-gray-50">
-                                <TableHead className="font-semibold">Date</TableHead>
-                                <TableHead className="font-semibold text-right">Usage (minutes)</TableHead>
-                                <TableHead className="font-semibold text-right">Cost (USD)</TableHead>
-                                <TableHead className="font-semibold text-right">Calls</TableHead>
+                                <TableHead className="font-semibold">{t('usage.daily.headerDate')}</TableHead>
+                                <TableHead className="font-semibold text-right">{t('usage.daily.headerUsageMinutes')}</TableHead>
+                                <TableHead className="font-semibold text-right">{t('usage.daily.headerCostUsd')}</TableHead>
+                                <TableHead className="font-semibold text-right">{t('usage.daily.headerCalls')}</TableHead>
                             </TableRow>
                         </TableHeader>
                         <TableBody>
@@ -86,7 +92,7 @@ export function DailyUsageTable({ data, isLoading }: DailyUsageTableProps) {
                         </TableBody>
                         <TableFooter>
                             <TableRow className="bg-gray-50 font-semibold">
-                                <TableCell>Total</TableCell>
+                                <TableCell>{t('usage.daily.total')}</TableCell>
                                 <TableCell className="text-right">
                                     {data.total_minutes.toFixed(1)}
                                 </TableCell>

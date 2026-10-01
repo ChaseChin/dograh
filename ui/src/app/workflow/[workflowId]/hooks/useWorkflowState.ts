@@ -10,6 +10,7 @@ import { EdgeChange, NodeChange } from "@xyflow/system";
 import { useRouter } from "next/navigation";
 import posthog from "posthog-js";
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { useWorkflowStore } from "@/app/workflow/[workflowId]/stores/workflowStore";
@@ -122,6 +123,7 @@ export const useWorkflowState = ({
     user,
 }: UseWorkflowStateProps) => {
     const router = useRouter();
+    const { t } = useTranslation();
     const rfInstance = useRef<ReactFlowInstance<FlowNode, FlowEdge> | null>(null);
     const [workflowConfigurationDefaults, setWorkflowConfigurationDefaults] =
         useState<WorkflowConfigurationDefaults | null>(null);
@@ -401,7 +403,7 @@ export const useWorkflowState = ({
         });
         if (maxInstanceViolation) {
             toast.error(
-                `${maxInstanceViolation.display_name} limit reached. Remove the extra node before saving.`,
+                t("workflow.editor.nodeLimitReached", { name: maxInstanceViolation.display_name }),
             );
             return;
         }
@@ -472,6 +474,7 @@ export const useWorkflowState = ({
         validateWorkflow,
         applyWorkflowErrors,
         specs,
+        t,
     ]);
 
     // Set up keyboard shortcut for save (Cmd/Ctrl + S)
@@ -560,7 +563,7 @@ export const useWorkflowState = ({
             });
             if (response.error) {
                 throw new Error(
-                    detailFromError(response.error, "Failed to save template variables"),
+                    detailFromError(response.error, t("workflow.editor.saveVariablesFailed")),
                 );
             }
             setTemplateContextVariables(variables);
@@ -569,7 +572,7 @@ export const useWorkflowState = ({
             logger.error(`Error saving template context variables: ${error}`);
             throw error;
         }
-    }, [workflowId, workflowName, user, setTemplateContextVariables]);
+    }, [workflowId, workflowName, user, setTemplateContextVariables, t]);
 
     // Save workflow configurations
     const saveWorkflowConfigurations = useCallback(async (configurations: WorkflowConfigurations, newWorkflowName: string) => {
@@ -591,7 +594,7 @@ export const useWorkflowState = ({
 
             if (response.error) {
                 const detail = (response.error as { detail?: unknown }).detail;
-                let msg = 'Failed to save workflow configurations';
+                let msg = t("workflow.editor.saveConfigFailed");
                 if (typeof detail === 'string') {
                     msg = detail;
                 } else if (Array.isArray(detail)) {
@@ -618,7 +621,7 @@ export const useWorkflowState = ({
             logger.error(`Error saving workflow configurations: ${error}`);
             throw error;
         }
-    }, [workflowId, user, setWorkflowConfigurations, workflowConfigurationDefaults]);
+    }, [workflowId, user, setWorkflowConfigurations, workflowConfigurationDefaults, t]);
 
     // Save dictionary
     const saveDictionary = useCallback(async (newDictionary: string) => {
@@ -639,7 +642,7 @@ export const useWorkflowState = ({
                 },
             });
             if (response.error) {
-                throw new Error(detailFromError(response.error, "Failed to save dictionary"));
+                throw new Error(detailFromError(response.error, t("workflow.editor.saveDictionaryFailed")));
             }
             setDictionary(newDictionary);
             setWorkflowConfigurations(updatedConfigurations);
@@ -647,7 +650,7 @@ export const useWorkflowState = ({
             logger.error(`Error saving dictionary: ${error}`);
             throw error;
         }
-    }, [workflowId, workflowName, user, setDictionary, setWorkflowConfigurations, workflowConfigurationDefaults]);
+    }, [workflowId, workflowName, user, setDictionary, setWorkflowConfigurations, workflowConfigurationDefaults, t]);
 
     // Update rfInstance when it changes
     useEffect(() => {

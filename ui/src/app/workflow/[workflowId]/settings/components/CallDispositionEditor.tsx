@@ -2,6 +2,7 @@
 
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -60,8 +61,13 @@ export function normalizeCallDispositions(
     }));
 }
 
+// Minimal translate-function shape, compatible with react-i18next's TFunction,
+// so this pure validator stays decoupled from React.
+type DispositionTranslate = (key: string, options?: Record<string, unknown>) => string;
+
 export function validateCallDispositionRows(
     rows: CallDispositionRow[],
+    t: DispositionTranslate,
 ): CallDispositionValidation {
     const rowErrors: Record<string, RowErrors> = {};
     const codeCounts = new Map<string, number>();
@@ -80,19 +86,19 @@ export function validateCallDispositionRows(
         const errors: RowErrors = {};
 
         if (!code) {
-            errors.code = "Disposition code is required.";
+            errors.code = t("workflow.dispositions.errors.codeRequired");
         } else if (code.length > MAX_CALL_DISPOSITION_CODE_LENGTH) {
-            errors.code = `Disposition code must be at most ${MAX_CALL_DISPOSITION_CODE_LENGTH} characters.`;
+            errors.code = t("workflow.dispositions.errors.codeTooLong", { max: MAX_CALL_DISPOSITION_CODE_LENGTH });
         } else if (!CALL_DISPOSITION_CODE_PATTERN.test(code)) {
-            errors.code = "Start with a letter and use only letters, numbers, underscores, or hyphens.";
+            errors.code = t("workflow.dispositions.errors.codePattern");
         } else if ((codeCounts.get(code.toLowerCase()) ?? 0) > 1) {
-            errors.code = "Disposition codes must be unique.";
+            errors.code = t("workflow.dispositions.errors.codeDuplicate");
         }
 
         if (!description) {
-            errors.description = "Description is required.";
+            errors.description = t("workflow.dispositions.errors.descriptionRequired");
         } else if (description.length > MAX_CALL_DISPOSITION_DESCRIPTION_LENGTH) {
-            errors.description = `Description must be at most ${MAX_CALL_DISPOSITION_DESCRIPTION_LENGTH.toLocaleString()} characters.`;
+            errors.description = t("workflow.dispositions.errors.descriptionTooLong", { max: MAX_CALL_DISPOSITION_DESCRIPTION_LENGTH.toLocaleString() });
         }
 
         if (errors.code || errors.description) {
@@ -105,7 +111,7 @@ export function validateCallDispositionRows(
         0,
     );
     const totalError = totalDescriptionLength > MAX_CALL_DISPOSITION_DESCRIPTIONS_TOTAL_LENGTH
-        ? `Descriptions must total at most ${MAX_CALL_DISPOSITION_DESCRIPTIONS_TOTAL_LENGTH.toLocaleString()} characters.`
+        ? t("workflow.dispositions.errors.totalTooLong", { max: MAX_CALL_DISPOSITION_DESCRIPTIONS_TOTAL_LENGTH.toLocaleString() })
         : undefined;
 
     return {
@@ -128,6 +134,7 @@ export function CallDispositionEditor({
     onChange: (rows: CallDispositionRow[]) => void;
     defaultDispositions?: CallDispositionOption[];
 }) {
+    const { t } = useTranslation();
     const enabled = rows.length > 0;
     const rememberedRows = useRef<CallDispositionRow[]>(rows);
     const [dialogOpen, setDialogOpen] = useState(false);
@@ -158,7 +165,7 @@ export function CallDispositionEditor({
     };
 
     const handleApply = () => {
-        const validation = validateCallDispositionRows(draftRows);
+        const validation = validateCallDispositionRows(draftRows, t);
         if (draftRows.length === 0 || !validation.isValid) return;
 
         rememberedRows.current = draftRows;
@@ -166,19 +173,19 @@ export function CallDispositionEditor({
         setDialogOpen(false);
     };
 
-    const draftValidation = validateCallDispositionRows(draftRows);
+    const draftValidation = validateCallDispositionRows(draftRows, t);
 
     return (
         <div className="space-y-3">
             <div className="flex items-center justify-between gap-6">
                 <div className="space-y-1">
                     <Label htmlFor="call-disposition-extraction-enabled" className="text-sm font-medium">
-                        Extract call disposition at the end of the call
+                        {t("workflow.dispositions.toggleLabel")}
                     </Label>
                     <p className="text-xs text-muted-foreground">
                         {enabled
-                            ? `${rows.length} outcome${rows.length === 1 ? "" : "s"} configured. VoiceWorker will classify the completed conversation into one of them.`
-                            : "Disabled. VoiceWorker will keep the disposition recorded by the call-ending event."}
+                            ? t("workflow.dispositions.enabledSummary", { count: rows.length })
+                            : t("workflow.dispositions.disabledSummary")}
                     </p>
                 </div>
                 <div className="flex shrink-0 items-center gap-3">
@@ -189,7 +196,7 @@ export function CallDispositionEditor({
                             size="sm"
                             onClick={() => openEditor(rows)}
                         >
-                            Configure options
+                            {t("workflow.dispositions.configureOptions")}
                         </Button>
                     )}
                     <Switch
@@ -203,9 +210,9 @@ export function CallDispositionEditor({
             <Dialog open={dialogOpen} onOpenChange={setDialogOpen}>
                 <DialogContent className="max-h-[90vh] grid-rows-[auto_minmax(0,1fr)_auto] sm:max-w-2xl">
                     <DialogHeader>
-                        <DialogTitle>Call disposition extraction</DialogTitle>
+                        <DialogTitle>{t("workflow.dispositions.dialogTitle")}</DialogTitle>
                         <DialogDescription>
-                            Configure the code and description pairs the model can choose from. Codes are recorded before organization-level disposition mapping is applied.
+                            {t("workflow.dispositions.dialogDescription")}
                         </DialogDescription>
                     </DialogHeader>
 
@@ -223,14 +230,14 @@ export function CallDispositionEditor({
                             variant="outline"
                             onClick={() => setDialogOpen(false)}
                         >
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button
                             type="button"
                             disabled={draftRows.length === 0 || !draftValidation.isValid}
                             onClick={handleApply}
                         >
-                            {enabled ? "Save options" : "Enable extraction"}
+                            {enabled ? t("workflow.dispositions.saveOptions") : t("workflow.dispositions.enableExtraction")}
                         </Button>
                     </DialogFooter>
                 </DialogContent>
@@ -248,6 +255,7 @@ function CallDispositionRowsEditor({
     onChange: (rows: CallDispositionRow[]) => void;
     validation: CallDispositionValidation;
 }) {
+    const { t } = useTranslation();
 
     const updateRow = (
         rowId: string,
@@ -259,7 +267,7 @@ function CallDispositionRowsEditor({
     return (
         <div className="space-y-4">
             <div className="flex items-center justify-between gap-4">
-                <Label className="text-sm">Disposition options</Label>
+                <Label className="text-sm">{t("workflow.dispositions.optionsLabel")}</Label>
                 <Button
                     type="button"
                     variant="outline"
@@ -270,7 +278,7 @@ function CallDispositionRowsEditor({
                         { id: createUuid(), code: "", description: "" },
                     ])}
                 >
-                    <Plus className="mr-1 h-4 w-4" /> Add custom disposition
+                    <Plus className="mr-1 h-4 w-4" /> {t("workflow.dispositions.addCustom")}
                 </Button>
             </div>
 
@@ -287,11 +295,11 @@ function CallDispositionRowsEditor({
                             <div className="flex items-start gap-3">
                                 <div className="min-w-0 flex-1 space-y-3">
                                     <p className="text-xs font-medium text-muted-foreground">
-                                        Disposition {index + 1}
+                                        {t("workflow.dispositions.dispositionNumber", { index: index + 1 })}
                                     </p>
                                     <div className="space-y-1.5">
                                         <Label htmlFor={codeId} className="text-xs">
-                                            Disposition Code
+                                            {t("workflow.dispositions.codeLabel")}
                                         </Label>
                                         <Input
                                             id={codeId}
@@ -300,7 +308,7 @@ function CallDispositionRowsEditor({
                                             aria-invalid={Boolean(errors?.code)}
                                             aria-describedby={errors?.code ? `${codeId}-error` : undefined}
                                             onChange={(event) => updateRow(row.id, { code: event.target.value })}
-                                            placeholder="qualified"
+                                            placeholder={t("workflow.dispositions.codePlaceholder")}
                                         />
                                         {errors?.code && (
                                             <p id={`${codeId}-error`} className="text-xs text-destructive">
@@ -310,7 +318,7 @@ function CallDispositionRowsEditor({
                                     </div>
                                     <div className="space-y-1.5">
                                         <Label htmlFor={descriptionId} className="text-xs">
-                                            Description
+                                            {t("workflow.dispositions.descriptionLabel")}
                                         </Label>
                                         <Textarea
                                             id={descriptionId}
@@ -320,7 +328,7 @@ function CallDispositionRowsEditor({
                                             aria-invalid={Boolean(errors?.description)}
                                             aria-describedby={errors?.description ? `${descriptionId}-error` : undefined}
                                             onChange={(event) => updateRow(row.id, { description: event.target.value })}
-                                            placeholder="Use when the customer meets the qualification criteria and wants to proceed."
+                                            placeholder={t("workflow.dispositions.descriptionPlaceholder")}
                                         />
                                         {errors?.description && (
                                             <p id={`${descriptionId}-error`} className="text-xs text-destructive">
@@ -333,7 +341,7 @@ function CallDispositionRowsEditor({
                                     type="button"
                                     variant="ghost"
                                     size="icon"
-                                    aria-label={`Remove disposition ${index + 1}`}
+                                    aria-label={t("workflow.dispositions.removeAria", { index: index + 1 })}
                                     onClick={() => onChange(rows.filter((item) => item.id !== row.id))}
                                 >
                                     <Trash2 className="h-4 w-4" />
@@ -345,16 +353,19 @@ function CallDispositionRowsEditor({
 
                 {rows.length === 0 && (
                     <div className="rounded-md border border-dashed p-4 text-center">
-                        <p className="text-sm font-medium">Add at least one disposition</p>
+                        <p className="text-sm font-medium">{t("workflow.dispositions.emptyTitle")}</p>
                         <p className="mt-1 text-xs text-muted-foreground">
-                            Extraction needs a closed list of outcomes to choose from.
+                            {t("workflow.dispositions.emptyBody")}
                         </p>
                     </div>
                 )}
 
                 <div className="flex justify-end text-xs text-muted-foreground">
                     <p className={validation.totalError ? "text-destructive" : undefined}>
-                        {validation.totalDescriptionLength.toLocaleString()} / {MAX_CALL_DISPOSITION_DESCRIPTIONS_TOTAL_LENGTH.toLocaleString()} description characters
+                        {t("workflow.dispositions.charCounter", {
+                            used: validation.totalDescriptionLength.toLocaleString(),
+                            max: MAX_CALL_DISPOSITION_DESCRIPTIONS_TOTAL_LENGTH.toLocaleString(),
+                        })}
                     </p>
                 </div>
                 {validation.totalError && (

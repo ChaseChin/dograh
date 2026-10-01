@@ -2,6 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { createWorkflowFromTemplateApiV1WorkflowCreateTemplatePost } from '@/client/sdk.gen';
 import { Button } from '@/components/ui/button';
@@ -23,6 +24,7 @@ import logger from '@/lib/logger';
 
 export default function CreateWorkflowPage() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { user, getAccessToken } = useAuth();
     const [isLoading, setIsLoading] = useState(false);
     const [error, setError] = useState<string | null>(null);
@@ -35,12 +37,12 @@ export default function CreateWorkflowPage() {
 
     const handleCreateWorkflow = async () => {
         if (!useCase || !activityDescription) {
-            setError('Please fill in all fields');
+            setError(t('workflow.create.fillAllFields'));
             return;
         }
 
         if (!user) {
-            setError('You must be logged in to create a workflow');
+            setError(t('workflow.create.mustBeLoggedIn'));
             return;
         }
 
@@ -67,7 +69,7 @@ export default function CreateWorkflowPage() {
                 setShowSuccessModal(true);
             }
         } catch (err) {
-            setError('Failed to create workflow. Please try again.');
+            setError(t('workflow.create.createFailed'));
             logger.error(`Error creating workflow: ${err}`);
         } finally {
             setIsLoading(false);
@@ -83,64 +85,64 @@ export default function CreateWorkflowPage() {
         <div className="min-h-screen">
             <div className="container mx-auto px-4 py-8 max-w-2xl">
                 <div className="mb-6">
-                    <h1 className="text-3xl font-bold mb-2">Create Voice Agent</h1>
+                    <h1 className="text-3xl font-bold mb-2">{t('workflow.create.title')}</h1>
                     <p className="text-muted-foreground">
-                        Tell us about your use case and we&apos;ll create a customized voice agent for you
+                        {t('workflow.create.subtitle')}
                     </p>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>Agent Details</CardTitle>
+                        <CardTitle>{t('workflow.create.cardTitle')}</CardTitle>
                         <CardDescription>
-                            Configure your voice agent settings
+                            {t('workflow.create.cardDescription')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent className="space-y-6">
                         <div className="space-y-2">
-                            <Label htmlFor="call-type">Call Type</Label>
+                            <Label htmlFor="call-type">{t('workflow.create.callType')}</Label>
                             <Select value={callType} onValueChange={(value) => setCallType(value as 'inbound' | 'outbound')}>
                                 <SelectTrigger id="call-type">
-                                    <SelectValue placeholder="Select type" />
+                                    <SelectValue placeholder={t('workflow.create.callTypePlaceholder')} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="inbound">
-                                        Inbound (Users call AI)
+                                        {t('workflow.create.callTypeInbound')}
                                     </SelectItem>
                                     <SelectItem value="outbound">
-                                        Outbound (AI calls users)
+                                        {t('workflow.create.callTypeOutbound')}
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
                             <p className="text-sm text-muted-foreground">
-                                Choose whether users will call your AI or your AI will call users
+                                {t('workflow.create.callTypeHelp')}
                             </p>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="use-case">Use Case</Label>
+                            <Label htmlFor="use-case">{t('workflow.create.useCase')}</Label>
                             <Input
                                 id="use-case"
-                                placeholder="e.g., Lead Qualification, HR Screening, Customer Support"
+                                placeholder={t('workflow.create.useCasePlaceholder')}
                                 value={useCase}
                                 onChange={(e) => setUseCase(e.target.value)}
                             />
                             <p className="text-sm text-muted-foreground">
-                                Describe the primary purpose of your voice agent
+                                {t('workflow.create.useCaseHelp')}
                             </p>
                         </div>
 
                         <div className="space-y-2">
-                            <Label htmlFor="activity-description">Activity Description</Label>
+                            <Label htmlFor="activity-description">{t('workflow.create.activityDescription')}</Label>
                             <Textarea
                                 id="activity-description"
-                                placeholder="Describe briefly what your voice agent will do (e.g., Qualify leads for real estate, Screen candidates for roles, Handle customer support). This will be a prompt to an LLM."
+                                placeholder={t('workflow.create.activityPlaceholder')}
                                 value={activityDescription}
                                 onChange={(e) => setActivityDescription(e.target.value)}
                                 className="min-h-[100px]"
                             />
                             <p className="text-sm text-muted-foreground">
-                                This description will be used to generate the AI prompt for your voice agent
+                                {t('workflow.create.activityHelp')}
                             </p>
                         </div>
 
@@ -154,7 +156,7 @@ export default function CreateWorkflowPage() {
                                 disabled={isLoading || !useCase || !activityDescription}
                                 className="w-full"
                             >
-                                {isLoading ? 'Creating...' : 'Create Agent'}
+                                {isLoading ? t('workflow.create.creating') : t('workflow.create.createAgent')}
                             </Button>
                         </div>
                     </CardContent>
@@ -174,10 +176,10 @@ export default function CreateWorkflowPage() {
 
                             <div className="text-center space-y-2">
                                 <h3 className="text-lg font-semibold">
-                                    Creating Your Workflow
+                                    {t('workflow.create.creatingTitle')}
                                 </h3>
                                 <p className="text-sm text-muted-foreground max-w-xs">
-                                    We&apos;re setting up your voice agent with your specifications. This will just take a moment...
+                                    {t('workflow.create.creatingBody')}
                                 </p>
                             </div>
                         </div>
@@ -193,18 +195,18 @@ export default function CreateWorkflowPage() {
                             <svg className="w-5 h-5 text-green-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                                 <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
                             </svg>
-                            Workflow Created Successfully!
+                            {t('workflow.create.successTitle')}
                         </DialogTitle>
                         <DialogDescription asChild>
                             <div className="mt-4 space-y-3">
                                 <p>
-                                    A voice agent workflow has been generated for your use case, with some artificial data and sample actions.
+                                    {t('workflow.create.successP1')}
                                 </p>
                                 <p>
-                                    The voice bot is pre-set to communicate in English with an American accent.
+                                    {t('workflow.create.successP2')}
                                 </p>
                                 <p>
-                                    Next steps would be to test the voice bot in the editor, and then modify it to suit your use case.
+                                    {t('workflow.create.successP3')}
                                 </p>
                             </div>
                         </DialogDescription>
@@ -214,7 +216,7 @@ export default function CreateWorkflowPage() {
                             onClick={handleModalContinue}
                             className="w-full"
                         >
-                            Open and Test Agent
+                            {t('workflow.create.openAndTest')}
                         </Button>
                     </DialogFooter>
                 </DialogContent>

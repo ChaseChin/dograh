@@ -1,5 +1,6 @@
 import { CalendarIcon } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
@@ -23,6 +24,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
   error,
   presets = [],
 }) => {
+  const { t } = useTranslation();
   const [isFromOpen, setIsFromOpen] = useState(false);
   const [isToOpen, setIsToOpen] = useState(false);
 
@@ -40,7 +42,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
   }, [value.to]);
 
   const formatDate = (date: Date | null) => {
-    if (!date) return "Select date";
+    if (!date) return t("filters.date.selectDate");
     return formatLocalDateTime(date);
   };
 
@@ -91,7 +93,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
               size="sm"
               onClick={() => handlePresetClick(preset)}
             >
-              {preset.charAt(0).toUpperCase() + preset.slice(1).replace(/(\d+)/, ' $1 ')}
+              {t(`filters.date.presets.${preset}`, { defaultValue: preset })}
             </Button>
           ))}
         </div>
@@ -99,7 +101,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
 
       <div className="grid grid-cols-2 gap-3">
         <div className="space-y-2">
-          <Label>From</Label>
+          <Label>{t("filters.date.from")}</Label>
           <Popover open={isFromOpen} onOpenChange={setIsFromOpen}>
             <PopoverTrigger asChild>
               <Button
@@ -122,7 +124,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
               />
               {value.from && (
                 <div className="p-3 border-t">
-                  <Label htmlFor="from-time">Time</Label>
+                  <Label htmlFor="from-time">{t("filters.date.time")}</Label>
                   <input
                     id="from-time"
                     type="time"
@@ -138,7 +140,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
         </div>
 
         <div className="space-y-2">
-          <Label>To</Label>
+          <Label>{t("filters.date.to")}</Label>
           <Popover open={isToOpen} onOpenChange={setIsToOpen}>
             <PopoverTrigger asChild>
               <Button
@@ -162,7 +164,7 @@ export const DateRangeFilter: React.FC<DateRangeFilterProps> = ({
               />
               {value.to && (
                 <div className="p-3 border-t">
-                  <Label htmlFor="to-time">Time</Label>
+                  <Label htmlFor="to-time">{t("filters.date.time")}</Label>
                   <input
                     id="to-time"
                     type="time"

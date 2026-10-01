@@ -1,4 +1,7 @@
+"use client";
+
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -18,6 +21,7 @@ export const DictionaryDialog = ({
     dictionary,
     onSave
 }: DictionaryDialogProps) => {
+    const { t } = useTranslation();
     const [dictionaryValue, setDictionaryValue] = useState(dictionary);
 
     // Sync local state with prop when dialog opens
@@ -43,20 +47,19 @@ export const DictionaryDialog = ({
         <Dialog open={open} onOpenChange={handleDialogOpenChange}>
             <DialogContent className="max-w-lg">
                 <DialogHeader>
-                    <DialogTitle>Dictionary</DialogTitle>
+                    <DialogTitle>{t("workflow.dictionary.title")}</DialogTitle>
                     <DialogDescription>
-                    Add any specific words that you would want the bot to actively listen for. The Voice Agent learns your
-                    unique words and names. Add expected words and phrases, company jargon, named entities, or industry-specific lingo. <br/>
-                    Example: billing department, tretinoin etc. <br/>
-                    (May incur extra cost depending on provider)
+                    {t("workflow.dictionary.description")} <br/>
+                    {t("workflow.dictionary.descriptionExample")} <br/>
+                    {t("workflow.dictionary.descriptionCost")}
                     </DialogDescription>
                 </DialogHeader>
                 <div className="space-y-4">
                     <div className="space-y-2">
-                        <Label htmlFor="dictionary" className="text-sm font-medium">Words</Label>
+                        <Label htmlFor="dictionary" className="text-sm font-medium">{t("workflow.dictionary.words")}</Label>
                         <Textarea
                             id="dictionary"
-                            placeholder="Enter words separated by comma"
+                            placeholder={t("workflow.dictionary.placeholder")}
                             value={dictionaryValue}
                             onChange={(e) => setDictionaryValue(e.target.value)}
                             rows={4}
@@ -67,10 +70,10 @@ export const DictionaryDialog = ({
                 <DialogFooter>
                     <div className="flex items-center gap-2">
                         <Button variant="outline" onClick={() => onOpenChange(false)}>
-                            Cancel
+                            {t("common.cancel")}
                         </Button>
                         <Button onClick={handleSave}>
-                            Save Dictionary
+                            {t("workflow.dictionary.save")}
                         </Button>
                     </div>
                 </DialogFooter>

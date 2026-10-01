@@ -4,6 +4,7 @@ import { arrow, autoUpdate, flip, offset, shift, useFloating } from '@floating-u
 import { X } from 'lucide-react';
 import { useCallback, useEffect, useId, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
+import { useTranslation } from 'react-i18next';
 
 import { type TooltipKey, useOnboarding } from '@/context/OnboardingContext';
 
@@ -25,13 +26,15 @@ interface OnboardingTooltipProps {
 export const OnboardingTooltip = ({
     tooltipKey,
     targetRef,
-    title = 'One more thing...',
+    title,
     message,
     enabled = true,
     onNext,
     showNext = true,
 }: OnboardingTooltipProps) => {
     const { hasSeenTooltip, markTooltipSeen } = useOnboarding();
+    const { t } = useTranslation();
+    const resolvedTitle = title ?? t('onboarding.defaultTitle');
     const arrowRef = useRef<HTMLDivElement>(null);
     const messageId = useId();
     const [mounted, setMounted] = useState(false);
@@ -125,13 +128,13 @@ export const OnboardingTooltip = ({
                 <button
                     onClick={dismiss}
                     className="absolute top-2 right-2 p-1 hover:bg-blue-600 rounded-full transition-colors"
-                    aria-label="Close tooltip"
+                    aria-label={t('onboarding.closeAria')}
                 >
                     <X className="h-4 w-4" />
                 </button>
 
                 {/* Title */}
-                <h3 className="text-lg font-semibold mb-3">{title}</h3>
+                <h3 className="text-lg font-semibold mb-3">{resolvedTitle}</h3>
 
                 {/* Message */}
                 <p id={messageId} className="text-sm leading-relaxed mb-4 pr-4">
@@ -144,7 +147,7 @@ export const OnboardingTooltip = ({
                         onClick={dismiss}
                         className="bg-white text-blue-500 px-4 py-1.5 rounded font-medium text-sm hover:bg-blue-50 transition-colors cursor-pointer"
                     >
-                        Close
+                        {t('common.close')}
                     </button>
 
                     {showNext && (
@@ -155,7 +158,7 @@ export const OnboardingTooltip = ({
                             }}
                             className="bg-white text-blue-500 px-4 py-1.5 rounded font-medium text-sm hover:bg-blue-50 transition-colors"
                         >
-                            Next
+                            {t('onboarding.next')}
                         </button>
                     )}
                 </div>

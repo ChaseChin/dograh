@@ -1,3 +1,5 @@
+import type { TFunction } from "i18next";
+
 import type {
     ConversationItem,
     LatencyBreakdown,
@@ -62,6 +64,7 @@ function feedbackEventText(event: RealtimeFeedbackEvent) {
 
 function liveFeedbackItem(
     message: RealtimeFeedbackMessage,
+    t: TFunction,
     reasoningDurationMs?: number,
     latencyMs?: LatencyBreakdown,
 ): ConversationItem | null {
@@ -98,7 +101,7 @@ function liveFeedbackItem(
             kind: "tool-call",
             id: message.id,
             timestamp: message.timestamp,
-            functionName: message.functionName ?? "tool",
+            functionName: message.functionName ?? t("workflow.run.rtc.toolFallback"),
             toolCallId: message.toolCallId,
             arguments: message.arguments,
             result: message.result,
@@ -127,10 +130,10 @@ function liveFeedbackItem(
             id: message.id,
             timestamp: message.timestamp,
             tone: "warning",
-            title: "Interruption Disabled",
+            title: t("conversation.notice.interruptionDisabled"),
             text: message.text,
             linkHref: "https://docs.dograh.com/configurations/interruption",
-            linkLabel: "Learn more",
+            linkLabel: t("common.learnMore"),
         };
     }
 
@@ -140,7 +143,9 @@ function liveFeedbackItem(
             id: message.id,
             timestamp: message.timestamp,
             tone: "error",
-            title: message.fatal ? "Fatal Pipeline Error" : "Pipeline Error",
+            title: message.fatal
+                ? t("conversation.notice.fatalPipelineError")
+                : t("conversation.notice.pipelineError"),
             text: message.text,
             fatal: message.fatal,
         };
@@ -149,7 +154,7 @@ function liveFeedbackItem(
     return null;
 }
 
-export function conversationItemsFromLiveFeedback(messages: RealtimeFeedbackMessage[]) {
+export function conversationItemsFromLiveFeedback(messages: RealtimeFeedbackMessage[], t: TFunction) {
     const items: ConversationItem[] = [];
     let pendingLatency: LatencyBreakdown = {};
 
@@ -171,6 +176,7 @@ export function conversationItemsFromLiveFeedback(messages: RealtimeFeedbackMess
 
         const item = liveFeedbackItem(
             message,
+            t,
             pendingLatency.llm,
             hasLatency(pendingLatency) ? { ...pendingLatency } : undefined,
         );
@@ -190,7 +196,7 @@ export function conversationItemsFromLiveFeedback(messages: RealtimeFeedbackMess
     return items;
 }
 
-export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeedbackEvent[]) {
+export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeedbackEvent[], t: TFunction) {
     const items: ConversationItem[] = [];
     const toolCallIndexById = new Map<string, number>();
     let pendingLatency: LatencyBreakdown = {};
@@ -269,7 +275,7 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 kind: "tool-call",
                 id: toolCallId ?? `tool-${event.turn}-${index}`,
                 timestamp: event.timestamp,
-                functionName: event.payload.function_name ?? "tool",
+                functionName: event.payload.function_name ?? t("workflow.run.rtc.toolFallback"),
                 toolCallId,
                 arguments: event.payload.arguments,
                 status: "running",
@@ -303,7 +309,7 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 kind: "tool-call",
                 id: toolCallId ?? `tool-result-${event.turn}-${index}`,
                 timestamp: event.timestamp,
-                functionName: event.payload.function_name ?? "tool",
+                functionName: event.payload.function_name ?? t("workflow.run.rtc.toolFallback"),
                 toolCallId,
                 result: event.payload.result,
                 status: "completed",
@@ -320,7 +326,7 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 id: `node-${event.turn}-${index}`,
                 timestamp: event.timestamp,
                 nodeId: event.payload.node_id,
-                nodeName: event.payload.node_name ?? feedbackEventText(event) ?? "Node",
+                nodeName: event.payload.node_name ?? feedbackEventText(event) ?? t("workflow.run.rtc.nodeFallback"),
                 previousNodeId: event.payload.previous_node_id,
                 previousNodeName: event.payload.previous_node_name ?? event.payload.previous_node,
                 allowInterrupt: event.payload.allow_interrupt,
@@ -334,10 +340,10 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 id: `warning-${event.turn}-${index}`,
                 timestamp: event.timestamp,
                 tone: "warning",
-                title: "Interruption Disabled",
+                title: t("conversation.notice.interruptionDisabled"),
                 text: feedbackEventText(event),
                 linkHref: "https://docs.dograh.com/configurations/interruption",
-                linkLabel: "Learn more",
+                linkLabel: t("common.learnMore"),
             });
             return;
         }
@@ -348,7 +354,9 @@ export function conversationItemsFromRealtimeFeedbackEvents(events: RealtimeFeed
                 id: `error-${event.turn}-${index}`,
                 timestamp: event.timestamp,
                 tone: "error",
-                title: event.payload.fatal ? "Fatal Pipeline Error" : "Pipeline Error",
+                title: event.payload.fatal
+                    ? t("conversation.notice.fatalPipelineError")
+                    : t("conversation.notice.pipelineError"),
                 text: feedbackEventText(event),
                 fatal: event.payload.fatal,
             });

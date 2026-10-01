@@ -2,11 +2,13 @@
 
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 
 export function BackButton() {
   const router = useRouter();
+  const { t } = useTranslation();
 
   // On a direct load (e.g. an OAuth redirect or a deep link to /handler/sign-in)
   // there's no in-app history, so router.back() would bounce the user off-app.
@@ -27,7 +29,7 @@ export function BackButton() {
       className="-ml-2 gap-2 text-muted-foreground hover:text-foreground"
     >
       <ArrowLeft className="h-4 w-4" />
-      Go Back
+      {t("auth.goBack")}
     </Button>
   );
 }

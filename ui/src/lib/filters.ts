@@ -1,3 +1,6 @@
+import type { TFunction } from "i18next";
+
+import i18n from "@/i18n";
 import { formatLocalDateTime } from "@/lib/dateTime";
 import { ActiveFilter, DateRangeValue, FilterAttribute, FilterValue, MultiSelectValue, NumberRangeValue, NumberValue, RadioValue, TextValue } from "@/types/filters";
 
@@ -38,16 +41,17 @@ export const resolveFilterAttributes = (
     : filter;
 });
 
-// Validate filter based on attribute type
-export const validateFilter = (filter: ActiveFilter): string | null => {
+// Validate filter based on attribute type. Pass the component's t() so error
+// messages follow the active locale; falls back to the i18n singleton.
+export const validateFilter = (filter: ActiveFilter, t: TFunction = i18n.t): string | null => {
   switch (filter.attribute.type) {
     case "dateRange": {
       const value = filter.value as DateRangeValue;
       if (!value.from || !value.to) {
-        return "Both dates are required";
+        return t("filters.validation.bothDates");
       }
       if (value.to < value.from) {
-        return "End date must be after start date";
+        return t("filters.validation.endAfterStart");
       }
 
       // Check max range if configured
@@ -55,7 +59,7 @@ export const validateFilter = (filter: ActiveFilter): string | null => {
       if (config.maxRangeDays) {
         const daysDiff = Math.ceil((value.to.getTime() - value.from.getTime()) / (1000 * 60 * 60 * 24));
         if (daysDiff > config.maxRangeDays) {
-          return `Date range cannot exceed ${config.maxRangeDays} days`;
+          return t("filters.validation.maxRange", { days: config.maxRangeDays });
         }
       }
       break;
@@ -63,72 +67,72 @@ export const validateFilter = (filter: ActiveFilter): string | null => {
     case "multiSelect": {
       const value = filter.value as MultiSelectValue;
       if (!value.codes.length) {
-        return "At least one option must be selected";
+        return t("filters.validation.selectOne");
       }
 
       const config = filter.attribute.config;
       if (config.maxSelections && value.codes.length > config.maxSelections) {
-        return `Cannot select more than ${config.maxSelections} options`;
+        return t("filters.validation.maxSelections", { max: config.maxSelections });
       }
       break;
     }
     case "numberRange": {
       const value = filter.value as NumberRangeValue;
       if (value.min === null || value.max === null) {
-        return "Both values are required";
+        return t("filters.validation.bothValues");
       }
       if (value.min > value.max) {
-        return "Minimum must be less than maximum";
+        return t("filters.validation.minLessThanMax");
       }
 
       const config = filter.attribute.config;
       if (config.min !== undefined && value.min < config.min) {
-        return `Minimum value cannot be less than ${config.min}`;
+        return t("filters.validation.minNotLess", { min: config.min });
       }
       if (config.max !== undefined && value.max > config.max) {
-        return `Maximum value cannot be greater than ${config.max}`;
+        return t("filters.validation.maxNotGreater", { max: config.max });
       }
       break;
     }
     case "number": {
       const value = filter.value as NumberValue;
       if (value.value === null) {
-        return "A value is required";
+        return t("filters.validation.valueRequired");
       }
       const config = filter.attribute.config;
       if (config.min !== undefined && value.value < config.min) {
-        return `Value cannot be less than ${config.min}`;
+        return t("filters.validation.valueNotLess", { min: config.min });
       }
       if (config.max !== undefined && value.value > config.max) {
-        return `Value cannot be greater than ${config.max}`;
+        return t("filters.validation.valueNotGreater", { max: config.max });
       }
       break;
     }
     case "numberSelect": {
       const value = filter.value as NumberValue;
       if (value.value === null) {
-        return "A value is required";
+        return t("filters.validation.valueRequired");
       }
       break;
     }
     case "radio": {
       const value = filter.value as RadioValue;
       if (!value.status) {
-        return "A status must be selected";
+        return t("filters.validation.statusRequired");
       }
       break;
     }
     case "tags": {
       const value = filter.value as MultiSelectValue;
       if (!value.codes.length) {
-        return "At least one tag must be entered";
+        return t("filters.validation.tagRequired");
       }
       break;
     }
     case "text": {
       const value = filter.value as TextValue;
       if (!value.value || value.value.trim() === "") {
-        return "Text value is required";
+        return t("filters.validation.textRequired");
       }
       break;
     }
@@ -199,17 +203,21 @@ export const decodeFiltersFromURL = (
 };
 
 // Format date range for display
-export const formatDateRange = (value: DateRangeValue): string => {
-  if (!value.from || !value.to) return "No date range selected";
+export const formatDateRange = (value: DateRangeValue, t: TFunction = i18n.t): string => {
+  if (!value.from || !value.to) return t("filters.summary.noDateRange");
 
-  return `${formatLocalDateTime(value.from)} to ${formatLocalDateTime(value.to)}`;
+  return t("filters.summary.rangeTo", {
+    from: formatLocalDateTime(value.from),
+    to: formatLocalDateTime(value.to),
+  });
 };
 
 // Format number range for display
-export const formatNumberRange = (value: NumberRangeValue, unit?: string): string => {
-  if (value.min === null || value.max === null) return "No range selected";
+export const formatNumberRange = (value: NumberRangeValue, unit?: string, t: TFunction = i18n.t): string => {
+  if (value.min === null || value.max === null) return t("filters.summary.noRange");
 
-  const unitSuffix = unit ? ` ${unit}` : "";
+  const localizedUnit = unit ? t(`filters.units.${unit}`, { defaultValue: unit }) : "";
+  const unitSuffix = localizedUnit ? ` ${localizedUnit}` : "";
   return `${value.min}${unitSuffix} - ${value.max}${unitSuffix}`;
 };
 

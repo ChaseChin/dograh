@@ -1,7 +1,9 @@
 "use client";
 
 import { ExternalLink } from "lucide-react";
+import { Trans, useTranslation } from "react-i18next";
 
+import { LanguageSection } from "@/components/LanguageSection";
 import { MCPSection } from "@/components/MCPSection";
 import { OrganizationPreferencesSection } from "@/components/OrganizationPreferencesSection";
 import { TelemetrySection } from "@/components/TelemetrySection";
@@ -14,22 +16,33 @@ import {
 } from "@/components/ui/card";
 
 export default function SettingsPage() {
+  const { t } = useTranslation();
+
   return (
     <div className="flex justify-center py-12 px-4">
       <div className="w-full max-w-2xl space-y-6">
         <div>
-          <h1 className="text-2xl font-bold">Platform Settings</h1>
-          <p className="text-muted-foreground">
-            Manage your platform configuration and integrations.
-          </p>
+          <h1 className="text-2xl font-bold">{t("settings.title")}</h1>
+          <p className="text-muted-foreground">{t("settings.subtitle")}</p>
         </div>
 
         <Card>
           <CardHeader>
-            <CardTitle>Preferences</CardTitle>
+            <CardTitle>{t("settings.language.title")}</CardTitle>
             <CardDescription>
-              Set organization-wide defaults such as the test phone number and
-              timezone.
+              {t("settings.language.description")}
+            </CardDescription>
+          </CardHeader>
+          <CardContent>
+            <LanguageSection />
+          </CardContent>
+        </Card>
+
+        <Card>
+          <CardHeader>
+            <CardTitle>{t("settings.preferences.title")}</CardTitle>
+            <CardDescription>
+              {t("settings.preferences.description")}
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -39,18 +52,21 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>MCP Server</CardTitle>
+            <CardTitle>{t("settings.mcp.title")}</CardTitle>
             <CardDescription>
-              Let AI agents access your VoiceWorker workspace and documentation via
-              the Model Context Protocol.{" "}
-              <a
-                href="https://docs.dograh.com/integrations/mcp"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 underline"
-              >
-                Learn more <ExternalLink className="h-3 w-3" />
-              </a>
+              <Trans
+                i18nKey="settings.mcp.description"
+                components={[
+                  <a
+                    key="mcp-docs"
+                    href="https://docs.dograh.com/integrations/mcp"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 underline"
+                  />,
+                ]}
+              />{" "}
+              <ExternalLink className="inline h-3 w-3" />
             </CardDescription>
           </CardHeader>
           <CardContent>
@@ -60,17 +76,21 @@ export default function SettingsPage() {
 
         <Card>
           <CardHeader>
-            <CardTitle>Telemetry</CardTitle>
+            <CardTitle>{t("settings.telemetry.title")}</CardTitle>
             <CardDescription>
-              Configure Langfuse tracing for your voice agent calls.{" "}
-              <a
-                href="https://docs.dograh.com/configurations/tracing"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="inline-flex items-center gap-0.5 underline"
-              >
-                Learn more <ExternalLink className="h-3 w-3" />
-              </a>
+              <Trans
+                i18nKey="settings.telemetry.description"
+                components={[
+                  <a
+                    key="tracing-docs"
+                    href="https://docs.dograh.com/configurations/tracing"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-0.5 underline"
+                  />,
+                ]}
+              />{" "}
+              <ExternalLink className="inline h-3 w-3" />
             </CardDescription>
           </CardHeader>
           <CardContent>

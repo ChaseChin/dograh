@@ -1,6 +1,7 @@
 "use client";
 
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import {
@@ -38,6 +39,7 @@ export function useTextChatSession({
     onActiveChange,
     onNodeTransition,
 }: UseTextChatSessionProps) {
+    const { t } = useTranslation();
     const [session, setSession] = useState<TextChatSession | null>(null);
     const [started, setStarted] = useState(false);
     const [draft, setDraft] = useState("");
@@ -53,7 +55,7 @@ export function useTextChatSession({
         ? turns.find((turn) => turn.id === editingTurnId) ?? null
         : null;
     const composerId = `workflow-tester-compose-${workflowId}`;
-    const conversationItems = conversationItemsFromTextChatTurns(turns);
+    const conversationItems = conversationItemsFromTextChatTurns(turns, t);
 
     const createSession = useCallback(async () => {
         if (disabled) return;
@@ -74,7 +76,7 @@ export function useTextChatSession({
             });
 
             if (response.error || !response.data) {
-                throw new Error(extractSdkErrorMessage(response.error, "Failed to create chat session"));
+                throw new Error(extractSdkErrorMessage(response.error, t("workflow.tester.chat.createFailed")));
             }
 
             setSession(toTextChatSession(response.data));
@@ -82,11 +84,11 @@ export function useTextChatSession({
         } catch (error) {
             setSession(null);
             setStarted(false);
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error, t("workflow.tester.chat.genericError")));
         } finally {
             setCreatingSession(false);
         }
-    }, [disabled, initialContextVariables, workflowId]);
+    }, [disabled, initialContextVariables, workflowId, t]);
 
     useEffect(() => {
         if (!started || creatingSession || session || !ready || disabled) {
@@ -151,7 +153,7 @@ export function useTextChatSession({
                 });
 
                 if (rewindResponse.error || !rewindResponse.data) {
-                    throw new Error(extractSdkErrorMessage(rewindResponse.error, "Failed to rewind session"));
+                    throw new Error(extractSdkErrorMessage(rewindResponse.error, t("workflow.tester.chat.rewindFailed")));
                 }
 
                 activeSession = toTextChatSession(rewindResponse.data);
@@ -167,19 +169,19 @@ export function useTextChatSession({
             });
 
             if (response.error || !response.data) {
-                throw new Error(extractSdkErrorMessage(response.error, "Failed to send message"));
+                throw new Error(extractSdkErrorMessage(response.error, t("workflow.tester.chat.sendFailed")));
             }
 
             setSession(toTextChatSession(response.data));
             setDraft("");
             setEditingTurnId(null);
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error, t("workflow.tester.chat.genericError")));
         } finally {
             setSendingMessage(false);
             setActiveTurnAction(null);
         }
-    }, [disabled, endingSession, session, workflowId]);
+    }, [disabled, endingSession, session, workflowId, t]);
 
     const endSession = useCallback(async () => {
         if (!session || session.is_completed || sendingMessage || endingSession) return;
@@ -192,19 +194,19 @@ export function useTextChatSession({
             });
 
             if (response.error || !response.data) {
-                throw new Error(extractSdkErrorMessage(response.error, "Failed to end chat session"));
+                throw new Error(extractSdkErrorMessage(response.error, t("workflow.tester.chat.endFailed")));
             }
 
             setSession(toTextChatSession(response.data));
             setDraft("");
             setEditingTurnId(null);
-            toast.success("Chat ended");
+            toast.success(t("workflow.tester.chat.chatEnded"));
         } catch (error) {
-            toast.error(getErrorMessage(error));
+            toast.error(getErrorMessage(error, t("workflow.tester.chat.genericError")));
         } finally {
             setEndingSession(false);
         }
-    }, [endingSession, sendingMessage, session, workflowId]);
+    }, [endingSession, sendingMessage, session, workflowId, t]);
 
     const rewindTurn = useCallback(async (turn: TextChatTurn) => {
         if (!turn.user_message) return;

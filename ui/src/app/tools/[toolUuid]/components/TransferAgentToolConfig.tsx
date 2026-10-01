@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -44,54 +46,53 @@ export function TransferAgentToolConfig({
     message,
     onMessageChange,
 }: TransferAgentToolConfigProps) {
+    const { t } = useTranslation();
+
     return (
         <Card>
             <CardHeader>
-                <CardTitle>Transfer To Agent Configuration</CardTitle>
+                <CardTitle>{t("tools.transferAgent.title")}</CardTitle>
                 <CardDescription>
-                    Hands the live call to another agent. The caller stays connected,
-                    hears a ringer while the next agent is prepared, and the
-                    conversation so far is passed on as a handover note.
+                    {t("tools.transferAgent.description")}
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 <div className="grid gap-2">
-                    <Label htmlFor="transfer-agent-name">Tool Name</Label>
+                    <Label htmlFor="transfer-agent-name">{t("tools.transferAgent.nameLabel")}</Label>
                     <Label className="text-xs text-muted-foreground">
-                        Also becomes the function name the agent calls. Name it after
-                        the destination, e.g. &ldquo;Transfer to Billing&rdquo;.
+                        {t("tools.transferAgent.nameHelp")}
                     </Label>
                     <Input
                         id="transfer-agent-name"
                         value={name}
                         onChange={(e) => onNameChange(e.target.value)}
-                        placeholder="e.g., Transfer to Billing"
+                        placeholder={t("tools.transferAgent.namePlaceholder")}
                     />
                 </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="transfer-agent-description">Description</Label>
+                    <Label htmlFor="transfer-agent-description">{t("tools.transferAgent.descriptionLabel")}</Label>
                     <Label className="text-xs text-muted-foreground">
-                        This is what the agent decides on. To offer more than one
-                        destination, add a second transfer tool with its own
-                        description.
+                        {t("tools.transferAgent.descriptionHelp")}
                     </Label>
                     <Textarea
                         id="transfer-agent-description"
                         value={description}
                         onChange={(e) => onDescriptionChange(e.target.value)}
-                        placeholder="Use when the caller asks about an invoice, a payment or their balance"
+                        placeholder={t("tools.transferAgent.descriptionPlaceholder")}
                         rows={3}
                     />
                 </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="transfer-agent-workflow">Transfer to agent</Label>
+                    <Label htmlFor="transfer-agent-workflow">{t("tools.transferAgent.transferToAgent")}</Label>
                     <Select value={workflowId} onValueChange={onWorkflowIdChange}>
                         <SelectTrigger id="transfer-agent-workflow">
                             <SelectValue
                                 placeholder={
-                                    workflowsLoading ? "Loading agents…" : "Select an agent"
+                                    workflowsLoading
+                                        ? t("tools.transferAgent.loadingAgents")
+                                        : t("tools.transferAgent.selectAgent")
                                 }
                             />
                         </SelectTrigger>
@@ -106,17 +107,15 @@ export function TransferAgentToolConfig({
                 </div>
 
                 <div className="grid gap-2">
-                    <Label htmlFor="transfer-agent-message">Handover message</Label>
+                    <Label htmlFor="transfer-agent-message">{t("tools.transferAgent.handoverMessage")}</Label>
                     <Label className="text-xs text-muted-foreground">
-                        Spoken in the current agent&apos;s own voice, and waited for
-                        before the caller is handed over. Leave empty to hand over
-                        without saying anything.
+                        {t("tools.transferAgent.handoverMessageHelp")}
                     </Label>
                     <Input
                         id="transfer-agent-message"
                         value={message}
                         onChange={(e) => onMessageChange(e.target.value)}
-                        placeholder="Let me connect you with the right person. One moment please."
+                        placeholder={t("tools.transferAgent.handoverMessagePlaceholder")}
                     />
                 </div>
             </CardContent>

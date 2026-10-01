@@ -1,6 +1,9 @@
+"use client";
+
 import { BaseEdge, type Edge, EdgeLabelRenderer, type EdgeProps, getSmoothStepPath, useReactFlow } from '@xyflow/react';
 import { AlertCircle, Pencil, Trash2 } from 'lucide-react';
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from "react-i18next";
 
 import { useWorkflow, useWorkflowOptional } from "@/app/workflow/[workflowId]/contexts/WorkflowContext";
 import { useWorkflowStore } from "@/app/workflow/[workflowId]/stores/workflowStore";
@@ -24,6 +27,7 @@ interface EdgeDetailsDialogProps {
 }
 
 const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDialogProps) => {
+    const { t } = useTranslation();
     const readOnly = useWorkflowOptional()?.readOnly ?? false;
     const { recordings } = useWorkflow();
     const [condition, setCondition] = useState(data?.condition ?? '');
@@ -74,7 +78,7 @@ const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDial
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-h-[85vh] flex flex-col">
                 <DialogHeader>
-                    <DialogTitle>Edit Condition</DialogTitle>
+                    <DialogTitle>{t("flow.edge.editCondition")}</DialogTitle>
                     {data?.invalid && data.validationMessage && (
                         <div className="mt-2 flex items-center gap-2 rounded-md bg-red-50 p-2 text-sm text-red-500 border border-red-200">
                             <AlertCircle className="h-4 w-4" />
@@ -84,9 +88,9 @@ const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDial
                 </DialogHeader>
                 <div className="grid gap-4 py-4 overflow-y-auto">
                     <div className="grid gap-2">
-                        <Label>Condition Label</Label>
+                        <Label>{t("flow.edge.conditionLabel")}</Label>
                         <Label className="text-xs text-muted-foreground">
-                            Enter a short label which helps identify this pathway in logs
+                            {t("flow.edge.conditionLabelHelp")}
                         </Label>
                         <Input
                             type="text"
@@ -95,13 +99,13 @@ const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDial
                             onChange={(e) => setLabel(e.target.value)}
                         />
                         <div className="text-xs text-muted-foreground">
-                            {label.length}/64 characters
+                            {t("flow.edge.characters", { count: label.length })}
                         </div>
                     </div>
                     <div className="grid gap-2">
-                        <Label>Condition</Label>
+                        <Label>{t("flow.edge.condition")}</Label>
                         <Label className="text-xs text-muted-foreground">
-                            Describe a condition that will be evaluated to determine if this pathway should be taken
+                            {t("flow.edge.conditionHelp")}
                         </Label>
                         <Textarea
                             value={condition}
@@ -109,10 +113,9 @@ const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDial
                         />
                     </div>
                     <div className="grid gap-2">
-                        <Label>Transition Speech</Label>
+                        <Label>{t("flow.edge.transitionSpeech")}</Label>
                         <Label className="text-xs text-muted-foreground">
-                            Optional text or audio the assistant will play right before transitioning to the node.
-                            This will not be attached in Conversation Context. Use this as simple filler to reduce latency.
+                            {t("flow.edge.transitionSpeechHelp")}
                         </Label>
                         <TextOrAudioInput
                             type={transitionSpeechType}
@@ -125,7 +128,7 @@ const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDial
                                 <StaticTextWarning />
                                 <Textarea
                                     value={transitionSpeech}
-                                    placeholder="e.g. Let me transfer you to our billing department..."
+                                    placeholder={t("flow.edge.transitionPlaceholder")}
                                     onChange={(e) => setTransitionSpeech(e.target.value)}
                                 />
                             </>
@@ -134,9 +137,9 @@ const EdgeDetailsDialog = ({ open, onOpenChange, data, onSave }: EdgeDetailsDial
                 </div>
                 <DialogFooter>
                     <div className="flex items-center gap-2">
-                        <Button variant="outline" onClick={() => onOpenChange(false)}>Cancel</Button>
+                        <Button variant="outline" onClick={() => onOpenChange(false)}>{t("common.cancel")}</Button>
                         <Button onClick={handleSave} disabled={readOnly}>
-                            {readOnly ? "Read Only" : "Save"}
+                            {readOnly ? t("flow.common.readOnly") : t("common.save")}
                         </Button>
                     </div>
                 </DialogFooter>
@@ -152,6 +155,7 @@ interface CustomEdgeProps extends EdgeProps {
 export default function CustomEdge(props: CustomEdgeProps) {
     const { id, source, target, sourceX, sourceY, targetX, targetY, sourcePosition, targetPosition, data, style, selected } = props;
 
+    const { t } = useTranslation();
     const { getEdges, setNodes } = useReactFlow<FlowNode, FlowEdge>();
     const { saveWorkflow } = useWorkflow();
     const updateEdge = useWorkflowStore((state) => state.updateEdge);
@@ -321,7 +325,7 @@ export default function CustomEdge(props: CustomEdgeProps) {
                                 data?.invalid ? "bg-destructive/10 border-destructive/30" : "bg-muted/50 border-border"
                             )}>
                                 <span className="text-xs font-medium text-muted-foreground uppercase tracking-wide">
-                                    Condition
+                                    {t("flow.edge.condition")}
                                 </span>
                                 <div className="flex items-center gap-1">
                                     <Button
@@ -345,7 +349,7 @@ export default function CustomEdge(props: CustomEdgeProps) {
                             {/* Content */}
                             <div className="px-3 pb-3">
                                 <div className="text-sm font-medium text-card-foreground break-words">
-                                    {data?.label || data?.condition || 'Click to set condition'}
+                                    {data?.label || data?.condition || t("flow.edge.clickToSet")}
                                 </div>
                             </div>
                         </div>
@@ -358,7 +362,7 @@ export default function CustomEdge(props: CustomEdgeProps) {
                                 ? "bg-destructive text-destructive-foreground"
                                 : "bg-amber-500 text-amber-950"
                         )}>
-                            {data?.label || data?.condition || 'No condition'}
+                            {data?.label || data?.condition || t("flow.edge.noCondition")}
                         </div>
                     )}
                 </div>

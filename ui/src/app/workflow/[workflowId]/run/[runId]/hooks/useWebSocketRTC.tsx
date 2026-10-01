@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { client } from "@/client/client.gen";
 import { getTurnCredentialsApiV1TurnCredentialsGet, validateUserConfigurationsApiV1UserConfigurationsUserValidateGet, validateWorkflowApiV1WorkflowWorkflowIdValidatePost } from "@/client/sdk.gen";
@@ -45,6 +46,7 @@ const HANDLED_SERVICE_ERROR_TYPES = new Set([
 const SPENT_RUN_ERROR_TYPES = new Set(['workflow_run_already_completed']);
 
 export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initialContextVariables, onNodeTransition }: UseWebSocketRTCProps) => {
+    const { t } = useTranslation();
     const [connectionStatus, setConnectionStatus] = useState<ConnectionStatus>('idle');
     const [connectionActive, setConnectionActive] = useState(false);
     const [isCompleted, setIsCompleted] = useState(false);
@@ -395,7 +397,7 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
 
                                 // Set error state for display
                                 setApiKeyErrorCode(message.payload.error_type);
-                                setApiKeyError(message.payload.message || 'Service quota exceeded');
+                                setApiKeyError(message.payload.message || t('workflow.run.rtc.quotaExceeded'));
                                 setApiKeyModalOpen(true);
 
                                 // Stop the connection and surface the handled service error.
@@ -403,14 +405,14 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                             } else if (SPENT_RUN_ERROR_TYPES.has(message.payload?.error_type)) {
                                 logger.info('Run is no longer callable:', message.payload.message);
                                 setPermissionError(
-                                    message.payload?.message || 'This test run has already finished.'
+                                    message.payload?.message || t('workflow.run.rtc.runFinished')
                                 );
                                 // Completed rather than failed: the run did its
                                 // work, so the footer offers a new test instead
                                 // of a retry that would be refused again.
                                 cleanupConnection({ graceful: true, status: 'idle' });
                             } else {
-                                const serverErrorMessage = message.payload?.message || 'Server error';
+                                const serverErrorMessage = message.payload?.message || t('workflow.run.rtc.serverError');
                                 logger.error('Server error:', message.payload);
                                 setPermissionError(serverErrorMessage);
                                 cleanupConnection({ graceful: false, status: 'failed' });
@@ -437,7 +439,7 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                                 setFeedbackMessages(prev => [...prev, {
                                     id: `interrupt-warning-${Date.now()}`,
                                     type: 'interrupt-warning',
-                                    text: 'Interruption is disabled for this step. The bot will finish speaking before processing your input. You can enable interruption in the workflow editor.',
+                                    text: t('workflow.run.rtc.interruptionDisabled'),
                                     timestamp: new Date().toISOString(),
                                 }]);
                             }
@@ -505,8 +507,8 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                                 return [...prev, {
                                     id: existingId,
                                     type: 'function-call',
-                                    text: function_name ?? 'tool',
-                                    functionName: function_name ?? 'tool',
+                                    text: function_name ?? t('workflow.run.rtc.toolFallback'),
+                                    functionName: function_name ?? t('workflow.run.rtc.toolFallback'),
                                     toolCallId: tool_call_id,
                                     arguments: toolArguments,
                                     status: 'running',
@@ -541,7 +543,7 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                                 id: `node-${Date.now()}`,
                                 timestamp: transitionTimestamp,
                                 nodeId: node_id,
-                                nodeName: node_name ?? 'Node',
+                                nodeName: node_name ?? t('workflow.run.rtc.nodeFallback'),
                                 previousNodeId: previous_node_id,
                                 previousNodeName: previous_node_name,
                                 allowInterrupt: allow_interrupt,
@@ -625,7 +627,7 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                 }
             };
         });
-    }, [getWebSocketUrl, cleanupConnection, setPermissionError]);
+    }, [getWebSocketUrl, cleanupConnection, setPermissionError, t]);
 
     const negotiate = async () => {
         const pc = pcRef.current;
@@ -725,8 +727,8 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                 const message = detailFromError(
                     response.error,
                     isServiceUnavailable
-                        ? 'VoiceWorker is temporarily unavailable. Please try again later.'
-                        : 'API Key Error',
+                        ? t('workflow.editor.serviceUnavailable')
+                        : t('workflow.run.rtc.apiKeyError'),
                 );
 
                 if (isServiceUnavailable) {
@@ -759,7 +761,7 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
 
             if (workflowResponse.error) {
                 setWorkflowConfigModalOpen(true);
-                let msg = 'Workflow validation failed';
+                let msg = t('workflow.run.rtc.validationFailed');
                 const errorDetail = workflowResponse.error as { detail?: { errors: WorkflowValidationError[] } };
                 if (errorDetail?.detail?.errors) {
                     msg = errorDetail.detail.errors
@@ -805,7 +807,7 @@ export const useWebSocketRTC = ({ workflowId, workflowRunId, accessToken, initia
                     await negotiate();
                 } catch (err) {
                     logger.error(`Could not acquire media: ${err}`);
-                    setPermissionError('Could not acquire media');
+                    setPermissionError(t('workflow.run.rtc.acquireMediaFailed'));
                     setConnectionStatus('failed');
                 }
             } else {

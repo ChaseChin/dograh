@@ -1,9 +1,14 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
 import type { SipConnectivityDetails } from "@/client/types.gen";
+import i18n from "@/i18n";
 
 import { SipConnectivityCard } from "./SipConnectivityCard";
+
+beforeAll(async () => {
+  await i18n.changeLanguage("en");
+});
 
 vi.stubGlobal(
   "ResizeObserver",

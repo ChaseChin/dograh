@@ -9,6 +9,7 @@ import * as React from "react"
 import { DayButton, DayPicker, getDefaultClassNames } from "react-day-picker"
 
 import { Button, buttonVariants } from "@/components/ui/button"
+import { getDateFnsLocale, getIntlTag } from "@/i18n/dateLocale"
 import { cn } from "@/lib/utils"
 
 function Calendar({
@@ -35,9 +36,10 @@ function Calendar({
         className
       )}
       captionLayout={captionLayout}
+      locale={getDateFnsLocale()}
       formatters={{
         formatMonthDropdown: (date) =>
-          date.toLocaleString("default", { month: "short" }),
+          date.toLocaleString(getIntlTag(), { month: "short" }),
         ...formatters,
       }}
       classNames={{

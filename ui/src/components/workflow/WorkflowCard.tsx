@@ -1,6 +1,7 @@
 'use client';
 
 import { useRouter } from 'next/navigation';
+import { useTranslation } from 'react-i18next';
 
 import { useOrganizationTimezone } from '@/hooks/useOrganizationTimezone';
 import { formatDate } from '@/lib/dateTime';
@@ -13,6 +14,7 @@ interface WorkflowCardProps {
 
 export function WorkflowCard({ id, name, createdAt }: WorkflowCardProps) {
     const router = useRouter();
+    const { t } = useTranslation();
     const organizationTimezone = useOrganizationTimezone();
 
     const handleClick = () => {
@@ -27,7 +29,7 @@ export function WorkflowCard({ id, name, createdAt }: WorkflowCardProps) {
             <div>
                 <h3 className="text-lg font-semibold mb-2">{name}</h3>
                 <p className="text-gray-600 mb-2">
-                    Created: {formatDate(createdAt, organizationTimezone)}
+                    {t('workflowList.card.created', { date: formatDate(createdAt, organizationTimezone) })}
                 </p>
             </div>
         </div>

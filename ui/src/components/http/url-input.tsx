@@ -1,8 +1,11 @@
 "use client";
 
+import type { TFunction } from "i18next";
 import { useCallback, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
+import i18n from "@/i18n";
 import { cn } from "@/lib/utils";
 
 // URL regex pattern that validates:
@@ -52,17 +55,17 @@ export function extractUrlPathParameters(url: string): string[] {
     return extractUrlSegmentParameters(url.slice(pathStart, pathEnd));
 }
 
-export function validateUrl(url: string): UrlValidationResult {
+export function validateUrl(url: string, t: TFunction = i18n.t): UrlValidationResult {
     const trimmedUrl = url.trim();
 
     if (!trimmedUrl) {
-        return { valid: false, error: "URL is required" };
+        return { valid: false, error: t("tools.urlErrors.required") };
     }
 
     if (!HTTP_URL_PREFIX_REGEX.test(trimmedUrl)) {
         return {
             valid: false,
-            error: "Invalid URL format. Must start with http:// or https://",
+            error: t("tools.urlErrors.mustStartHttp"),
         };
     }
 
@@ -70,14 +73,14 @@ export function validateUrl(url: string): UrlValidationResult {
     if (urlWithTemplatePlaceholders.includes("{{") || urlWithTemplatePlaceholders.includes("}}")) {
         return {
             valid: false,
-            error: "Invalid URL template format",
+            error: t("tools.urlErrors.invalidTemplate"),
         };
     }
 
     if (!URL_REGEX.test(urlWithTemplatePlaceholders)) {
         return {
             valid: false,
-            error: "Invalid URL format",
+            error: t("tools.urlErrors.invalid"),
         };
     }
 
@@ -105,6 +108,7 @@ export function UrlInput({
     showValidation = false,
     onValidationChange,
 }: UrlInputProps) {
+    const { t } = useTranslation();
     const [touched, setTouched] = useState(false);
 
     const handleChange = useCallback(
@@ -113,10 +117,10 @@ export function UrlInput({
             onChange(newValue);
 
             if (onValidationChange && (touched || newValue)) {
-                onValidationChange(validateUrl(newValue));
+                onValidationChange(validateUrl(newValue, t));
             }
         },
-        [onChange, onValidationChange, touched]
+        [onChange, onValidationChange, touched, t]
     );
 
     const handleBlur = useCallback(() => {
@@ -126,11 +130,11 @@ export function UrlInput({
             onChange(trimmedValue);
         }
         if (onValidationChange && trimmedValue) {
-            onValidationChange(validateUrl(trimmedValue));
+            onValidationChange(validateUrl(trimmedValue, t));
         }
-    }, [onChange, onValidationChange, value]);
+    }, [onChange, onValidationChange, value, t]);
 
-    const validation = validateUrl(value);
+    const validation = validateUrl(value, t);
     const showError = showValidation && touched && !validation.valid && value;
 
     return (

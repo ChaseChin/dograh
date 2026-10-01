@@ -7,6 +7,7 @@
 
 import { ShieldCheck } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import { Button } from "@/components/ui/button";
@@ -20,6 +21,7 @@ export function CaptchaChallenge({
   onVerified: () => void;
   onCancel: () => void;
 }) {
+  const { t } = useTranslation();
   const [a, setA] = useState(0);
   const [b, setB] = useState(0);
   const [answer, setAnswer] = useState("");
@@ -39,7 +41,7 @@ export function CaptchaChallenge({
     if (answer.trim() !== "" && parseInt(answer, 10) === a + b) {
       onVerified();
     } else {
-      toast.error("That's not quite right - try again.");
+      toast.error(t("leadForms.captcha.wrong"));
       regenerate();
     }
   };
@@ -52,13 +54,13 @@ export function CaptchaChallenge({
             <ShieldCheck className="size-4" />
           </span>
           <div className="space-y-1">
-            <p className="text-sm font-semibold">Quick check</p>
-            <p className="text-xs text-muted-foreground">Confirm you&apos;re human before we send this.</p>
+            <p className="text-sm font-semibold">{t("leadForms.captcha.title")}</p>
+            <p className="text-xs text-muted-foreground">{t("leadForms.captcha.body")}</p>
           </div>
         </div>
         <div className="space-y-1.5">
           <Label htmlFor="captcha-answer">
-            What is {a} + {b}?
+            {t("leadForms.captcha.question", { a, b })}
           </Label>
           <Input
             id="captcha-answer"
@@ -69,19 +71,19 @@ export function CaptchaChallenge({
             onKeyDown={(e) => {
               if (e.key === "Enter") confirm();
             }}
-            placeholder="Answer"
+            placeholder={t("leadForms.captcha.answerPlaceholder")}
           />
         </div>
         <div className="flex justify-end gap-2">
           <Button type="button" variant="ghost" onClick={onCancel}>
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             type="button"
             onClick={confirm}
             className="bg-cta text-cta-foreground shadow-md shadow-cta/25 hover:bg-cta/90 hover:shadow-cta/35 focus-visible:ring-cta/50"
           >
-            Confirm &amp; submit
+            {t("leadForms.captcha.confirm")}
           </Button>
         </div>
       </div>

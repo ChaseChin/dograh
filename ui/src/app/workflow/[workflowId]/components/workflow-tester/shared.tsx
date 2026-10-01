@@ -2,17 +2,19 @@
 
 import { AlertCircle, MessageSquareText } from "lucide-react";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 
 export function DisabledNotice({ reason }: { reason: string }) {
+    const { t } = useTranslation();
     return (
         <div className="rounded-lg border border-amber-200/80 bg-amber-50/80 px-3 py-2.5 text-sm text-amber-900 dark:border-amber-500/20 dark:bg-amber-500/10 dark:text-amber-200">
             <div className="flex items-start gap-3">
                 <AlertCircle className="mt-0.5 h-4 w-4 shrink-0" />
                 <div className="space-y-0.5">
-                    <p className="font-medium">Testing is paused</p>
+                    <p className="font-medium">{t("workflow.tester.paused")}</p>
                     <p className="text-amber-800/90 dark:text-amber-300">{reason}</p>
                 </div>
             </div>
@@ -52,9 +54,10 @@ export function ChatModeToggle({
     value: "manual" | "simulated";
     onChange: (next: "manual" | "simulated") => void;
 }) {
+    const { t } = useTranslation();
     const options: Array<{ id: "manual" | "simulated"; label: string }> = [
-        { id: "manual", label: "Manual" },
-        { id: "simulated", label: "Simulated" },
+        { id: "manual", label: t("workflow.tester.chat.modeManual") },
+        { id: "simulated", label: t("workflow.tester.chat.modeSimulated") },
     ];
 
     return (
@@ -104,15 +107,16 @@ export function ManualChatEmptyState({
     ready: boolean;
     onStart: () => void;
 }) {
+    const { t } = useTranslation();
     return (
         <EmptyState
             icon={<MessageSquareText className="h-7 w-7" />}
-            title="Chat with this agent"
-            description="Test the agent over a text conversation. Send messages and see how it responds, with tool calls, transitions, and rewind support."
+            title={t("workflow.tester.chat.emptyTitle")}
+            description={t("workflow.tester.chat.emptyDescription")}
             action={
                 <Button onClick={onStart} disabled={disabled || !ready}>
                     <MessageSquareText className="h-4 w-4" />
-                    Start Test
+                    {t("workflow.tester.chat.startTest")}
                 </Button>
             }
         />

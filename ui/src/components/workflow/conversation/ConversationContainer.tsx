@@ -2,6 +2,7 @@
 
 import { MessageSquare, Mic, MicOff } from "lucide-react";
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
 
@@ -17,20 +18,20 @@ interface ConversationContainerProps {
 const STATUS_CONFIG = {
     ready: {
         icon: MicOff,
-        label: "Ready",
+        labelKey: "conversation.status.ready",
         className: "bg-muted text-muted-foreground",
     },
     live: {
         icon: Mic,
-        label: "Live",
+        labelKey: "conversation.status.live",
         className: "bg-green-500/10 text-green-600 dark:text-green-400",
     },
     ended: {
         icon: MicOff,
-        label: "Ended",
+        labelKey: "conversation.status.ended",
         className: "bg-muted text-muted-foreground",
     },
-} satisfies Record<ConversationStatus, { icon: typeof Mic; label: string; className: string }>;
+} satisfies Record<ConversationStatus, { icon: typeof Mic; labelKey: string; className: string }>;
 
 export function ConversationContainer({
     title,
@@ -38,6 +39,7 @@ export function ConversationContainer({
     children,
     messageCount,
 }: ConversationContainerProps) {
+    const { t } = useTranslation();
     const statusConfig = STATUS_CONFIG[status];
     const StatusIcon = statusConfig.icon;
 
@@ -51,7 +53,9 @@ export function ConversationContainer({
                     </div>
                     <div className="flex shrink-0 items-center gap-2">
                         {messageCount !== undefined && messageCount > 0 ? (
-                            <span className="text-xs text-muted-foreground">{messageCount} messages</span>
+                            <span className="text-xs text-muted-foreground">
+                                {t("conversation.messageCount", { count: messageCount })}
+                            </span>
                         ) : null}
                         <div
                             className={cn(
@@ -60,7 +64,7 @@ export function ConversationContainer({
                             )}
                         >
                             <StatusIcon className="h-3 w-3" />
-                            <span>{statusConfig.label}</span>
+                            <span>{t(statusConfig.labelKey)}</span>
                         </div>
                     </div>
                 </div>

@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
 import { TextValue } from "@/types/filters";
@@ -15,9 +16,10 @@ export const TextFilter: React.FC<TextFilterProps> = ({
   value,
   onChange,
   error,
-  placeholder = "Enter text",
+  placeholder,
   maxLength,
 }) => {
+  const { t } = useTranslation();
   // Local state for fast typing - only syncs to parent on blur
   const [localValue, setLocalValue] = useState(value.value || "");
 
@@ -37,7 +39,7 @@ export const TextFilter: React.FC<TextFilterProps> = ({
         value={localValue}
         onChange={(e) => setLocalValue(e.target.value)}
         onBlur={handleBlur}
-        placeholder={placeholder}
+        placeholder={placeholder ?? t("filters.text.placeholder")}
         maxLength={maxLength}
         className={error ? "border-red-500" : ""}
       />

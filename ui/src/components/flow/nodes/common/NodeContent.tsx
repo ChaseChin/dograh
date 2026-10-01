@@ -1,5 +1,8 @@
+"use client";
+
 import { Position } from "@xyflow/react";
 import { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import { BaseHandle } from "@/components/flow/nodes/BaseHandle";
 import { BaseNode } from "@/components/flow/nodes/BaseNode";
@@ -25,7 +28,7 @@ interface NodeContentProps {
 }
 
 // Get badge styling based on node type
-const DEFAULT_BADGE = { label: 'Node', className: 'bg-zinc-500 text-white' };
+const DEFAULT_BADGE_CLASS_NAME = 'bg-zinc-500 text-white';
 
 export const NodeContent = ({
     selected,
@@ -37,7 +40,7 @@ export const NodeContent = ({
     icon,
     badgeLabel,
     badgeClassName,
-    contentLabel = "Prompt",
+    contentLabel,
     hasSourceHandle = false,
     hasTargetHandle = false,
     children,
@@ -45,10 +48,12 @@ export const NodeContent = ({
     onDoubleClick,
     nodeId,
 }: NodeContentProps) => {
+    const { t } = useTranslation();
     const badge = {
-        label: badgeLabel ?? DEFAULT_BADGE.label,
-        className: badgeClassName ?? DEFAULT_BADGE.className,
+        label: badgeLabel ?? t("flow.common.node"),
+        className: badgeClassName ?? DEFAULT_BADGE_CLASS_NAME,
     };
+    const resolvedContentLabel = contentLabel ?? t("flow.common.prompt");
 
     return (
         <BaseNode
@@ -90,7 +95,7 @@ export const NodeContent = ({
             {/* Content area with prompt label */}
             <div className="p-4">
                 <div className="text-xs text-muted-foreground mb-1.5 font-medium">
-                    {contentLabel}:
+                    {resolvedContentLabel}:
                 </div>
                 {children}
             </div>

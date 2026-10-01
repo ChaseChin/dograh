@@ -1,5 +1,6 @@
 import { AlertCircle, Calendar, CheckSquare, Hash, ListFilter, Radio, RefreshCw, Tag, X } from "lucide-react";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { DateRangeFilter } from "@/components/filters/DateRangeFilter";
 import { MultiSelectFilter } from "@/components/filters/MultiSelectFilter";
@@ -53,6 +54,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
   onAutoRefreshChange,
   hasAppliedFilters = false,
 }) => {
+  const { t } = useTranslation();
   const [selectedAttribute, setSelectedAttribute] = useState<string>("");
   const [expandedFilters, setExpandedFilters] = useState<Set<number>>(new Set());
   const resolvedActiveFilters = useMemo(
@@ -111,11 +113,11 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
       const updatedFilter = { ...filter, value };
       return {
         ...updatedFilter,
-        isValid: validateFilter(updatedFilter) === null,
+        isValid: validateFilter(updatedFilter, t) === null,
       };
     });
     onFiltersChange(newFilters);
-  }, [resolvedActiveFilters, onFiltersChange]);
+  }, [resolvedActiveFilters, onFiltersChange, t]);
 
   const removeFilter = useCallback((index: number) => {
     onFiltersChange(resolvedActiveFilters.filter((_, i) => i !== index));
@@ -147,13 +149,13 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
         value: filterConfig.value,
         isValid: false,
       };
-      filter.isValid = validateFilter(filter) === null;
+      filter.isValid = validateFilter(filter, t) === null;
       return filter;
     }).filter((f): f is ActiveFilter => f !== null);
 
     onFiltersChange(newFilters);
     setExpandedFilters(new Set());
-  }, [availableAttributes, onFiltersChange]);
+  }, [availableAttributes, onFiltersChange, t]);
 
   const toggleFilterExpanded = (index: number) => {
     setExpandedFilters(prev => {
@@ -187,48 +189,56 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
     }
   };
 
+  const attributeLabel = (attribute: FilterAttribute): string =>
+    attribute.labelKey ? t(attribute.labelKey) : attribute.label;
+
+  const configPlaceholder = (filter: ActiveFilter): string | undefined => {
+    const config = filter.attribute.config;
+    return config.placeholderKey ? t(config.placeholderKey) : config.placeholder;
+  };
+
   const getFilterSummary = (filter: ActiveFilter): string => {
     switch (filter.attribute.type) {
       case "dateRange":
-        return formatDateRange(filter.value as DateRangeValue);
+        return formatDateRange(filter.value as DateRangeValue, t);
       case "multiSelect": {
         const value = filter.value as MultiSelectValue;
-        if (value.codes.length === 0) return "No options selected";
+        if (value.codes.length === 0) return t("filters.summary.noOptions");
         if (value.codes.length <= 3) return value.codes.join(", ");
-        return `${value.codes.slice(0, 3).join(", ")} +${value.codes.length - 3} more`;
+        return `${value.codes.slice(0, 3).join(", ")} ${t("filters.summary.more", { count: value.codes.length - 3 })}`;
       }
       case "number": {
         const value = filter.value as NumberValue;
-        return value.value !== null ? value.value.toString() : "No value";
+        return value.value !== null ? value.value.toString() : t("filters.summary.noValue");
       }
       case "numberSelect": {
         const value = filter.value as NumberValue;
-        if (value.value === null) return "No value";
+        if (value.value === null) return t("filters.summary.noValue");
         return filter.attribute.config.numberSelectOptions?.find(option => option.value === value.value)?.label
           || value.value.toString();
       }
       case "numberRange":
-        return formatNumberRange(filter.value as NumberRangeValue, filter.attribute.config.unit);
+        return formatNumberRange(filter.value as NumberRangeValue, filter.attribute.config.unit, t);
       case "radio": {
         const value = filter.value as RadioValue;
         const option = filter.attribute.config.radioOptions?.find(opt => opt.value === value.status);
-        return option?.label || value.status;
+        return (option?.labelKey ? t(option.labelKey) : option?.label) || value.status;
       }
       case "tags": {
         const value = filter.value as MultiSelectValue;
-        if (value.codes.length === 0) return "No tags";
+        if (value.codes.length === 0) return t("filters.summary.noTags");
         if (value.codes.length <= 3) return value.codes.join(", ");
-        return `${value.codes.slice(0, 3).join(", ")} +${value.codes.length - 3} more`;
+        return `${value.codes.slice(0, 3).join(", ")} ${t("filters.summary.more", { count: value.codes.length - 3 })}`;
       }
       case "text": {
         const value = filter.value as TextValue;
-        return value.value || "No value";
+        return value.value || t("filters.summary.noValue");
       }
     }
   };
 
   const renderFilterInput = (filter: ActiveFilter, index: number) => {
-    const error = filter.isValid ? undefined : validateFilter(filter) || undefined;
+    const error = filter.isValid ? undefined : validateFilter(filter, t) || undefined;
 
     switch (filter.attribute.type) {
       case "dateRange":
@@ -257,7 +267,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
             value={filter.value as NumberValue}
             onChange={(value) => updateFilter(index, value)}
             error={error}
-            placeholder={filter.attribute.config.placeholder}
+            placeholder={configPlaceholder(filter)}
             min={filter.attribute.config.min}
             max={filter.attribute.config.max}
             step={filter.attribute.config.step}
@@ -270,7 +280,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
             onChange={(value) => updateFilter(index, value)}
             error={error}
             label={filter.attribute.config.numberSelectLabel}
-            placeholder={filter.attribute.config.placeholder}
+            placeholder={configPlaceholder(filter)}
             options={filter.attribute.config.numberSelectOptions || []}
             isLoading={filter.attribute.config.numberSelectOptionsLoading}
           />
@@ -295,7 +305,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
             onChange={(value) => updateFilter(index, value)}
             error={error}
             options={filter.attribute.config.radioOptions || []}
-            label={`Select ${filter.attribute.label}`}
+            label={t("filters.radio.selectPrefix", { label: attributeLabel(filter.attribute) })}
           />
         );
       case "tags":
@@ -312,7 +322,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
             value={filter.value as TextValue}
             onChange={(value) => updateFilter(index, value)}
             error={error}
-            placeholder={filter.attribute.config.placeholder}
+            placeholder={configPlaceholder(filter)}
             maxLength={filter.attribute.config.maxLength}
           />
         );
@@ -329,20 +339,20 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
       <CardHeader>
         <div className="flex items-center justify-between">
           <div>
-            <CardTitle>Filter Workflow Runs</CardTitle>
+            <CardTitle>{t("filters.title")}</CardTitle>
             <CardDescription>
-              Build custom filters to find specific workflow runs
+              {t("filters.subtitle")}
             </CardDescription>
           </div>
           <div className="flex items-center gap-2">
             <DropdownMenu>
               <DropdownMenuTrigger asChild>
                 <Button variant="outline" size="sm">
-                  Templates
+                  {t("filters.templates")}
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end" className="w-[250px]">
-                <DropdownMenuLabel>Filter Templates</DropdownMenuLabel>
+                <DropdownMenuLabel>{t("filters.templatesLabel")}</DropdownMenuLabel>
                 <DropdownMenuSeparator />
                 {filterTemplates.map((template) => (
                   <DropdownMenuItem
@@ -350,9 +360,9 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
                     onClick={() => applyTemplate(template)}
                   >
                     <div className="flex flex-col">
-                      <span className="font-medium">{template.name}</span>
+                      <span className="font-medium">{template.nameKey ? t(template.nameKey) : template.name}</span>
                       <span className="text-xs text-muted-foreground">
-                        {template.description}
+                        {template.descriptionKey ? t(template.descriptionKey) : template.description}
                       </span>
                     </div>
                   </DropdownMenuItem>
@@ -370,14 +380,14 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
               addFilter(value);
             }}>
               <SelectTrigger className="flex-1">
-                <SelectValue placeholder="Select attribute to filter by" />
+                <SelectValue placeholder={t("filters.selectAttribute")} />
               </SelectTrigger>
               <SelectContent>
                 {availableAttributesForAdding.map((attr) => (
                   <SelectItem key={attr.id} value={attr.id}>
                     <div className="flex items-center gap-2">
                       {getFilterIcon(attr.type)}
-                      <span>{attr.label}</span>
+                      <span>{attributeLabel(attr)}</span>
                     </div>
                   </SelectItem>
                 ))}
@@ -389,14 +399,14 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
           {resolvedActiveFilters.length > 0 && (
             <div className="space-y-3">
               <div className="flex items-center justify-between">
-                <h4 className="text-sm font-medium">Active Filters</h4>
+                <h4 className="text-sm font-medium">{t("filters.activeFilters")}</h4>
                 {resolvedActiveFilters.length > 1 && (
                   <Button
                     variant="ghost"
                     size="sm"
                     onClick={clearAllFilters}
                   >
-                    Clear All
+                    {t("filters.clearAll")}
                   </Button>
                 )}
               </div>
@@ -410,7 +420,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
                     >
                       <div className="flex items-center gap-2">
                         {getFilterIcon(filter.attribute.type)}
-                        <span className="font-medium">{filter.attribute.label}</span>
+                        <span className="font-medium">{attributeLabel(filter.attribute)}</span>
                         {!filter.isValid && (
                           <AlertCircle className="h-4 w-4 text-red-500" />
                         )}
@@ -457,7 +467,7 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
                     id="auto-refresh"
                   />
                   <label htmlFor="auto-refresh" className="text-sm font-medium cursor-pointer">
-                    Auto-refresh every 5s
+                    {t("filters.autoRefresh")}
                   </label>
                   {autoRefresh && (
                     <RefreshCw className="h-4 w-4 text-gray-500 animate-spin" />
@@ -471,14 +481,14 @@ export const FilterBuilder: React.FC<FilterBuilderProps> = ({
                   variant="outline"
                   onClick={clearAllFilters}
                 >
-                  Clear All
+                  {t("filters.clearAll")}
                 </Button>
                 <Button
                   onClick={onApplyFilters}
                   disabled={(resolvedActiveFilters.length > 0 && !allFiltersValid) || isExecuting}
-                  title={"Apply filters"}
+                  title={t("filters.applyTitle")}
                 >
-                  {isExecuting ? "Applying..." : `Apply (${navigator.userAgent.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl'}+Enter)`}
+                  {isExecuting ? t("filters.applying") : t("filters.apply", { modifier: navigator.userAgent.toUpperCase().indexOf('MAC') >= 0 ? '⌘' : 'Ctrl' })}
                 </Button>
               </div>
             </div>

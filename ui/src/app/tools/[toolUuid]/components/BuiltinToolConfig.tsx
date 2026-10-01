@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +24,8 @@ export function BuiltinToolConfig({
     title,
     subtitle,
 }: BuiltinToolConfigProps) {
+    const { t } = useTranslation();
+
     return (
         <Card>
             <CardHeader>
@@ -31,26 +35,26 @@ export function BuiltinToolConfig({
             <CardContent className="space-y-6">
                 {/* Tool Name */}
                 <div className="space-y-2">
-                    <Label htmlFor="tool-name">Tool Name</Label>
+                    <Label htmlFor="tool-name">{t("tools.builtin.nameLabel")}</Label>
                     <Input
                         id="tool-name"
                         value={name}
                         onChange={(e) => onNameChange(e.target.value)}
-                        placeholder="Tool name"
+                        placeholder={t("tools.builtin.namePlaceholder")}
                     />
                 </div>
 
                 {/* Tool Description */}
                 <div className="space-y-2">
-                    <Label htmlFor="tool-description">Description</Label>
+                    <Label htmlFor="tool-description">{t("tools.builtin.descriptionLabel")}</Label>
                     <p className="text-xs text-muted-foreground">
-                        Provide a description which makes it easy for LLM to understand what this tool does
+                        {t("tools.builtin.descriptionHelp")}
                     </p>
                     <Textarea
                         id="tool-description"
                         value={description}
                         onChange={(e) => onDescriptionChange(e.target.value)}
-                        placeholder="Describe what this tool does..."
+                        placeholder={t("tools.builtin.descriptionPlaceholder")}
                         rows={3}
                     />
                 </div>

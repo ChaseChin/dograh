@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 import {
     conversationItemsFromLiveFeedback,
     conversationItemsFromRealtimeFeedbackEvents,
@@ -28,6 +30,7 @@ interface HistoricalModeProps {
 type RealtimeFeedbackProps = LiveModeProps | HistoricalModeProps;
 
 export function RealtimeFeedback(props: RealtimeFeedbackProps) {
+    const { t } = useTranslation();
     let items;
     let status: ConversationStatus;
     let title: string;
@@ -36,23 +39,23 @@ export function RealtimeFeedback(props: RealtimeFeedbackProps) {
 
     if (props.mode === "historical") {
         items = props.logs?.realtime_feedback_events
-            ? conversationItemsFromRealtimeFeedbackEvents(props.logs.realtime_feedback_events)
+            ? conversationItemsFromRealtimeFeedbackEvents(props.logs.realtime_feedback_events, t)
             : [];
         status = "ended";
-        title = "Call Transcript";
+        title = t("conversation.realtime.historicalTitle");
         emptyState = {
-            title: "No conversation recorded",
-            subtitle: "Real-time feedback events were not captured for this call",
+            title: t("conversation.realtime.historicalEmptyTitle"),
+            subtitle: t("conversation.realtime.historicalEmptySubtitle"),
         };
     } else {
-        items = conversationItemsFromLiveFeedback(props.messages);
+        items = conversationItemsFromLiveFeedback(props.messages, t);
         status = props.isCallActive ? "live" : props.isCallCompleted ? "ended" : "ready";
-        title = "Live Transcript";
+        title = t("conversation.realtime.liveTitle");
         emptyState = {
-            title: "No messages yet",
+            title: t("conversation.realtime.liveEmptyTitle"),
             subtitle: props.isCallActive
-                ? "Start speaking to see the transcript"
-                : "Start the call to begin the conversation",
+                ? t("conversation.realtime.liveEmptyActiveSubtitle")
+                : t("conversation.realtime.liveEmptyIdleSubtitle"),
         };
         autoScroll = true;
     }

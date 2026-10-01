@@ -1,6 +1,7 @@
 "use client";
 
 import { ArrowDownLeft, ArrowUpRight, Globe, MessageSquare, Phone } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Tooltip, TooltipContent, TooltipTrigger } from "@/components/ui/tooltip";
 
@@ -20,17 +21,23 @@ export function CallTypeCell({
     mode?: string | null;
     callType?: string | null;
 }) {
+    const { t } = useTranslation();
+
     if (!mode && !callType) {
         return <span className="text-sm text-muted-foreground">-</span>;
     }
 
     const channel = getCallChannel(mode);
     const ChannelIcon = channel === "chat" ? MessageSquare : channel === "web" ? Globe : Phone;
-    const channelLabel = channel === "chat" ? "Text chat" : channel === "web" ? "Web call" : "Phone call";
+    const channelLabel = channel === "chat"
+        ? t("runs.channelChat")
+        : channel === "web"
+          ? t("runs.channelWeb")
+          : t("runs.channelPhone");
 
     const isInbound = callType === "inbound";
     const DirectionIcon = isInbound ? ArrowDownLeft : ArrowUpRight;
-    const directionLabel = isInbound ? "Inbound" : "Outbound";
+    const directionLabel = isInbound ? t("runs.directionInbound") : t("runs.directionOutbound");
 
     return (
         <Tooltip>

@@ -1,6 +1,6 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import { toast } from "sonner";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type {
   PhoneNumberResponse,
@@ -8,8 +8,13 @@ import type {
   TelephonyConfigurationDetail,
   TrunkResponse,
 } from "@/client/types.gen";
+import i18n from "@/i18n";
 
 import { TrunkCard } from "./TrunkCard";
+
+beforeAll(async () => {
+  await i18n.changeLanguage("en");
+});
 
 const mocks = vi.hoisted(() => ({
   createTrunk: vi.fn(),

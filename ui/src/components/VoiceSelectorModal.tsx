@@ -1,7 +1,9 @@
 "use client";
 
+import type { TFunction } from "i18next";
 import { Check, ChevronDown, Loader2, Pencil, Play, Square } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { getVoicesApiV1UserConfigurationsVoicesProviderGet } from "@/client/sdk.gen";
 import { VoiceInfo } from "@/client/types.gen";
@@ -15,8 +17,8 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
-import { ACCENT_DISPLAY_NAMES } from "@/constants/accents";
-import { LANGUAGE_DISPLAY_NAMES } from "@/constants/languages";
+import { getAccentDisplayName } from "@/constants/accents";
+import { getLanguageDisplayName } from "@/constants/languages";
 import { cn } from "@/lib/utils";
 
 const ALL_FILTER_VALUE = "__all__";
@@ -50,14 +52,17 @@ interface VoiceSelectorModalProps {
 const capitalize = (value: string) => value.charAt(0).toUpperCase() + value.slice(1);
 
 const accentLabel = (code?: string | null) =>
-    code ? ACCENT_DISPLAY_NAMES[code.toLowerCase()] || capitalize(code) : "";
+    code ? getAccentDisplayName(code) : "";
 const languageLabel = (code?: string | null) =>
-    code ? LANGUAGE_DISPLAY_NAMES[code] || code.toUpperCase() : "";
-const genderLabel = (gender?: string | null) => (gender ? capitalize(gender) : "");
+    code ? getLanguageDisplayName(code) : "";
+const genderLabel = (gender: string | null | undefined, t: TFunction) =>
+    gender
+        ? t(`voiceSelector.genders.${gender.toLowerCase()}`, { defaultValue: capitalize(gender) })
+        : "";
 
 /** Build the "Accent · Gender · Language" trait line shown under a voice name. */
-function voiceTraits(voice: VoiceInfo): string {
-    return [accentLabel(voice.accent), genderLabel(voice.gender), languageLabel(voice.language)]
+function voiceTraits(voice: VoiceInfo, t: TFunction): string {
+    return [accentLabel(voice.accent), genderLabel(voice.gender, t), languageLabel(voice.language)]
         .filter(Boolean)
         .join(" · ");
 }
@@ -76,6 +81,7 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
     allowManualInput = false,
     className,
 }) => {
+    const { t, i18n } = useTranslation();
     const [isOpen, setIsOpen] = useState(false);
     const [voices, setVoices] = useState<VoiceInfo[]>([]);
     const [facets, setFacets] = useState<Facets>(EMPTY_FACETS);
@@ -159,7 +165,7 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
             if (id !== requestId.current) return; // a newer request superseded this one
 
             if (response.error) {
-                setError("Failed to load voices");
+                setError(t("voiceSelector.failedToLoad"));
                 setVoices([]);
             } else {
                 setVoices(response.data?.voices ?? []);
@@ -173,7 +179,7 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
             }
             setIsLoading(false);
         })();
-    }, [isOpen, manualMode, provider, model, gender, accent, language, debouncedSearch]);
+    }, [isOpen, manualMode, provider, model, gender, accent, language, debouncedSearch, t]);
 
     // Stop any preview when the modal closes / unmounts.
     useEffect(() => {
@@ -189,16 +195,20 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
             .sort((a, b) => a.label.localeCompare(b.label));
 
     const genderOptions = useMemo(
-        () => toSortedOptions(facets.genders, gender, genderLabel),
-        [facets.genders, gender],
+        () => toSortedOptions(facets.genders, gender, (code) => genderLabel(code, t)),
+        [facets.genders, gender, t],
     );
     const accentOptions = useMemo(
         () => toSortedOptions(facets.accents, accent, accentLabel),
-        [facets.accents, accent],
+        // accentLabel resolves via the active locale; re-sort on language switch.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [facets.accents, accent, i18n.language],
     );
     const languageOptions = useMemo(
         () => toSortedOptions(facets.languages, language, languageLabel),
-        [facets.languages, language],
+        // languageLabel resolves via the active locale; re-sort on language switch.
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+        [facets.languages, language, i18n.language],
     );
 
     const openModal = () => {
@@ -244,8 +254,8 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
         setIsOpen(false);
     };
 
-    const triggerLabel = selectedVoiceInfo?.name || value || "Select a voice";
-    const triggerTraits = selectedVoiceInfo ? voiceTraits(selectedVoiceInfo) : "";
+    const triggerLabel = selectedVoiceInfo?.name || value || t("voiceSelector.selectVoice");
+    const triggerTraits = selectedVoiceInfo ? voiceTraits(selectedVoiceInfo, t) : "";
 
     return (
         <div className={cn("space-y-2", className)}>
@@ -267,17 +277,17 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
             <Dialog open={isOpen} onOpenChange={setIsOpen}>
                 <DialogContent className="flex max-h-[85vh] flex-col gap-0 overflow-hidden p-0 sm:max-w-3xl">
                     <DialogHeader className="border-b px-6 py-4">
-                        <DialogTitle>Select Voice</DialogTitle>
+                        <DialogTitle>{t("voiceSelector.selectVoiceTitle")}</DialogTitle>
                     </DialogHeader>
 
                     {/* Filter row: Gender · Accent · Language · Search */}
                     <div className="flex flex-wrap items-center gap-2 border-b px-6 py-3">
                         <Select value={gender} onValueChange={setGender} disabled={manualMode}>
                             <SelectTrigger className="h-9 w-[130px]">
-                                <SelectValue placeholder="Gender" />
+                                <SelectValue placeholder={t("voiceSelector.gender")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={ALL_FILTER_VALUE}>All genders</SelectItem>
+                                <SelectItem value={ALL_FILTER_VALUE}>{t("voiceSelector.allGenders")}</SelectItem>
                                 {genderOptions.map((option) => (
                                     <SelectItem key={option.value} value={option.value}>
                                         {option.label}
@@ -288,10 +298,10 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
 
                         <Select value={accent} onValueChange={setAccent} disabled={manualMode}>
                             <SelectTrigger className="h-9 w-[140px]">
-                                <SelectValue placeholder="Accent" />
+                                <SelectValue placeholder={t("voiceSelector.accent")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={ALL_FILTER_VALUE}>All accents</SelectItem>
+                                <SelectItem value={ALL_FILTER_VALUE}>{t("voiceSelector.allAccents")}</SelectItem>
                                 {accentOptions.map((option) => (
                                     <SelectItem key={option.value} value={option.value}>
                                         {option.label}
@@ -302,10 +312,10 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
 
                         <Select value={language} onValueChange={setLanguage} disabled={manualMode}>
                             <SelectTrigger className="h-9 w-[150px]">
-                                <SelectValue placeholder="Language" />
+                                <SelectValue placeholder={t("voiceSelector.language")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value={ALL_FILTER_VALUE}>All languages</SelectItem>
+                                <SelectItem value={ALL_FILTER_VALUE}>{t("voiceSelector.allLanguages")}</SelectItem>
                                 {languageOptions.map((option) => (
                                     <SelectItem key={option.value} value={option.value}>
                                         {option.label}
@@ -315,7 +325,7 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
                         </Select>
 
                         <Input
-                            placeholder="Search voices..."
+                            placeholder={t("voiceSelector.searchPlaceholder")}
                             value={searchInput}
                             onChange={(event) => setSearchInput(event.target.value)}
                             className="h-9 min-w-[160px] flex-1"
@@ -327,16 +337,16 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
                     <div className="min-h-[260px] flex-1 overflow-auto px-6 py-4">
                         {manualMode ? (
                             <div className="space-y-2">
-                                <Label htmlFor="manual-voice-id">Custom voice ID</Label>
+                                <Label htmlFor="manual-voice-id">{t("voiceSelector.customVoiceId")}</Label>
                                 <Input
                                     id="manual-voice-id"
-                                    placeholder="Enter voice ID"
+                                    placeholder={t("voiceSelector.enterVoiceId")}
                                     value={manualVoiceId}
                                     onChange={(event) => setManualVoiceId(event.target.value)}
                                     autoFocus
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    Use a voice ID that isn&apos;t in the catalog above.
+                                    {t("voiceSelector.customVoiceIdHelp")}
                                 </p>
                             </div>
                         ) : error ? (
@@ -347,7 +357,7 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
                             </div>
                         ) : voices.length === 0 ? (
                             <p className="py-10 text-center text-sm text-muted-foreground">
-                                No voices match these filters
+                                {t("voiceSelector.noMatch")}
                             </p>
                         ) : (
                             <div className="grid gap-2 sm:grid-cols-2">
@@ -367,7 +377,7 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
                                             <span
                                                 role="button"
                                                 tabIndex={voice.preview_url ? 0 : -1}
-                                                aria-label={isPlaying ? "Stop preview" : "Play preview"}
+                                                aria-label={isPlaying ? t("voiceSelector.stopPreview") : t("voiceSelector.playPreview")}
                                                 onClick={(event) => {
                                                     event.stopPropagation();
                                                     playPreview(voice);
@@ -397,9 +407,9 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
                                                     <span className="truncate text-sm font-medium">{voice.name}</span>
                                                     {isSelected && <Check className="h-4 w-4 shrink-0 text-primary" />}
                                                 </span>
-                                                {voiceTraits(voice) && (
+                                                {voiceTraits(voice, t) && (
                                                     <span className="truncate text-xs text-muted-foreground">
-                                                        {voiceTraits(voice)}
+                                                        {voiceTraits(voice, t)}
                                                     </span>
                                                 )}
                                                 <span className="truncate text-[11px] text-muted-foreground/70">
@@ -424,23 +434,23 @@ export const VoiceSelectorModal: React.FC<VoiceSelectorModalProps> = ({
                                 onClick={() => setManualMode((prev) => !prev)}
                             >
                                 <Pencil className="mr-2 h-4 w-4" />
-                                {manualMode ? "Browse catalog" : "Custom voice ID"}
+                                {manualMode ? t("voiceSelector.browseCatalog") : t("voiceSelector.customVoiceId")}
                             </Button>
                         ) : (
                             <span className="text-xs text-muted-foreground">
-                                {!manualMode && !isLoading && !error ? `${voices.length} voices` : ""}
+                                {!manualMode && !isLoading && !error ? t("voiceSelector.voiceCount", { count: voices.length }) : ""}
                             </span>
                         )}
                         <div className="flex items-center gap-2">
                             <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
-                                Cancel
+                                {t("common.cancel")}
                             </Button>
                             <Button
                                 type="button"
                                 onClick={commitSelection}
                                 disabled={manualMode ? !manualVoiceId.trim() : !pendingVoiceId}
                             >
-                                Use this voice
+                                {t("voiceSelector.useThisVoice")}
                             </Button>
                         </div>
                     </div>

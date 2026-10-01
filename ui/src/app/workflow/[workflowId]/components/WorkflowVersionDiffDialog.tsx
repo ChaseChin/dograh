@@ -2,6 +2,7 @@
 
 import { ChevronsLeft, ChevronsRight } from "lucide-react";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { WorkflowVersionResponse } from "@/client/types.gen";
 import { Button } from "@/components/ui/button";
@@ -26,16 +27,6 @@ interface WorkflowVersionDiffDialogProps {
     previousVersion: WorkflowVersionResponse;
     selectedVersion: WorkflowVersionResponse;
 }
-
-const statusLabel: Record<string, string> = {
-    draft: "Draft",
-    published: "Published",
-    archived: "Archived",
-};
-
-const versionLabel = (version: WorkflowVersionResponse): string => {
-    return `v${version.version_number}`;
-};
 
 const isChangedRow = (row: ReturnType<typeof buildSideBySideDiffRows>[number]): boolean => (
     row.left?.kind === "removed" || row.right?.kind === "added"
@@ -105,6 +96,17 @@ export const WorkflowVersionDiffDialog = ({
     previousVersion,
     selectedVersion,
 }: WorkflowVersionDiffDialogProps) => {
+    const { t } = useTranslation();
+
+    const statusLabel: Record<string, string> = {
+        draft: t("workflow.editor.versions.statusDraft"),
+        published: t("workflow.editor.versions.statusPublished"),
+        archived: t("workflow.editor.versions.statusArchived"),
+    };
+
+    const versionLabel = (version: WorkflowVersionResponse): string =>
+        t("workflow.editor.versions.versionLabel", { version: version.version_number });
+
     const rows = useMemo(() => {
         const previousJson = serializeWorkflowVersionJson(previousVersion);
         const selectedJson = serializeWorkflowVersionJson(selectedVersion);
@@ -156,7 +158,7 @@ export const WorkflowVersionDiffDialog = ({
                 <DialogHeader className="border-b border-[#333] px-5 py-4 pr-14">
                     <div className="flex items-center justify-between gap-4">
                         <DialogTitle className="text-base text-white">
-                            Changes {versionLabel(previousVersion)} → {versionLabel(selectedVersion)}
+                            {t("workflow.editor.diff.title", { from: versionLabel(previousVersion), to: versionLabel(selectedVersion) })}
                         </DialogTitle>
                         {hasChanges && (
                             <div className="flex shrink-0 items-center gap-2">
@@ -166,14 +168,14 @@ export const WorkflowVersionDiffDialog = ({
                                 >
                                     {activeChangeIndex >= 0
                                         ? `${activeChangeIndex + 1} / ${changeHunks.length}`
-                                        : `${changeHunks.length} ${changeHunks.length === 1 ? "change" : "changes"}`}
+                                        : t("workflow.editor.diff.changeCount", { count: changeHunks.length })}
                                 </span>
                                 <div className="flex items-center gap-1">
                                     <Button
                                         type="button"
                                         variant="outline"
                                         size="icon"
-                                        aria-label="Go to previous change"
+                                        aria-label={t("workflow.editor.diff.previous")}
                                         onClick={handlePreviousChange}
                                         className="h-7 w-7 border-[#3a3a3a] bg-transparent text-gray-400 hover:bg-[#292929] hover:text-white"
                                     >
@@ -183,7 +185,7 @@ export const WorkflowVersionDiffDialog = ({
                                         type="button"
                                         variant="outline"
                                         size="icon"
-                                        aria-label="Go to next change"
+                                        aria-label={t("workflow.editor.diff.next")}
                                         onClick={handleNextChange}
                                         className="h-7 w-7 border-[#3a3a3a] bg-transparent text-gray-400 hover:bg-[#292929] hover:text-white"
                                     >
@@ -194,7 +196,7 @@ export const WorkflowVersionDiffDialog = ({
                         )}
                     </div>
                     <DialogDescription className="sr-only">
-                        Differences between workflow versions {versionLabel(previousVersion)} and {versionLabel(selectedVersion)}.
+                        {t("workflow.editor.diff.description", { from: versionLabel(previousVersion), to: versionLabel(selectedVersion) })}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -247,7 +249,7 @@ export const WorkflowVersionDiffDialog = ({
                             })}
                         </div>
                     ) : (
-                        <p className="py-12 text-center text-sm text-gray-500">No changes</p>
+                        <p className="py-12 text-center text-sm text-gray-500">{t("workflow.editor.diff.noChanges")}</p>
                     )}
                 </div>
             </DialogContent>

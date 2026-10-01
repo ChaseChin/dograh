@@ -1,4 +1,7 @@
+"use client";
+
 import { AlertCircle, CreditCard, ExternalLink, Key } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -24,21 +27,22 @@ export const ApiKeyErrorDialog = ({
     onNavigateToDevelopers,
     onNavigateToModelConfig,
 }: ApiKeyErrorDialogProps) => {
+    const { t } = useTranslation();
     const isBillingCreditsError = errorCode === 'insufficient_credits';
     const isServiceKeyOrgMismatch = errorCode === 'service_key_org_mismatch';
     const isQuotaError = isBillingCreditsError || errorCode === 'quota_exceeded';
 
     const title = isQuotaError
-        ? "Insufficient Credits"
+        ? t("workflow.run.apiKeyError.insufficientCredits")
         : isServiceKeyOrgMismatch
-            ? "Service Token Account Mismatch"
-            : "API Configuration Error";
+            ? t("workflow.run.apiKeyError.accountMismatch")
+            : t("workflow.run.apiKeyError.configError");
     const icon = isQuotaError ? <CreditCard className="h-5 w-5 text-orange-500" /> : <Key className="h-5 w-5 text-red-500" />;
     const buttonText = isBillingCreditsError
-        ? "Go to Billing"
+        ? t("workflow.run.apiKeyError.goToBilling")
         : isServiceKeyOrgMismatch
-            ? "Go to Developers"
-            : "Go to Model Configurations";
+            ? t("workflow.run.apiKeyError.goToDevelopers")
+            : t("workflow.run.apiKeyError.goToModelConfig");
     const onNavigate = isBillingCreditsError
         ? onNavigateToBilling
         : isServiceKeyOrgMismatch
@@ -60,7 +64,7 @@ export const ApiKeyErrorDialog = ({
                                 <p className="font-medium text-foreground">{error}</p>
                                 {isBillingCreditsError && (
                                     <p className="text-muted-foreground">
-                                        Purchase credits from Billing to continue using Dograh-managed models.
+                                        {t("workflow.run.apiKeyError.purchaseCredits")}
                                     </p>
                                 )}
                                 {isServiceKeyOrgMismatch && (
@@ -70,7 +74,7 @@ export const ApiKeyErrorDialog = ({
                                         rel="noopener noreferrer"
                                         className="inline-flex items-center gap-0.5 text-muted-foreground underline"
                                     >
-                                        Learn more <ExternalLink className="h-3 w-3" />
+                                        {t("common.learnMore")} <ExternalLink className="h-3 w-3" />
                                     </a>
                                 )}
                             </div>
@@ -79,7 +83,7 @@ export const ApiKeyErrorDialog = ({
                 </DialogHeader>
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        Cancel
+                        {t("common.cancel")}
                     </Button>
                     <Button onClick={onNavigate}>
                         {buttonText}

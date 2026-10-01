@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, Pencil, RotateCcw } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { cn } from "@/lib/utils";
 
@@ -21,14 +22,15 @@ export function TurnMessageActions({
     onRewind,
     onEdit,
 }: TurnMessageActionsProps) {
+    const { t } = useTranslation();
     return (
         <>
             <button
                 type="button"
                 onClick={onRewind}
                 disabled={disabled}
-                aria-label="Rerun this turn"
-                title="Rerun this turn"
+                aria-label={t("workflow.tester.chat.rerunTurn")}
+                title={t("workflow.tester.chat.rerunTurn")}
                 className="inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50"
             >
                 {rewinding ? (
@@ -41,8 +43,8 @@ export function TurnMessageActions({
                 type="button"
                 onClick={onEdit}
                 disabled={disabled}
-                aria-label="Edit and rerun this turn"
-                title="Edit and rerun this turn"
+                aria-label={t("workflow.tester.chat.editRerunTurn")}
+                title={t("workflow.tester.chat.editRerunTurn")}
                 className={cn(
                     "inline-flex h-6 w-6 items-center justify-center rounded text-muted-foreground hover:bg-muted hover:text-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:opacity-50",
                     editing && "bg-muted text-foreground",

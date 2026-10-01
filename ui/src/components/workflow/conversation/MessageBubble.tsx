@@ -1,5 +1,7 @@
 "use client";
 
+import { useTranslation } from "react-i18next";
+
 import { cn } from "@/lib/utils";
 
 import { LatencyLine } from "./LatencyLine";
@@ -24,6 +26,7 @@ export function MessageBubble({
     latencyMs,
     containerClassName,
 }: MessageBubbleProps) {
+    const { t } = useTranslation();
     const isUser = role === "user";
     const isMuted = tone === "muted";
 
@@ -52,7 +55,7 @@ export function MessageBubble({
                                 isUser ? "text-primary-foreground/70" : "text-muted-foreground",
                             )}
                         >
-                            speaking...
+                            {t("conversation.speaking")}
                         </div>
                     ) : null}
                 </div>

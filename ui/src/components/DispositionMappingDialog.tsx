@@ -2,6 +2,7 @@
 
 import { Plus, RotateCcw, Trash2 } from "lucide-react";
 import { useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import {
@@ -78,6 +79,7 @@ export function DispositionMappingDialog({
   mapping,
   onSave,
 }: Props) {
+  const { t } = useTranslation();
   const { systemCodes, isLoading } = useDispositionCodes();
   const [rows, setRows] = useState<Row[]>([]);
   const [isSaving, setIsSaving] = useState(false);
@@ -136,24 +138,21 @@ export function DispositionMappingDialog({
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogContent className="max-w-2xl">
         <DialogHeader>
-          <DialogTitle>Configure disposition mapping</DialogTitle>
+          <DialogTitle>{t("settings.dispositionMapping.title")}</DialogTitle>
           <DialogDescription>
-            Each VoiceWorker disposition is sent as your own code wherever a call
-            outcome is reported &mdash; webhooks, run filters, reports, and
-            external PBX write-backs. Leave a row unchanged to send the
-            disposition as-is. Saving here applies the mapping immediately.
+            {t("settings.dispositionMapping.description")}
           </DialogDescription>
         </DialogHeader>
 
         {isLoading ? (
           <p className="text-sm text-muted-foreground">
-            Loading dispositions...
+            {t("settings.dispositionMapping.loading")}
           </p>
         ) : (
           <>
             <div className="grid grid-cols-[1fr_1fr_auto] items-center gap-x-3 gap-y-1 px-1 text-xs font-medium text-muted-foreground">
-              <span>VoiceWorker disposition</span>
-              <span>Your code</span>
+              <span>{t("settings.dispositionMapping.sourceColumn")}</span>
+              <span>{t("settings.dispositionMapping.targetColumn")}</span>
               <span className="w-8" />
             </div>
 
@@ -177,25 +176,27 @@ export function DispositionMappingDialog({
                       </Label>
                     ) : (
                       <Input
-                        aria-label="VoiceWorker disposition"
+                        aria-label={t("settings.dispositionMapping.sourceColumn")}
                         value={row.source}
                         disabled={isSaving}
                         onChange={(event) =>
                           updateRow(index, { source: event.target.value })
                         }
-                        placeholder="e.g. no_medicare_card"
+                        placeholder={t("settings.dispositionMapping.sourcePlaceholder")}
                         className="font-mono text-xs"
                       />
                     )}
                     <Input
                       id={`disposition-target-${index}`}
-                      aria-label={`Code for ${row.source || "new disposition"}`}
+                      aria-label={t("settings.dispositionMapping.targetAria", {
+                        source: row.source || t("settings.dispositionMapping.newDisposition"),
+                      })}
                       value={row.target}
                       disabled={isSaving}
                       onChange={(event) =>
                         updateRow(index, { target: event.target.value })
                       }
-                      placeholder={row.source || "Your code"}
+                      placeholder={row.source || t("settings.dispositionMapping.targetColumn")}
                       className="font-mono text-xs"
                     />
                     {row.builtIn ? (
@@ -208,11 +209,11 @@ export function DispositionMappingDialog({
                         // reflow as rows are edited.
                         disabled={isSaving || !changed}
                         onClick={() => updateRow(index, { target: row.source })}
-                        title="Reset to the VoiceWorker disposition"
+                        title={t("settings.dispositionMapping.resetTitle")}
                       >
                         <RotateCcw className="h-3.5 w-3.5" />
                         <span className="sr-only">
-                          Reset {row.source} to its default
+                          {t("settings.dispositionMapping.resetSr", { source: row.source })}
                         </span>
                       </Button>
                     ) : (
@@ -223,11 +224,13 @@ export function DispositionMappingDialog({
                         className="h-8 w-8"
                         disabled={isSaving}
                         onClick={() => removeRow(index)}
-                        title="Remove this disposition"
+                        title={t("settings.dispositionMapping.removeTitle")}
                       >
                         <Trash2 className="h-3.5 w-3.5" />
                         <span className="sr-only">
-                          Remove {row.source || "this disposition"}
+                          {t("settings.dispositionMapping.removeSr", {
+                            source: row.source || t("settings.dispositionMapping.thisDisposition"),
+                          })}
                         </span>
                       </Button>
                     )}
@@ -245,12 +248,12 @@ export function DispositionMappingDialog({
                 onClick={addRow}
               >
                 <Plus className="mr-2 h-3.5 w-3.5" />
-                Add disposition
+                {t("settings.dispositionMapping.addRow")}
               </Button>
               <p className="text-xs text-muted-foreground">
                 {overrideCount === 0
-                  ? "No overrides — every disposition is sent as-is."
-                  : `${overrideCount} override${overrideCount === 1 ? "" : "s"}`}
+                  ? t("settings.dispositionMapping.noOverrides")
+                  : t("settings.dispositionMapping.overrideCount", { count: overrideCount })}
               </p>
             </div>
           </>
@@ -263,14 +266,14 @@ export function DispositionMappingDialog({
             disabled={isSaving}
             onClick={() => onOpenChange(false)}
           >
-            Cancel
+            {t("common.cancel")}
           </Button>
           <Button
             type="button"
             onClick={handleSave}
             disabled={isLoading || isSaving}
           >
-            {isSaving ? "Saving..." : "Save mapping"}
+            {isSaving ? t("common.saving") : t("settings.dispositionMapping.saveMapping")}
           </Button>
         </DialogFooter>
       </DialogContent>

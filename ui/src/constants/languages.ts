@@ -1,4 +1,10 @@
-// Display names for language codes (Deepgram + Sarvam)
+import i18n from "@/i18n";
+import { getIntlTag } from "@/i18n/dateLocale";
+
+// English display names for language codes (Deepgram + Sarvam). Kept as the
+// ultimate fallback when Intl.DisplayNames cannot resolve a code; UI code
+// should prefer getLanguageDisplayName / getLanguageDisplayNames below, which
+// localize via Intl.DisplayNames using the active locale.
 export const LANGUAGE_DISPLAY_NAMES: Record<string, string> = {
     "multi": "Multilingual (Auto-detect)",
     // Arabic
@@ -108,3 +114,49 @@ export const LANGUAGE_DISPLAY_NAMES: Record<string, string> = {
     "mai-IN": "Maithili",
     "doi-IN": "Dogri",
 };
+
+const displayNamesCache: Partial<Record<string, Intl.DisplayNames | null>> = {};
+
+function getIntlDisplayNames(): Intl.DisplayNames | null {
+    const tag = getIntlTag();
+    if (!(tag in displayNamesCache)) {
+        try {
+            displayNamesCache[tag] = new Intl.DisplayNames([tag], { type: "language" });
+        } catch {
+            displayNamesCache[tag] = null;
+        }
+    }
+    return displayNamesCache[tag] ?? null;
+}
+
+/**
+ * Localized display name for a language code. The pseudo-codes `multi` and
+ * `unknown` come from the i18n dictionary; everything else goes through
+ * Intl.DisplayNames in the active locale, falling back to the English map
+ * and finally the uppercased code.
+ */
+export function getLanguageDisplayName(code: string): string {
+    if (code === "multi") return i18n.t("common.languages.multi");
+    if (code === "unknown") return i18n.t("common.languages.autoDetect");
+
+    const displayNames = getIntlDisplayNames();
+    if (displayNames) {
+        try {
+            const name = displayNames.of(code);
+            // Intl.DisplayNames echoes the code back when it can't resolve it.
+            if (name && name !== code) return name;
+        } catch {
+            // fall through to the static map
+        }
+    }
+    return LANGUAGE_DISPLAY_NAMES[code] ?? code.toUpperCase();
+}
+
+/** Localized { code: displayName } map for all supported language codes. */
+export function getLanguageDisplayNames(): Record<string, string> {
+    const result: Record<string, string> = {};
+    for (const code of Object.keys(LANGUAGE_DISPLAY_NAMES)) {
+        result[code] = getLanguageDisplayName(code);
+    }
+    return result;
+}

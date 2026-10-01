@@ -1,7 +1,8 @@
 import { fireEvent, render, screen, within } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
 
+import i18n from "@/i18n";
 import type { AnswerSupervisorSettings } from "@/types/workflow-configurations";
 
 import { AnswerSupervisorFields } from "./AnswerSupervisorFields";
@@ -15,6 +16,10 @@ function Harness({ initial = {} }: { initial?: AnswerSupervisorSettings }) {
         <output data-testid="saved">{JSON.stringify(value)}</output>
     </>;
 }
+
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 describe("AnswerSupervisorFields", () => {
     it("defaults to disconnecting and keeps screening settings available", () => {

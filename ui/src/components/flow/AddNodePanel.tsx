@@ -1,10 +1,14 @@
+"use client";
+
 import * as LucideIcons from 'lucide-react';
 import { Circle, ExternalLink, type LucideIcon, X } from 'lucide-react';
 import { useEffect, useMemo } from 'react';
+import { useTranslation } from "react-i18next";
 
 import type { NodeSpec } from '@/client/types.gen';
 import { useNodeSpecs } from '@/components/flow/renderer';
 import { Button } from '@/components/ui/button';
+import { nodeSpecDescription, nodeSpecDisplayName } from '@/i18n/nodeSpecServerText';
 
 import { FlowNode, NodeType } from './types';
 
@@ -17,14 +21,22 @@ type AddNodePanelProps = {
 
 // Section matching and rendering order. Webhook and QA remain integration
 // specs in the API, but are displayed in their own sections in this panel.
-const SECTIONS: Array<{ title: string; matches: (spec: NodeSpec) => boolean }> = [
-    { title: 'Triggers', matches: (spec) => spec.category === 'trigger' },
-    { title: 'Agent Nodes', matches: (spec) => spec.category === 'call_node' },
-    { title: 'Global Nodes', matches: (spec) => spec.category === 'global_node' },
-    { title: 'Webhook', matches: (spec) => spec.name === 'webhook' },
-    { title: 'QA', matches: (spec) => spec.name === 'qa' },
+type SectionTitleKey =
+    | 'flow.addNode.sections.triggers'
+    | 'flow.addNode.sections.agentNodes'
+    | 'flow.addNode.sections.globalNodes'
+    | 'flow.addNode.sections.webhook'
+    | 'flow.addNode.sections.qa'
+    | 'flow.addNode.sections.integrations';
+
+const SECTIONS: Array<{ titleKey: SectionTitleKey; matches: (spec: NodeSpec) => boolean }> = [
+    { titleKey: 'flow.addNode.sections.triggers', matches: (spec) => spec.category === 'trigger' },
+    { titleKey: 'flow.addNode.sections.agentNodes', matches: (spec) => spec.category === 'call_node' },
+    { titleKey: 'flow.addNode.sections.globalNodes', matches: (spec) => spec.category === 'global_node' },
+    { titleKey: 'flow.addNode.sections.webhook', matches: (spec) => spec.name === 'webhook' },
+    { titleKey: 'flow.addNode.sections.qa', matches: (spec) => spec.name === 'qa' },
     {
-        title: 'Integrations',
+        titleKey: 'flow.addNode.sections.integrations',
         matches: (spec) =>
             spec.category === 'integration' && spec.name !== 'webhook' && spec.name !== 'qa',
     },
@@ -46,6 +58,7 @@ function NodeSection({
     onNodeSelect: (nodeType: NodeType) => void;
     nodeTypeCounts: Map<string, number>;
 }) {
+    const { t } = useTranslation();
     if (specs.length === 0) return null;
     return (
         <div className="space-y-3">
@@ -55,6 +68,7 @@ function NodeSection({
             <div className="space-y-2">
                 {specs.map((spec) => {
                     const Icon = resolveIcon(spec.icon);
+                    const displayName = nodeSpecDisplayName(t, spec.name, spec.display_name);
                     const maxInstances = spec.graph_constraints?.max_instances;
                     const disabled =
                         maxInstances !== undefined &&
@@ -69,7 +83,7 @@ function NodeSection({
                             disabled={disabled}
                             title={
                                 disabled
-                                    ? `${spec.display_name} limit reached for this workflow`
+                                    ? t("flow.addNode.limitReached", { name: displayName })
                                     : undefined
                             }
                         >
@@ -79,10 +93,10 @@ function NodeSection({
                                 </div>
                                 <div className="flex flex-col items-start text-left min-w-0">
                                     <span className="font-medium text-sm">
-                                        {spec.display_name}
+                                        {displayName}
                                     </span>
                                     <span className="text-xs text-muted-foreground whitespace-normal">
-                                        {spec.description}
+                                        {nodeSpecDescription(t, spec.name, spec.description)}
                                     </span>
                                 </div>
                             </div>
@@ -95,15 +109,16 @@ function NodeSection({
 }
 
 export default function AddNodePanel({ isOpen, onNodeSelect, onClose, nodes }: AddNodePanelProps) {
+    const { t } = useTranslation();
     const { specs } = useNodeSpecs();
 
     // Group registered specs into their display sections, preserving SECTIONS order.
     const sections = useMemo(() => {
-        return SECTIONS.map(({ title, matches }) => ({
-            title,
+        return SECTIONS.map(({ titleKey, matches }) => ({
+            title: t(titleKey),
             specs: specs.filter(matches),
         }));
-    }, [specs]);
+    }, [specs, t]);
 
     const nodeTypeCounts = useMemo(() => {
         const counts = new Map<string, number>();
@@ -132,7 +147,7 @@ export default function AddNodePanel({ isOpen, onNodeSelect, onClose, nodes }: A
             <div className="p-4 h-full overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
                     <div className="flex flex-col gap-1">
-                        <h2 className="text-lg font-semibold">Add New Node</h2>
+                        <h2 className="text-lg font-semibold">{t("flow.addNode.title")}</h2>
                         <a
                             href="https://docs.dograh.com/voice-agent/introduction"
                             target="_blank"
@@ -140,7 +155,7 @@ export default function AddNodePanel({ isOpen, onNodeSelect, onClose, nodes }: A
                             className="text-xs text-muted-foreground hover:text-primary flex items-center gap-1 transition-colors"
                         >
                             <ExternalLink className="w-3 h-3" />
-                            View Nodes Documentation
+                            {t("flow.addNode.viewDocs")}
                         </a>
                     </div>
                     <Button variant="ghost" size="icon" onClick={onClose}>

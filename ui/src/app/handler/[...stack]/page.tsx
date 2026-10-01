@@ -5,6 +5,7 @@ import { AuthShell } from "@/components/auth/AuthShell";
 import { getAuthProvider } from "@/lib/auth/config";
 
 import { BackButton } from "./BackButton";
+import { LocalAuthNotice } from "./LocalAuthNotice";
 import { stackAuthDarkTheme } from "./stack-theme";
 
 // Stack Auth serves every auth page from this one catch-all. We give the brand
@@ -29,12 +30,7 @@ export default async function Handler(props: unknown) {
   if (authProvider === "local") {
     return (
       <AuthShell enterpriseSlot={<AuthEnterpriseCTA />}>
-        <div className="space-y-2 text-center text-zinc-200">
-          <h1 className="text-xl font-semibold">Local Auth Mode</h1>
-          <p className="text-sm text-muted-foreground">
-            Stack Auth handler is disabled when using local authentication.
-          </p>
-        </div>
+        <LocalAuthNotice />
       </AuthShell>
     );
   }

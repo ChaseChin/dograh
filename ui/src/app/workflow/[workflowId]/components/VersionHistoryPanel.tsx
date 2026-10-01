@@ -3,9 +3,11 @@
 import { formatDistanceToNow } from "date-fns";
 import { FileDiff, FileText, LoaderCircle, X } from "lucide-react";
 import { useEffect } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { WorkflowVersionResponse } from "@/client/types.gen";
 import { Button } from "@/components/ui/button";
+import { getDateFnsLocale } from "@/i18n/dateLocale";
 
 interface VersionHistoryPanelProps {
     isOpen: boolean;
@@ -20,12 +22,6 @@ interface VersionHistoryPanelProps {
     loadingMore: boolean;
     onLoadMore: () => void;
 }
-
-const statusLabel: Record<string, string> = {
-    draft: "Draft",
-    published: "Published",
-    archived: "Archived",
-};
 
 const statusColor: Record<string, string> = {
     draft: "bg-yellow-500/20 text-yellow-400 border-yellow-500/30",
@@ -46,6 +42,14 @@ export const VersionHistoryPanel = ({
     loadingMore,
     onLoadMore,
 }: VersionHistoryPanelProps) => {
+    const { t } = useTranslation();
+
+    const statusLabel: Record<string, string> = {
+        draft: t("workflow.editor.versions.statusDraft"),
+        published: t("workflow.editor.versions.statusPublished"),
+        archived: t("workflow.editor.versions.statusArchived"),
+    };
+
     useEffect(() => {
         const handleKeyDown = (event: KeyboardEvent) => {
             if (event.key === "Escape" && isOpen) {
@@ -65,12 +69,12 @@ export const VersionHistoryPanel = ({
             <div className="p-4 h-full overflow-y-auto">
                 <div className="flex justify-between items-center mb-6">
                     <h2 className="text-lg font-semibold text-white">
-                        Version History
+                        {t("workflow.editor.versions.title")}
                     </h2>
                     <Button
                         variant="ghost"
                         size="icon"
-                        aria-label="Close version history"
+                        aria-label={t("workflow.editor.versions.close")}
                         onClick={onClose}
                         className="text-gray-400 hover:text-white hover:bg-[#2a2a2a]"
                     >
@@ -84,7 +88,7 @@ export const VersionHistoryPanel = ({
                     </div>
                 ) : versions.length === 0 ? (
                     <p className="text-sm text-gray-500 text-center py-8">
-                        No versions found.
+                        {t("workflow.editor.versions.empty")}
                     </p>
                 ) : (
                     <div className="space-y-2">
@@ -94,8 +98,8 @@ export const VersionHistoryPanel = ({
                             const previousVersion = versions[index + 1];
                             const canCompare = Boolean(previousVersion) || hasMore;
                             const compareLabel = previousVersion
-                                ? `Compare v${version.version_number} with v${previousVersion.version_number}`
-                                : `Compare v${version.version_number} with its previous version`;
+                                ? t("workflow.editor.versions.compareWith", { version: version.version_number, previous: previousVersion.version_number })
+                                : t("workflow.editor.versions.compareWithPrevious", { version: version.version_number });
                             return (
                                 <div
                                     key={version.id}
@@ -130,6 +134,7 @@ export const VersionHistoryPanel = ({
                                         <p className="text-xs text-gray-500">
                                             {formatDistanceToNow(new Date(date), {
                                                 addSuffix: true,
+                                                locale: getDateFnsLocale(),
                                             })}
                                         </p>
                                     </button>
@@ -164,7 +169,7 @@ export const VersionHistoryPanel = ({
                                 {loadingMore ? (
                                     <LoaderCircle className="w-4 h-4 animate-spin" />
                                 ) : (
-                                    "Load more"
+                                    t("workflow.editor.versions.loadMore")
                                 )}
                             </Button>
                         )}

@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Label } from "@/components/ui/label";
 import { Textarea } from "@/components/ui/textarea";
@@ -16,6 +17,7 @@ export function BodyTemplateEditor({
     onChange,
     onValidityChange,
 }: BodyTemplateEditorProps) {
+    const { t } = useTranslation();
     const [text, setText] = useState(value ? JSON.stringify(value, null, 2) : "");
     const [error, setError] = useState(false);
 
@@ -46,10 +48,12 @@ export function BodyTemplateEditor({
 
     return (
         <div className="grid gap-2">
-            <Label>JSON Body Template</Label>
+            <Label>{t("tools.bodyTemplate.label")}</Label>
             <Label className="text-xs text-muted-foreground">
-                Use LLM parameters defined above with {"{{defined_llm_parameter}}"}, or
-                initial context with {"{{initial_context.call_id}}"}.
+                {t("tools.bodyTemplate.help", {
+                    param: "{{defined_llm_parameter}}",
+                    context: "{{initial_context.call_id}}",
+                })}
             </Label>
             <Textarea
                 className="min-h-48 font-mono text-xs"
@@ -60,7 +64,7 @@ export function BodyTemplateEditor({
                 }
                 spellCheck={false}
             />
-            {error && <p className="text-xs text-destructive">Enter a valid JSON object.</p>}
+            {error && <p className="text-xs text-destructive">{t("tools.bodyTemplate.invalidJson")}</p>}
         </div>
     );
 }

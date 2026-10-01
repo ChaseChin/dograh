@@ -2,6 +2,7 @@
 
 import { Loader2, PlusIcon } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { listCredentialsApiV1CredentialsGet } from "@/client";
 import { CredentialResponse } from "@/client/types.gen";
@@ -31,12 +32,17 @@ export function CredentialSelector({
     value,
     onChange,
     disabled = false,
-    placeholder = "No authentication",
-    label = "Credential",
-    description = "Select a credential for authentication, or leave empty for no auth.",
+    placeholder,
+    label,
+    description,
     showLabel = true,
 }: CredentialSelectorProps) {
     useAuth();
+    const { t } = useTranslation();
+
+    const resolvedPlaceholder = placeholder ?? t("tools.credentialSelector.defaultPlaceholder");
+    const resolvedLabel = label ?? t("tools.credentialSelector.defaultLabel");
+    const resolvedDescription = description ?? t("tools.credentialSelector.defaultDescription");
 
     const [credentials, setCredentials] = useState<CredentialResponse[]>([]);
     const [loading, setLoading] = useState(false);
@@ -75,10 +81,10 @@ export function CredentialSelector({
         <div className="grid gap-2">
             {showLabel && (
                 <>
-                    <Label>{label}</Label>
-                    {description && (
+                    <Label>{resolvedLabel}</Label>
+                    {resolvedDescription && (
                         <Label className="text-xs text-muted-foreground">
-                            {description}
+                            {resolvedDescription}
                         </Label>
                     )}
                 </>
@@ -93,14 +99,14 @@ export function CredentialSelector({
                         {loading ? (
                             <div className="flex items-center gap-2">
                                 <Loader2 className="h-4 w-4 animate-spin" />
-                                <span>Loading...</span>
+                                <span>{t("tools.credentialSelector.loading")}</span>
                             </div>
                         ) : (
-                            <SelectValue placeholder={placeholder} />
+                            <SelectValue placeholder={resolvedPlaceholder} />
                         )}
                     </SelectTrigger>
                     <SelectContent>
-                        <SelectItem value="none">{placeholder}</SelectItem>
+                        <SelectItem value="none">{resolvedPlaceholder}</SelectItem>
                         {credentials.map((cred) => (
                             <SelectItem key={cred.uuid} value={cred.uuid}>
                                 {cred.name} ({cred.credential_type})
@@ -112,7 +118,7 @@ export function CredentialSelector({
                     variant="outline"
                     size="icon"
                     onClick={() => setIsAddDialogOpen(true)}
-                    title="Add new credential"
+                    title={t("tools.credentialSelector.addNew")}
                     disabled={disabled}
                 >
                     <PlusIcon className="h-4 w-4" />
@@ -122,7 +128,7 @@ export function CredentialSelector({
             {credentials.length === 0 && !loading && (
                 <div className="p-3 border rounded-md bg-muted/20">
                     <p className="text-sm text-muted-foreground">
-                        No credentials found. Click the + button to create one.
+                        {t("tools.credentialSelector.empty")}
                     </p>
                 </div>
             )}

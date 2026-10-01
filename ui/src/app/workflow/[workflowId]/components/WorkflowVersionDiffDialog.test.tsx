@@ -1,7 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { WorkflowVersionResponse } from "@/client/types.gen";
+import i18n from "@/i18n";
 
 import { WorkflowVersionDiffDialog } from "./WorkflowVersionDiffDialog";
 
@@ -33,6 +34,10 @@ const makeVersion = (
 });
 
 const scrollIntoView = vi.fn();
+
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 describe("WorkflowVersionDiffDialog change navigation", () => {
     beforeEach(() => {

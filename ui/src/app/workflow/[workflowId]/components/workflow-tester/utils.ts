@@ -1,6 +1,6 @@
-export function getErrorMessage(error: unknown) {
+export function getErrorMessage(error: unknown, fallback: string) {
     if (error instanceof Error) return error.message;
-    return "Something went wrong";
+    return fallback;
 }
 
 export function extractSdkErrorMessage(error: unknown, fallback: string) {

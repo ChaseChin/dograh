@@ -19,6 +19,7 @@ import { AppConfigProvider } from "@/context/AppConfigContext";
 import { OnboardingProvider } from "@/context/OnboardingContext";
 import { OrgConfigProvider } from "@/context/OrgConfigContext";
 import { TelephonyConfigWarningsProvider } from "@/context/TelephonyConfigWarningsContext";
+import { LocaleProvider } from "@/i18n/LocaleProvider";
 import { AuthProvider } from "@/lib/auth";
 
 
@@ -50,7 +51,7 @@ export default function RootLayout({
   const showEventBanner = process.env.NEXT_PUBLIC_EVENT_BANNER?.trim() === "1";
 
   return (
-    <html lang="en" className="dark" suppressHydrationWarning>
+    <html lang="zh" className="dark" suppressHydrationWarning>
       <head>
         {/* Inline script to prevent flash of light theme - runs before React hydrates.
             Dark is the locked default: only an explicit stored 'light' opts out. */}
@@ -72,6 +73,26 @@ export default function RootLayout({
             `,
           }}
         />
+        {/* Inline script to prevent flash of wrong locale - runs before React
+            hydrates. Reads the stored UI language (default zh), stashes it on
+            window.__LOCALE__ for the synchronous i18n init, and sets <html lang>.
+            zh is the default: only an explicit stored 'en' opts out. */}
+        <script
+          dangerouslySetInnerHTML={{
+            __html: `
+              (function() {
+                try {
+                  var l = localStorage.getItem('locale');
+                  if (l !== 'en' && l !== 'zh') l = 'zh';
+                  window.__LOCALE__ = l;
+                  document.documentElement.lang = (l === 'en') ? 'en' : 'zh-CN';
+                } catch (e) {
+                  window.__LOCALE__ = 'zh';
+                }
+              })();
+            `,
+          }}
+        />
       </head>
       <body
         className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
@@ -79,6 +100,9 @@ export default function RootLayout({
         {metaPixelId ? <MetaPixel pixelId={metaPixelId} /> : null}
         <ThemeProvider attribute="class" defaultTheme="dark" enableSystem={false} disableTransitionOnChange>
           <SentryErrorBoundary>
+            {/* LocaleProvider sits outside AuthProvider so the login/signup
+                pages (unauthenticated) are localized too. */}
+            <LocaleProvider>
             {/* Above the app chrome on every route (auth pages included). It
                 is sticky at top-0 and publishes --event-banner-h, which the
                 header/sidebar offsets in AppLayout + globals.css consume. */}
@@ -102,6 +126,7 @@ export default function RootLayout({
                 </Suspense>
               </AppConfigProvider>
             </AuthProvider>
+            </LocaleProvider>
           </SentryErrorBoundary>
         </ThemeProvider>
       </body>

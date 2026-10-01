@@ -20,8 +20,9 @@
  */
 import { act, fireEvent, render, screen, waitFor } from "@testing-library/react";
 import React from "react";
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
+import { afterEach, beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
+import i18n from "@/i18n";
 import type { AuthUser } from "@/lib/auth";
 import {
   AuthContext,
@@ -161,6 +162,10 @@ function makeAuthValue(user: AuthUser | null): AuthContextType {
 }
 
 describe("SidebarTeamSwitcher", () => {
+  beforeAll(async () => {
+    await i18n.changeLanguage("en");
+  });
+
   beforeEach(() => {
     stackState.user = makeStackUser();
     reloadAppMock.mockClear();

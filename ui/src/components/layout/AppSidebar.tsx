@@ -25,6 +25,7 @@ import {
 import Link from "next/link";
 import { usePathname, useRouter } from "next/navigation";
 import React from "react";
+import { useTranslation } from "react-i18next";
 
 import { BrandLogo } from "@/components/BrandLogo";
 import { SidebarTeamSwitcher } from "@/components/layout/SidebarTeamSwitcher";
@@ -73,87 +74,8 @@ type SidebarNavSection = {
   items: SidebarNavItem[];
 };
 
-const TELEPHONY_WARNING_COPY = "Action required";
-
-const NAV_SECTIONS: SidebarNavSection[] = [
-  {
-    items: [
-      {
-        title: "Overview",
-        url: "/overview",
-        icon: Home,
-      },
-    ],
-  },
-  {
-    label: "BUILD",
-    items: [
-      {
-        title: "Voice Agents",
-        url: "/workflow",
-        icon: Workflow,
-      },
-      {
-        title: "Campaigns",
-        url: "/campaigns",
-        icon: Megaphone,
-      },
-      {
-        title: "Models",
-        url: "/model-configurations",
-        icon: Brain,
-      },
-      {
-        title: "Telephony",
-        url: "/telephony-configurations",
-        icon: Phone,
-        showsTelephonyWarning: true,
-      },
-      {
-        title: "Tools",
-        url: "/tools",
-        icon: Wrench,
-      },
-      {
-        title: "Files",
-        url: "/files",
-        icon: Database,
-      },
-      {
-        title: "Recordings",
-        url: "/recordings",
-        icon: AudioLines,
-      },
-      {
-        title: "Developers",
-        url: "/api-keys",
-        icon: Key,
-      },
-    ],
-  },
-  {
-    label: "MANAGE",
-    items: [
-      {
-        title: "Agent Runs",
-        url: "/usage",
-        icon: TrendingUp,
-      },
-      {
-        title: "Billing",
-        url: "/billing",
-        icon: CircleDollarSign,
-      },
-      {
-        title: "Reports",
-        url: "/reports",
-        icon: FileText,
-      }
-    ],
-  },
-];
-
 export function AppSidebar() {
+  const { t } = useTranslation();
   const pathname = usePathname();
   const router = useRouter();
   const { state, isMobile, setOpenMobile } = useSidebar();
@@ -178,6 +100,86 @@ export function AppSidebar() {
     { enabled: config?.deploymentMode === "oss" },
   );
 
+  // Nav labels must be resolved at render time (not as module-level consts)
+  // so switching the UI language re-renders them without a page refresh.
+  const navSections: SidebarNavSection[] = [
+    {
+      items: [
+        {
+          title: t("nav.overview"),
+          url: "/overview",
+          icon: Home,
+        },
+      ],
+    },
+    {
+      label: t("nav.sections.build"),
+      items: [
+        {
+          title: t("nav.voiceAgents"),
+          url: "/workflow",
+          icon: Workflow,
+        },
+        {
+          title: t("nav.campaigns"),
+          url: "/campaigns",
+          icon: Megaphone,
+        },
+        {
+          title: t("nav.models"),
+          url: "/model-configurations",
+          icon: Brain,
+        },
+        {
+          title: t("nav.telephony"),
+          url: "/telephony-configurations",
+          icon: Phone,
+          showsTelephonyWarning: true,
+        },
+        {
+          title: t("nav.tools"),
+          url: "/tools",
+          icon: Wrench,
+        },
+        {
+          title: t("nav.files"),
+          url: "/files",
+          icon: Database,
+        },
+        {
+          title: t("nav.recordings"),
+          url: "/recordings",
+          icon: AudioLines,
+        },
+        {
+          title: t("nav.developers"),
+          url: "/api-keys",
+          icon: Key,
+        },
+      ],
+    },
+    {
+      label: t("nav.sections.manage"),
+      items: [
+        {
+          title: t("nav.agentRuns"),
+          url: "/usage",
+          icon: TrendingUp,
+        },
+        {
+          title: t("nav.billing"),
+          url: "/billing",
+          icon: CircleDollarSign,
+        },
+        {
+          title: t("nav.reports"),
+          url: "/reports",
+          icon: FileText,
+        },
+      ],
+    },
+  ];
+
   const isActive = (path: string) => pathname.startsWith(path);
 
   const handleMobileNavClick = () => {
@@ -195,14 +197,14 @@ export function AppSidebar() {
         <div className="notranslate" translate="no">
           <p>{item.title}</p>
           {showWarningDot && (
-            <p className="text-amber-600 dark:text-amber-400">{TELEPHONY_WARNING_COPY}</p>
+            <p className="text-amber-600 dark:text-amber-400">{t("nav.telephonyWarning")}</p>
           )}
         </div>
       ),
     };
     const warningIndicator = (
       <AlertTriangle
-        aria-label="Action required on a telephony configuration"
+        aria-label={t("nav.telephonyWarning")}
         className={cn(
           "text-amber-500",
           isCollapsed ? "absolute -right-0.5 -top-0.5 h-3 w-3" : "ml-auto h-3.5 w-3.5"
@@ -253,7 +255,7 @@ export function AppSidebar() {
                   {warningIndicator}
                 </TooltipTrigger>
                 <TooltipContent side="right">
-                  <p>{TELEPHONY_WARNING_COPY}</p>
+                  <p>{t("nav.telephonyWarning")}</p>
                 </TooltipContent>
               </Tooltip>
             )
@@ -297,13 +299,13 @@ export function AppSidebar() {
           size="icon"
           className="h-7 w-7 rounded-full"
           onClick={() => openHireExpert("sidebar")}
-          aria-label="Hire an Expert"
+          aria-label={t("nav.hireExpert")}
         >
           <UserRound className="h-3.5 w-3.5" />
         </Button>
       </TooltipTrigger>
       <TooltipContent side="right">
-        <p>Hire an Expert</p>
+        <p>{t("nav.hireExpert")}</p>
       </TooltipContent>
     </Tooltip>
   ) : (
@@ -313,7 +315,7 @@ export function AppSidebar() {
       onClick={() => openHireExpert("sidebar")}
     >
       <UserRound className="h-3.5 w-3.5" />
-      Hire an Expert
+      {t("nav.hireExpert")}
     </Button>
   );
 
@@ -347,11 +349,11 @@ export function AppSidebar() {
                     className="inline-flex items-center gap-1 rounded-md border bg-amber-50 px-1.5 py-0.5 text-[10px] font-medium leading-none text-amber-900 transition-opacity hover:opacity-80 dark:bg-amber-950 dark:text-amber-200"
                   >
                     <ArrowUpCircle className="h-3 w-3" />
-                    Update
+                    {t("nav.update")}
                   </a>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
-                  <p>Latest: {latestRelease} - click to see the update guide</p>
+                  <p>{t("nav.updateTooltip", { version: latestRelease })}</p>
                 </TooltipContent>
               </Tooltip>
             )}
@@ -359,11 +361,11 @@ export function AppSidebar() {
               <Tooltip>
                 <TooltipTrigger asChild>
                   <span className="inline-flex items-center rounded-md border bg-emerald-50 px-1.5 py-0.5 text-[10px] font-medium leading-none text-emerald-900 dark:bg-emerald-950 dark:text-emerald-200">
-                    Latest
+                    {t("nav.latest")}
                   </span>
                 </TooltipTrigger>
                 <TooltipContent side="bottom">
-                  <p>You&apos;re running the latest release</p>
+                  <p>{t("nav.latestTooltip")}</p>
                 </TooltipContent>
               </Tooltip>
             )}
@@ -386,9 +388,11 @@ export function AppSidebar() {
       </SidebarHeader>
 
       <SidebarContent className={cn("notranslate", isCollapsed && "px-0")} translate="no">
-        {NAV_SECTIONS.map((section, index) => (
+        {/* key uses each item's url (not the translated title) so switching
+            languages doesn't remount the menu tree */}
+        {navSections.map((section, index) => (
           <SidebarGroup
-            key={section.label ?? "overview"}
+            key={section.items[0]?.url ?? "overview"}
             className={index === 0 ? "mt-2" : "mt-6"}
           >
             {section.label && (
@@ -404,7 +408,7 @@ export function AppSidebar() {
             )}
             <SidebarMenu>
               {section.items.map((item) => (
-                <SidebarMenuItem key={item.title}>
+                <SidebarMenuItem key={item.url}>
                   <SidebarLink item={item} />
                 </SidebarMenuItem>
               ))}
@@ -440,11 +444,11 @@ export function AppSidebar() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => router.push("/settings")} className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
-                    Platform Settings
+                    {t("nav.platformSettings")}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => logout()} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
+                    {t("nav.signOut")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -477,15 +481,15 @@ export function AppSidebar() {
                   <DropdownMenuSeparator />
                   <DropdownMenuItem onClick={() => router.push("/handler/account-settings")} className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
-                    Account settings
+                    {t("nav.accountSettings")}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => router.push("/settings")} className="cursor-pointer">
                     <Settings className="mr-2 h-4 w-4" />
-                    Platform Settings
+                    {t("nav.platformSettings")}
                   </DropdownMenuItem>
                   <DropdownMenuItem onClick={() => logout()} className="cursor-pointer">
                     <LogOut className="mr-2 h-4 w-4" />
-                    Sign out
+                    {t("nav.signOut")}
                   </DropdownMenuItem>
                 </DropdownMenuContent>
               </DropdownMenu>
@@ -504,7 +508,7 @@ export function AppSidebar() {
                 </div>
               </TooltipTrigger>
               <TooltipContent side={isCollapsed ? "right" : "top"}>
-                <p>Toggle theme</p>
+                <p>{t("nav.toggleTheme")}</p>
               </TooltipContent>
             </Tooltip>
           </div>

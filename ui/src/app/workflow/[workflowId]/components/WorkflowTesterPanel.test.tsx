@@ -1,5 +1,7 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
+
+import i18n from "@/i18n";
 
 const { createRunMock, markActionCompletedMock } = vi.hoisted(() => ({
     createRunMock: vi.fn(),
@@ -66,6 +68,10 @@ async function startVoiceRun() {
 // Radix activates a tab on mousedown, not click.
 const switchTo = (name: RegExp) =>
     fireEvent.mouseDown(screen.getByRole("tab", { name }), { button: 0 });
+
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 describe("WorkflowTesterPanel voice run lifecycle", () => {
     beforeEach(() => {

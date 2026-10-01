@@ -1,8 +1,14 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
-import { describe, expect, it, vi } from "vitest";
+import { beforeAll, describe, expect, it, vi } from "vitest";
+
+import i18n from "@/i18n";
 
 import { type ServiceConfigurationDefaults, ServiceConfigurationForm } from "./ServiceConfigurationForm";
+
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 vi.mock("@/client/sdk.gen", () => ({
     getDefaultConfigurationsApiV1UserConfigurationsDefaultsGet: vi.fn(),
@@ -48,12 +54,12 @@ describe("OpenAI speech model selection", () => {
         render(<ServiceConfigurationForm mode="global" forceRealtime configurationDefaults={defaults} initialConfig={initialConfig} onSave={onSave} />);
         const modelSelect = await screen.findByDisplayValue("gpt-realtime-2");
         expect(screen.getAllByRole("option", { name: "OpenAI" })).toHaveLength(1);
-        expect(screen.queryByText("backend model")).toBeNull();
+        expect(screen.queryByText("Backend Model")).toBeNull();
 
         fireEvent.change(modelSelect, { target: { value: "gpt-live-1" } });
         await waitFor(() => expect(screen.getByDisplayValue("Marin")).toBeTruthy());
-        expect(screen.queryByText("language")).toBeNull();
-        expect(screen.getByText("backend model")).toBeTruthy();
+        expect(screen.queryByText("Language")).toBeNull();
+        expect(screen.getByText("Backend Model")).toBeTruthy();
         fireEvent.click(screen.getByRole("button", { name: "Save Configuration" }));
 
         await waitFor(() => expect(onSave).toHaveBeenCalledOnce());
@@ -67,10 +73,10 @@ describe("OpenAI speech model selection", () => {
         render(<ServiceConfigurationForm mode="global" forceRealtime configurationDefaults={defaults} initialConfig={initialConfig} onSave={onSave} />);
         const modelSelect = await screen.findByDisplayValue("gpt-realtime-2");
         fireEvent.change(modelSelect, { target: { value: "gpt-live-1" } });
-        await screen.findByText("backend model");
+        await screen.findByText("Backend Model");
         fireEvent.change(modelSelect, { target: { value: "gpt-realtime-2.1" } });
-        expect(screen.queryByText("backend model")).toBeNull();
-        expect(screen.getByText("language")).toBeTruthy();
+        expect(screen.queryByText("Backend Model")).toBeNull();
+        expect(screen.getByText("Language")).toBeTruthy();
         expect(screen.getByDisplayValue("Marin")).toBeTruthy();
         fireEvent.click(screen.getByRole("button", { name: "Save Configuration" }));
         await waitFor(() => expect(onSave).toHaveBeenCalledOnce());

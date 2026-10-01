@@ -5,6 +5,7 @@ import { ArrowLeft, BookA, Brain, CalendarIcon, Clipboard, Download, ExternalLin
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
+import { Trans, useTranslation } from "react-i18next";
 import { toast } from "sonner";
 
 import {
@@ -41,6 +42,7 @@ import { SETTINGS_DOCUMENTATION_URLS } from "@/constants/documentation";
 import { useOrgConfig } from "@/context/OrgConfigContext";
 import { UnsavedChangesProvider, useUnsavedChanges, useUnsavedChangesContext } from "@/context/UnsavedChangesContext";
 import { useAudioPlayback } from "@/hooks/useAudioPlayback";
+import { getDateFnsLocale } from "@/i18n/dateLocale";
 import { detailFromError } from "@/lib/apiError";
 import { useAuth } from "@/lib/auth";
 import { copyTextToClipboard } from "@/lib/clipboard";
@@ -75,26 +77,25 @@ import {
 // Constants
 // ---------------------------------------------------------------------------
 
-const PUBLISH_WORKFLOW_REMINDER = "Publish the agent to apply the changes.";
-
-// Sidebar navigation items
+// Sidebar navigation items (labels resolved with t() at render)
 const NAV_ITEMS = [
-    { id: "general", label: "General", icon: Settings },
-    { id: "models", label: "Model Overrides", icon: Brain },
-    { id: "variables", label: "Template Variables", icon: Variable },
-    { id: "dictionary", label: "Dictionary", icon: BookA },
-    { id: "voicemail", label: "Voicemail & Screening", icon: PhoneOff },
-    { id: "recordings", label: "Recordings", icon: Mic },
-    { id: "deployment", label: "Add to Website", icon: Rocket },
-    { id: "report", label: "Report", icon: FileDown },
-    { id: "identity", label: "Agent UUID", icon: Fingerprint },
-];
+    { id: "general", labelKey: "general", icon: Settings },
+    { id: "models", labelKey: "models", icon: Brain },
+    { id: "variables", labelKey: "variables", icon: Variable },
+    { id: "dictionary", labelKey: "dictionary", icon: BookA },
+    { id: "voicemail", labelKey: "voicemail", icon: PhoneOff },
+    { id: "recordings", labelKey: "recordings", icon: Mic },
+    { id: "deployment", labelKey: "deployment", icon: Rocket },
+    { id: "report", labelKey: "report", icon: FileDown },
+    { id: "identity", labelKey: "identity", icon: Fingerprint },
+] as const;
 
 // ---------------------------------------------------------------------------
 // Section: Report
 // ---------------------------------------------------------------------------
 
 function ReportSection({ workflowId }: { workflowId: number }) {
+    const { t } = useTranslation();
     const [startDate, setStartDate] = useState<Date | undefined>(undefined);
     const [startTime, setStartTime] = useState("00:00");
     const [endDate, setEndDate] = useState<Date | undefined>(undefined);
@@ -134,11 +135,11 @@ function ReportSection({ workflowId }: { workflowId: number }) {
                 a.remove();
                 window.URL.revokeObjectURL(url);
             } else {
-                toast.error("Failed to download report");
+                toast.error(t("workflow.settings.report.downloadFailed"));
             }
         } catch (err) {
             logger.error(`Failed to download workflow report: ${err}`);
-            toast.error("Failed to download report");
+            toast.error(t("workflow.settings.report.downloadFailed"));
         } finally {
             setIsDownloading(false);
         }
@@ -156,10 +157,10 @@ function ReportSection({ workflowId }: { workflowId: number }) {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <FileDown className="h-4 w-4" />
-                    Report
+                    {t("workflow.settings.report.title")}
                 </CardTitle>
                 <CardDescription>
-                    Download a CSV report of completed runs for this agent, optionally filtered by date range.
+                    {t("workflow.settings.report.description")}
                 </CardDescription>
             </CardHeader>
             <CardFooter className="border-t pt-6">
@@ -167,21 +168,21 @@ function ReportSection({ workflowId }: { workflowId: number }) {
                     <PopoverTrigger asChild>
                         <Button variant="outline" disabled={isDownloading}>
                             <Download className="h-4 w-4 mr-2" />
-                            Download Report
+                            {t("workflow.settings.report.downloadReport")}
                         </Button>
                     </PopoverTrigger>
                     <PopoverContent className="w-auto p-4" align="start">
                         <div className="space-y-4">
-                            <div className="text-sm font-medium">Filter by date range</div>
+                            <div className="text-sm font-medium">{t("workflow.settings.report.filterTitle")}</div>
                             <div className="grid gap-3">
                                 <div className="space-y-1.5">
-                                    <Label className="text-xs">From</Label>
+                                    <Label className="text-xs">{t("workflow.settings.report.from")}</Label>
                                     <div className="flex gap-2">
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button variant="outline" size="sm" className="w-[140px] justify-start text-left font-normal">
                                                     <CalendarIcon className="mr-2 h-3.5 w-3.5" />
-                                                    {startDate ? format(startDate, "MMM dd, yyyy") : "Start date"}
+                                                    {startDate ? format(startDate, "MMM dd, yyyy", { locale: getDateFnsLocale() }) : t("workflow.settings.report.startDate")}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0" align="start">
@@ -202,13 +203,13 @@ function ReportSection({ workflowId }: { workflowId: number }) {
                                     </div>
                                 </div>
                                 <div className="space-y-1.5">
-                                    <Label className="text-xs">To</Label>
+                                    <Label className="text-xs">{t("workflow.settings.report.to")}</Label>
                                     <div className="flex gap-2">
                                         <Popover>
                                             <PopoverTrigger asChild>
                                                 <Button variant="outline" size="sm" className="w-[140px] justify-start text-left font-normal">
                                                     <CalendarIcon className="mr-2 h-3.5 w-3.5" />
-                                                    {endDate ? format(endDate, "MMM dd, yyyy") : "End date"}
+                                                    {endDate ? format(endDate, "MMM dd, yyyy", { locale: getDateFnsLocale() }) : t("workflow.settings.report.endDate")}
                                                 </Button>
                                             </PopoverTrigger>
                                             <PopoverContent className="w-auto p-0" align="start">
@@ -232,11 +233,11 @@ function ReportSection({ workflowId }: { workflowId: number }) {
                             <Separator />
                             <div className="flex justify-between">
                                 <Button variant="ghost" size="sm" onClick={handleClear}>
-                                    Clear
+                                    {t("workflow.settings.report.clear")}
                                 </Button>
                                 <Button size="sm" onClick={handleDownload} disabled={isDownloading}>
                                     <Download className="h-3.5 w-3.5 mr-1.5" />
-                                    {startDate || endDate ? "Download Filtered" : "Download All"}
+                                    {startDate || endDate ? t("workflow.settings.report.downloadFiltered") : t("workflow.settings.report.downloadAll")}
                                 </Button>
                             </div>
                         </div>
@@ -266,6 +267,7 @@ function GeneralSection({
     workflowId: number;
     onSave: (configurations: WorkflowConfigurations, workflowName: string) => Promise<void>;
 }) {
+    const { t } = useTranslation();
     const { externalPbxIntegrationsEnabled } = useOrgConfig();
     const [name, setName] = useState(workflowName);
     const [ambientNoiseConfig, setAmbientNoiseConfig] = useState<AmbientNoiseConfiguration>(
@@ -321,8 +323,8 @@ function GeneralSection({
         [callDispositionRows],
     );
     const callDispositionsValid = useMemo(
-        () => validateCallDispositionRows(callDispositionRows).isValid,
-        [callDispositionRows],
+        () => validateCallDispositionRows(callDispositionRows, t).isValid,
+        [callDispositionRows, t],
     );
 
     const isDirty = useMemo(() => {
@@ -352,7 +354,7 @@ function GeneralSection({
 
     const handleAmbientFileUpload = async (file: File) => {
         if (file.size > MAX_AMBIENT_NOISE_FILE_SIZE) {
-            setAudioUploadError(`File too large (${(file.size / (1024 * 1024)).toFixed(1)}MB). Maximum is 10MB.`);
+            setAudioUploadError(t("workflow.settings.general.fileTooLarge", { size: (file.size / (1024 * 1024)).toFixed(1) }));
             return;
         }
 
@@ -371,7 +373,7 @@ function GeneralSection({
             });
 
             if (res.error || !res.data?.upload_url) {
-                throw new Error("Failed to get upload URL");
+                throw new Error(t("workflow.settings.general.uploadUrlFailed"));
             }
 
             const data = res.data;
@@ -383,7 +385,7 @@ function GeneralSection({
                 headers: { "Content-Type": file.type || "audio/wav" },
             });
             if (!uploadRes.ok) {
-                throw new Error("File upload failed");
+                throw new Error(t("workflow.settings.general.fileUploadFailed"));
             }
 
             // 3. Update config with storage reference
@@ -394,7 +396,7 @@ function GeneralSection({
                 original_filename: file.name,
             }));
         } catch (err) {
-            setAudioUploadError(err instanceof Error ? err.message : "Upload failed");
+            setAudioUploadError(err instanceof Error ? err.message : t("workflow.settings.general.uploadFailed"));
         } finally {
             setIsUploadingAudio(false);
             if (ambientFileInputRef.current) ambientFileInputRef.current.value = "";
@@ -441,7 +443,7 @@ function GeneralSection({
                     }))
                     : current
             ));
-            toast.success(`General settings saved. ${PUBLISH_WORKFLOW_REMINDER}`);
+            toast.success(t("workflow.settings.general.saved"));
         } catch (error) {
             console.error("Failed to save general settings:", error);
         } finally {
@@ -454,21 +456,27 @@ function GeneralSection({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <Settings className="h-4 w-4" />
-                    General
+                    {t("workflow.settings.general.title")}
                 </CardTitle>
-                <CardDescription>Agent name, call behavior, and turn detection.{" "}
-                    <a href={SETTINGS_DOCUMENTATION_URLS.general} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">Learn more <ExternalLink className="h-3 w-3" /></a>
+                <CardDescription>
+                    <Trans
+                        i18nKey="workflow.settings.general.description"
+                        components={[
+                            <a key="docs" href={SETTINGS_DOCUMENTATION_URLS.general} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline" />,
+                        ]}
+                    />{" "}
+                    <ExternalLink className="inline h-3 w-3" />
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-6">
                 {/* Agent Name */}
                 <div className="space-y-2">
-                    <Label htmlFor="workflow_name" className="text-sm font-medium">Agent Name</Label>
+                    <Label htmlFor="workflow_name" className="text-sm font-medium">{t("workflow.settings.general.agentName")}</Label>
                     <Input
                         id="workflow_name"
                         value={name}
                         onChange={(e) => setName(e.target.value)}
-                        placeholder="Enter Agent name"
+                        placeholder={t("workflow.settings.general.agentNamePlaceholder")}
                     />
                 </div>
 
@@ -477,13 +485,13 @@ function GeneralSection({
                 {/* Ambient Noise */}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-sm font-medium">Ambient Noise</h3>
+                        <h3 className="text-sm font-medium">{t("workflow.settings.general.ambientNoise")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Add background ambient noise to make the conversation sound more natural.
+                            {t("workflow.settings.general.ambientNoiseHelp")}
                         </p>
                     </div>
                     <div className="flex items-center justify-between">
-                        <Label htmlFor="ambient-noise-enabled" className="text-sm">Use Ambient Noise</Label>
+                        <Label htmlFor="ambient-noise-enabled" className="text-sm">{t("workflow.settings.general.useAmbientNoise")}</Label>
                         <Switch
                             id="ambient-noise-enabled"
                             checked={ambientNoiseConfig.enabled}
@@ -495,7 +503,7 @@ function GeneralSection({
                     {ambientNoiseConfig.enabled && (
                         <div className="space-y-4">
                             <div className="space-y-2">
-                                <Label htmlFor="ambient-volume" className="text-xs">Volume</Label>
+                                <Label htmlFor="ambient-volume" className="text-xs">{t("workflow.settings.general.volume")}</Label>
                                 <Input
                                     id="ambient-volume"
                                     type="number"
@@ -512,15 +520,15 @@ function GeneralSection({
 
                             {/* Custom Audio File */}
                             <div className="space-y-2">
-                                <Label className="text-xs">Custom Audio File</Label>
+                                <Label className="text-xs">{t("workflow.settings.general.customAudioFile")}</Label>
                                 <p className="text-xs text-muted-foreground">
-                                    Upload your own audio file or use the default office ambience.
+                                    {t("workflow.settings.general.customAudioHelp")}
                                 </p>
 
                                 {ambientNoiseConfig.storage_key ? (
                                     <div className="flex items-center gap-2 rounded-md border p-2 bg-muted/10">
                                         <code className="text-xs bg-muted px-1.5 py-0.5 rounded font-mono truncate flex-1">
-                                            {ambientNoiseConfig.original_filename || "Custom audio"}
+                                            {ambientNoiseConfig.original_filename || t("workflow.settings.general.customAudioFallback")}
                                         </code>
                                         <Button
                                             type="button"
@@ -535,7 +543,7 @@ function GeneralSection({
                                                         ambientNoiseConfig.storage_backend,
                                                     );
                                                 } catch {
-                                                    setAudioUploadError("Failed to play audio");
+                                                    setAudioUploadError(t("workflow.settings.general.playFailed"));
                                                 }
                                             }}
                                         >
@@ -580,7 +588,7 @@ function GeneralSection({
                                             ) : (
                                                 <Upload className="w-4 h-4 mr-2" />
                                             )}
-                                            {isUploadingAudio ? "Uploading..." : "Upload audio file (max 10MB)"}
+                                            {isUploadingAudio ? t("workflow.settings.general.uploading") : t("workflow.settings.general.uploadButton")}
                                         </Button>
                                     </div>
                                 )}
@@ -591,7 +599,7 @@ function GeneralSection({
 
                                 {!ambientNoiseConfig.storage_key && (
                                     <p className="text-xs text-muted-foreground italic">
-                                        Using default office ambience
+                                        {t("workflow.settings.general.usingDefault")}
                                     </p>
                                 )}
                             </div>
@@ -604,35 +612,35 @@ function GeneralSection({
                 {/* Turn Detection */}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-sm font-medium">Turn Detection</h3>
+                        <h3 className="text-sm font-medium">{t("workflow.settings.general.turnDetection")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Configure how the agent detects when the user has finished speaking.
+                            {t("workflow.settings.general.turnDetectionHelp")}
                         </p>
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="turn_stop_strategy" className="text-xs">Detection Strategy</Label>
+                        <Label htmlFor="turn_stop_strategy" className="text-xs">{t("workflow.settings.general.detectionStrategy")}</Label>
                         <Select
                             value={turnStopStrategy}
                             onValueChange={(value: TurnStopStrategy) => setTurnStopStrategy(value)}
                         >
                             <SelectTrigger id="turn_stop_strategy">
-                                <SelectValue placeholder="Select strategy" />
+                                <SelectValue placeholder={t("workflow.settings.general.selectStrategy")} />
                             </SelectTrigger>
                             <SelectContent>
-                                <SelectItem value="transcription">Transcription-based</SelectItem>
-                                <SelectItem value="turn_analyzer">Smart Turn Analyzer</SelectItem>
+                                <SelectItem value="transcription">{t("workflow.settings.general.transcriptionBased")}</SelectItem>
+                                <SelectItem value="turn_analyzer">{t("workflow.settings.general.smartTurnAnalyzer")}</SelectItem>
                             </SelectContent>
                         </Select>
                         <p className="text-xs text-muted-foreground">
                             {turnStopStrategy === "transcription"
-                                ? "Best for short responses (1-2 word statements). Ends turn when transcription indicates completion."
-                                : "Best for longer responses with natural pauses. Uses ML model to detect end of turn."}
+                                ? t("workflow.settings.general.transcriptionHelp")
+                                : t("workflow.settings.general.turnAnalyzerHelp")}
                         </p>
                     </div>
                     {turnStopStrategy === "turn_analyzer" && (
                         <div className="space-y-2">
                             <Label htmlFor="smart_turn_stop_secs" className="text-xs">
-                                Incomplete Turn Timeout (seconds)
+                                {t("workflow.settings.general.incompleteTurnTimeout")}
                             </Label>
                             <Input
                                 id="smart_turn_stop_secs"
@@ -647,7 +655,7 @@ function GeneralSection({
                                 }}
                             />
                             <p className="text-xs text-muted-foreground">
-                                Max silence duration before ending an incomplete turn. Default: 2 seconds
+                                {t("workflow.settings.general.incompleteTurnTimeoutHelp")}
                             </p>
                         </div>
                     )}
@@ -658,19 +666,19 @@ function GeneralSection({
                 {/* Interruption */}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-sm font-medium">Interruption</h3>
+                        <h3 className="text-sm font-medium">{t("workflow.settings.general.interruption")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Configure when user speech should interrupt the agent while it is speaking.
+                            {t("workflow.settings.general.interruptionHelp")}
                         </p>
                     </div>
                     <div className="space-y-2">
-                        <Label htmlFor="turn_start_strategy" className="text-xs">Interruption Strategy</Label>
+                        <Label htmlFor="turn_start_strategy" className="text-xs">{t("workflow.settings.general.interruptionStrategy")}</Label>
                         <Select
                             value={turnStartStrategy}
                             onValueChange={(value: TurnStartStrategy) => setTurnStartStrategy(value)}
                         >
                             <SelectTrigger id="turn_start_strategy">
-                                <SelectValue placeholder="Select strategy" />
+                                <SelectValue placeholder={t("workflow.settings.general.selectStrategy")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {TURN_START_STRATEGY_OPTIONS.map((option) => (
@@ -687,7 +695,7 @@ function GeneralSection({
                     {turnStartStrategy === "min_words" && (
                         <div className="space-y-2">
                             <Label htmlFor="turn_start_min_words" className="text-xs">
-                                Minimum Words Before Interruption
+                                {t("workflow.settings.general.minWords")}
                             </Label>
                             <Input
                                 id="turn_start_min_words"
@@ -702,7 +710,7 @@ function GeneralSection({
                                 }}
                             />
                             <p className="text-xs text-muted-foreground">
-                                Number of transcribed words needed to interrupt while the bot is speaking. Default: {DEFAULT_TURN_START_MIN_WORDS}
+                                {t("workflow.settings.general.minWordsHelp", { count: DEFAULT_TURN_START_MIN_WORDS })}
                             </p>
                         </div>
                     )}
@@ -713,14 +721,14 @@ function GeneralSection({
                 {/* Transcript */}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-sm font-medium">Transcript</h3>
+                        <h3 className="text-sm font-medium">{t("workflow.settings.general.transcript")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Include start and stop timestamps for each speaker in the uploaded transcript.
+                            {t("workflow.settings.general.transcriptHelp")}
                         </p>
                     </div>
                     <div className="flex items-center justify-between">
                         <Label htmlFor="transcript-end-timestamps-enabled" className="text-sm">
-                            Enhanced Timestamped Transcript
+                            {t("workflow.settings.general.enhancedTimestamps")}
                         </Label>
                         <Switch
                             id="transcript-end-timestamps-enabled"
@@ -741,14 +749,14 @@ function GeneralSection({
                 {/* Context Compaction */}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-sm font-medium">Context Compaction</h3>
+                        <h3 className="text-sm font-medium">{t("workflow.settings.general.contextCompaction")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Automatically summarize conversation context when transitioning between nodes. Not applicable in Realtime mode - the speech-to-speech service manages its own conversation state and this setting is ignored.
+                            {t("workflow.settings.general.contextCompactionHelp")}
                         </p>
                     </div>
                     <div className="flex items-center justify-between">
                         <Label htmlFor="context-compaction-enabled" className="text-sm">
-                            Enable Context Compaction
+                            {t("workflow.settings.general.enableContextCompaction")}
                         </Label>
                         <Switch
                             id="context-compaction-enabled"
@@ -771,14 +779,14 @@ function GeneralSection({
                 {/* Call Management */}
                 <div className="space-y-4">
                     <div>
-                        <h3 className="text-sm font-medium">Call Management</h3>
+                        <h3 className="text-sm font-medium">{t("workflow.settings.general.callManagement")}</h3>
                         <p className="text-xs text-muted-foreground mt-0.5">
-                            Configure call duration limits and idle timeout settings.
+                            {t("workflow.settings.general.callManagementHelp")}
                         </p>
                     </div>
                     <div className="grid grid-cols-2 gap-4">
                         <div className="space-y-2">
-                            <Label htmlFor="max_call_duration" className="text-xs">Max Call Duration (seconds)</Label>
+                            <Label htmlFor="max_call_duration" className="text-xs">{t("workflow.settings.general.maxCallDuration")}</Label>
                             <Input
                                 id="max_call_duration"
                                 type="number"
@@ -789,11 +797,11 @@ function GeneralSection({
                                     if (!isNaN(value) && value > 0) setMaxCallDuration(value);
                                 }}
                             />
-                            <p className="text-xs text-muted-foreground">Default: 600 (10 minutes)</p>
+                            <p className="text-xs text-muted-foreground">{t("workflow.settings.general.maxCallDurationDefault")}</p>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="max_user_idle_timeout" className="text-xs">
-                                Max User Idle Timeout (seconds)
+                                {t("workflow.settings.general.maxIdleTimeout")}
                             </Label>
                             <Input
                                 id="max_user_idle_timeout"
@@ -805,7 +813,7 @@ function GeneralSection({
                                     if (!isNaN(value) && value > 0) setMaxUserIdleTimeout(value);
                                 }}
                             />
-                            <p className="text-xs text-muted-foreground">Default: 10 seconds</p>
+                            <p className="text-xs text-muted-foreground">{t("workflow.settings.general.maxIdleTimeoutDefault")}</p>
                         </div>
                     </div>
                 </div>
@@ -817,13 +825,13 @@ function GeneralSection({
                         {/* External PBX Field Updates */}
                         <div className="space-y-4">
                             <div>
-                                <h3 className="text-sm font-medium">External PBX Field Updates</h3>
+                                <h3 className="text-sm font-medium">{t("workflow.settings.general.externalPbx")}</h3>
                                 <p className="text-xs text-muted-foreground mt-0.5">
-                                    Optionally copy final gathered-context values into provider-native fields before transfer or hangup.
+                                    {t("workflow.settings.general.externalPbxHelp")}
                                 </p>
                             </div>
                             <div className="flex items-center justify-between">
-                                <Label className="text-sm">Field Mappings</Label>
+                                <Label className="text-sm">{t("workflow.settings.general.fieldMappings")}</Label>
                                 <Button
                                     type="button"
                                     variant="outline"
@@ -833,14 +841,14 @@ function GeneralSection({
                                         { context_path: "", destination_field: "" },
                                     ])}
                                 >
-                                    <Plus className="mr-1 h-4 w-4" /> Add mapping
+                                    <Plus className="mr-1 h-4 w-4" /> {t("workflow.settings.general.addMapping")}
                                 </Button>
                             </div>
                             <div className="space-y-2">
                                 {externalPbxFieldMappings.map((mapping, index) => (
                                     <div key={index} className="grid grid-cols-[1fr_1fr_auto] gap-2">
                                         <Input
-                                            aria-label={`Gathered context field ${index + 1}`}
+                                            aria-label={t("workflow.settings.general.contextFieldAria", { index: index + 1 })}
                                             value={mapping.context_path}
                                             onChange={(event) => setExternalPbxFieldMappings((current) =>
                                                 current.map((item, itemIndex) =>
@@ -852,7 +860,7 @@ function GeneralSection({
                                             placeholder="qualified"
                                         />
                                         <Input
-                                            aria-label={`External PBX destination field ${index + 1}`}
+                                            aria-label={t("workflow.settings.general.destinationFieldAria", { index: index + 1 })}
                                             value={mapping.destination_field}
                                             onChange={(event) => setExternalPbxFieldMappings((current) =>
                                                 current.map((item, itemIndex) =>
@@ -867,7 +875,7 @@ function GeneralSection({
                                             type="button"
                                             variant="ghost"
                                             size="icon"
-                                            aria-label={`Remove external PBX field mapping ${index + 1}`}
+                                            aria-label={t("workflow.settings.general.removeMappingAria", { index: index + 1 })}
                                             onClick={() => setExternalPbxFieldMappings((current) =>
                                                 current.filter((_, itemIndex) => itemIndex !== index)
                                             )}
@@ -878,42 +886,39 @@ function GeneralSection({
                                 ))}
                                 {externalPbxFieldMappings.length === 0 && (
                                     <p className="text-xs text-muted-foreground">
-                                        No external fields will be updated. Context names may be direct extracted-variable names or paths such as extracted_variables.qualified.
+                                        {t("workflow.settings.general.noExternalFields")}
                                     </p>
                                 )}
                                 {!externalPbxFieldMappingsValid && (
                                     <p className="text-xs text-destructive">
-                                        Each mapping needs a context field and a destination field containing only letters, numbers, and underscores.
+                                        {t("workflow.settings.general.mappingInvalid")}
                                     </p>
                                 )}
                             </div>
 
                             <div className="space-y-4 border-t pt-4">
                                 <div>
-                                    <h3 className="text-sm font-medium">Lead Fields To Capture</h3>
+                                    <h3 className="text-sm font-medium">{t("workflow.settings.general.leadFieldsTitle")}</h3>
                                     <p className="text-xs text-muted-foreground mt-0.5">
-                                        Extra lead fields to read from the inbound call, named without the header prefix
-                                        (<code>first_name</code> reads <code>X-VICIDIAL-first_name</code>). Captured values are
-                                        addressable in prompts as <code>{"{{initial_context.external_pbx_call.lead.<field>}}"}</code>.
-                                        Each field adds one request during call setup, so list only what the agent uses.
+                                        {t("workflow.settings.general.leadFieldsHelp", { example: "{{initial_context.external_pbx_call.lead.<field>}}" })}
                                     </p>
                                 </div>
                                 <div className="flex items-center justify-between">
-                                    <Label className="text-sm">Lead Fields</Label>
+                                    <Label className="text-sm">{t("workflow.settings.general.leadFields")}</Label>
                                     <Button
                                         type="button"
                                         variant="outline"
                                         size="sm"
                                         onClick={() => setExternalPbxLeadHeaders((current) => [...current, ""])}
                                     >
-                                        <Plus className="mr-1 h-4 w-4" /> Add field
+                                        <Plus className="mr-1 h-4 w-4" /> {t("workflow.settings.general.addField")}
                                     </Button>
                                 </div>
                                 <div className="space-y-2">
                                     {externalPbxLeadHeaders.map((field, index) => (
                                         <div key={index} className="grid grid-cols-[1fr_auto] gap-2">
                                             <Input
-                                                aria-label={`External PBX lead field ${index + 1}`}
+                                                aria-label={t("workflow.settings.general.leadFieldAria", { index: index + 1 })}
                                                 value={field}
                                                 onChange={(event) => setExternalPbxLeadHeaders((current) =>
                                                     current.map((item, itemIndex) =>
@@ -926,7 +931,7 @@ function GeneralSection({
                                                 type="button"
                                                 variant="ghost"
                                                 size="icon"
-                                                aria-label={`Remove external PBX lead field ${index + 1}`}
+                                                aria-label={t("workflow.settings.general.removeLeadFieldAria", { index: index + 1 })}
                                                 onClick={() => setExternalPbxLeadHeaders((current) =>
                                                     current.filter((_, itemIndex) => itemIndex !== index)
                                                 )}
@@ -937,12 +942,12 @@ function GeneralSection({
                                     ))}
                                     {externalPbxLeadHeaders.length === 0 && (
                                         <p className="text-xs text-muted-foreground">
-                                            Only the identity fields needed to transfer or hang up the call are captured.
+                                            {t("workflow.settings.general.noLeadFields")}
                                         </p>
                                     )}
                                     {!externalPbxLeadHeadersValid && (
                                         <p className="text-xs text-destructive">
-                                            Each lead field must start with a letter and contain only letters, numbers, and underscores.
+                                            {t("workflow.settings.general.leadFieldInvalid")}
                                         </p>
                                     )}
                                 </div>
@@ -952,7 +957,7 @@ function GeneralSection({
                 )}
             </CardContent>
             <CardFooter className="justify-end gap-3 border-t pt-6">
-                {isDirty && <span className="text-xs text-muted-foreground">Unsaved changes</span>}
+                {isDirty && <span className="text-xs text-muted-foreground">{t("workflow.settings.unsavedChanges")}</span>}
                 <Button
                     onClick={handleSave}
                     disabled={
@@ -962,7 +967,7 @@ function GeneralSection({
                         || (externalPbxIntegrationsEnabled && !externalPbxSettingsValid)
                     }
                 >
-                    {isSaving ? "Saving..." : "Save General Settings"}
+                    {isSaving ? t("common.saving") : t("workflow.settings.general.saveButton")}
                 </Button>
             </CardFooter>
         </Card>
@@ -980,6 +985,7 @@ function TemplateVariablesSection({
     templateContextVariables: Record<string, string>;
     onSave: (variables: Record<string, string>) => Promise<void>;
 }) {
+    const { t } = useTranslation();
     const [contextVars, setContextVars] = useState<Record<string, string>>(templateContextVariables);
     const [newKey, setNewKey] = useState("");
     const [newValue, setNewValue] = useState("");
@@ -1016,7 +1022,7 @@ function TemplateVariablesSection({
                 varsToSave = { ...varsToSave, [newKey]: newValue };
             }
             await onSave(varsToSave);
-            toast.success(`Template variables saved. ${PUBLISH_WORKFLOW_REMINDER}`);
+            toast.success(t("workflow.settings.variables.saved"));
         } catch (error) {
             console.error("Failed to save variables:", error);
         } finally {
@@ -1029,18 +1035,24 @@ function TemplateVariablesSection({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <Variable className="h-4 w-4" />
-                    Template Variables
+                    {t("workflow.settings.variables.title")}
                 </CardTitle>
                 <CardDescription>
-                    Variables available in workflow prompts via {`{{variable_name}}`} syntax for testing the workflow.{" "}
-                    <a href={SETTINGS_DOCUMENTATION_URLS.templateVariables} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">Learn more <ExternalLink className="h-3 w-3" /></a>
+                    <Trans
+                        i18nKey="workflow.settings.variables.description"
+                        components={[
+                            <a key="docs" href={SETTINGS_DOCUMENTATION_URLS.templateVariables} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline" />,
+                        ]}
+                        values={{ example: "{{variable_name}}" }}
+                    />{" "}
+                    <ExternalLink className="inline h-3 w-3" />
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 {/* Existing Variables */}
                 {Object.entries(contextVars).length > 0 && (
                     <div className="space-y-2">
-                        <Label className="text-sm font-medium">Current Variables</Label>
+                        <Label className="text-sm font-medium">{t("workflow.contextVariables.currentVariables")}</Label>
                         {Object.entries(contextVars).map(([key, value]) => (
                             <div key={key} className="flex items-center gap-2 rounded-md border p-2">
                                 <div className="flex-1 min-w-0">
@@ -1057,36 +1069,36 @@ function TemplateVariablesSection({
 
                 {/* Add New Variable */}
                 <div className="space-y-3">
-                    <Label className="text-sm font-medium">Add New Variable</Label>
+                    <Label className="text-sm font-medium">{t("workflow.contextVariables.addNewVariable")}</Label>
                     <div className="flex gap-2">
                         <div className="flex-1 space-y-1">
-                            <Label htmlFor="var-key" className="text-xs">Key</Label>
+                            <Label htmlFor="var-key" className="text-xs">{t("workflow.contextVariables.key")}</Label>
                             <Input
                                 id="var-key"
-                                placeholder="Enter variable key"
+                                placeholder={t("workflow.contextVariables.keyPlaceholder")}
                                 value={newKey}
                                 onChange={(e) => setNewKey(e.target.value)}
                             />
                         </div>
                         <div className="flex-1 space-y-1">
-                            <Label htmlFor="var-value" className="text-xs">Value</Label>
+                            <Label htmlFor="var-value" className="text-xs">{t("workflow.contextVariables.value")}</Label>
                             <Input
                                 id="var-value"
-                                placeholder="Enter variable value"
+                                placeholder={t("workflow.contextVariables.valuePlaceholder")}
                                 value={newValue}
                                 onChange={(e) => setNewValue(e.target.value)}
                             />
                         </div>
                     </div>
                     <Button size="sm" onClick={handleAdd} disabled={!newKey || !newValue}>
-                        Add Variable
+                        {t("workflow.contextVariables.addVariable")}
                     </Button>
                 </div>
             </CardContent>
             <CardFooter className="justify-end gap-3 border-t pt-6">
-                {isDirty && <span className="text-xs text-muted-foreground">Unsaved changes</span>}
+                {isDirty && <span className="text-xs text-muted-foreground">{t("workflow.settings.unsavedChanges")}</span>}
                 <Button onClick={handleSave} disabled={isSaving || !isDirty}>
-                    {isSaving ? "Saving..." : "Save Variables"}
+                    {isSaving ? t("common.saving") : t("workflow.settings.variables.saveButton")}
                 </Button>
             </CardFooter>
         </Card>
@@ -1104,6 +1116,7 @@ function DictionarySection({
     dictionary: string;
     onSave: (dictionary: string) => Promise<void>;
 }) {
+    const { t } = useTranslation();
     const [dictionaryValue, setDictionaryValue] = useState(dictionary);
     const [isSaving, setIsSaving] = useState(false);
 
@@ -1115,7 +1128,7 @@ function DictionarySection({
         setIsSaving(true);
         try {
             await onSave(dictionaryValue);
-            toast.success(`Dictionary saved. ${PUBLISH_WORKFLOW_REMINDER}`);
+            toast.success(t("workflow.settings.dictionary.saved"));
         } catch (error) {
             console.error("Failed to save dictionary:", error);
         } finally {
@@ -1128,16 +1141,15 @@ function DictionarySection({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <BookA className="h-4 w-4" />
-                    Dictionary
+                    {t("workflow.settings.dictionary.title")}
                 </CardTitle>
                 <CardDescription>
-                    Add words the agent should actively listen for &mdash; company jargon, names,
-                    industry terms. May incur extra cost depending on provider.
+                    {t("workflow.settings.dictionary.description")}
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <Textarea
-                    placeholder="Enter words separated by comma (e.g. billing department, tretinoin)"
+                    placeholder={t("workflow.settings.dictionary.placeholder")}
                     value={dictionaryValue}
                     onChange={(e) => setDictionaryValue(e.target.value)}
                     rows={4}
@@ -1145,9 +1157,9 @@ function DictionarySection({
                 />
             </CardContent>
             <CardFooter className="justify-end gap-3 border-t pt-6">
-                {isDirty && <span className="text-xs text-muted-foreground">Unsaved changes</span>}
+                {isDirty && <span className="text-xs text-muted-foreground">{t("workflow.settings.unsavedChanges")}</span>}
                 <Button onClick={handleSave} disabled={isSaving || !isDirty}>
-                    {isSaving ? "Saving..." : "Save Dictionary"}
+                    {isSaving ? t("common.saving") : t("workflow.settings.dictionary.saveButton")}
                 </Button>
             </CardFooter>
         </Card>
@@ -1169,6 +1181,7 @@ function VoicemailSection({
     workflowName: string;
     onSave: (configurations: WorkflowConfigurations, workflowName: string) => Promise<void>;
 }) {
+    const { t } = useTranslation();
     const getConfig = (): VoicemailDetectionConfiguration => ({
         ...DEFAULT_VOICEMAIL_DETECTION_CONFIGURATION,
         ...workflowConfigurations.voicemail_detection,
@@ -1238,7 +1251,7 @@ function VoicemailSection({
             );
             setSystemPrompt(voicemailConfig.system_prompt || defaultAnswerClassifierPrompt);
             setPromptEdited(false);
-            toast.success(`Voicemail settings saved. ${PUBLISH_WORKFLOW_REMINDER}`);
+            toast.success(t("workflow.settings.voicemail.saved"));
         } catch (error) {
             console.error("Failed to save voicemail settings:", error);
         } finally {
@@ -1251,26 +1264,26 @@ function VoicemailSection({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <PhoneOff className="h-4 w-4" />
-                    Voicemail & Screening
+                    {t("workflow.settings.voicemail.title")}
                 </CardTitle>
                 <CardDescription>
-                    Choose how the agent handles voicemail and call screening. Applies to outbound calls with separate speech and language models.
+                    {t("workflow.settings.voicemail.description")}
                     <span className="mt-2 block">
-                        These settings do not apply to realtime speech-to-speech models. Support for realtime models is coming soon.
+                        {t("workflow.settings.voicemail.descriptionRealtime")}
                     </span>
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 <div className="flex items-center space-x-2 rounded-md border bg-muted/20 p-2">
                     <Switch id="voicemail-enabled" checked={enabled} onCheckedChange={setEnabled} />
-                    <Label htmlFor="voicemail-enabled">Enable voicemail and screening handling</Label>
+                    <Label htmlFor="voicemail-enabled">{t("workflow.settings.voicemail.enableLabel")}</Label>
                 </div>
 
                 {enabled && (
                     <>
                         <AnswerSupervisorFields value={answerSettings} onChange={setAnswerSettings} />
                         <details className="rounded-md border p-3">
-                            <summary className="cursor-pointer text-sm font-medium">Classification model</summary>
+                            <summary className="cursor-pointer text-sm font-medium">{t("workflow.settings.voicemail.classificationModel")}</summary>
                             <div className="mt-3 space-y-3">
                                 <div className="flex items-center space-x-2 rounded-md border bg-muted/20 p-2">
                                     <Switch
@@ -1278,9 +1291,9 @@ function VoicemailSection({
                                         checked={useWorkflowLlm}
                                         onCheckedChange={setUseWorkflowLlm}
                                     />
-                                    <Label htmlFor="voicemail-use-workflow-llm">Use Workflow LLM</Label>
+                                    <Label htmlFor="voicemail-use-workflow-llm">{t("workflow.settings.voicemail.useWorkflowLlm")}</Label>
                                     <Label className="ml-2 text-xs text-muted-foreground">
-                                        Use the LLM configured in your account settings.
+                                        {t("workflow.settings.voicemail.useWorkflowLlmHelp")}
                                     </Label>
                                 </div>
 
@@ -1296,30 +1309,21 @@ function VoicemailSection({
                                 )}
 
                                 <div className="space-y-2">
-                                    <Label htmlFor="voicemail-system-prompt">Classifier instructions</Label>
+                                    <Label htmlFor="voicemail-system-prompt">{t("workflow.settings.voicemail.classifierInstructions")}</Label>
                                     <Textarea
                                         id="voicemail-system-prompt"
                                         disabled={isSaving}
                                         rows={6}
                                         maxLength={8000}
                                         value={systemPrompt}
-                                        placeholder="Leave blank to use the built-in instructions."
+                                        placeholder={t("workflow.settings.voicemail.classifierPlaceholder")}
                                         onChange={e => {
                                             setPromptEdited(true);
                                             setSystemPrompt(e.target.value);
                                         }}
                                     />
                                     <p className="text-xs text-muted-foreground">
-                                        These instructions decide whether the answering party is a person, a
-                                        voicemail, a screening service or an IVR menu. Edit them when your
-                                        calls are not in English: describe the greetings and carrier
-                                        announcements your callers actually hear. Leave them unchanged to
-                                        keep following the built-in instructions as they improve; clear the
-                                        box to go back to them. The reply must be a single label —
-                                        CONVERSATION, VOICEMAIL, NO_MESSAGE, SCREENER, SCREENING_WAIT, IVR
-                                        or UNKNOWN. Anything else is read as UNKNOWN, which lets the call
-                                        through to the agent, so instructions that only answer CONVERSATION
-                                        or VOICEMAIL will silently disable screening and IVR handling.
+                                        {t("workflow.settings.voicemail.classifierHelp")}
                                     </p>
                                 </div>
                             </div>
@@ -1328,9 +1332,9 @@ function VoicemailSection({
                 )}
             </CardContent>
             <CardFooter className="justify-end gap-3 border-t pt-6">
-                {isDirty && <span className="text-xs text-muted-foreground">Unsaved changes</span>}
+                {isDirty && <span className="text-xs text-muted-foreground">{t("workflow.settings.unsavedChanges")}</span>}
                 <Button onClick={handleSave} disabled={isSaving || !isDirty || (enabled && isVoicemailMessageMissing(answerSettings))}>
-                    {isSaving ? "Saving..." : "Save Voicemail Settings"}
+                    {isSaving ? t("common.saving") : t("workflow.settings.voicemail.saveButton")}
                 </Button>
             </CardFooter>
         </Card>
@@ -1342,12 +1346,13 @@ function VoicemailSection({
 // ---------------------------------------------------------------------------
 
 function AgentUuidSection({ workflowUuid }: { workflowUuid: string }) {
+    const { t } = useTranslation();
     const handleCopy = async () => {
         try {
             await copyTextToClipboard(workflowUuid);
-            toast.success("Agent UUID copied");
+            toast.success(t("workflow.settings.identity.copied"));
         } catch {
-            toast.error("Failed to copy Agent UUID");
+            toast.error(t("workflow.settings.identity.copyFailed"));
         }
     };
 
@@ -1356,18 +1361,17 @@ function AgentUuidSection({ workflowUuid }: { workflowUuid: string }) {
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <Fingerprint className="h-4 w-4" />
-                    Agent UUID
+                    {t("workflow.settings.identity.title")}
                 </CardTitle>
                 <CardDescription>
-                    Stable identifier for this agent. Used in agent-stream URLs and
-                    other integrations where a numeric workflow ID isn&apos;t portable.
+                    {t("workflow.settings.identity.description")}
                 </CardDescription>
             </CardHeader>
             <CardContent>
                 <button
                     type="button"
                     onClick={handleCopy}
-                    title="Click to copy"
+                    title={t("workflow.settings.identity.clickToCopy")}
                     className="group flex w-full items-center gap-2 rounded-md border bg-muted/20 p-2 text-left font-mono text-xs transition-colors hover:bg-muted/40"
                 >
                     <code className="flex-1 truncate">{workflowUuid}</code>
@@ -1377,7 +1381,7 @@ function AgentUuidSection({ workflowUuid }: { workflowUuid: string }) {
             <CardFooter className="border-t pt-6">
                 <Button variant="outline" size="sm" onClick={handleCopy}>
                     <Clipboard className="h-3.5 w-3.5 mr-2" />
-                    Copy UUID
+                    {t("workflow.settings.identity.copyUuid")}
                 </Button>
             </CardFooter>
         </Card>
@@ -1414,6 +1418,7 @@ function WorkflowModelOverridesSection({
     modelConfigurationLoading: boolean;
     modelConfigurationError: string | null;
 }) {
+    const { t } = useTranslation();
     const savedV2Override = workflowConfigurations.model_configuration_v2_override;
     const hasSavedModelOverride = Boolean(savedV2Override || workflowConfigurations.model_overrides);
     const [overrideEnabled, setOverrideEnabled] = useState(Boolean(savedV2Override));
@@ -1429,7 +1434,7 @@ function WorkflowModelOverridesSection({
         const nextConfigurations = withoutModelConfigurationOverrides(workflowConfigurations);
         nextConfigurations.model_configuration_v2_override = configuration;
         await onSave(nextConfigurations, workflowName);
-        toast.success(`Model override saved. ${PUBLISH_WORKFLOW_REMINDER}`);
+        toast.success(t("workflow.settings.models.savedOverride"));
     };
 
     const removeV2Override = async () => {
@@ -1437,7 +1442,7 @@ function WorkflowModelOverridesSection({
         try {
             await onSave(withoutModelConfigurationOverrides(workflowConfigurations), workflowName);
             setOverrideEnabled(false);
-            toast.success(`Organization model configuration saved. ${PUBLISH_WORKFLOW_REMINDER}`);
+            toast.success(t("workflow.settings.models.savedOrg"));
         } finally {
             setIsRemovingOverride(false);
         }
@@ -1448,18 +1453,23 @@ function WorkflowModelOverridesSection({
             <CardHeader>
                 <CardTitle className="flex items-center gap-2 text-base">
                     <Brain className="h-4 w-4" />
-                    Model Overrides
+                    {t("workflow.settings.models.title")}
                 </CardTitle>
                 <CardDescription>
-                    Override the full organization model configuration for this workflow.{" "}
-                    <a href={SETTINGS_DOCUMENTATION_URLS.modelOverrides} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">Learn more <ExternalLink className="h-3 w-3" /></a>
+                    <Trans
+                        i18nKey="workflow.settings.models.description"
+                        components={[
+                            <a key="docs" href={SETTINGS_DOCUMENTATION_URLS.modelOverrides} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline" />,
+                        ]}
+                    />{" "}
+                    <ExternalLink className="inline h-3 w-3" />
                 </CardDescription>
             </CardHeader>
             <CardContent className="space-y-4">
                 {modelConfigurationLoading && (
                     <div className="flex items-center gap-2 rounded-md border p-4 text-sm text-muted-foreground">
                         <Loader2 className="h-4 w-4 animate-spin" />
-                        Loading model configuration
+                        {t("workflow.settings.models.loading")}
                     </div>
                 )}
 
@@ -1472,10 +1482,10 @@ function WorkflowModelOverridesSection({
                 {!modelConfigurationLoading && !modelConfigurationError && !hasOrgConfiguration && (
                     <div className="flex flex-col gap-3 rounded-md border bg-muted/30 p-4 sm:flex-row sm:items-center sm:justify-between">
                         <p className="text-sm text-muted-foreground">
-                            Set up your organization model configuration before overriding it per workflow.
+                            {t("workflow.settings.models.setupFirst")}
                         </p>
                         <Button type="button" variant="outline" size="sm" asChild>
-                            <Link href="/model-configurations">Configure Models</Link>
+                            <Link href="/model-configurations">{t("workflow.settings.models.configureModels")}</Link>
                         </Button>
                     </div>
                 )}
@@ -1485,12 +1495,12 @@ function WorkflowModelOverridesSection({
                         <div className="flex items-center justify-between rounded-md border p-4">
                             <div className="space-y-0.5">
                                 <Label htmlFor="workflow-model-v2-override" className="text-sm font-medium">
-                                    Override for this workflow
+                                    {t("workflow.settings.models.overrideToggle")}
                                 </Label>
                                 <p className="text-xs text-muted-foreground">
                                     {overrideEnabled
-                                        ? "This workflow uses its own complete model configuration."
-                                        : "This workflow uses the organization model configuration."}
+                                        ? t("workflow.settings.models.overrideOn")
+                                        : t("workflow.settings.models.overrideOff")}
                                 </p>
                             </div>
                             <Switch
@@ -1513,13 +1523,13 @@ function WorkflowModelOverridesSection({
                                         : organizationModelConfiguration.effective_configuration
                                 }
                                 pricing={modelConfigurationPricing}
-                                submitLabel="Save Model Override"
+                                submitLabel={t("workflow.settings.models.saveOverride")}
                                 onSave={saveV2Override}
                             />
                         ) : (
                             <div className="rounded-md border bg-muted/20 p-4">
                                 <p className="text-sm text-muted-foreground">
-                                    Using organization model configuration.
+                                    {t("workflow.settings.models.usingOrg")}
                                 </p>
                                 {hasSavedModelOverride && (
                                     <Button
@@ -1528,7 +1538,7 @@ function WorkflowModelOverridesSection({
                                         onClick={removeV2Override}
                                         disabled={isRemovingOverride}
                                     >
-                                        {isRemovingOverride ? "Saving..." : "Save Organization Configuration"}
+                                        {isRemovingOverride ? t("common.saving") : t("workflow.settings.models.saveOrgConfiguration")}
                                     </Button>
                                 )}
                             </div>
@@ -1551,6 +1561,7 @@ function WorkflowModelOverridesSection({
 // ---------------------------------------------------------------------------
 
 export default function WorkflowSettingsPage() {
+    const { t } = useTranslation();
     const params = useParams();
     const { user, redirectToLogin, loading: authLoading } = useAuth();
     const [workflow, setWorkflow] = useState<WorkflowResponse | undefined>(undefined);
@@ -1572,21 +1583,21 @@ export default function WorkflowSettingsPage() {
                 });
                 setWorkflow(response.data);
             } catch (err) {
-                setError("Failed to fetch workflow");
+                setError(t("workflow.settings.loadFailed"));
                 logger.error(`Error fetching workflow settings: ${err}`);
             } finally {
                 setLoading(false);
             }
         };
         if (user) fetchWorkflow();
-    }, [params.workflowId, user]);
+    }, [params.workflowId, user, t]);
 
     if (loading || authLoading) return <SpinLoader />;
 
     if (error || !workflow) {
         return (
             <div className="flex min-h-screen items-center justify-center">
-                <div className="text-lg text-destructive">{error || "Workflow not found"}</div>
+                <div className="text-lg text-destructive">{error || t("workflow.settings.notFound")}</div>
             </div>
         );
     }
@@ -1622,6 +1633,7 @@ function WorkflowSettingsInner({
     workflow: WorkflowResponse;
     user: { id: string; email?: string };
 }) {
+    const { t } = useTranslation();
     const router = useRouter();
     const { dirtySections, confirmNavigate } = useUnsavedChangesContext();
 
@@ -1697,12 +1709,12 @@ function WorkflowSettingsInner({
             ]);
 
             if (defaultsResult.error) {
-                setModelConfigurationError(detailFromError(defaultsResult.error, "Failed to load model configuration defaults"));
+                setModelConfigurationError(detailFromError(defaultsResult.error, t("workflow.settings.models.loadDefaultsFailed")));
                 setModelConfigurationLoading(false);
                 return;
             }
             if (configurationResult.error) {
-                setModelConfigurationError(detailFromError(configurationResult.error, "Failed to load model configuration"));
+                setModelConfigurationError(detailFromError(configurationResult.error, t("workflow.settings.models.loadFailed")));
                 setModelConfigurationLoading(false);
                 return;
             }
@@ -1714,7 +1726,7 @@ function WorkflowSettingsInner({
         };
 
         loadModelConfiguration();
-    }, []);
+    }, [t]);
 
     // Intersection observer for active sidebar link
     useEffect(() => {
@@ -1749,7 +1761,7 @@ function WorkflowSettingsInner({
                     <ArrowLeft className="h-4 w-4" />
                 </Button>
                 <div>
-                    <p className="text-xs text-muted-foreground">Workflow Settings</p>
+                    <p className="text-xs text-muted-foreground">{t("workflow.settings.pageTitle")}</p>
                     <h1 className="text-sm font-semibold">{workflowName || workflow.name}</h1>
                 </div>
             </header>
@@ -1802,18 +1814,23 @@ function WorkflowSettingsInner({
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2 text-base">
                                         <Mic className="h-4 w-4" />
-                                        Recordings
+                                        {t("workflow.settings.recordingsCard.title")}
                                     </CardTitle>
                                     <CardDescription>
-                                        Recordings are now managed at the organization level and shared across all agents.
-                                        Use <code className="rounded bg-muted px-1 text-xs">@</code> in prompt fields to insert them.{" "}
-                                        <a href={SETTINGS_DOCUMENTATION_URLS.recordings} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">Learn more <ExternalLink className="h-3 w-3" /></a>
+                                        <Trans
+                                            i18nKey="workflow.settings.recordingsCard.description"
+                                            components={[
+                                                <code key="mention" className="rounded bg-muted px-1 text-xs" />,
+                                                <a key="docs" href={SETTINGS_DOCUMENTATION_URLS.recordings} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline" />,
+                                            ]}
+                                        />{" "}
+                                        <ExternalLink className="inline h-3 w-3" />
                                     </CardDescription>
                                 </CardHeader>
                                 <CardFooter className="border-t pt-6">
                                     <Button variant="outline" asChild>
                                         <Link href="/recordings">
-                                            Go to Recordings
+                                            {t("workflow.settings.recordingsCard.goToRecordings")}
                                             <ExternalLink className="ml-2 h-4 w-4" />
                                         </Link>
                                     </Button>
@@ -1825,16 +1842,21 @@ function WorkflowSettingsInner({
                                 <CardHeader>
                                     <CardTitle className="flex items-center gap-2 text-base">
                                         <Rocket className="h-4 w-4" />
-                                        Add to Website
+                                        {t("workflow.settings.deployment.title")}
                                     </CardTitle>
                                     <CardDescription>
-                                        Configure a widget to add this voice agent to your website.{" "}
-                                        <a href={SETTINGS_DOCUMENTATION_URLS.deployment} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">Learn more <ExternalLink className="h-3 w-3" /></a>
+                                        <Trans
+                                            i18nKey="workflow.settings.deployment.description"
+                                            components={[
+                                                <a key="docs" href={SETTINGS_DOCUMENTATION_URLS.deployment} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline" />,
+                                            ]}
+                                        />{" "}
+                                        <ExternalLink className="inline h-3 w-3" />
                                     </CardDescription>
                                 </CardHeader>
                                 <CardFooter className="border-t pt-6">
                                     <Button variant="outline" onClick={() => setIsEmbedDialogOpen(true)}>
-                                        Configure Widget
+                                        {t("workflow.settings.deployment.configureWidget")}
                                     </Button>
                                 </CardFooter>
                             </Card>
@@ -1854,7 +1876,7 @@ function WorkflowSettingsInner({
                 <nav className="hidden w-44 shrink-0 lg:block">
                     <div className="sticky top-20 space-y-1">
                         <p className="mb-2 text-xs font-medium uppercase tracking-wider text-muted-foreground">
-                            On this page
+                            {t("workflow.settings.onThisPage")}
                         </p>
                         {NAV_ITEMS.map((item) => (
                             <a
@@ -1866,7 +1888,7 @@ function WorkflowSettingsInner({
                                         : "text-muted-foreground"
                                 }`}
                             >
-                                {item.label}
+                                {t(`workflow.settings.nav.${item.labelKey}`)}
                                 {dirtySections.has(item.id) && (
                                     <span className="h-1.5 w-1.5 rounded-full bg-orange-500" />
                                 )}

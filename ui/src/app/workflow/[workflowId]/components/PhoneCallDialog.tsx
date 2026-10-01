@@ -5,6 +5,7 @@ import 'react-international-phone/style.css';
 import { Loader2 } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 import { PhoneInput } from 'react-international-phone';
 
 import {
@@ -40,6 +41,10 @@ import {
     SelectValue,
 } from "@/components/ui/select";
 import { useUserConfig } from "@/context/UserConfigContext";
+import {
+    telephonyBlockedReason,
+    telephonyDisplayName,
+} from "@/i18n/telephonyServerText";
 import { detailFromError } from "@/lib/apiError";
 
 interface PhoneCallDialogProps {
@@ -53,19 +58,13 @@ interface PhoneCallDialogProps {
 const isCallable = (config: TelephonyConfigurationListItem) =>
     config.is_ready_for_outbound !== false && !config.inactive;
 
-/** "Twilio, Plivo and Telnyx" — names come from the registry, never hardcoded. */
-const joinNames = (names: string[]) => {
-    if (names.length === 0) return "a telephony provider";
-    if (names.length === 1) return names[0];
-    return `${names.slice(0, -1).join(", ")} or ${names[names.length - 1]}`;
-};
-
 export const PhoneCallDialog = ({
     open,
     onOpenChange,
     workflowId,
     user,
 }: PhoneCallDialogProps) => {
+    const { t, i18n } = useTranslation();
     const router = useRouter();
     const { refreshConfig } = useUserConfig();
     const [preferences, setPreferences] = useState<OrganizationPreferences>({});
@@ -83,16 +82,24 @@ export const PhoneCallDialog = ({
     const [fromPhoneNumbers, setFromPhoneNumbers] = useState<PhoneNumberResponse[]>([]);
     const [selectedFromPhoneNumberId, setSelectedFromPhoneNumberId] = useState<string>("");
     const [loadingPhoneNumbers, setLoadingPhoneNumbers] = useState(false);
-    const [apiProviderNames, setApiProviderNames] = useState<string[]>([]);
+    const [apiProviders, setApiProviders] = useState<
+        Array<{ provider: string; display_name: string }>
+    >([]);
+
+    // "Twilio, Plivo or Telnyx" — names come from the registry, never hardcoded.
+    const joinNames = (names: string[]) =>
+        names.length === 0
+            ? t("workflow.phoneCall.defaultProviderName")
+            : new Intl.ListFormat(i18n.language, { type: "disjunction" }).format(names);
 
     const fetchPreferences = useCallback(async () => {
         const result =
             await getPreferencesApiV1OrganizationsPreferencesGet();
         if (result.error) {
-            throw new Error(detailFromError(result.error, "Failed to load phone preferences"));
+            throw new Error(detailFromError(result.error, t("workflow.phoneCall.loadPreferencesFailed")));
         }
         return result.data || {};
-    }, []);
+    }, [t]);
 
     const applyPreferences = useCallback((nextPreferences: OrganizationPreferences) => {
         const saved = nextPreferences.test_phone_number || "";
@@ -161,7 +168,7 @@ export const PhoneCallDialog = ({
                 if (cancelled) return;
                 applyPreferences({});
                 setPreferencesLoaded(false);
-                setCallError(err instanceof Error ? err.message : "Failed to load phone preferences");
+                setCallError(err instanceof Error ? err.message : t("workflow.phoneCall.loadPreferencesFailed"));
             }
         };
 
@@ -169,7 +176,7 @@ export const PhoneCallDialog = ({
         return () => {
             cancelled = true;
         };
-    }, [applyPreferences, fetchPreferences, open]);
+    }, [applyPreferences, fetchPreferences, open, t]);
 
     // Reset state when dialog closes
     useEffect(() => {
@@ -270,10 +277,10 @@ export const PhoneCallDialog = ({
             });
 
         if (result.error) {
-            throw new Error(detailFromError(result.error, "Failed to save phone preferences"));
+            throw new Error(detailFromError(result.error, t("workflow.phoneCall.savePreferencesFailed")));
         }
         if (!result.data) {
-            throw new Error("Failed to save phone preferences");
+            throw new Error(t("workflow.phoneCall.savePreferencesFailed"));
         }
 
         setPreferences(result.data);
@@ -304,7 +311,7 @@ export const PhoneCallDialog = ({
             });
 
             if (response.error) {
-                let errMsg = "Failed to initiate call";
+                let errMsg = t("workflow.phoneCall.initiateFailed");
                 if (typeof response.error === "string") {
                     errMsg = response.error;
                 } else if (response.error && typeof response.error === "object") {
@@ -312,11 +319,11 @@ export const PhoneCallDialog = ({
                 }
                 setCallError(errMsg);
             } else {
-                const msg = response.data && (response.data as unknown as { message: string }).message || "Call initiated successfully!";
+                const msg = response.data && (response.data as unknown as { message: string }).message || t("workflow.phoneCall.callInitiated");
                 setCallSuccessMsg(typeof msg === "string" ? msg : JSON.stringify(msg));
             }
         } catch (err: unknown) {
-            setCallError(err instanceof Error ? err.message : "Failed to initiate call");
+            setCallError(err instanceof Error ? err.message : t("workflow.phoneCall.initiateFailed"));
         } finally {
             setCallLoading(false);
         }
@@ -333,10 +340,13 @@ export const PhoneCallDialog = ({
             const response =
                 await getTelephonyProvidersMetadataApiV1OrganizationsTelephonyProvidersMetadataGet({});
             if (cancelled) return;
-            setApiProviderNames(
+            setApiProviders(
                 (response.data?.providers ?? [])
                     .filter((provider) => provider.connectivity !== "sip")
-                    .map((provider) => provider.display_name),
+                    .map((provider) => ({
+                        provider: provider.provider,
+                        display_name: provider.display_name,
+                    })),
             );
         })();
         return () => {
@@ -348,7 +358,7 @@ export const PhoneCallDialog = ({
     const renderLoading = () => (
         <>
             <DialogHeader>
-                <DialogTitle>Phone Call</DialogTitle>
+                <DialogTitle>{t("workflow.phoneCall.title")}</DialogTitle>
             </DialogHeader>
             <div className="flex items-center justify-center py-8">
                 <Loader2 className="h-6 w-6 animate-spin text-muted-foreground" />
@@ -369,17 +379,21 @@ export const PhoneCallDialog = ({
         const sipConfig = telephonyConfigs.find(
             (config) => config.connectivity === "sip" && !config.inactive,
         );
-        const blockedReason = telephonyConfigs.find(
+        const blockedConfig = telephonyConfigs.find(
             (config) => !config.inactive && config.outbound_blocked_reason,
-        )?.outbound_blocked_reason;
+        );
+        const blockedReason = telephonyBlockedReason(
+            t,
+            blockedConfig?.outbound_blocked_reason,
+            blockedConfig?.provider,
+        );
 
         return (
             <>
                 <DialogHeader>
-                    <DialogTitle>Connect phone service</DialogTitle>
+                    <DialogTitle>{t("workflow.phoneCall.connectTitle")}</DialogTitle>
                     <DialogDescription>
-                        VoiceWorker doesn&apos;t sell phone numbers or minutes. Choose how
-                        this agent should place and receive calls.
+                        {t("workflow.phoneCall.connectDescription")}
                     </DialogDescription>
                 </DialogHeader>
 
@@ -388,35 +402,35 @@ export const PhoneCallDialog = ({
                         <div className="space-y-1">
                             <div className="flex items-center gap-2">
                                 <h3 className="text-sm font-medium">
-                                    Use a telephony provider
+                                    {t("workflow.phoneCall.useProvider")}
                                 </h3>
                                 <span className="rounded-full bg-teal-600/10 px-2 py-0.5 text-[10px] font-medium uppercase tracking-wide text-teal-700 dark:text-teal-400">
-                                    Recommended
+                                    {t("workflow.phoneCall.recommended")}
                                 </span>
                             </div>
                             <p className="text-sm text-muted-foreground">
-                                Open an account with {joinNames(apiProviderNames)}, paste
-                                the credentials here, and call using their numbers.
-                                Quickest way to get started.
+                                {t("workflow.phoneCall.providerBody", { providers: joinNames(apiProviders.map((p) => telephonyDisplayName(t, p.provider, p.display_name))) })}
                             </p>
                         </div>
                         <Button
                             size="sm"
                             onClick={() => goToConfiguration({ add: true })}
                         >
-                            Add provider
+                            {t("workflow.phoneCall.addProvider")}
                         </Button>
                     </div>
 
                     <div className="rounded-lg border p-4 space-y-3">
                         <div className="space-y-1">
-                            <h3 className="text-sm font-medium">Bring your own SIP</h3>
+                            <h3 className="text-sm font-medium">{t("workflow.phoneCall.byoSip")}</h3>
                             <p className="text-sm text-muted-foreground">
-                                Already have a SIP trunk or a PBX? Point it at VoiceWorker and
-                                keep your existing carrier and numbers.
-                                {sipConfig
-                                    ? ` “${sipConfig.name}” is provisioned and waiting for your carrier details.`
-                                    : ""}
+                                {t("workflow.phoneCall.byoSipBody")}
+                                {sipConfig && (
+                                    <>
+                                        {" "}
+                                        {t("workflow.phoneCall.sipProvisioned", { name: sipConfig.name })}
+                                    </>
+                                )}
                             </p>
                             {sipConfig && blockedReason && (
                                 <p className="text-sm text-amber-600 dark:text-amber-500">
@@ -433,14 +447,14 @@ export const PhoneCallDialog = ({
                                 )
                             }
                         >
-                            {sipConfig ? "Set up SIP" : "Add SIP connection"}
+                            {sipConfig ? t("workflow.phoneCall.setupSip") : t("workflow.phoneCall.addSipConnection")}
                         </Button>
                     </div>
                 </div>
 
                 <DialogFooter>
                     <Button variant="ghost" onClick={() => onOpenChange(false)}>
-                        Do it Later
+                        {t("workflow.phoneCall.doItLater")}
                     </Button>
                 </DialogFooter>
             </>
@@ -451,34 +465,43 @@ export const PhoneCallDialog = ({
     const renderPhoneCallForm = () => (
         <>
             <DialogHeader>
-                <DialogTitle>Phone Call</DialogTitle>
+                <DialogTitle>{t("workflow.phoneCall.title")}</DialogTitle>
                 <DialogDescription>
-                    Enter the phone number or SIP endpoint to call. The number will be saved automatically.
+                    {t("workflow.phoneCall.formDescription")}
                 </DialogDescription>
             </DialogHeader>
             {telephonyConfigs.length > 0 && (
                 <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="telephony-config">Telephony configuration</Label>
+                    <Label htmlFor="telephony-config">{t("workflow.phoneCall.configLabel")}</Label>
                     <Select value={selectedConfigId} onValueChange={setSelectedConfigId}>
                         <SelectTrigger id="telephony-config" className="w-full">
-                            <SelectValue placeholder="Select a configuration" />
+                            <SelectValue placeholder={t("workflow.phoneCall.configPlaceholder")} />
                         </SelectTrigger>
                         <SelectContent>
-                            {telephonyConfigs.map((config) => (
-                                <SelectItem key={config.id} value={String(config.id)}>
-                                    {config.name} ({config.provider})
-                                    {config.is_default_outbound ? " - default" : ""}
-                                    {!isCallable(config) ? " - setup incomplete" : ""}
-                                </SelectItem>
-                            ))}
+                            {telephonyConfigs.map((config) => {
+                                const name = `${config.name} (${config.provider})`;
+                                const isDefault = Boolean(config.is_default_outbound);
+                                const isIncomplete = !isCallable(config);
+                                return (
+                                    <SelectItem key={config.id} value={String(config.id)}>
+                                        {isDefault && isIncomplete
+                                            ? t("workflow.phoneCall.configItemDefaultIncomplete", { name })
+                                            : isDefault
+                                                ? t("workflow.phoneCall.configItemDefault", { name })
+                                                : isIncomplete
+                                                    ? t("workflow.phoneCall.configItemIncomplete", { name })
+                                                    : name}
+                                    </SelectItem>
+                                );
+                            })}
                         </SelectContent>
                     </Select>
                     {selectedConfigBlocked && (
                         <p className="text-xs text-amber-600 dark:text-amber-500">
                             {selectedConfig?.inactive
-                                ? "This configuration is disabled after repeated connection failures."
-                                : selectedConfig?.outbound_blocked_reason ??
-                                  "This configuration is not ready for outbound calls."}{" "}
+                                ? t("workflow.phoneCall.blockedDisabled")
+                                : telephonyBlockedReason(t, selectedConfig?.outbound_blocked_reason, selectedConfig?.provider) ??
+                                  t("workflow.phoneCall.blockedNotReady")}{" "}
                             <button
                                 type="button"
                                 className="underline"
@@ -486,7 +509,7 @@ export const PhoneCallDialog = ({
                                     goToConfiguration({ configId: selectedConfig?.id })
                                 }
                             >
-                                {selectedConfig?.inactive ? "Open configuration" : "Finish setup"}
+                                {selectedConfig?.inactive ? t("workflow.phoneCall.openConfiguration") : t("workflow.phoneCall.finishSetup")}
                             </button>
                         </p>
                     )}
@@ -494,11 +517,11 @@ export const PhoneCallDialog = ({
             )}
             {selectedConfigId && (
                 <div className="flex flex-col gap-1.5">
-                    <Label htmlFor="from-phone-number">Caller ID (from)</Label>
+                    <Label htmlFor="from-phone-number">{t("workflow.phoneCall.callerId")}</Label>
                     {loadingPhoneNumbers ? (
                         <div className="flex items-center text-sm text-muted-foreground">
                             <Loader2 className="h-4 w-4 animate-spin mr-2" />
-                            Loading phone numbers...
+                            {t("workflow.phoneCall.loadingNumbers")}
                         </div>
                     ) : fromPhoneNumbers.length > 0 ? (
                         <Select
@@ -506,13 +529,18 @@ export const PhoneCallDialog = ({
                             onValueChange={setSelectedFromPhoneNumberId}
                         >
                             <SelectTrigger id="from-phone-number" className="w-full">
-                                <SelectValue placeholder="Select a phone number" />
+                                <SelectValue placeholder={t("workflow.phoneCall.numberPlaceholder")} />
                             </SelectTrigger>
                             <SelectContent>
                                 {fromPhoneNumbers.map((phone) => (
                                     <SelectItem key={phone.id} value={String(phone.id)}>
-                                        {phone.label ? `${phone.label} - ${phone.address}` : phone.address}
-                                        {phone.is_default_caller_id ? " - default" : ""}
+                                        {phone.label && phone.is_default_caller_id
+                                            ? t("workflow.phoneCall.phoneItemLabeledDefault", { label: phone.label, address: phone.address })
+                                            : phone.label
+                                                ? t("workflow.phoneCall.phoneItemLabeled", { label: phone.label, address: phone.address })
+                                                : phone.is_default_caller_id
+                                                    ? t("workflow.phoneCall.phoneItemDefault", { address: phone.address })
+                                                    : phone.address}
                                     </SelectItem>
                                 ))}
                             </SelectContent>
@@ -521,11 +549,11 @@ export const PhoneCallDialog = ({
                         // Never claim a fallback here: providers that require a
                         // caller ID reject the call outright when none exists.
                         <div className="text-xs text-amber-600 dark:text-amber-500">
-                            No phone numbers in this configuration.
+                            {t("workflow.phoneCall.noNumbers")}
                         </div>
                     ) : (
                         <div className="text-xs text-muted-foreground">
-                            No phone numbers in this configuration. The provider will pick one automatically.
+                            {t("workflow.phoneCall.noNumbersAuto")}
                         </div>
                     )}
                 </div>
@@ -534,7 +562,7 @@ export const PhoneCallDialog = ({
                 <Input
                     value={phoneNumber}
                     onChange={(e) => handlePhoneInputChange(e.target.value)}
-                    placeholder="PJSIP/1234 or SIP/1234"
+                    placeholder={t("workflow.phoneCall.sipPlaceholder")}
                 />
             ) : (
                 <PhoneInput
@@ -548,7 +576,7 @@ export const PhoneCallDialog = ({
                 className="text-xs text-muted-foreground hover:text-foreground underline"
                 onClick={() => { setSipMode(!sipMode); setPhoneNumber(""); setPhoneChanged(true); }}
             >
-                {sipMode ? "Use phone number instead" : "Use SIP endpoint instead"}
+                {sipMode ? t("workflow.phoneCall.usePhoneInstead") : t("workflow.phoneCall.useSipInstead")}
             </button>
             <DialogFooter className="flex-col sm:flex-row gap-2">
                 <Button
@@ -558,26 +586,26 @@ export const PhoneCallDialog = ({
                         router.push('/telephony-configurations');
                     }}
                 >
-                    Configure Telephony
+                    {t("workflow.phoneCall.configureTelephony")}
                 </Button>
                 <div className="flex gap-2 flex-1 justify-end">
                     <DialogClose asChild>
-                        <Button variant="outline">Cancel</Button>
+                        <Button variant="outline">{t("common.cancel")}</Button>
                     </DialogClose>
                     {!callSuccessMsg ? (
                         <Button
                             onClick={handleStartCall}
                             disabled={callLoading || !phoneNumber || selectedConfigBlocked}
                         >
-                            {callLoading ? "Calling..." : "Start Call"}
+                            {callLoading ? t("workflow.phoneCall.calling") : t("workflow.phoneCall.startCall")}
                         </Button>
                     ) : (
                         <>
                             <Button variant="outline" onClick={() => { setCallSuccessMsg(null); setCallError(null); }}>
-                                Call Again
+                                {t("workflow.phoneCall.callAgain")}
                             </Button>
                             <Button onClick={() => onOpenChange(false)}>
-                                Close
+                                {t("common.close")}
                             </Button>
                         </>
                     )}

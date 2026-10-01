@@ -1,6 +1,7 @@
 'use client';
 
 import { useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 import { getPresignedUploadUrlApiV1S3PresignedUploadUrlPost } from '@/client/sdk.gen';
@@ -16,6 +17,7 @@ interface CsvUploadSelectorProps {
 const MAX_FILE_SIZE = 10 * 1024 * 1024; // 10MB
 
 export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: CsvUploadSelectorProps) {
+  const { t } = useTranslation();
   const [uploading, setUploading] = useState(false);
   const [uploadProgress, setUploadProgress] = useState(0);
   const fileInputRef = useRef<HTMLInputElement>(null);
@@ -26,13 +28,13 @@ export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: 
 
     // Validate file type
     if (!file.name.endsWith('.csv')) {
-      toast.error('Please select a CSV file');
+      toast.error(t('campaigns.csv.selectCsv'));
       return;
     }
 
     // Validate file size
     if (file.size > MAX_FILE_SIZE) {
-      toast.error('File size must be less than 10MB');
+      toast.error(t('campaigns.csv.sizeLimit'));
       return;
     }
 
@@ -51,7 +53,7 @@ export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: 
       });
 
       if (error || !presignedData) {
-        throw new Error('Failed to get upload URL');
+        throw new Error(t('campaigns.csv.uploadUrlFailed'));
       }
 
       logger.info('Received presigned URL, uploading file...');
@@ -66,7 +68,7 @@ export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: 
       });
 
       if (!uploadResponse.ok) {
-        throw new Error('Failed to upload file to storage');
+        throw new Error(t('campaigns.csv.storageFailed'));
       }
 
       setUploadProgress(100);
@@ -74,10 +76,10 @@ export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: 
 
       // Step 3: Notify parent with file_key
       onFileUploaded(presignedData.file_key, file.name);
-      toast.success(`File uploaded: ${file.name}`);
+      toast.success(t('campaigns.csv.uploaded', { name: file.name }));
     } catch (error) {
       logger.error('Error uploading CSV:', error);
-      toast.error(error instanceof Error ? error.message : 'Failed to upload CSV file');
+      toast.error(error instanceof Error ? error.message : t('campaigns.csv.uploadFailed'));
     } finally {
       setUploading(false);
       setUploadProgress(0);
@@ -94,7 +96,7 @@ export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: 
 
   return (
     <div className="space-y-2">
-      <Label>CSV File</Label>
+      <Label>{t('campaigns.csv.label')}</Label>
       <div className="flex items-center gap-4">
         <input
           ref={fileInputRef}
@@ -109,19 +111,17 @@ export default function CsvUploadSelector({ onFileUploaded, selectedFileName }: 
           onClick={handleButtonClick}
           disabled={uploading}
         >
-          {uploading ? `Uploading... ${uploadProgress}%` : 'Upload CSV File'}
+          {uploading ? t('campaigns.csv.uploading', { progress: uploadProgress }) : t('campaigns.csv.uploadButton')}
         </Button>
         {selectedFileName && !uploading && (
           <div className="flex-1 text-sm">
-            <span className="text-muted-foreground">Selected: </span>
+            <span className="text-muted-foreground">{t('campaigns.csv.selected')}</span>
             <span className="text-primary">{selectedFileName}</span>
           </div>
         )}
       </div>
       <p className="text-sm text-muted-foreground">
-        Upload a CSV file with contact data. Must include phone_number column.
-        The columns can be accessed as initial_context in the workflow nodes. <br/>
-        Max 10MB.
+        {t('campaigns.csv.help')}
       </p>
     </div>
   );

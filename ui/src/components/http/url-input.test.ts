@@ -1,10 +1,16 @@
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+
+import i18n from "@/i18n";
 
 import {
     extractUrlHostnameParameters,
     extractUrlPathParameters,
     validateUrl,
 } from "./url-input";
+
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 describe("validateUrl", () => {
     it("accepts template parameters in the URL path", () => {

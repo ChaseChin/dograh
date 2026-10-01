@@ -8,6 +8,7 @@
 
 import posthog from "posthog-js";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
@@ -25,6 +26,7 @@ const parseAmount = (raw: string): number | null => {
 };
 
 export function BuyCreditsControl({ className }: { className?: string }) {
+  const { t } = useTranslation();
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<number | null>(null);
   const [custom, setCustom] = useState("");
@@ -62,7 +64,7 @@ export function BuyCreditsControl({ className }: { className?: string }) {
       await startTopUp(amount);
     } catch {
       // The seam is intentionally unimplemented until Razorpay lands.
-      setError("Self-serve top-up is coming soon. Use \"Hire an Expert\" or contact us for now.");
+      setError(t("billing.buyCredits.comingSoon"));
     } finally {
       setBusy(false);
     }
@@ -78,13 +80,13 @@ export function BuyCreditsControl({ className }: { className?: string }) {
             className,
           )}
         >
-          Buy Credits
+          {t("billing.buyCredits.buy")}
         </Button>
       </PopoverTrigger>
       <PopoverContent align="end" className="w-72 space-y-3">
         <div className="space-y-0.5">
-          <p className="text-sm font-medium">Top up credits</p>
-          <p className="text-xs text-muted-foreground">Pick an amount (min ${MIN_TOPUP_USD}).</p>
+          <p className="text-sm font-medium">{t("billing.buyCredits.title")}</p>
+          <p className="text-xs text-muted-foreground">{t("billing.buyCredits.pickAmount", { min: MIN_TOPUP_USD })}</p>
         </div>
 
         <div className="flex flex-wrap gap-2">
@@ -111,8 +113,8 @@ export function BuyCreditsControl({ className }: { className?: string }) {
               inputMode="decimal"
               value={custom}
               onChange={(e) => onCustomChange(e.target.value)}
-              placeholder="Custom"
-              aria-label={`Custom amount (min $${MIN_TOPUP_USD})`}
+              placeholder={t("billing.buyCredits.customPlaceholder")}
+              aria-label={t("billing.buyCredits.customAria", { min: MIN_TOPUP_USD })}
               className="h-9 w-24 pl-5"
             />
           </div>
@@ -126,7 +128,7 @@ export function BuyCreditsControl({ className }: { className?: string }) {
           disabled={!valid || busy}
           className="w-full bg-cta text-cta-foreground shadow-xs hover:bg-cta/90 focus-visible:ring-cta/50"
         >
-          {busy ? "Starting…" : valid && amount != null ? `Buy $${amount}` : "Buy Credits"}
+          {busy ? t("billing.buyCredits.starting") : valid && amount != null ? t("billing.buyCredits.buyAmount", { amount }) : t("billing.buyCredits.buy")}
         </Button>
       </PopoverContent>
     </Popover>

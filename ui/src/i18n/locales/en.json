@@ -1,0 +1,3683 @@
+{
+  "common": {
+    "save": "Save",
+    "saving": "Saving…",
+    "cancel": "Cancel",
+    "delete": "Delete",
+    "edit": "Edit",
+    "create": "Create",
+    "close": "Close",
+    "back": "Back",
+    "loading": "Loading…",
+    "retry": "Retry",
+    "confirm": "Confirm",
+    "search": "Search",
+    "copy": "Copy",
+    "copied": "Copied",
+    "enabled": "Enabled",
+    "disabled": "Disabled",
+    "yes": "Yes",
+    "no": "No",
+    "none": "None",
+    "optional": "Optional",
+    "required": "Required",
+    "learnMore": "Learn more",
+    "clickToCopy": "Click to copy",
+    "tryAgain": "Try again",
+    "somethingWentWrong": "Something went wrong",
+    "openMenu": "Open menu",
+    "toggleSidebar": "Toggle Sidebar",
+    "sidebarDescription": "Displays the mobile sidebar.",
+    "backendConnectionFailed": "Backend connection failed",
+    "jsonCopyFailed": "Failed to copy JSON",
+    "unsavedChanges": {
+      "title": "Unsaved changes",
+      "description": "You have unsaved changes that will be lost. Are you sure you want to leave?",
+      "stay": "Stay on page",
+      "discard": "Discard changes"
+    },
+    "languages": {
+      "multi": "Multilingual (Auto-detect)",
+      "autoDetect": "Auto-detect"
+    },
+    "sidebarTitle": "Sidebar",
+    "backendUnreachable": "Backend is not reachable at {{url}}.",
+    "configuredBackend": "the configured backend",
+    "chatWithUs": "Chat with us"
+  },
+  "usage": {
+    "title": "Agent Runs",
+    "subtitle": "See all your Agent Runs across all Voice Agents. You can use filters to filter out required Agent Runs.",
+    "selectTimezone": "Select timezone",
+    "loadAgentsFailed": "Failed to load agents",
+    "untitledAgent": "Untitled Agent",
+    "downloadReportFailed": "Failed to download report",
+    "preparing": "Preparing...",
+    "downloadFiltered": "Download Filtered Results",
+    "allRunsTitle": "All Runs",
+    "allRunsDescription": "Every agent run across your organization, with usage details",
+    "headerRunId": "Run ID",
+    "headerAgentName": "Agent Name",
+    "headerCallType": "Call Type",
+    "headerPhoneNumber": "Phone Number",
+    "headerDisposition": "Disposition",
+    "headerDate": "Date",
+    "headerDuration": "Duration",
+    "headerCostUsd": "Cost (USD)",
+    "headerActions": "Actions",
+    "unknown": "Unknown",
+    "totalForFiltered": "Total for filtered period: {{tokens}} VoiceWorker Tokens • {{duration}}",
+    "pageOf": "Page {{page}} of {{totalPages}} ({{totalCount}} total runs)",
+    "empty": "No runs found",
+    "filterAgentLabel": "Agent",
+    "filterAgentPlaceholder": "Select an agent",
+    "daily": {
+      "title": "Daily Usage Breakdown",
+      "description": "Last 7 days of usage",
+      "empty": "No usage data available",
+      "headerDate": "Date",
+      "headerUsageMinutes": "Usage (minutes)",
+      "headerCostUsd": "Cost (USD)",
+      "headerCalls": "Calls",
+      "total": "Total"
+    }
+  },
+  "billing": {
+    "title": "Billing",
+    "subtitle": "Credits, balance, and account usage for your organization.",
+    "refresh": "Refresh",
+    "opening": "Opening...",
+    "addCredits": "Add Credits",
+    "fetchFailed": "Failed to fetch billing credits",
+    "checkoutFailed": "Failed to open checkout",
+    "ossTitle": "Credit purchases are unavailable in OSS mode",
+    "ossBody": "You can't purchase credits from this self-hosted app. Sign up and purchase credits at <0>app.dograh.com</0>. Then add the generated service key in <1>Model Configurations</1>. Usage for that service key is visible in app.dograh.com.",
+    "creditsRemaining": "Credits remaining",
+    "creditBalance": "Credit balance",
+    "creditEqualsCent": "1 credit = 1 cent",
+    "creditsUsed": "Credits used",
+    "currentAllocationUsage": "Current allocation usage",
+    "totalLedgerDebits": "Total ledger debits",
+    "ledgerTitle": "Credit Ledger",
+    "ledgerDescription": "Recent grants, purchases, and usage debits.",
+    "headerDate": "Date",
+    "headerActivity": "Activity",
+    "headerOrigin": "Origin",
+    "headerRun": "Run",
+    "headerDelta": "Delta",
+    "headerBalance": "Balance",
+    "headerAmount": "Amount",
+    "noEntries": "No ledger entries yet",
+    "pageOf": "Page {{page}} of {{totalPages}} ({{totalCount}} total entries)",
+    "usageTitle": "Credit Usage",
+    "percentUsed": "{{percent}}% used",
+    "remainingOf": "{{remaining}} of {{total}} remaining",
+    "metricLabels": {
+      "voice_minutes": "Voice usage",
+      "platform_usage": "Platform usage"
+    },
+    "creditGrant": "Credit grant",
+    "creditPurchase": "Credit purchase",
+    "buyCredits": {
+      "buy": "Buy Credits",
+      "title": "Top up credits",
+      "pickAmount": "Pick an amount (min ${{min}}).",
+      "customPlaceholder": "Custom",
+      "customAria": "Custom amount (min ${{min}})",
+      "comingSoon": "Self-serve top-up is coming soon. Use \"Hire an Expert\" or contact us for now.",
+      "starting": "Starting…",
+      "buyAmount": "Buy ${{amount}}"
+    }
+  },
+  "apiKeys": {
+    "title": "Developer Portal",
+    "subtitle": "Manage your API keys to access VoiceWorker services programmatically",
+    "fetchFailed": "Failed to fetch API keys",
+    "fetchServiceFailed": "Failed to fetch service keys",
+    "nameRequired": "Please enter a name for the API key",
+    "serviceNameRequired": "Please enter a name for the service key",
+    "createFailed": "Failed to create API key",
+    "createServiceFailed": "Failed to create service key",
+    "archiveFailed": "Failed to archive API key",
+    "archiveServiceFailed": "Failed to archive service key",
+    "reactivateFailed": "Failed to reactivate API key",
+    "copySuccess": "Key copied to clipboard",
+    "copyFailed": "Failed to copy key",
+    "never": "Never",
+    "apiKeysTitle": "API Keys",
+    "apiKeysDescription": "Create and manage API keys for your organization",
+    "hideArchived": "Hide Archived",
+    "showArchived": "Show Archived",
+    "createNewKey": "Create New Key",
+    "emptyTitle": "No API keys found",
+    "createFirst": "Create Your First API Key",
+    "badgeArchived": "Archived",
+    "badgeActive": "Active",
+    "badgeInactive": "Inactive",
+    "expiresBadge": "Expires: {{date}}",
+    "fullKeyHidden": "(Full key hidden for security)",
+    "metaLine": "Created: {{created}} • Last used: {{lastUsed}}",
+    "reactivate": "Reactivate",
+    "serviceKeysTitle": "VoiceWorker Service Keys",
+    "serviceKeysDescription": "Manage service keys for accessing VoiceWorker AI services (LLM, TTS, STT)",
+    "createServiceKey": "Create Service Key",
+    "ossMoreKeys": "To generate additional service keys, <0>Sign up on app.dograh.com</0>",
+    "emptyServiceTitle": "No service keys found",
+    "createFirstService": "Create Your First Service Key",
+    "securityNote": "<0>Important:</0> Keep your API keys secure. Never share them publicly or commit them to version control. API keys provide full access to your organization's resources.",
+    "createDialogTitle": "Create New API Key",
+    "createDialogDescription": "Enter a descriptive name for your API key to help you identify it later.",
+    "keyNameLabel": "Key Name",
+    "keyNamePlaceholder": "e.g., Production Server, Development Environment",
+    "createKey": "Create Key",
+    "createdDialogTitle": "API Key Created Successfully",
+    "createdDialogDescription": "Make sure to copy your API key now. You won't be able to see it again!",
+    "yourApiKey": "Your API Key:",
+    "storeSecurely": "Store this key securely. It will only be shown once and cannot be retrieved later.",
+    "done": "Done",
+    "createServiceDialogTitle": "Create New Service Key",
+    "createServiceDialogDescription": "Create a service key to access VoiceWorker AI services (LLM, TTS, STT)",
+    "serviceKeyNameLabel": "Service Key Name",
+    "serviceKeyNamePlaceholder": "e.g., Production AI Services, Development LLM Access",
+    "serviceCreatedDialogTitle": "Service Key Created Successfully",
+    "serviceCreatedDialogDescription": "Make sure to copy your service key now. You won't be able to see it again!",
+    "yourServiceKey": "Your Service Key:",
+    "serviceKeyAccess": "This key provides access to VoiceWorker AI services including LLM, Text-to-Speech, and Speech-to-Text.",
+    "expiresOn": "Expires on: {{date}}"
+  },
+  "tools": {
+    "title": "Tools",
+    "subtitle": "Manage reusable tools that can be used across your workflows. <0>Learn more</0>",
+    "fetchFailed": "Failed to fetch tools",
+    "archiveConfirm": "Are you sure you want to archive this tool?",
+    "archiveFailed": "Failed to archive tool",
+    "unarchiveFailed": "Failed to unarchive tool",
+    "yourTools": "Your Tools",
+    "yourToolsDescription": "Create and manage tools for your organization",
+    "createTool": "Create Tool",
+    "searchPlaceholder": "Search tools...",
+    "noMatch": "No tools match your search",
+    "empty": "No tools found",
+    "createFirst": "Create Your First Tool",
+    "noActive": "No active tools",
+    "archivedTitle": "Archived Tools",
+    "restoreTitle": "Restore tool",
+    "badges": {
+      "endCall": "End Call",
+      "calculator": "Calculator",
+      "native": "Native",
+      "integration": "Integration",
+      "active": "Active",
+      "draft": "Draft",
+      "archived": "Archived",
+      "httpApi": "HTTP API"
+    },
+    "categories": {
+      "http_api": {
+        "label": "External HTTP API",
+        "description": "Make HTTP requests to external APIs"
+      },
+      "end_call": {
+        "label": "End Call",
+        "description": "End the call when conditions are met"
+      },
+      "transfer_call": {
+        "label": "Transfer Call",
+        "description": "Transfer the call to another phone number (Twilio, Plivo)"
+      },
+      "transfer_agent": {
+        "label": "Transfer To Agent",
+        "description": "Hand the live call to another VoiceWorker agent, without dropping the caller"
+      },
+      "calculator": {
+        "label": "Calculator",
+        "description": "Built-in calculator for arithmetic operations"
+      },
+      "mcp": {
+        "label": "MCP Server",
+        "description": "Connect a customer MCP server; its tools become available to the agent"
+      },
+      "native": {
+        "label": "Native (Coming Soon)",
+        "description": "Built-in tools like call transfer, DTMF input"
+      },
+      "integration": {
+        "label": "Integration (Coming Soon)",
+        "description": "Third-party integrations like Google Calendar"
+      }
+    },
+    "typeLabels": {
+      "end_call": "End Call Tool",
+      "transfer_call": "Transfer Call Tool",
+      "transfer_agent": "Transfer To Agent Tool",
+      "http_api": "HTTP API Tool",
+      "calculator": "Calculator Tool",
+      "native": "Native Tool",
+      "integration": "Integration Tool",
+      "mcp": "MCP Server Tool",
+      "default": "Tool"
+    },
+    "createDialog": {
+      "title": "Create New Tool",
+      "description": "Create a new tool that can be used in your workflows.",
+      "typeLabel": "Tool Type",
+      "nameLabel": "Tool Name",
+      "nameHelp": "Use a descriptive name, like \"Get Weather using API\" for a tool that fetches weather",
+      "namePlaceholder": "e.g., Book Appointment, Check Inventory",
+      "descriptionLabel": "Description (Optional)",
+      "descriptionHelp": "Provide a description which makes it easy for LLM to understand what this tool does",
+      "descriptionPlaceholder": "What does this tool do?",
+      "transferToAgent": "Transfer to agent",
+      "transferToAgentHelp": "The agent this tool hands the caller to. For more than one destination, create a tool per agent.",
+      "selectAgent": "Select an agent",
+      "mcpUrl": "MCP Server URL",
+      "transport": "Transport",
+      "credentialLabel": "Credential (Optional)",
+      "credentialHelp": "Select a credential for authenticating with the MCP server, or leave empty for no auth.",
+      "toolsFilter": "Tools Filter (Optional)",
+      "toolsFilterHelp": "Comma-separated list of tool names to allow. Leave empty to expose all tools from the server.",
+      "creating": "Creating...",
+      "errors": {
+        "nameRequired": "Please enter a name for the tool",
+        "chooseAgent": "Choose the agent to transfer to",
+        "mcpUrlRequired": "Please enter the MCP server URL",
+        "mcpUrlInvalid": "MCP server URL must start with http:// or https://",
+        "createFailed": "Failed to create tool"
+      }
+    },
+    "detail": {
+      "notFound": "Tool not found",
+      "backToTools": "Back to Tools",
+      "viewCode": "View Code",
+      "docs": "Docs",
+      "saveSuccess": "Tool saved successfully!",
+      "testTool": "Test Tool",
+      "saveBeforeTest": "Save the tool before testing.",
+      "codePreviewTitle": "Code Preview",
+      "codePreviewDescription": "JavaScript code to make this API call",
+      "fetchFailed": "Failed to fetch tool",
+      "saveFailed": "Failed to save tool",
+      "errors": {
+        "chooseAgent": "Choose the agent to transfer to",
+        "destinationRequired": "Please enter a transfer destination",
+        "invalidResolverUrl": "Invalid resolver URL",
+        "resolverArgsIncomplete": "All resolver arguments must have a name and description",
+        "resolverArgsUnique": "Resolver argument names must be unique",
+        "resolverPresetIncomplete": "All resolver preset parameters must have a name and a value",
+        "resolverPresetUnique": "Resolver preset parameter names must be unique",
+        "ruleRequired": "Add at least one context routing rule",
+        "ruleContextField": "Please enter a context field for rule {{index}}",
+        "ruleMappingIncomplete": "Add at least one complete context value to destination mapping in rule {{index}}",
+        "ruleValuesUnique": "Destination mapping context values must be unique in rule {{index}}",
+        "mcpUrlRequired": "Please enter the MCP server URL",
+        "mcpUrlInvalid": "MCP server URL must start with http:// or https://",
+        "invalidUrl": "Invalid URL",
+        "paramsNeedName": "All parameters must have a name",
+        "paramsUnique": "Parameter names must be unique",
+        "presetIncomplete": "All preset parameters must have a name and a value",
+        "bodyTemplateInvalid": "Body template must be a valid JSON object"
+      }
+    },
+    "mcpConfig": {
+      "title": "MCP Server Configuration",
+      "description": "Configure the MCP server endpoint. Its tools become available to the agent.",
+      "nameLabel": "Tool Name",
+      "namePlaceholder": "e.g., Customer MCP Server",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Provide a description which makes it easy for LLM to understand what this tool does",
+      "descriptionPlaceholder": "What does this MCP server provide?",
+      "mcpUrl": "MCP Server URL",
+      "transport": "Transport",
+      "credentialLabel": "Credential (Optional)",
+      "credentialHelp": "Select a credential for authenticating with the MCP server, or leave empty for no auth.",
+      "toolsFilter": "Tools Filter (Optional)",
+      "toolsFilterHelp": "Comma-separated list of tool names to allow. Leave empty to expose all tools from the server."
+    },
+    "builtin": {
+      "calculatorTitle": "Calculator Configuration",
+      "calculatorSubtitle": "Built-in calculator for arithmetic operations. No additional configuration needed.",
+      "nameLabel": "Tool Name",
+      "namePlaceholder": "Tool name",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Provide a description which makes it easy for LLM to understand what this tool does",
+      "descriptionPlaceholder": "Describe what this tool does..."
+    },
+    "endCall": {
+      "title": "End Call Configuration",
+      "description": "Configure the behavior when the call ends",
+      "nameLabel": "Tool Name",
+      "nameHelp": "A descriptive name for this tool",
+      "namePlaceholder": "e.g., End Call",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Helps the LLM understand when to use this tool",
+      "descriptionPlaceholder": "When should the AI end the call?",
+      "captureReason": "Capture End Call Reason",
+      "captureReasonHelp": "When enabled, the AI will provide a reason for ending the call. The reason will be set as the call disposition and added to call tags for analytics.",
+      "reasonDescription": "Reason Description",
+      "reasonDescriptionHelp": "Instructions shown to the AI for what kind of reason to provide",
+      "reasonPlaceholder": "e.g., The reason for ending the call (e.g., 'voicemail_detected', 'issue_resolved', 'customer_requested')",
+      "goodbyeMessage": "Goodbye Message",
+      "goodbyeMessageHelp": "Choose whether to play a message before disconnecting",
+      "noMessage": "No Message",
+      "noMessageHelp": "End the call immediately without any message",
+      "customMessage": "Custom Message",
+      "customMessageHelp": "Play a custom message before disconnecting",
+      "customMessagePlaceholder": "e.g., Thank you for calling. Goodbye!",
+      "prerecordedAudio": "Pre-recorded Audio",
+      "prerecordedAudioHelp": "Play a pre-recorded audio file before disconnecting"
+    },
+    "httpApi": {
+      "title": "Tool Configuration",
+      "description": "Configure the HTTP API endpoint and request settings",
+      "tabSettings": "Settings",
+      "tabAuth": "Authentication",
+      "tabParameters": "Parameters",
+      "nameLabel": "Tool Name",
+      "nameHelp": "Use a descriptive name, like \"Get Weather using API\" for a tool that fetches weather",
+      "namePlaceholder": "e.g., Book Appointment",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Provide a description which makes it easy for LLM to understand what this tool does",
+      "descriptionPlaceholder": "What does this tool do?",
+      "httpMethod": "HTTP Method",
+      "timeoutMs": "Timeout (ms)",
+      "endpointUrl": "Endpoint URL",
+      "hostnameParamsDetected": "Hostname parameters detected: {{params}}. Values resolve from tool call arguments or workflow context at runtime.",
+      "pathParamsDetected": "Path parameters detected: {{params}}. Values resolve from tool call arguments or workflow context at runtime.",
+      "customMessage": "Custom Message",
+      "customMessageHelp": "Optional message the AI will speak or play before executing this tool.",
+      "customMessagePlaceholder": "e.g., Let me check that for you, one moment please.",
+      "llmParameters": "LLM Parameters",
+      "llmParametersHelp": "Define the parameters that the LLM will provide when calling this tool. These will be sent as JSON body for POST/PUT/PATCH or as URL query params for GET/DELETE.",
+      "presetParameters": "Preset Parameters",
+      "presetParametersHelp": "Add values that VoiceWorker should inject at runtime. These are not exposed to the LLM and can use workflow templates like {{example}} or fixed literals.",
+      "bodyTemplate": "Tool Body Template",
+      "bodyTemplateHelp": "Enable a custom JSON request body.",
+      "customHeaders": "Custom Headers",
+      "customHeadersHelp": "Add custom headers to include in the request (optional)",
+      "headerKeyPlaceholder": "Header name",
+      "headerValuePlaceholder": "Header value",
+      "addHeader": "Add Header"
+    },
+    "transferAgent": {
+      "title": "Transfer To Agent Configuration",
+      "description": "Hands the live call to another agent. The caller stays connected, hears a ringer while the next agent is prepared, and the conversation so far is passed on as a handover note.",
+      "nameLabel": "Tool Name",
+      "nameHelp": "Also becomes the function name the agent calls. Name it after the destination, e.g. “Transfer to Billing”.",
+      "namePlaceholder": "e.g., Transfer to Billing",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "This is what the agent decides on. To offer more than one destination, add a second transfer tool with its own description.",
+      "descriptionPlaceholder": "Use when the caller asks about an invoice, a payment or their balance",
+      "transferToAgent": "Transfer to agent",
+      "loadingAgents": "Loading agents…",
+      "selectAgent": "Select an agent",
+      "handoverMessage": "Handover message",
+      "handoverMessageHelp": "Spoken in the current agent's own voice, and waited for before the caller is handed over. Leave empty to hand over without saying anything.",
+      "handoverMessagePlaceholder": "Let me connect you with the right person. One moment please."
+    },
+    "transferCall": {
+      "title": "Transfer Call Configuration",
+      "description": "Configure call transfer settings. Supports phone numbers (Twilio, Plivo) and SIP endpoints (Asterisk ARI).",
+      "nameLabel": "Tool Name",
+      "nameHelp": "A descriptive name for this tool",
+      "namePlaceholder": "e.g., Transfer Call",
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Helps the LLM understand when to use this tool",
+      "descriptionPlaceholder": "When should the AI transfer the call?",
+      "preTransferMessage": "Pre-Transfer Message",
+      "preTransferMessageHelp": "Choose whether to play a configured message before transferring. In dynamic mode, resolver custom_message overrides this when returned.",
+      "noMessage": "No Message",
+      "noMessageHelp": "Transfer the call immediately without any message",
+      "customMessage": "Custom Message",
+      "customMessageHelp": "Play a custom message before transferring",
+      "customMessagePlaceholder": "e.g., Please hold while I transfer your call.",
+      "prerecordedAudio": "Pre-recorded Audio",
+      "prerecordedAudioHelp": "Play a pre-recorded audio file before transferring",
+      "timeout": "Transfer Timeout",
+      "timeoutHelp": "Maximum time to wait for destination to answer after the transfer starts (5-120 seconds)",
+      "timeoutDefault": "Default: 30 seconds",
+      "dispositionLabel": "Call Disposition After Successful Transfer",
+      "dispositionHelp": "Optional. This value is recorded only when the transfer succeeds. Leave blank to use the default transfer disposition.",
+      "dispositionPlaceholder": "e.g., transferred_to_sales",
+      "destinationSource": "Destination Source",
+      "destinationSourceHelp": "Choose a configured destination, ordered context rules, or an HTTP resolver.",
+      "tabStatic": "Static / Template",
+      "tabDynamic": "Dynamic HTTP Resolver",
+      "tabContextMapping": "Context Mapping",
+      "destinationLabel": "Transfer Destination",
+      "destinationHelp": "Use a fixed number, SIP endpoint, or context template.",
+      "destinationSipExample": "SIP endpoint, e.g. PJSIP/1234",
+      "destinationE164Example": "E.164 phone number, e.g. +1234567890",
+      "destinationTemplateExample": "Template variable, e.g. {{example}}",
+      "resolverTitle": "Dynamic Transfer Resolver",
+      "resolverHelp": "VoiceWorker sends the resolved argument dictionary to this endpoint. The endpoint must return transfer_context.destination and may return transfer_context.custom_message. <0>Docs</0>",
+      "resolverUrl": "Resolver URL",
+      "resolverUrlHelp": "VoiceWorker sends a POST request with the resolved argument dictionary.",
+      "resolverTimeout": "Resolver Timeout",
+      "resolverTimeoutHelp": "Default: 3000 ms. Maximum: 5000 ms.",
+      "resolverCredentialLabel": "Resolver Credential (Optional)",
+      "resolverCredentialHelp": "Select a credential for the resolver endpoint, or leave empty for no auth.",
+      "resolverWaitMessage": "Resolver Wait Message",
+      "resolverWaitMessagePlaceholder": "One moment while I find the right team.",
+      "resolverWaitMessageHelp": "Spoken while VoiceWorker waits for the resolver response.",
+      "llmParameters": "LLM Parameters",
+      "llmParametersHelp": "Define values the agent should provide when calling this transfer tool, such as state, department, or reason. <0>Docs</0>",
+      "presetParameters": "Preset Parameters",
+      "presetParametersHelp": "Add values VoiceWorker injects at runtime. These are not exposed to the LLM and can use templates like {{example1}} or {{example2}}. <0>Docs</0>",
+      "customHeaders": "Custom Headers",
+      "customHeadersHelp": "Add custom headers for authentication or routing metadata.",
+      "headerKeyPlaceholder": "Header name",
+      "headerValuePlaceholder": "Header value",
+      "addHeader": "Add Header",
+      "contextRoutingTitle": "Ordered Context Routing",
+      "contextRoutingHelp1": "Rules are evaluated top to bottom. The first matching value selects its destination; matching ignores case and surrounding whitespace.",
+      "contextRoutingHelp2": "An unprefixed field such as <0>department</0> checks <1>gathered_context.department</1> first, then <2>initial_context.department</2>. Use an explicit prefix to read only one context.",
+      "contextRoutingHelp3": "Destinations can be a SIP endpoint, E.164 PSTN number, another provider-supported destination, or a template such as {{example}}. <0>Docs</0>",
+      "ruleLabel": "Rule {{index}}",
+      "moveRuleUpAria": "Move rule {{index}} up",
+      "moveRuleDownAria": "Move rule {{index}} down",
+      "removeRuleAria": "Remove rule {{index}}",
+      "contextField": "Context Field",
+      "contextFieldAria": "Context field {{index}}",
+      "contextFieldPlaceholder": "department or initial_context.department",
+      "mappingsLabel": "Value to Destination Mappings",
+      "addMapping": "Add mapping",
+      "addMappingAria": "Add mapping to rule {{index}}",
+      "contextValueAria": "Rule {{ruleIndex}} context value {{index}}",
+      "contextValuePlaceholder": "Context value",
+      "destinationAria": "Rule {{ruleIndex}} transfer destination {{index}}",
+      "destinationPlaceholder": "PJSIP/1001, +1234567890, or {{example}}",
+      "removeMappingAria": "Remove rule {{ruleIndex}} mapping {{index}}",
+      "mappingRequired": "Add at least one mapping.",
+      "addRoutingRule": "Add routing rule",
+      "routingRuleRequired": "Add at least one routing rule.",
+      "fallbackDestination": "Fallback Destination (Optional)",
+      "fallbackDestinationPlaceholder": "Provider destination or {{example}}",
+      "fallbackDestinationHelp": "Used only when no rule above matched."
+    },
+    "credentials": {
+      "title": "Add Credential",
+      "description": "Create a new credential for authentication.",
+      "nameLabel": "Name",
+      "namePlaceholder": "My API Key",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Optional description",
+      "typeLabel": "Credential Type",
+      "types": {
+        "bearerToken": "Bearer Token",
+        "apiKey": "API Key",
+        "basicAuth": "Basic Auth",
+        "customHeader": "Custom Header"
+      },
+      "fields": {
+        "headerName": "Header Name",
+        "apiKey": "API Key",
+        "token": "Token",
+        "username": "Username",
+        "password": "Password",
+        "headerValue": "Header Value"
+      },
+      "placeholders": {
+        "apiKeyHeader": "X-API-Key",
+        "apiKey": "your-api-key",
+        "token": "your-bearer-token",
+        "username": "username",
+        "password": "password",
+        "customHeaderName": "X-Custom-Header",
+        "headerValue": "header-value"
+      },
+      "createFailed": "Failed to create credential",
+      "unexpectedError": "An unexpected error occurred",
+      "creating": "Creating..."
+    },
+    "credentialSelector": {
+      "defaultLabel": "Credential",
+      "defaultDescription": "Select a credential for authentication, or leave empty for no auth.",
+      "defaultPlaceholder": "No authentication",
+      "loading": "Loading...",
+      "addNew": "Add new credential",
+      "empty": "No credentials found. Click the + button to create one."
+    },
+    "parameterEditor": {
+      "empty": "No parameters defined. Add a parameter to specify what data this tool needs.",
+      "parameterTitle": "Parameter {{index}}",
+      "nameLabel": "Name",
+      "nameHelp": "Name of the parameter, like \"order_id\" or \"customer_name\"",
+      "namePlaceholder": "e.g., customer_name",
+      "typeLabel": "Type",
+      "typeHelp": "Type of the parameter, like \"string\" or \"number\" or \"boolean\"",
+      "selectType": "Select type",
+      "types": {
+        "string": "String",
+        "number": "Number",
+        "boolean": "Boolean",
+        "object": "Object",
+        "array": "Array"
+      },
+      "descriptionLabel": "Description",
+      "descriptionHelp": "Description of the parameter, which makes it easy for LLM to understand, like \"The ID of the Customer to fetch Order Details\"",
+      "descriptionPlaceholder": "Describe what this parameter is for...",
+      "required": "Required",
+      "addParameter": "Add Parameter",
+      "presetEmpty": "No preset parameters defined. Add one to inject a fixed value or workflow context into the request.",
+      "presetTitle": "Preset Parameter {{index}}",
+      "presetNameHelp": "Key sent to the API, like \"phone_number\" or \"customer_id\"",
+      "presetNamePlaceholder": "e.g., phone_number",
+      "presetTypeHelp": "JSON type to send to the API",
+      "valueTemplateLabel": "Value or Template",
+      "valueTemplateHelp": "Use a fixed value or a template like {{example1}} or {{example2}}",
+      "valueTemplatePlaceholder": "e.g., {{example}}",
+      "addPresetParameter": "Add Preset Parameter"
+    },
+    "bodyTemplate": {
+      "label": "JSON Body Template",
+      "help": "Use LLM parameters defined above with {{param}}, or initial context with {{context}}.",
+      "invalidJson": "Enter a valid JSON object."
+    },
+    "keyValueEditor": {
+      "key": "Key",
+      "value": "Value",
+      "add": "Add"
+    },
+    "urlErrors": {
+      "required": "URL is required",
+      "mustStartHttp": "Invalid URL format. Must start with http:// or https://",
+      "invalidTemplate": "Invalid URL template format",
+      "invalid": "Invalid URL format"
+    },
+    "testDialog": {
+      "title": "Test Tool",
+      "description": "Run the saved configuration against the real endpoint.",
+      "request": "Request",
+      "realRequestTitle": "This performs a real external request",
+      "realRequestBody": "Testing sends an actual {{method}} request to this endpoint. Any configured credential is used for the request, and the operation may modify external data.",
+      "parametersTitle": "Parameters",
+      "parametersHelp": "Supply the values that would normally come from the model and configured presets.",
+      "fillSample": "Fill sample values",
+      "llmTitle": "LLM Parameters",
+      "llmHelp": "Values the model would provide at call time.",
+      "presetTitle": "Preset Parameters",
+      "presetHelp": "Resolved values that VoiceWorker would normally derive from each configured preset.",
+      "testing": "Testing...",
+      "testFailed": "Failed to test tool",
+      "noParameters": "No parameters configured.",
+      "requiredBadge": "required",
+      "configuredPreset": "Configured preset: <1>{{value}}</1>",
+      "emptyJson": "Empty",
+      "editParamAria": "Edit {{name}}",
+      "enterParam": "Enter {{name}}",
+      "headersLabel": "Headers:",
+      "bodyLabel": "Body:",
+      "queryLabel": "Query:",
+      "badges": {
+        "success": "success",
+        "failed": "failed",
+        "error": "error"
+      },
+      "editJsonTitle": "Edit {{name}}",
+      "editJsonDescription": "Edit the JSON value sent for this parameter when testing.",
+      "formatJson": "Format JSON",
+      "invalidJson": "Invalid JSON"
+    }
+  },
+  "flow": {
+    "common": {
+      "readOnly": "Read Only",
+      "docs": "Docs",
+      "generating": "Generating...",
+      "notConfigured": "Not configured",
+      "configured": "Configured",
+      "noPrompt": "No prompt configured",
+      "details": "Details",
+      "prompt": "Prompt",
+      "node": "Node"
+    },
+    "addNode": {
+      "title": "Add New Node",
+      "viewDocs": "View Nodes Documentation",
+      "limitReached": "{{name}} limit reached for this workflow",
+      "sections": {
+        "triggers": "Triggers",
+        "agentNodes": "Agent Nodes",
+        "globalNodes": "Global Nodes",
+        "webhook": "Webhook",
+        "qa": "QA",
+        "integrations": "Integrations"
+      }
+    },
+    "node": {
+      "badge": {
+        "node": "Node",
+        "start": "Start Node",
+        "agent": "Agent Node",
+        "end": "End Node",
+        "global": "Global Node",
+        "trigger": "API Trigger",
+        "webhook": "Webhook",
+        "qa": "QA Analysis"
+      },
+      "editTitle": "Edit {{name}}",
+      "editFallback": "Edit Node",
+      "editDescription": "Configure the settings for this node in your workflow.",
+      "discardTitle": "Discard changes?",
+      "discardDescription": "You have unsaved changes. Are you sure you want to discard them?",
+      "keepEditing": "Keep Editing",
+      "discard": "Discard",
+      "deleteNode": "Delete node",
+      "copyFailed": "Failed to copy value",
+      "copyTriggerFailed": "Failed to copy trigger URL",
+      "clickToCopy": "Click to copy",
+      "clickToCopyUrl": "Click to copy URL",
+      "clickToCopyCurl": "Click to copy curl",
+      "apiEndpoint": "API Endpoint:",
+      "toolsLabel": "Tools:",
+      "documentsLabel": "Documents:",
+      "workflowLlm": "Workflow LLM",
+      "webhookUrls": "Webhook URLs",
+      "webhookHelp": "Test mode runs the latest draft so you can verify changes before publishing. Production runs the published agent. Both require an API key in the X-API-Key header. <0>Get your API key</0>",
+      "testUrl": "Test URL",
+      "productionUrl": "Production URL",
+      "exampleRequest": "Example Request",
+      "testHelper": "Runs the latest draft, falling back to the published agent when no draft exists.",
+      "productionHelper": "Runs the published agent."
+    },
+    "edge": {
+      "editCondition": "Edit Condition",
+      "conditionLabel": "Condition Label",
+      "conditionLabelHelp": "Enter a short label which helps identify this pathway in logs",
+      "characters": "{{count}}/64 characters",
+      "condition": "Condition",
+      "conditionHelp": "Describe a condition that will be evaluated to determine if this pathway should be taken",
+      "transitionSpeech": "Transition Speech",
+      "transitionSpeechHelp": "Optional text or audio the assistant will play right before transitioning to the node. This will not be attached in Conversation Context. Use this as simple filler to reduce latency.",
+      "transitionPlaceholder": "e.g. Let me transfer you to our billing department...",
+      "clickToSet": "Click to set condition",
+      "noCondition": "No condition"
+    },
+    "documents": {
+      "label": "Knowledge Base Documents",
+      "description": "Select documents that the agent can reference during conversations.",
+      "empty": "No documents available. Upload documents to the knowledge base first.",
+      "upload": "Upload Documents",
+      "manage": "Manage Documents",
+      "fullDocument": "Full Document",
+      "chunks": "{{count}} chunks",
+      "selected_one": "{{count}} document selected",
+      "selected_other": "{{count}} documents selected"
+    },
+    "tools": {
+      "label": "Tools",
+      "description": "Select tools that the agent can use during the conversation.",
+      "empty": "No tools available.",
+      "create": "Create a Tool",
+      "httpTab": "HTTP & Tools ({{count}})",
+      "mcpTab": "MCP ({{count}})",
+      "noHttp": "No HTTP/native tools.",
+      "noMcp": "No MCP tools.",
+      "refresh": "Refresh tools",
+      "refreshFailed": "Refresh request failed. Check the MCP server and try again.",
+      "noDiscovered": "No tools discovered - Refresh.",
+      "selectedFns": "{{selected}}/{{total}} tools",
+      "unavailable": "(unavailable)",
+      "manage": "Manage Tools",
+      "selected_one": "{{count}} tool selected",
+      "selected_other": "{{count}} tools selected"
+    },
+    "recordings": {
+      "select": "Select a recording",
+      "selectHelp": "Select a pre-recorded audio file to play.",
+      "empty": "No recordings available",
+      "searchPlaceholder": "Search by ID, transcript, or filename...",
+      "noMatch": "No recordings match “{{query}}”",
+      "emptyMention": "No recordings found. Upload recordings via the Recordings panel."
+    },
+    "textOrAudio": {
+      "text": "Text",
+      "audio": "Audio",
+      "staticWarning": "This text is spoken as-is. For multilingual workflows, choose your phrasing carefully. Realtime (speech-to-speech) models can't play static text."
+    },
+    "form": {
+      "add": "Add",
+      "removeRow": "Remove row {{index}}",
+      "unknownType": "Unknown property type: {{type}}"
+    }
+  },
+  "conversation": {
+    "status": {
+      "ready": "Ready",
+      "live": "Live",
+      "ended": "Ended"
+    },
+    "messageCount_one": "{{count}} message",
+    "messageCount_other": "{{count}} messages",
+    "speaking": "speaking...",
+    "toolCall": {
+      "running": "Running",
+      "completed": "Completed",
+      "details": "Details",
+      "arguments": "Arguments",
+      "result": "Result"
+    },
+    "latency": {
+      "total": "Total",
+      "reasoningDelay": "Reasoning Delay:"
+    },
+    "notice": {
+      "interruptionDisabled": "Interruption Disabled",
+      "pipelineError": "Pipeline Error",
+      "fatalPipelineError": "Fatal Pipeline Error",
+      "executionError": "Execution Error",
+      "executionErrorText": "Execution error"
+    },
+    "agentTurnFailed": "Agent turn failed",
+    "realtime": {
+      "historicalTitle": "Call Transcript",
+      "historicalEmptyTitle": "No conversation recorded",
+      "historicalEmptySubtitle": "Real-time feedback events were not captured for this call",
+      "liveTitle": "Live Transcript",
+      "liveEmptyTitle": "No messages yet",
+      "liveEmptyActiveSubtitle": "Start speaking to see the transcript",
+      "liveEmptyIdleSubtitle": "Start the call to begin the conversation"
+    }
+  },
+  "workflowList": {
+    "create": {
+      "createFailed": "Failed to create workflow",
+      "useAgentBuilder": "Use Agent Builder",
+      "useAgentBuilderDesc": "AI generates a workflow from your description",
+      "blankCanvas": "Blank Canvas",
+      "blankCanvasDesc": "Start from scratch with an empty workflow"
+    },
+    "card": {
+      "created": "Created: {{date}}"
+    },
+    "upload": {
+      "button": "Upload Agent Definition",
+      "dialogTitle": "Upload Agent Definition",
+      "dropHint": "Drag and drop your Workflow JSON File here, or Click to Select",
+      "selectFile": "Select File",
+      "invalidJson": "Please upload a valid JSON file",
+      "uploadFailed": "Failed to upload workflow. Please check if the file is valid."
+    },
+    "template": {
+      "duplicate": "Duplicate Workflow Template"
+    },
+    "table": {
+      "headerName": "Agent Name",
+      "headerCreatedAt": "Created At",
+      "headerTotalRuns": "Total Runs",
+      "headerActions": "Actions",
+      "move": "Move",
+      "moveToFolder": "Move to folder",
+      "uncategorized": "Uncategorized",
+      "archiving": "Archiving...",
+      "restoring": "Restoring...",
+      "archive": "Archive",
+      "restore": "Restore",
+      "archiveSuccess": "Workflow archived successfully",
+      "restoreSuccess": "Workflow restored successfully",
+      "archiveFailed": "Failed to archive workflow",
+      "restoreFailed": "Failed to restore workflow",
+      "movedToUncategorized": "Moved to Uncategorized",
+      "moveSuccess": "Agent moved",
+      "moveFailed": "Failed to move agent"
+    },
+    "folders": {
+      "newFolder": "New Folder",
+      "createDialogTitle": "Create folder",
+      "renameDialogTitle": "Rename folder",
+      "renameSubmit": "Rename",
+      "nameLabel": "Folder name",
+      "namePlaceholder": "e.g. Sales, Support, Onboarding",
+      "archived": "Archived",
+      "uncategorized": "Uncategorized",
+      "toggleAria": "Toggle {{title}}",
+      "folderActions": "Folder actions",
+      "rename": "Rename",
+      "createFailed": "Failed to create folder",
+      "renameFailed": "Failed to rename folder",
+      "deleteFailed": "Failed to delete folder",
+      "created": "Folder \"{{name}}\" created",
+      "renamed": "Folder renamed",
+      "deleted": "Folder \"{{name}}\" deleted",
+      "emptyArchived": "No archived agents.",
+      "emptyFolder": "This folder is empty. Use “Move to folder” on an agent to add it here.",
+      "emptyUncategorized": "No uncategorized agents.",
+      "deleteDialogTitle": "Delete “{{name}}”?",
+      "deleteDialogBody_one": "The {{count}} agent in this folder won't be deleted - it'll move to Uncategorized.",
+      "deleteDialogBody_other": "The {{count}} agents in this folder won't be deleted - they'll move to Uncategorized.",
+      "deleting": "Deleting...",
+      "deleteFolder": "Delete folder"
+    }
+  },
+  "runs": {
+    "defaultTitle": "Workflow Run History",
+    "cardTitle": "Workflow Runs",
+    "showingOf": "Showing {{shown}} of {{total}} total runs",
+    "loading": "Loading workflow runs...",
+    "emptyDefault": "No workflow runs found",
+    "reload": "Reload",
+    "headerStatus": "Status",
+    "headerCreatedAt": "Created At",
+    "headerCallType": "Call Type",
+    "headerDuration": "Duration",
+    "headerDisposition": "Disposition",
+    "headerActions": "Actions",
+    "statusCompleted": "Completed",
+    "statusInProgress": "In Progress",
+    "durationSeconds": "{{secs}}s",
+    "pageOf": "Page {{current}} of {{total}}",
+    "previous": "Previous",
+    "next": "Next",
+    "campaignTitle": "Campaign Workflow Runs",
+    "campaignEmpty": "No workflow runs found for this campaign",
+    "loadFailed": "Failed to load campaign runs",
+    "channelPhone": "Phone call",
+    "channelWeb": "Web call",
+    "channelChat": "Text chat",
+    "directionInbound": "Inbound",
+    "directionOutbound": "Outbound"
+  },
+  "nav": {
+    "overview": "Overview",
+    "sections": {
+      "build": "BUILD",
+      "manage": "MANAGE"
+    },
+    "voiceAgents": "Voice Agents",
+    "campaigns": "Campaigns",
+    "models": "Models",
+    "telephony": "Telephony",
+    "tools": "Tools",
+    "files": "Files",
+    "recordings": "Recordings",
+    "developers": "Developers",
+    "agentRuns": "Agent Runs",
+    "billing": "Billing",
+    "reports": "Reports",
+    "telephonyWarning": "Action required",
+    "platformSettings": "Platform Settings",
+    "accountSettings": "Account settings",
+    "signOut": "Sign out",
+    "hireExpert": "Hire an Expert",
+    "toggleTheme": "Toggle theme",
+    "update": "Update",
+    "updateTooltip": "Latest: {{version}} - click to see the update guide",
+    "latest": "Latest",
+    "latestTooltip": "You're running the latest release",
+    "teamSwitchFailed": "Could not switch teams. Please try again.",
+    "lightMode": "Light Mode",
+    "darkMode": "Dark Mode",
+    "switchingTeams": "Switching teams..."
+  },
+  "auth": {
+    "headline": "VoiceWorker — AI voice agents that work for you.",
+    "highlights": ["Speech-to-speech", "MCP-native", "BYOK - any model"],
+    "enterpriseTitle": "Need on-prem, data residency & a data perimeter?",
+    "enterpriseBody": "We deploy VoiceWorker inside your environment for regulated and high-scale teams.",
+    "enterpriseCta": "Enterprise Enquiry",
+    "signIn": "Sign in",
+    "signInSubtitle": "Enter your email and password to continue",
+    "signingIn": "Signing in...",
+    "signUp": "Sign up",
+    "createAccount": "Create account",
+    "createAccountSubtitle": "Enter your details to get started",
+    "creatingAccount": "Creating account...",
+    "email": "Email",
+    "password": "Password",
+    "passwordPlaceholder": "Enter your password",
+    "passwordRulePlaceholder": "At least 8 characters",
+    "confirmPassword": "Confirm password",
+    "confirmPasswordPlaceholder": "Confirm your password",
+    "noAccount": "Don't have an account?",
+    "haveAccount": "Already have an account?",
+    "goBack": "Go Back",
+    "localAuthTitle": "Local Auth Mode",
+    "localAuthBody": "Stack Auth handler is disabled when using local authentication.",
+    "toasts": {
+      "passwordTooShort": "Password must be at least 8 characters",
+      "passwordMismatch": "Passwords do not match",
+      "loginFailed": "Login failed",
+      "signupFailed": "Signup failed",
+      "genericError": "An error occurred. Please try again."
+    }
+  },
+  "overview": {
+    "welcomeOss": "Welcome to VoiceWorker",
+    "welcome": "Welcome!",
+    "welcomeNamed": "Welcome, {{name}}!",
+    "subtitleOss": "VoiceWorker is a platform for building and deploying AI voice agents.",
+    "subtitleCloud": "Get started with building voice AI workflows",
+    "agentsTitle": "Create and Manage your Voice Agents",
+    "agentsDesc": "Build powerful AI Voice Agents with our visual editor",
+    "goToAgents": "Go to Agents",
+    "servicesTitle": "Configure Services",
+    "servicesDesc": "Set up your AI services like LLM, TTS, and STT providers",
+    "configureModels": "Configure Models",
+    "resourcesTitle": "Resources",
+    "resourcesDesc": "Get help and learn more about VoiceWorker",
+    "documentation": "Documentation",
+    "reportIssue": "Report an Issue"
+  },
+  "settings": {
+    "title": "Platform Settings",
+    "subtitle": "Manage your platform configuration and integrations.",
+    "language": {
+      "title": "Language",
+      "description": "Choose the interface display language. Applies immediately.",
+      "label": "Interface language",
+      "updated": "Interface language updated"
+    },
+    "preferences": {
+      "title": "Preferences",
+      "description": "Set organization-wide defaults such as the test phone number and timezone.",
+      "intro": "Set organization-wide defaults used by testing and scheduling flows.",
+      "testPhoneNumber": "Test Phone Number",
+      "timezone": "Timezone",
+      "externalPbx": "External PBX integrations",
+      "externalPbxHelp": "Show and enable advanced external-PBX configuration for Asterisk, transfer tools, and workflows. Existing configuration is preserved when this is disabled.",
+      "dispositionMapping": "Disposition mapping",
+      "dispositionMappingHelp": "Report call outcomes using your own disposition codes instead of VoiceWorker's. Applies to webhooks, run filters, reports, and external PBX write-backs. Configuration is preserved when this is disabled.",
+      "configureMapping": "Configure mapping",
+      "noOverrides": "No overrides yet",
+      "mapped_one": "{{count}} disposition mapped",
+      "mapped_other": "{{count}} dispositions mapped",
+      "loadFailed": "Failed to load organization preferences",
+      "saveFailed": "Failed to save preferences",
+      "saved": "Preferences saved",
+      "mappingSaved": "Disposition mapping saved"
+    },
+    "mcp": {
+      "title": "MCP Server",
+      "description": "Let AI agents access your VoiceWorker workspace and documentation via the Model Context Protocol. <0>Learn more</0>",
+      "endpointLabel": "MCP Endpoint",
+      "endpointHelp": "Connect an MCP-compatible AI assistant to this URL over Streamable HTTP. Requires an API key in the X-API-Key header. <0>Get your API key</0>",
+      "publicUrlLabel": "Public URL (Cloudflare tunnel)",
+      "backendUrlLabel": "Backend URL",
+      "tunnelHint": "Use the public URL from externally-hosted assistants; the backend URL works from the deployment's own network.",
+      "guideText": "For step-by-step setup with Claude Code, Claude Desktop, Cursor, and other clients, see the <0>MCP integration guide</0>.",
+      "copyFailed": "Failed to copy MCP endpoint"
+    },
+    "telemetry": {
+      "title": "Telemetry",
+      "description": "Configure Langfuse tracing for your voice agent calls. <0>Learn more</0>",
+      "intro": "Connect your Langfuse project to receive call tracing data.",
+      "host": "Host",
+      "publicKey": "Public Key",
+      "secretKey": "Secret Key",
+      "projectId": "Project ID",
+      "projectIdHelp": "Found in your Langfuse URL: /project/<project-id>/traces. Required to build links to your traces.",
+      "tracesPublic": "Make traces publicly viewable",
+      "tracesPublicHelp": "Off by default. When on, anyone holding a trace URL can open it without logging in to Langfuse — including the full call transcript, prompts and tool payloads. Turn it on only if you intend to share trace links outside your Langfuse project.",
+      "remove": "Remove",
+      "saved": "Telemetry credentials saved",
+      "saveFailed": "Failed to save telemetry credentials",
+      "removed": "Telemetry credentials removed",
+      "removeFailed": "Failed to remove telemetry credentials"
+    },
+    "dispositionMapping": {
+      "title": "Configure disposition mapping",
+      "description": "Each VoiceWorker disposition is sent as your own code wherever a call outcome is reported — webhooks, run filters, reports, and external PBX write-backs. Leave a row unchanged to send the disposition as-is. Saving here applies the mapping immediately.",
+      "loading": "Loading dispositions...",
+      "sourceColumn": "VoiceWorker disposition",
+      "targetColumn": "Your code",
+      "sourcePlaceholder": "e.g. no_medicare_card",
+      "newDisposition": "new disposition",
+      "targetAria": "Code for {{source}}",
+      "resetTitle": "Reset to the VoiceWorker disposition",
+      "resetSr": "Reset {{source}} to its default",
+      "removeTitle": "Remove this disposition",
+      "removeSr": "Remove {{source}}",
+      "thisDisposition": "this disposition",
+      "addRow": "Add disposition",
+      "noOverrides": "No overrides — every disposition is sent as-is.",
+      "overrideCount_one": "{{count}} override",
+      "overrideCount_other": "{{count}} overrides",
+      "saveMapping": "Save mapping"
+    }
+  },
+  "onboarding": {
+    "defaultTitle": "One more thing...",
+    "closeAria": "Close tooltip",
+    "next": "Next"
+  },
+  "eventBanner": {
+    "live": "Live",
+    "liveVirtualSession": "Live virtual session",
+    "register": "Register",
+    "registerFreeSuffix": " for Free",
+    "registerAria": "Register for free: {{title}} — live virtual session (opens in a new tab)",
+    "dismissAria": "Dismiss event announcement"
+  },
+  "toasts": {
+    "common": {
+      "error": "An error occurred. Please try again.",
+      "saved": "Saved",
+      "deleted": "Deleted"
+    }
+  },
+  "modelConfigs": {
+    "title": "AI Models Configuration",
+    "subtitle": "Organization-scoped model settings.",
+    "loadDefaultsFailed": "Failed to load model configuration defaults",
+    "loadFailed": "Failed to load model configuration",
+    "saveFailed": "Failed to save model configuration",
+    "saved": "Model configuration saved",
+    "saveConfiguration": "Save Configuration",
+    "tabs": {
+      "realtime": "Speech to Speech",
+      "byok": "BYOK"
+    },
+    "realtime": {
+      "description": "A single speech-to-speech model handles the conversation in realtime (no separate transcriber or voice). An LLM is still required for variable extraction and QA."
+    },
+    "dograh": {
+      "description": "VoiceWorker provides a managed transcriber, LLM, and voice pipeline. Select a voice and language while VoiceWorker manages the underlying model providers. We offer custom pricing and a 15-second pulse with a monthly commitment. <0>Contact us</0>.",
+      "voice": "Voice",
+      "language": "Language",
+      "selectLanguage": "Select language",
+      "autoDetects": "Auto-detects {{names}}.",
+      "speed": "Speed",
+      "apiKey": "API Key",
+      "speedRangeError": "VoiceWorker speed must be between {{min}} and {{max}}."
+    },
+    "byok": {
+      "description": "Configure separate transcriber, LLM, and voice providers using your own API keys. An embeddings model can also be configured for knowledge retrieval."
+    },
+    "thirdPartyNotice": {
+      "title": "Third-party provider data notice",
+      "body": "VoiceWorker sends data required by the selected model service. This may include prompts, transcripts, audio, generated text, tool data, and request metadata depending on the provider and service type. Review the provider's data and retention policies before using sensitive data."
+    },
+    "pricing": {
+      "title": "Usage pricing",
+      "platformUsage": "Platform usage",
+      "dograhModelUsage": "VoiceWorker model usage",
+      "thirdPartyNote": "Your selected model provider may charge separately for its usage."
+    },
+    "form": {
+      "tabs": {
+        "llm": "LLM",
+        "tts": "Voice",
+        "stt": "Transcriber",
+        "embeddings": "Embedding",
+        "realtime": "Realtime Model"
+      },
+      "provider": "Provider",
+      "selectProvider": "Select provider",
+      "supportedLanguages": "Supported languages",
+      "apiKeys": "API Key(s)",
+      "apiKeyOverride": "API Key (leave empty to use global)",
+      "enterApiKey": "Enter API key",
+      "addApiKey": "Add API Key",
+      "enterField": "Enter {{field}}",
+      "selectField": "Select {{field}}",
+      "enterCustomValue": "Enter Custom Value",
+      "realtimeMode": "Realtime Mode",
+      "realtimeModeHelp": "Uses a single speech-to-speech model (no separate STT/TTS). An LLM is still required for variable extraction and QA.",
+      "overrideLabel": "Override {{label}}",
+      "usingGlobal": "Using global: {{summary}}",
+      "serviceRequired": "{{service}} configuration is required",
+      "unknownError": "An unknown error occurred"
+    },
+    "providerTitle": {
+      "bailian": "Alibaba Cloud Bailian",
+      "tencent": "Tencent Cloud",
+      "speaches": "Local Models (Speaches)",
+      "minimax": "MiniMax"
+    },
+    "providerDesc": {
+      "atlascloud": "Atlas Cloud OpenAI-compatible LLM API.",
+      "deepseek": "DeepSeek official API (OpenAI-compatible).",
+      "bailian": "Alibaba Cloud Model Studio (百炼) via the DashScope OpenAI-compatible endpoint.",
+      "inworld": "Inworld AI streaming text-to-speech with built-in and cloned voices. Defaults to the Ashley system voice on inworld-tts-2.",
+      "speaches": "Self-hosted OpenAI-compatible local models. See the Speaches project for setup and supported backends.",
+      "huggingface": "Hosted Hugging Face Inference Providers API for usage-based inference.",
+      "azure_speech": "Azure Cognitive Services Speech — TTS and STT via the Azure Speech SDK.",
+      "azure_realtime": "Azure OpenAI Realtime API — low-latency speech-to-speech conversations.",
+      "tencent": "Tencent Cloud realtime ASR (实时语音识别) — streaming speech recognition over websocket.",
+      "aws_nova_sonic": "Amazon Bedrock's realtime speech-to-speech model. Uses AWS IAM credentials rather than a Bedrock API key.",
+      "smallest": "Smallest AI ultralow-latency TTS (Waves) and STT (Pulse) APIs."
+    },
+    "fieldLabel": {
+      "model": "Model",
+      "base_url": "Base URL",
+      "api_key": "API Key",
+      "voice": "Voice",
+      "language": "Language",
+      "speed": "Speed",
+      "endpoint": "Endpoint",
+      "project_id": "Project ID",
+      "location": "Location",
+      "credentials": "Credentials",
+      "aws_access_key": "AWS Access Key",
+      "aws_secret_key": "AWS Secret Key",
+      "aws_session_token": "AWS Session Token",
+      "aws_region": "AWS Region",
+      "bill_to": "Bill To",
+      "temperature": "Temperature",
+      "backend_model": "Backend Model",
+      "endpointing_sensitivity": "Endpointing Sensitivity",
+      "max_tokens": "Max Tokens",
+      "top_p": "Top P",
+      "volume": "Volume",
+      "delivery_mode": "Delivery Mode",
+      "group_id": "Group ID",
+      "region": "Region",
+      "tencent_secret_id": "Tencent Secret ID",
+      "tencent_secret_key": "Tencent Secret Key",
+      "tencent_app_id": "Tencent App ID",
+      "return_timestamps": "Return Timestamps",
+      "api_version": "API Version"
+    },
+    "fieldDesc": {
+      "endpoint": "Azure OpenAI resource endpoint (e.g. https://<resource>.openai.azure.com).",
+      "project_id": "Google Cloud project ID for Vertex AI.",
+      "credentials": "Paste the entire service-account JSON file contents. If omitted, falls back to Application Default Credentials (ADC).",
+      "aws_access_key": "AWS access key ID with bedrock:InvokeModel permission.",
+      "aws_secret_key": "AWS secret access key paired with the access key ID.",
+      "aws_region": "AWS region where the Bedrock model is available.",
+      "aws_session_token": "Optional AWS session token for temporary IAM credentials.",
+      "bill_to": "Optional Hugging Face organization or user to bill using X-HF-Bill-To.",
+      "speed": "Speech speed multiplier.",
+      "max_tokens": "Maximum response tokens.",
+      "top_p": "Nucleus-sampling threshold.",
+      "volume": "Volume multiplier for generated speech.",
+      "delivery_mode": "Controls stability versus expressiveness for inworld-tts-2 (STABLE, BALANCED, or CREATIVE).",
+      "group_id": "MiniMax Group ID (found in your MiniMax dashboard under Account → Group).",
+      "region": "Azure region for Speech Services (e.g. 'eastus', 'westeurope').",
+      "tencent_secret_id": "Tencent Cloud CAM SecretId (访问管理 → API 密钥管理).",
+      "tencent_secret_key": "Tencent Cloud CAM SecretKey paired with the SecretId.",
+      "tencent_app_id": "Tencent Cloud account APPID — required in the ASR websocket URL.",
+      "return_timestamps": "Request timestamp chunks when supported by the selected provider/model.",
+      "backend_model": "OpenAI Responses model that follows your workflow and calls tools. Uses the same API key; backend usage is billed separately from voice.",
+      "endpointing_sensitivity": "How quickly Nova decides the user has stopped speaking. Leave blank to use the model default."
+    },
+    "providerFieldDesc": {
+      "tts": {
+        "openai": {
+          "model": "OpenAI TTS model.",
+          "base_url": "Override only if using an OpenAI-compatible API (e.g. local TTS, proxy)."
+        },
+        "google": {
+          "model": "Google Cloud low-latency TTS engine. Dograh maps this to Pipecat's streaming Google TTS service for Chirp 3 HD and Journey voices."
+        },
+        "bailian": {
+          "model": "Bailian TTS model (CosyVoice).",
+          "base_url": "DashScope websocket inference endpoint. Defaults to the mainland China endpoint; use wss://dashscope-intl.aliyuncs.com/api-ws/v1/inference for the international site."
+        },
+        "dograh": {
+          "model": "Dograh TTS tier."
+        },
+        "speaches": {
+          "model": "Model name as served by your TTS endpoint (e.g. Kokoro-FastAPI).",
+          "base_url": "OpenAI-compatible TTS endpoint (Kokoro-FastAPI, etc.).",
+          "api_key": "Usually not required for self-hosted TTS. Leave blank unless enforced."
+        },
+        "minimax": {
+          "model": "MiniMax TTS model.",
+          "base_url": "MiniMax TTS API endpoint (must include the /v1/t2a_v2 path). Defaults to the global endpoint; override with https://api.minimaxi.chat/v1/t2a_v2 (mainland China) or https://api-uw.minimax.io/v1/t2a_v2 (US-West)."
+        },
+        "sarvam": {
+          "model": "Sarvam TTS model (voice list depends on this)."
+        }
+      },
+      "stt": {
+        "openai": {
+          "model": "OpenAI transcription model.",
+          "base_url": "Override only if using an OpenAI-compatible API (e.g. local STT, proxy)."
+        },
+        "google": {
+          "model": "Google Cloud Speech-to-Text V2 recognition model.",
+          "language": "Primary BCP-47 language code for recognition.",
+          "api_key": "Not used for Google Cloud STT. Leave blank.",
+          "location": "Google Cloud Speech-to-Text region (for example 'global' or 'us-central1')."
+        },
+        "dograh": {
+          "model": "Dograh STT tier."
+        },
+        "speaches": {
+          "model": "Whisper model identifier as served by your STT endpoint.",
+          "base_url": "OpenAI-compatible STT endpoint (Speaches, etc.).",
+          "api_key": "Usually not required for self-hosted STT. Leave blank unless enforced."
+        },
+        "huggingface": {
+          "model": "Hugging Face ASR model identifier served through Inference Providers.",
+          "base_url": "Hugging Face Inference Providers router base URL."
+        },
+        "sarvam": {
+          "model": "Sarvam STT model. saarika:v2.5 transcribes in the spoken language; saaras:v3 is the recommended model with flexible output modes.",
+          "language": "BCP-47 language code. Use unknown for automatic language detection."
+        },
+        "cartesia": {
+          "model": "Cartesia STT model.",
+          "language": "ISO 639-1 language code. ink-2 currently supports English only."
+        },
+        "azure_speech": {
+          "model": "Azure Speech recognition model (use 'latest_long' for continuous recognition).",
+          "language": "BCP-47 language code for recognition."
+        },
+        "smallest": {
+          "model": "Smallest AI STT model. Supports 38 languages with real-time streaming.",
+          "language": "ISO 639-1 language code for transcription."
+        }
+      },
+      "embeddings": {
+        "openai": {
+          "model": "OpenAI embedding model."
+        },
+        "openrouter": {
+          "model": "OpenRouter-hosted embedding model slug."
+        },
+        "azure": {
+          "model": "Azure OpenAI embedding deployment name. The deployment must return 1536-dimensional embeddings."
+        },
+        "dograh": {
+          "model": "Dograh-managed embedding model."
+        }
+      },
+      "openai": {
+        "model": "OpenAI chat model to use.",
+        "base_url": "Override only if using an OpenAI-compatible API (e.g. local LLM, proxy).",
+        "voice": "OpenAI TTS voice name."
+      },
+      "atlascloud": {
+        "model": "Atlas Cloud OpenAI-compatible chat model identifier.",
+        "base_url": "Atlas Cloud OpenAI-compatible API endpoint."
+      },
+      "google": {
+        "model": "Gemini model on Google AI Studio (not Vertex).",
+        "voice": "Google Cloud voice name. Use a Chirp 3 HD or Journey voice for streaming TTS.",
+        "language": "BCP-47 language code for synthesis.",
+        "api_key": "Not used for Google Cloud TTS. Leave blank.",
+        "location": "Optional Google Cloud regional Text-to-Speech endpoint (for example 'us-central1'). Leave blank to use the default endpoint."
+      },
+      "google_vertex": {
+        "model": "Gemini model on Vertex AI.",
+        "api_key": "Not used for Vertex AI — authentication is via the service account in `credentials` (or ADC). Leave blank.",
+        "location": "Vertex AI location, which decides where requests are processed. 'eu' and 'us' are multi-regions that keep processing inside that geography; a single region such as 'europe-west4' pins it further; 'global' routes anywhere in the world and carries no data residency guarantee. Model availability varies by location."
+      },
+      "groq": {
+        "model": "Groq-hosted model identifier."
+      },
+      "openrouter": {
+        "model": "OpenRouter model slug in 'vendor/model' form.",
+        "base_url": "Override only if proxying OpenRouter through your own gateway."
+      },
+      "deepseek": {
+        "model": "DeepSeek model id. 'deepseek-chat' supports function calling and suits voice agents; 'deepseek-reasoner' is a slow reasoning model without tool calling — avoid for realtime calls.",
+        "base_url": "DeepSeek API base URL. Override only when proxying through your own gateway."
+      },
+      "bailian": {
+        "model": "Bailian (DashScope) model id, e.g. 'qwen-plus' or 'qwen-turbo' for low-latency voice agents. Other models (qwen3 series, hosted deepseek-*, etc.) can be entered manually.",
+        "base_url": "DashScope OpenAI-compatible endpoint. Use https://dashscope-intl.aliyuncs.com/compatible-mode/v1 for the international site.",
+        "voice": "Bailian CosyVoice voice ID. cosyvoice-v2 voices carry a _v2 suffix (e.g. longxiaochun_v2); cosyvoice-v1 voices do not."
+      },
+      "azure": {
+        "model": "Azure deployment name (not the upstream OpenAI model id).",
+        "api_version": "Azure OpenAI API version for embeddings."
+      },
+      "dograh": {
+        "model": "Dograh-hosted model tier.",
+        "voice": "Voice preset.",
+        "language": "Language code; use 'multi' for auto-detect."
+      },
+      "aws_bedrock": {
+        "model": "Bedrock model ID — include the region inference-profile prefix (e.g. 'us.').",
+        "api_key": "Not used for Bedrock — authentication is via the AWS credentials above. Leave blank."
+      },
+      "speaches": {
+        "model": "Model name as exposed by your OpenAI-compatible server.",
+        "base_url": "OpenAI-compatible endpoint (Ollama, vLLM, etc.).",
+        "api_key": "Usually not required for self-hosted endpoints. Leave blank unless your server enforces one.",
+        "voice": "Voice ID for the TTS engine.",
+        "language": "ISO 639-1 language code."
+      },
+      "huggingface": {
+        "model": "Hugging Face chat-completion model identifier, optionally with provider suffix.",
+        "base_url": "Hugging Face OpenAI-compatible chat-completions router base URL."
+      },
+      "minimax": {
+        "model": "MiniMax chat model.",
+        "base_url": "MiniMax OpenAI-compatible API endpoint.",
+        "temperature": "Sampling temperature. MiniMax requires > 0.",
+        "voice": "MiniMax voice ID."
+      },
+      "sarvam": {
+        "model": "Sarvam chat model.",
+        "temperature": "Sampling temperature. Sarvam recommends 0.5 for balanced conversational responses.",
+        "voice": "Sarvam voice name or custom voice ID.",
+        "language": "BCP-47 Indian-language code (e.g. hi-IN, en-IN)."
+      },
+      "openai_realtime": {
+        "model": "Choose GPT-Live for full-duplex speech or a GPT-Realtime model.",
+        "voice": "Voice the model speaks in.",
+        "language": "ISO 639-1 language code for input audio transcription (e.g. 'pt', 'es'). Improves transcription accuracy and latency. Leave unset to auto-detect."
+      },
+      "aws_nova_sonic": {
+        "model": "Amazon Nova 2 Sonic model ID.",
+        "voice": "Voice the model speaks in. Tiffany and Matthew are polyglot voices.",
+        "api_key": "Not used for Nova 2 Sonic — authentication is via the AWS credentials above. Leave blank.",
+        "temperature": "Sampling temperature for Nova 2 Sonic (greater than 0, up to 1)."
+      },
+      "grok_realtime": {
+        "model": "Grok realtime voice-agent model.",
+        "voice": "Voice the model speaks in."
+      },
+      "ultravox_realtime": {
+        "model": "Ultravox realtime voice-agent model.",
+        "voice": "Ultravox voice name or voice ID."
+      },
+      "google_realtime": {
+        "model": "Gemini Live model on Google AI Studio (not Vertex).",
+        "voice": "Voice the model speaks in.",
+        "language": "ISO 639-1 language code."
+      },
+      "google_vertex_realtime": {
+        "model": "Vertex AI publisher/model identifier.",
+        "voice": "Voice the model speaks in.",
+        "language": "BCP-47 language code (e.g. 'en-US').",
+        "api_key": "Not used for Vertex AI — authentication is via the service account in `credentials` (or ADC). Leave blank.",
+        "location": "Vertex AI location, which decides where requests are processed. 'eu' and 'us' are multi-regions that keep processing inside that geography; a single region such as 'europe-west4' pins it further; 'global' routes anywhere in the world and carries no data residency guarantee. Model availability varies by location."
+      },
+      "azure_realtime": {
+        "model": "Azure OpenAI realtime deployment name.",
+        "voice": "Voice the model speaks in.",
+        "api_version": "Azure OpenAI Realtime protocol version. Use 'v1' for the GA API; date-based versions select the deprecated preview endpoint."
+      },
+      "deepgram": {
+        "base_url": "Deepgram API endpoint. This is what decides where your text is processed: use https://api.eu.deepgram.com to keep processing inside the EU, or https://api.au.deepgram.com for Australia. The same API key works on every regional endpoint.",
+        "voice": "Deepgram voice ID (model is inferred from the 'aura-N' prefix).",
+        "model": "Deepgram STT model.",
+        "language": "Language code. 'multi' enables Nova-3 auto-detect and omits language hints for Flux multilingual auto-detect."
+      },
+      "elevenlabs": {
+        "model": "ElevenLabs TTS model.",
+        "base_url": "ElevenLabs API base URL. Override to use a Data Residency endpoint (e.g. https://api.eu.residency.elevenlabs.io) for GDPR / HIPAA / regional compliance.",
+        "voice": "ElevenLabs voice ID from your Voice Library.",
+        "language": "ISO 639-1 language code for transcription. Use 'auto' to let ElevenLabs detect the language."
+      },
+      "cartesia": {
+        "model": "Cartesia TTS model.",
+        "voice": "Cartesia voice UUID from your Cartesia dashboard.",
+        "language": "Cartesia language code for TTS synthesis (e.g. 'en', 'tr', 'fr', 'de')."
+      },
+      "inworld": {
+        "model": "Inworld TTS model.",
+        "voice": "Inworld voice ID. Use Ashley for the default warm English voice, or a workspace voice ID for a cloned/custom voice.",
+        "language": "BCP-47 language code for synthesis."
+      },
+      "camb": {
+        "model": "Camb.ai TTS model.",
+        "voice": "Camb.ai voice ID.",
+        "language": "BCP-47 language code."
+      },
+      "rime": {
+        "model": "Rime TTS model.",
+        "voice": "Rime voice ID.",
+        "language": "ISO 639-1 language code."
+      },
+      "azure_speech": {
+        "model": "Azure Speech synthesis engine (neural voices only).",
+        "voice": "Azure Neural voice name (e.g. 'en-US-AriaNeural').",
+        "language": "BCP-47 language code for synthesis."
+      },
+      "smallest": {
+        "model": "Smallest AI TTS model. lightning_v3.1_pro is the premium pool (American, British, Indian accents); lightning_v3.1 is the standard pool with 217 voices across 12 languages.",
+        "voice": "Smallest AI voice ID. Available voices differ by model: lightning_v3.1 has a broad multilingual pool; lightning_v3.1_pro has premium American, British, and Indian accent voices (English + Hindi only).",
+        "language": "ISO 639-1 language code for synthesis."
+      },
+      "xai": {
+        "voice": "xAI voice persona.",
+        "language": "BCP-47 language code for synthesis (e.g. 'en', 'fr', 'de'), or 'auto' for automatic language detection."
+      },
+      "lmnt": {
+        "model": "LMNT TTS model. 'aurora' is the general-purpose model; 'blizzard' targets more expressive, conversational speech.",
+        "voice": "LMNT voice ID. Use a stock voice name or a custom voice ID from your LMNT account.",
+        "language": "Language code for synthesis (e.g. 'en', 'es', 'fr', 'de', 'pt', 'zh', 'ko', 'hi')."
+      },
+      "speechify": {
+        "model": "Speechify TTS model. 'simba-3.2' is the streaming-native English model with the lowest latency; 'simba-3.0' adds German, Spanish, French, Italian, and Portuguese.",
+        "voice": "Speechify voice ID. Options are filtered to voices available for the selected model; a custom or cloned voice ID must support the selected model (see GET /v1/voices), or synthesis fails.",
+        "language": "Language code for synthesis (e.g. 'en', 'de', 'es', 'fr', 'it', 'pt-BR'). Options are filtered to the selected model's documented languages; simba-3.2 is documented as English-only."
+      },
+      "speechmatics": {
+        "model": "Speechmatics Agent STT model.",
+        "language": "ISO 639-1 language code."
+      },
+      "assemblyai": {
+        "model": "AssemblyAI realtime STT model.",
+        "language": "ISO 639-1 language code."
+      },
+      "gladia": {
+        "model": "Gladia STT model.",
+        "language": "ISO 639-1 language code."
+      },
+      "tencent": {
+        "model": "Tencent Cloud ASR engine model type. '8k_zh' is the telephony model; other engine types can be entered manually.",
+        "api_key": "Not used for Tencent Cloud — authentication is via the SecretId/SecretKey above. Leave blank."
+      }
+    },
+    "llmSelector": {
+      "model": "Model",
+      "selectModel": "Select model",
+      "enterModel": "Enter model name",
+      "addModelManually": "Add Model Manually",
+      "apiKeyLabel": "API Key"
+    }
+  },
+  "telephony": {
+    "common": {
+      "configIdLabel": "Configuration ID",
+      "configId": "Configuration ID: {{id}}",
+      "configIdCopied": "Configuration ID copied",
+      "copyIdFailed": "Failed to copy ID",
+      "copyFailed": "Failed to copy",
+      "copyUrlFailed": "Failed to copy URL",
+      "reactivate": "Reactivate",
+      "reactivateFailed": "Failed to reactivate configuration",
+      "setDefaultFailed": "Failed to set default"
+    },
+    "badges": {
+      "default": "Default",
+      "inactive": "Inactive",
+      "setupIncomplete": "Setup incomplete"
+    },
+    "list": {
+      "title": "Telephony configurations",
+      "description": "Connect one or more telephony provider accounts. Each campaign uses one configuration; inbound calls are routed to the right one by account ID.",
+      "addConfiguration": "Add configuration",
+      "emptyTitle": "No telephony configurations yet",
+      "emptyBody": "Add one to enable outbound calls and receive inbound calls.",
+      "phoneCount_one": "{{count}} phone number",
+      "phoneCount_other": "{{count}} phone numbers",
+      "disabledAfterFailures": "Disabled after repeated connection failures",
+      "disabledAfterFailuresReason": "Disabled after repeated connection failures: {{reason}}",
+      "reactivateTitle": "Reconnect this configuration now",
+      "reactivated": "{{name}} reactivated — reconnecting within a minute",
+      "setDefaultTitle": "Set as default outbound",
+      "setDefaultSuccess": "{{name}} is now the default outbound configuration",
+      "managePhoneNumbers": "Manage Phone Numbers",
+      "managePhoneNumbersAria": "Manage phone numbers for {{name}}",
+      "loadFailed": "Failed to load configurations",
+      "loadOneFailed": "Failed to load configuration",
+      "deleteTitle": "Delete configuration?",
+      "deleteBody": "{{name}} and all of its phone numbers will be removed. Any campaigns that reference this configuration will block the deletion until they are reassigned.",
+      "deleteSuccess": "Configuration deleted",
+      "deleteFailed": "Failed to delete configuration"
+    },
+    "warnings": {
+      "telnyxTitle": "Webhook public key not configured",
+      "telnyxBody_one": "{{count}} Telnyx configuration is missing a webhook public key. Without it, Telnyx call status updates and inbound calls are being rejected. Copy your public key from <0>Mission Control Portal → Keys & Credentials → Public Key</0> and paste it into the affected Telnyx configuration below.",
+      "telnyxBody_other": "{{count}} Telnyx configurations are missing a webhook public key. Without it, Telnyx call status updates and inbound calls are being rejected. Copy your public key from <0>Mission Control Portal → Keys & Credentials → Public Key</0> and paste it into the affected Telnyx configuration below.",
+      "vonageTitle": "Signature secret not configured",
+      "vonageBody_one": "{{count}} Vonage configuration is missing a signature secret. Without it, Vonage signed webhooks are rejected, so inbound calls and call status updates will not work. Copy the signature secret from your Vonage account and paste it into the affected Vonage configuration below.",
+      "vonageBody_other": "{{count}} Vonage configurations are missing a signature secret. Without it, Vonage signed webhooks are rejected, so inbound calls and call status updates will not work. Copy the signature secret from your Vonage account and paste it into the affected Vonage configuration below."
+    },
+    "detail": {
+      "notFound": "Configuration not found.",
+      "allConfigurations": "All configurations",
+      "updated": "Updated {{date}}",
+      "setAsDefault": "Set as default",
+      "setDefaultSuccess": "Set as default outbound",
+      "editCredentials": "Edit credentials",
+      "disabledTitle": "This configuration is disabled",
+      "disabledBody": "VoiceWorker stopped reconnecting after repeated connection failures. Calls will not work until it is reconnected. Correct the settings below, then choose Reactivate to try again.",
+      "disabledBodyReason": "VoiceWorker stopped reconnecting after repeated connection failures: {{reason}}. Calls will not work until it is reconnected. Correct the settings below, then choose Reactivate to try again.",
+      "disabledSince": "Disabled {{date}}",
+      "stasisTitle": "Route calls into this Stasis application",
+      "stasisHelp": "Add this line to your Asterisk <0>extensions.conf</0>, then run <1>dialplan reload</1>. Until you do, calls reach Asterisk but never arrive at VoiceWorker.",
+      "dialplanCopied": "Dialplan line copied",
+      "inboundWebhookUrl": "Inbound webhook URL",
+      "webhookCopied": "Inbound webhook URL copied",
+      "copyWebhookTitle": "Click to copy inbound webhook URL",
+      "copyWebhookAria": "Copy inbound webhook URL",
+      "loadFailed": "Failed to load configuration",
+      "reactivated": "Reactivated — reconnecting within a minute"
+    },
+    "numbers": {
+      "title": "Phone numbers",
+      "description": "Numbers used as caller ID for outbound and accepted for inbound matching. SIP URIs and extensions are supported alongside PSTN numbers.",
+      "inboundDocs": "Inbound docs",
+      "add": "Add phone number",
+      "empty": "No phone numbers yet. Add one to start placing or receiving calls on this configuration.",
+      "headerAddress": "Address",
+      "headerId": "Phone number ID",
+      "headerType": "Type",
+      "headerLabel": "Label",
+      "headerStatus": "Status",
+      "headerInboundWorkflow": "Inbound workflow",
+      "headerOutboundTrunk": "Outbound trunk",
+      "headerActions": "Actions",
+      "idCopied": "Phone number ID copied",
+      "copyIdTitle": "Click to copy phone number ID",
+      "copyIdAria": "Copy phone number ID {{id}}",
+      "active": "Active",
+      "defaultCaller": "Default caller",
+      "unassigned": "Unassigned",
+      "setDefaultCallerTitle": "Set as default caller ID",
+      "setDefaultCallerSuccess": "{{address}} is now the default caller ID",
+      "setDefaultCallerFailed": "Failed to set default caller",
+      "deleteSuccess": "Phone number deleted",
+      "deleteFailed": "Failed to delete phone number",
+      "deleteTitle": "Delete phone number?",
+      "deleteBody": "{{address}} will no longer accept inbound calls or be available as a caller ID for this configuration."
+    },
+    "configForm": {
+      "addTitle": "Add telephony configuration",
+      "editTitle": "Edit telephony configuration",
+      "addDescription": "Connect a telephony provider account. Phone numbers are added after the configuration is created.",
+      "editDescription": "Update credentials for this configuration. Phone numbers are managed separately.",
+      "name": "Name",
+      "namePlaceholder": "e.g. Twilio US prod",
+      "nameRequired": "Name is required",
+      "provider": "Provider",
+      "providerPlaceholder": "Select a provider",
+      "providerLocked": "Provider cannot be changed after creation.",
+      "providerDocs": "{{name}} docs",
+      "setDefaultLabel": "Set as default for outbound calls",
+      "setDefaultHelp": "Used by test calls and campaigns when no specific config is selected.",
+      "setDefaultHelpSuggest": "Used by test calls and campaigns when no specific config is selected. Your organization has no default yet.",
+      "created": "Configuration created",
+      "updated": "Configuration updated",
+      "saveFailed": "Failed to save configuration",
+      "saveFailedGeneric": "Failed to save",
+      "saveChanges": "Save changes",
+      "phoneNumbersManaged": "Phone numbers are managed separately on the configuration page.",
+      "leaveMasked": "Leave masked to keep existing",
+      "fieldCopied": "{{label}} copied",
+      "selectOption": "Select an option"
+    },
+    "phoneForm": {
+      "addTitle": "Add phone number",
+      "editTitle": "Edit phone number",
+      "description": "PSTN numbers (E.164), SIP URIs (sip:user@host), and SIP extensions are all supported.",
+      "address": "Address",
+      "addressRequired": "Address is required",
+      "addressNeedsCountry": "PSTN addresses without a leading '+' need a Country (ISO-2) hint, or include the country code in the address (e.g. +14155551234).",
+      "addressImmutable": "Address cannot be changed. Delete this number and create a new one to change it.",
+      "storedAs": "Stored as <0>{{address}}</0> ({{type}})",
+      "country": "Country (ISO-2)",
+      "label": "Label",
+      "labelPlaceholder": "e.g. Boston caller ID",
+      "inboundWorkflow": "Inbound workflow",
+      "none": "(none)",
+      "inboundWorkflowHelp": "Used when per-number inbound routing is enabled. Today, inbound calls still route by the workflow_id in the webhook URL.",
+      "outboundTrunk": "Outbound trunk",
+      "trunkItem": "{{name}}",
+      "trunkItemDisabled": "{{name}} (disabled)",
+      "trunkHelpMulti": "Calls from this number leave on this trunk. Pick the one whose carrier authorised the number — carriers reject a caller ID they do not own.",
+      "trunkHelpSingle": "Calls from this number leave on this trunk. With a single trunk VoiceWorker falls back to it anyway.",
+      "active": "Active",
+      "defaultCallerLabel": "Default caller ID for this configuration",
+      "defaultCallerHelp": "Used as the from-number for test calls when set.",
+      "updated": "Phone number updated",
+      "added": "Phone number added",
+      "saveFailed": "Failed to save phone number",
+      "syncWarning": "Saved, but failed to sync inbound webhook to the provider.",
+      "add": "Add",
+      "saveChanges": "Save changes"
+    },
+    "checklist": {
+      "title": "Setup checklist",
+      "setupGuide": "Setup guide",
+      "descriptionSip": "VoiceWorker provides the SIP connection; you connect your own carrier and numbers to it.",
+      "descriptionApi": "Finish these steps to place and receive calls on this configuration.",
+      "blockedTitle": "Outbound calls will not work yet",
+      "caller_id": {
+        "title": "Add a phone number to use as caller ID",
+        "description": "Outbound calls need a number to dial from. Add at least one number from your {{name}} account under Phone numbers below.",
+        "cloudonix": {
+          "description": "Add at least one number your carrier delivers to you. Cloudonix requires a caller ID on every outbound call and rejects the call without one."
+        }
+      },
+      "sip_domain": {
+        "managed": {
+          "title": "SIP domain provisioned",
+          "description": "Dograh provisioned a Cloudonix SIP domain for this organization. Its inbound hostname and outbound origin IP are listed under SIP connectivity below — you will need them when configuring your carrier."
+        },
+        "self_serve": {
+          "title": "Cloudonix credentials saved",
+          "description": "Your Cloudonix bearer token and domain are stored and used for every call on this configuration."
+        }
+      },
+      "outbound_trunk": {
+        "title": "Connect your SIP carrier for outbound calls",
+        "managed": {
+          "description": "Under Outbound trunks, add a trunk pointing at your SIP carrier or PBX and allow its origin IP on your side. Without one Dograh has nowhere to send outbound calls."
+        },
+        "self_serve": {
+          "description": "Optional: add a trunk under Outbound trunks to pin Dograh's calls to one route. Without it Cloudonix picks among the active trunks on your domain."
+        }
+      },
+      "trunk_assignment": {
+        "title": "Tell Dograh which trunk each number dials out on",
+        "description": "This configuration has more than one trunk, so a number's carrier is no longer obvious. Assign each phone number to the trunk whose carrier authorised it — otherwise Dograh cannot pin the call and Cloudonix picks among your active trunks."
+      },
+      "inbound_routing": {
+        "title": "Point a number at an agent for inbound calls",
+        "description": "Only needed to receive calls: set an inbound workflow on a phone number below, and bind its DNID to the Voice Application in your Cloudonix Cockpit."
+      }
+    },
+    "fields": {
+      "account_sid": {
+        "label": "Account SID"
+      },
+      "auth_token": {
+        "label": "Auth Token"
+      },
+      "api_key": {
+        "label": "API Key"
+      },
+      "application_id": {
+        "label": "Application ID"
+      },
+      "from_numbers": {
+        "label": "Phone Numbers"
+      }
+    },
+    "providers": {
+      "twilio": {
+        "field": {
+          "account_sid": {
+            "description": "Twilio Account SID (starts with AC)"
+          },
+          "auth_token": {
+            "description": "Twilio Auth Token"
+          },
+          "from_numbers": {
+            "description": "E.164-formatted Twilio phone numbers used for outbound calls"
+          }
+        }
+      },
+      "telnyx": {
+        "field": {
+          "connection_id": {
+            "label": "Call Control App ID",
+            "description": "Telnyx Call Control Application ID (connection_id). Leave blank and we will auto-create one for you on save."
+          },
+          "webhook_public_key": {
+            "label": "Webhook Public Key",
+            "description": "Public key from Mission Control Portal → Keys & Credentials → Public Key. Used to verify Telnyx webhook signatures. Without it, webhooks from Telnyx will be rejected."
+          },
+          "from_numbers": {
+            "description": "E.164-formatted Telnyx phone numbers"
+          }
+        }
+      },
+      "exotel": {
+        "field": {
+          "account_sid": {
+            "description": "Exotel Account SID used in API paths and inbound matching"
+          },
+          "api_token": {
+            "label": "API Token"
+          },
+          "api_base_url": {
+            "label": "API Base URL",
+            "description": "Defaults to https://api.in.exotel.com. Use https://api.exotel.com for non-India accounts."
+          }
+        }
+      },
+      "vonage": {
+        "field": {
+          "private_key": {
+            "label": "Private Key",
+            "description": "Vonage RSA private key for JWT generation"
+          },
+          "api_secret": {
+            "label": "API Secret"
+          },
+          "signature_secret": {
+            "label": "Signature Secret",
+            "description": "Vonage signature secret for signed webhook verification"
+          },
+          "from_numbers": {
+            "description": "Vonage phone numbers without + prefix"
+          }
+        }
+      },
+      "plivo": {
+        "field": {
+          "auth_id": {
+            "label": "Auth ID"
+          },
+          "application_id": {
+            "description": "Plivo Application ID whose answer_url is updated when inbound workflows are attached to numbers on this account. Leave blank and we will auto-create one for you on save."
+          },
+          "from_numbers": {
+            "description": "E.164-formatted Plivo phone numbers used for outbound calls"
+          }
+        }
+      },
+      "vobiz": {
+        "field": {
+          "auth_id": {
+            "label": "Account ID",
+            "description": "Vobiz Account ID (e.g., MA_SYQRLN1K)"
+          },
+          "application_id": {
+            "description": "Vobiz Application ID whose answer_url is updated when inbound workflows are attached to numbers on this account. Leave blank and we will auto-create one for you on save."
+          },
+          "from_numbers": {
+            "description": "E.164-formatted phone numbers without + prefix"
+          }
+        }
+      },
+      "cloudonix": {
+        "field": {
+          "bearer_token": {
+            "label": "Bearer Token",
+            "description": "Cloudonix API Bearer Token"
+          },
+          "domain_id": {
+            "label": "Domain Name",
+            "description": "Your Cloudonix domain (for example, acme.cloudonix.net). Dograh fetches and stores its UUID automatically."
+          },
+          "application_name": {
+            "label": "Application Name",
+            "description": "Cloudonix Voice Application name whose url is updated when inbound workflows are attached to numbers on this domain. Leave blank and we will auto-create one for you on save."
+          }
+        }
+      },
+      "ari": {
+        "sections": {
+          "External PBX": "External PBX"
+        },
+        "field": {
+          "ari_endpoint": {
+            "label": "ARI Endpoint",
+            "description": "ARI base URL (e.g., http://asterisk.example.com:8088)"
+          },
+          "app_name": {
+            "label": "ARI Username",
+            "description": "ARI username, matching the section name in ari.conf"
+          },
+          "app_password": {
+            "label": "ARI Password"
+          },
+          "ws_client_name": {
+            "label": "websocket_client.conf Name",
+            "description": "websocket_client.conf connection name for externalMedia"
+          },
+          "stasis_app_name": {
+            "label": "Stasis App Name",
+            "description": "Generated for you, and unique to this configuration. Route calls into it from extensions.conf with Stasis(<this name>)."
+          },
+          "dial_string_template": {
+            "label": "Dial String Template",
+            "description": "How a dialed number reaches your trunk. {number} is replaced with the number being called. Use PJSIP/{number}@my-trunk to dial a trunk directly, or Local/{number}@from-internal to let your dialplan's outbound routes choose one. Leave as PJSIP/{number} when your endpoints are named after the extensions you dial."
+          },
+          "from_numbers": {
+            "label": "From Extensions",
+            "description": "SIP extensions/numbers for outbound calls"
+          },
+          "external_pbx": {
+            "type": {
+              "label": "External PBX Type",
+              "description": "Enable PBX-specific call control for calls patched into Dograh through this Asterisk configuration."
+            },
+            "agent_api": {
+              "url": {
+                "label": "Agent API URL",
+                "description": "Full VICIdial remote-agent API URL, ending in agc/api.php"
+              },
+              "username": {
+                "label": "Agent API User"
+              },
+              "password": {
+                "label": "Agent API Password"
+              }
+            },
+            "non_agent_api": {
+              "url": {
+                "label": "Non-Agent API URL",
+                "description": "Optional. Required only when a workflow updates VICIdial lead fields."
+              },
+              "username": {
+                "label": "Non-Agent API User"
+              },
+              "password": {
+                "label": "Non-Agent API Password"
+              }
+            }
+          }
+        }
+      }
+    },
+    "sip": {
+      "title": "SIP connectivity",
+      "description": "The endpoints to give your SIP carrier or PBX. Pick a region to see the addresses that region uses.",
+      "viewDetails": "View details",
+      "hideDetails": "Hide details",
+      "selectRegion": "Select Region",
+      "regionAria": "SIP region",
+      "inbound": "Inbound",
+      "inboundBody": "Route calls to {{provider}}/VoiceWorker using this SIP endpoint.",
+      "hostname": "Hostname",
+      "ports": "Ports",
+      "outbound": "Outbound",
+      "outboundBody": "Send calls from {{provider}}/VoiceWorker to your SIP carrier or PBX.",
+      "originIp": "Origin IP address",
+      "copied": "{{label}} copied",
+      "copyFailed": "Failed to copy {{label}}",
+      "copyHostname": "Copy inbound hostname",
+      "copyOriginIp": "Copy outbound origin IP address"
+    },
+    "trunks": {
+      "title": "Outbound trunks",
+      "description": "Each trunk is one route to a carrier or PBX. Numbers listed under a trunk dial out on it; numbers with no trunk are managed in Phone numbers below.",
+      "add": "Add trunk",
+      "empty": "No trunks yet. Add one pointing at your SIP carrier or PBX to place outbound calls on this configuration.",
+      "noNumbers": "No numbers on this trunk yet.",
+      "addNumber": "Add number",
+      "editTitle": "Edit trunk",
+      "editAria": "Edit trunk {{name}}",
+      "deleteButtonTitle": "Delete trunk",
+      "deleteAria": "Delete trunk {{name}}",
+      "editNumberAria": "Edit {{address}}",
+      "editNumberTitle": "Edit phone number",
+      "addDialogTitle": "Add trunk",
+      "editDialogTitle": "Edit trunk",
+      "dialogDescription": "VoiceWorker provisions this trunk with {{provider}} and dials your carrier over it.",
+      "name": "Name",
+      "enabledHelp": "Calls are never routed over a disabled trunk.",
+      "save": "Save trunk",
+      "nameRequired": "Trunk name is required",
+      "namePattern": "Trunk name may only contain letters, digits and hyphens",
+      "sipDomainRequired": "SIP domain is required",
+      "regionRequired": "Region is required",
+      "added": "Trunk added",
+      "updated": "Trunk updated",
+      "saveFailed": "Failed to save trunk",
+      "deleted": "Trunk \"{{name}}\" deleted",
+      "deleteFailed": "Failed to delete trunk",
+      "deleteDialogTitle": "Delete trunk?",
+      "deleteBody": "{{name}} will be deactivated with {{provider}} and calls will stop routing over it. Numbers still assigned to it must be moved first.",
+      "sipDomain": "SIP domain",
+      "sipDomainHelp": "Your carrier or PBX. Used for both the SIP To header and the Request-URI.",
+      "region": "Region",
+      "regionPlaceholder": "Select a region",
+      "regionAria": "Trunk region",
+      "regionHelp": "Sets the remote peer VoiceWorker dials for this trunk.",
+      "regionHelpWithIp": "Sets the remote peer VoiceWorker dials for this trunk. Calls leave from {{ip}} — allow it on your side."
+    }
+  },
+  "nodeSpecs": {
+    "common": {
+      "name": {
+        "label": "Name"
+      },
+      "prompt": {
+        "label": "Prompt"
+      },
+      "allow_interrupt": {
+        "label": "Allow Interruption"
+      },
+      "add_global_prompt": {
+        "label": "Add Global Prompt",
+        "description": "When true and a Global node exists, prepends the global prompt to this node's prompt at runtime."
+      },
+      "extraction_enabled": {
+        "label": "Enable Variable Extraction",
+        "description": "When true, runs an LLM extraction pass for this node."
+      },
+      "extraction_prompt": {
+        "label": "Extraction Prompt",
+        "description": "Overall instructions guiding variable extraction."
+      },
+      "extraction_variables": {
+        "label": "Variables to Extract",
+        "description": "Each entry declares one variable to capture, with its name, data type, and extraction hint. Call outcomes are configured separately in workflow settings.",
+        "items": {
+          "name": {
+            "label": "Variable Name",
+            "description": "snake_case identifier used downstream."
+          },
+          "type": {
+            "label": "Type",
+            "description": "Data type of the extracted value.",
+            "options": {
+              "string": "String",
+              "number": "Number",
+              "boolean": "Boolean"
+            }
+          },
+          "prompt": {
+            "label": "Extraction Hint",
+            "description": "Per-variable hint describing what to look for."
+          }
+        }
+      },
+      "tool_uuids": {
+        "label": "Tools"
+      },
+      "document_uuids": {
+        "label": "Knowledge Base Documents"
+      },
+      "enabled": {
+        "label": "Enabled"
+      }
+    },
+    "startCall": {
+      "displayName": "Start Call",
+      "description": "Entry point of the workflow — plays a greeting and opens the conversation.",
+      "props": {
+        "name": {
+          "description": "Short identifier shown in the canvas and call logs."
+        },
+        "greeting_type": {
+          "label": "Greeting Type",
+          "description": "Whether the optional greeting is spoken via TTS from text or played from a pre-recorded audio file.",
+          "options": {
+            "text": "Text (TTS)",
+            "audio": "Pre-recorded Audio"
+          }
+        },
+        "greeting": {
+          "label": "Greeting Text",
+          "description": "Text spoken via TTS at the start of the call. Supports {{template_variables}}. Leave empty to skip the greeting. ",
+          "placeholder": "Hi {{first_name}}, this is Sarah from Acme."
+        },
+        "greeting_recording_id": {
+          "label": "Greeting Recording",
+          "description": "Pre-recorded audio file played at the start of the call."
+        },
+        "prompt": {
+          "description": "Agent system prompt for the opening turn. Supports {{template_variables}} from pre-call fetch and the initial context.",
+          "placeholder": "Greet the caller warmly and ask how you can help today."
+        },
+        "allow_interrupt": {
+          "description": "When true, the user can interrupt the agent mid-utterance."
+        },
+        "delayed_start": {
+          "label": "Delayed Start",
+          "description": "Set the initial listening window for outbound voicemail and screening handling. A brief human greeting can end the wait sooner."
+        },
+        "delayed_start_duration": {
+          "label": "Delay Duration (seconds)",
+          "description": "Seconds to listen for a silent answer before opening. 0.1–10. Replaces the default 1.2-second listening window."
+        },
+        "tool_uuids": {
+          "description": "Tools the agent can invoke during the opening turn."
+        },
+        "document_uuids": {
+          "description": "Documents the agent can reference."
+        },
+        "pre_call_fetch_mode": {
+          "label": "Pre-Call Data Fetch",
+          "description": "Controls when a POST request is made to enrich the call context before the Start node opens.",
+          "options": {
+            "disabled": "Disabled",
+            "always": "Always",
+            "inbound": "Inbound calls only",
+            "outbound": "Outbound calls only"
+          }
+        },
+        "pre_call_fetch_url": {
+          "label": "Endpoint URL",
+          "description": "URL the pre-call POST request is sent to. The request body includes caller and called numbers."
+        },
+        "pre_call_fetch_credential_uuid": {
+          "label": "Authentication",
+          "description": "Optional credential attached to the pre-call request."
+        }
+      }
+    },
+    "agentNode": {
+      "displayName": "Agent Node",
+      "description": "Conversational step — the LLM runs one focused exchange.",
+      "props": {
+        "name": {
+          "description": "Short identifier for this step (e.g., 'Qualify Budget'). Appears in call logs and edge transition tools."
+        },
+        "prompt": {
+          "description": "Agent system prompt for this step. Supports {{template_variables}} from extraction or pre-call fetch.",
+          "placeholder": "Ask the caller about their budget and timeline."
+        },
+        "allow_interrupt": {
+          "description": "When true, the user can interrupt the agent mid-utterance. Set false for non-interruptible disclosures."
+        },
+        "tool_uuids": {
+          "description": "Tools the agent can invoke during this step."
+        },
+        "document_uuids": {
+          "description": "Documents the agent can reference during this step."
+        }
+      }
+    },
+    "endCall": {
+      "displayName": "End Call",
+      "description": "Closes the conversation and hangs up.",
+      "props": {
+        "name": {
+          "description": "Short identifier shown in call logs. Should describe the ending context (e.g., 'Successful close', 'Polite decline')."
+        },
+        "prompt": {
+          "description": "Agent system prompt for the closing exchange. Supports {{template_variables}} from extraction or pre-call fetch.",
+          "placeholder": "Thank the caller and confirm next steps before ending the call."
+        },
+        "extraction_enabled": {
+          "description": "When true, runs an LLM extraction pass before hangup to capture variables from the conversation."
+        },
+        "extraction_prompt": {
+          "description": "Overall instructions guiding how variables should be extracted from the conversation."
+        },
+        "extraction_variables": {
+          "description": "Each entry declares one variable to capture from the conversation, with its name, data type, and a per-variable extraction hint."
+        }
+      }
+    },
+    "globalNode": {
+      "displayName": "Global Node",
+      "description": "Persona/tone appended to every agent node's prompt.",
+      "props": {
+        "name": {
+          "description": "Short identifier shown in the canvas and call logs. Has no runtime effect."
+        },
+        "prompt": {
+          "label": "Global Prompt",
+          "description": "Text appended to every prompted node's system prompt when that node has `add_global_prompt=true`. Supports {{template_variables}}.",
+          "placeholder": "You are a friendly assistant calling on behalf of {{company_name}}."
+        }
+      }
+    },
+    "trigger": {
+      "displayName": "API Trigger",
+      "description": "Public HTTP endpoints that triggers the agent and make a call over telephone.",
+      "props": {
+        "name": {
+          "description": "Short identifier shown in the canvas. No runtime effect."
+        },
+        "enabled": {
+          "description": "When false, the trigger URL returns 404."
+        },
+        "trigger_path": {
+          "label": "Trigger Path",
+          "description": "Path segment that uniquely identifies this trigger. Used in both URLs:\n  • Production: `/api/v1/public/agent/<trigger_path>` — executes the published agent.\n  • Test: `/api/v1/public/agent/test/<trigger_path>` — executes the latest draft.\nCan be customized to a descriptive value up to 36 characters using letters, numbers, hyphens, or underscores."
+        }
+      }
+    },
+    "webhook": {
+      "displayName": "Webhook",
+      "description": "Sync data extracted during the conversation back to your systems after the call.",
+      "props": {
+        "name": {
+          "description": "Short identifier shown in the canvas and run logs."
+        },
+        "enabled": {
+          "description": "When false, the webhook is skipped at run time."
+        },
+        "http_method": {
+          "label": "HTTP Method",
+          "description": "HTTP verb used for the outbound request."
+        },
+        "endpoint_url": {
+          "label": "Endpoint URL",
+          "description": "URL the request is sent to."
+        },
+        "credential_uuid": {
+          "label": "Authentication",
+          "description": "Optional credential applied as the Authorization header."
+        },
+        "custom_headers": {
+          "label": "Custom Headers",
+          "description": "Additional HTTP headers to include with the request.",
+          "items": {
+            "key": {
+              "label": "Header Name",
+              "description": "HTTP header name (e.g., 'X-Source')."
+            },
+            "value": {
+              "label": "Header Value",
+              "description": "Header value (supports {{template_variables}})."
+            }
+          }
+        },
+        "payload_template": {
+          "label": "Payload Template",
+          "description": "JSON body of the request. Values are Jinja-rendered against the run context — `{{workflow_run_id}}`, `{{gathered_context.foo}}`, `{{annotations.qa_xxx}}`, etc."
+        }
+      }
+    },
+    "qa": {
+      "displayName": "QA Analysis",
+      "description": "Run LLM quality analysis on the call transcript.",
+      "props": {
+        "name": {
+          "description": "Short identifier for this QA configuration."
+        },
+        "qa_enabled": {
+          "label": "Enabled",
+          "description": "When false, the QA run is skipped."
+        },
+        "qa_system_prompt": {
+          "label": "System Prompt",
+          "description": "Instructions to the QA reviewer LLM. Supports placeholders: `{node_summary}`, `{previous_conversation_summary}`, `{transcript}`, `{metrics}`."
+        },
+        "qa_min_call_duration": {
+          "label": "Minimum Call Duration (seconds)",
+          "description": "Calls shorter than this are skipped."
+        },
+        "qa_voicemail_calls": {
+          "label": "Include Voicemail Calls",
+          "description": "When false, calls flagged as voicemail are skipped."
+        },
+        "qa_sample_rate": {
+          "label": "Sample Rate (%)",
+          "description": "Percent of eligible calls QA'd. 100 means every call; lower values use random sampling."
+        },
+        "qa_use_workflow_llm": {
+          "label": "Use Workflow's LLM",
+          "description": "When true, the QA pass uses the same LLM the workflow runs with. Set false to specify a separate provider/model."
+        },
+        "qa_provider": {
+          "label": "QA LLM Provider",
+          "description": "LLM provider used for the QA pass."
+        },
+        "qa_model": {
+          "label": "QA Model",
+          "description": "Model identifier (e.g., 'gpt-4o', 'claude-sonnet-4-6'). Provider-specific."
+        },
+        "qa_api_key": {
+          "label": "API Key",
+          "description": "API key for the chosen provider."
+        },
+        "qa_endpoint": {
+          "label": "Azure Endpoint",
+          "description": "Required for the Azure provider."
+        }
+      }
+    }
+  },
+  "workflow": {
+    "list": {
+      "authRequired": "Authentication required. Please refresh the page.",
+      "activeAgents": "Active Agents",
+      "emptyActive": "No active workflows found. Create your first workflow to get started.",
+      "loadFailed": "Failed to load Workflows. Please Try Again Later.",
+      "yourAgents": "Your Agents"
+    },
+    "create": {
+      "fillAllFields": "Please fill in all fields",
+      "mustBeLoggedIn": "You must be logged in to create a workflow",
+      "createFailed": "Failed to create workflow. Please try again.",
+      "title": "Create Voice Agent",
+      "subtitle": "Tell us about your use case and we'll create a customized voice agent for you",
+      "cardTitle": "Agent Details",
+      "cardDescription": "Configure your voice agent settings",
+      "callType": "Call Type",
+      "callTypePlaceholder": "Select type",
+      "callTypeInbound": "Inbound (Users call AI)",
+      "callTypeOutbound": "Outbound (AI calls users)",
+      "callTypeHelp": "Choose whether users will call your AI or your AI will call users",
+      "useCase": "Use Case",
+      "useCasePlaceholder": "e.g., Lead Qualification, HR Screening, Customer Support",
+      "useCaseHelp": "Describe the primary purpose of your voice agent",
+      "activityDescription": "Activity Description",
+      "activityPlaceholder": "Describe briefly what your voice agent will do (e.g., Qualify leads for real estate, Screen candidates for roles, Handle customer support). This will be a prompt to an LLM.",
+      "activityHelp": "This description will be used to generate the AI prompt for your voice agent",
+      "creating": "Creating...",
+      "createAgent": "Create Agent",
+      "creatingTitle": "Creating Your Workflow",
+      "creatingBody": "We're setting up your voice agent with your specifications. This will just take a moment...",
+      "successTitle": "Workflow Created Successfully!",
+      "successP1": "A voice agent workflow has been generated for your use case, with some artificial data and sample actions.",
+      "successP2": "The voice bot is pre-set to communicate in English with an American accent.",
+      "successP3": "Next steps would be to test the voice bot in the editor, and then modify it to suit your use case.",
+      "openAndTest": "Open and Test Agent"
+    },
+    "editor": {
+      "serviceUnavailable": "VoiceWorker is temporarily unavailable. Please try again later.",
+      "fetchFailed": "Failed to fetch workflow",
+      "notFound": "Workflow not found",
+      "configNotLoaded": "Workflow configurations not loaded",
+      "nodeLimitReached": "{{name}} limit reached. Remove the extra node before saving.",
+      "saveVariablesFailed": "Failed to save template variables",
+      "saveDictionaryFailed": "Failed to save dictionary",
+      "saveConfigFailed": "Failed to save workflow configurations",
+      "tooltips": {
+        "addNode": "Add node",
+        "settings": "Workflow settings",
+        "zoomIn": "Zoom in",
+        "zoomOut": "Zoom out",
+        "fitView": "Fit view",
+        "tidyUp": "Tidy Up"
+      },
+      "header": {
+        "publishing": "Publishing...",
+        "publishSuccess": "Workflow published successfully",
+        "publishFailed": "Failed to publish workflow",
+        "duplicating": "Duplicating workflow...",
+        "duplicatingMenu": "Duplicating...",
+        "duplicateSuccess": "Workflow duplicated successfully",
+        "duplicateFailed": "Failed to duplicate workflow",
+        "uuidNotAvailable": "Agent UUID not available",
+        "uuidCopied": "Agent UUID copied",
+        "uuidCopyFailed": "Failed to copy Agent UUID",
+        "nameEmpty": "Name cannot be empty",
+        "renameFailed": "Failed to rename workflow",
+        "openMenu": "Open menu",
+        "workflowName": "Workflow name",
+        "rename": "Rename workflow",
+        "viewingReadOnly": "Viewing {{version}} - Read only",
+        "backToDraft": "Back to Draft",
+        "unsavedChanges": "Unsaved changes",
+        "errorCount_one": "{{count}} error",
+        "errorCount_other": "{{count}} errors",
+        "validationErrors": "Validation Errors",
+        "nodeLabel": "Node: {{id}}",
+        "edgeLabel": "Edge: {{id}}",
+        "publish": "Publish",
+        "phoneCall": "Phone Call",
+        "testAgent": "Test Agent",
+        "viewRuns": "View Runs",
+        "duplicateWorkflow": "Duplicate Workflow",
+        "downloadWorkflow": "Download Workflow",
+        "copyAgentUuid": "Copy Agent UUID"
+      },
+      "versions": {
+        "loadFailed": "Failed to load version history",
+        "loadMoreFailed": "Failed to load more versions",
+        "compareFailed": "Failed to compare workflow versions",
+        "versionMissing": "That workflow version is no longer in the history list",
+        "historyChanged": "Version history changed. Please try the comparison again.",
+        "noPrevious": "v{{version}} has no previous version",
+        "draftLabel": "v{{version}} (Draft)",
+        "publishedLabel": "v{{version}} (Published)",
+        "versionLabel": "v{{version}}",
+        "title": "Version History",
+        "close": "Close version history",
+        "empty": "No versions found.",
+        "statusDraft": "Draft",
+        "statusPublished": "Published",
+        "statusArchived": "Archived",
+        "compareWith": "Compare v{{version}} with v{{previous}}",
+        "compareWithPrevious": "Compare v{{version}} with its previous version",
+        "loadMore": "Load more"
+      },
+      "diff": {
+        "title": "Changes {{from}} → {{to}}",
+        "changeCount_one": "{{count}} change",
+        "changeCount_other": "{{count}} changes",
+        "previous": "Go to previous change",
+        "next": "Go to next change",
+        "description": "Differences between workflow versions {{from}} and {{to}}.",
+        "noChanges": "No changes"
+      }
+    },
+    "tester": {
+      "createRunFailed": "Failed to create browser test run",
+      "authRequired": "Authentication is required before testing can start.",
+      "authRequiredBrowser": "Authentication is required before browser tests can start.",
+      "tabAudio": "Test Audio",
+      "tabChat": "Test Chat",
+      "close": "Close tester panel",
+      "emptyTitle": "Call this agent in the browser",
+      "emptyDescription": "Test the agent over a voice call. Some telephony-only tools, like call transfer, are not yet supported here.",
+      "starting": "Starting test...",
+      "runTest": "Run Test",
+      "reset": "Reset",
+      "onboardingTitle": "Try Your First Web Call",
+      "onboardingMessage": "Start a browser call here to hear the agent, inspect the transcript, and validate the workflow before you customize it further.",
+      "paused": "Testing is paused",
+      "pausedReason": "Testing is paused.",
+      "returnToDraft": "Return to the draft before starting a new test session.",
+      "saveDraftFirst": "Save the latest draft before testing so the session uses the workflow you are looking at.",
+      "resolveErrors": "Resolve the current validation errors before starting another test.",
+      "voice": {
+        "endCall": "End Call",
+        "startAnother": "Start Another Test",
+        "retryCall": "Retry Call",
+        "retryConnection": "Retry Connection",
+        "starting": "Starting Test...",
+        "backendUnreachable": "Couldn't reach the backend to confirm call settings. Tap retry once it's back."
+      },
+      "chat": {
+        "modeManual": "Manual",
+        "modeSimulated": "Simulated",
+        "emptyTitle": "Chat with this agent",
+        "emptyDescription": "Test the agent over a text conversation. Send messages and see how it responds, with tool calls, transitions, and rewind support.",
+        "startTest": "Start Test",
+        "sendToStart": "Send a message to start the conversation.",
+        "noConversation": "No conversation recorded",
+        "conversationEnded": "This conversation has ended.",
+        "endHelp": "End the conversation and run its completion integrations.",
+        "confirmEnd": "End this chat? You will not be able to send more messages.",
+        "ending": "Ending",
+        "endChat": "End chat",
+        "chatEnded": "Chat ended",
+        "editHint": "Edit the selected user message, then press Enter to rerun from that point.",
+        "placeholderEnded": "Conversation ended",
+        "placeholderEdit": "Edit and rerun this message...",
+        "placeholderSend": "Send a message...",
+        "placeholderPreparing": "Preparing chat...",
+        "sending": "Sending",
+        "rerunning": "Rerunning",
+        "send": "Send",
+        "rerun": "Rerun",
+        "rerunTurn": "Rerun this turn",
+        "editRerunTurn": "Edit and rerun this turn",
+        "createFailed": "Failed to create chat session",
+        "rewindFailed": "Failed to rewind session",
+        "sendFailed": "Failed to send message",
+        "endFailed": "Failed to end chat session",
+        "genericError": "Something went wrong",
+        "simulatorHelp": "Drive multi-turn, agent-vs-agent tests with a persona prompt.",
+        "simulatorPlaceholder": "Describe the simulated user...",
+        "comingSoon": "Coming soon"
+      }
+    },
+    "runs": {
+      "loadFailed": "Failed to load workflow runs"
+    },
+    "run": {
+      "durationNA": "N/A",
+      "durationSecs": "{{secs}}s",
+      "durationMinsSecs": "{{mins}}m {{secs}}s",
+      "copyFailed": "Failed to copy {{label}}",
+      "copyAria": "Copy {{label}}",
+      "splitTracks": "Split Tracks",
+      "playbackTracks": "Playback tracks",
+      "playBoth": "Play both tracks",
+      "playUserOnly": "Play user track only",
+      "playBotOnly": "Play bot track only",
+      "user": "User",
+      "bot": "Bot",
+      "targetSplit": "split tracks",
+      "targetUser": "user track",
+      "targetBot": "bot track",
+      "pause": "Pause {{target}}",
+      "play": "Play {{target}}",
+      "loading": "Loading",
+      "metrics": "Run Metrics",
+      "duration": "Duration",
+      "userTurns": "User Turns",
+      "botTurns": "Bot Turns",
+      "toolCalls": "Tool Calls",
+      "nodesVisited": "Nodes Visited",
+      "copyContextFailed": "Failed to copy context",
+      "noData": "No data available",
+      "agent": "Agent",
+      "textChatSession": "Text Chat Session",
+      "runCompleted": "Agent Run Completed",
+      "callTime": "Call time: {{time}}",
+      "customizeAgent": "Customize Agent",
+      "descriptionChat": "Review the conversation history, metrics, and context captured for this text session.",
+      "descriptionCall": "Your voice agent run has been completed successfully. You can preview or download the transcript and recording.",
+      "preview": "Preview:",
+      "download": "Download:",
+      "transcript": "Transcript",
+      "recording": "Recording",
+      "trace": "Trace:",
+      "viewTrace": "View Trace",
+      "initialContext": "Initial Context",
+      "gatheredContext": "Gathered Context",
+      "qaResults": "QA Results",
+      "detailsUnavailable": "Run Details Unavailable",
+      "detailsUnavailableBody": "This run does not have a details view yet. Go back to the workflow to continue testing or make changes.",
+      "agentId": "Agent ID",
+      "runId": "Run ID",
+      "onboardingTitle": "Customize Your Workflow",
+      "onboardingMessage": "Edit your workflow to adjust the voice agent's behavior, add new steps, or modify the conversation flow.",
+      "context": {
+        "noValue": "No value",
+        "noTitleAvailable": "No {{title}} available"
+      },
+      "apiKeyError": {
+        "insufficientCredits": "Insufficient Credits",
+        "accountMismatch": "Service Token Account Mismatch",
+        "configError": "API Configuration Error",
+        "goToBilling": "Go to Billing",
+        "goToDevelopers": "Go to Developers",
+        "goToModelConfig": "Go to Model Configurations",
+        "purchaseCredits": "Purchase credits from Billing to continue using Dograh-managed models."
+      },
+      "audio": {
+        "micDeniedTitle": "Microphone access denied",
+        "micDeniedBody": "To use the voice agent, you need to allow microphone access. Please enable it in your browser settings and try again.",
+        "waitingPermission": "Waiting for permission...",
+        "tryAgain": "Try Again",
+        "permissionsRequired": "Audio permissions required",
+        "allowInDialog": "Please allow microphone access in the browser dialog",
+        "clickToGrant": "Click below to grant microphone access",
+        "grantPermissions": "Grant Audio Permissions",
+        "startCall": "Start Call",
+        "callInProgress": "Call in progress",
+        "endCall": "End Call"
+      },
+      "connection": {
+        "establishing": "Establishing Connection...",
+        "connected": "Connected",
+        "failed": "Connection Failed"
+      },
+      "configError": {
+        "title": "Workflow Error",
+        "goToWorkflow": "Go to Workflow"
+      },
+      "rtc": {
+        "quotaExceeded": "Service quota exceeded",
+        "runFinished": "This test run has already finished.",
+        "serverError": "Server error",
+        "interruptionDisabled": "Interruption is disabled for this step. The bot will finish speaking before processing your input. You can enable interruption in the workflow editor.",
+        "apiKeyError": "API Key Error",
+        "validationFailed": "Workflow validation failed",
+        "acquireMediaFailed": "Could not acquire media",
+        "enumerateDevicesFailed": "Could not enumerate devices",
+        "toolFallback": "tool",
+        "nodeFallback": "Node"
+      }
+    },
+    "phoneCall": {
+      "loadPreferencesFailed": "Failed to load phone preferences",
+      "savePreferencesFailed": "Failed to save phone preferences",
+      "initiateFailed": "Failed to initiate call",
+      "callInitiated": "Call initiated successfully!",
+      "title": "Phone Call",
+      "connectTitle": "Connect phone service",
+      "connectDescription": "VoiceWorker doesn't sell phone numbers or minutes. Choose how this agent should place and receive calls.",
+      "useProvider": "Use a telephony provider",
+      "recommended": "Recommended",
+      "providerBody": "Open an account with {{providers}}, paste the credentials here, and call using their numbers. Quickest way to get started.",
+      "defaultProviderName": "a telephony provider",
+      "addProvider": "Add provider",
+      "byoSip": "Bring your own SIP",
+      "byoSipBody": "Already have a SIP trunk or a PBX? Point it at VoiceWorker and keep your existing carrier and numbers.",
+      "sipProvisioned": "“{{name}}” is provisioned and waiting for your carrier details.",
+      "setupSip": "Set up SIP",
+      "addSipConnection": "Add SIP connection",
+      "doItLater": "Do it Later",
+      "formDescription": "Enter the phone number or SIP endpoint to call. The number will be saved automatically.",
+      "configLabel": "Telephony configuration",
+      "configPlaceholder": "Select a configuration",
+      "configItemDefault": "{{name}} - default",
+      "configItemIncomplete": "{{name}} - setup incomplete",
+      "configItemDefaultIncomplete": "{{name}} - default - setup incomplete",
+      "blockedDisabled": "This configuration is disabled after repeated connection failures.",
+      "blockedNotReady": "This configuration is not ready for outbound calls.",
+      "openConfiguration": "Open configuration",
+      "finishSetup": "Finish setup",
+      "callerId": "Caller ID (from)",
+      "loadingNumbers": "Loading phone numbers...",
+      "numberPlaceholder": "Select a phone number",
+      "phoneItemLabeled": "{{label}} - {{address}}",
+      "phoneItemLabeledDefault": "{{label}} - {{address}} - default",
+      "phoneItemDefault": "{{address}} - default",
+      "noNumbers": "No phone numbers in this configuration.",
+      "noNumbersAuto": "No phone numbers in this configuration. The provider will pick one automatically.",
+      "sipPlaceholder": "PJSIP/1234 or SIP/1234",
+      "usePhoneInstead": "Use phone number instead",
+      "useSipInstead": "Use SIP endpoint instead",
+      "configureTelephony": "Configure Telephony",
+      "calling": "Calling...",
+      "startCall": "Start Call",
+      "callAgain": "Call Again"
+    },
+    "recordings": {
+      "loadFailed": "Failed to load recordings",
+      "transcriptionFailed": "Auto-transcription failed",
+      "fileTooLargeSkipped": "{{name}} ({{size}}MB) exceeds 5MB limit - skipped.",
+      "recordingTooLarge": "Recording ({{size}}MB) exceeds the maximum allowed size of 5MB.",
+      "micDenied": "Microphone access denied. Please allow microphone permissions.",
+      "ttsRequired": "TTS configuration (provider, model, voice) must be set in your user configuration before uploading.",
+      "uploadUrlsFailed": "Failed to get upload URLs",
+      "fileUploadFailed": "File upload failed for {{name}}",
+      "uploadFailed": "Failed to upload recordings",
+      "deleteFailed": "Failed to delete recording",
+      "playFailed": "Failed to play recording",
+      "dialogTitle": "Workflow Recordings",
+      "description": "Upload or record audio for hybrid prompts. Recordings are scoped to your current TTS configuration. Use <0>@</0> in prompt fields to insert them.",
+      "ttsConfigTitle": "Current TTS Configuration",
+      "providerTag": "Provider: {{value}}",
+      "modelTag": "Model: {{value}}",
+      "voiceTag": "VoiceID: {{value}}",
+      "noTtsConfig": "No TTS configuration found. Set it in Model Configurations.",
+      "addNew": "Add New Recordings",
+      "audioFiles": "Audio Files",
+      "chooseFiles": "Choose audio files (max 5MB each)",
+      "record": "Record",
+      "recordingName": "Recording Name",
+      "namePlaceholder": "e.g. greeting, hold-message",
+      "startRecording": "Start Recording",
+      "stop": "Stop",
+      "pending_one": "Pending ({{count}} file)",
+      "pending_other": "Pending ({{count}} files)",
+      "transcribing": "Transcribing...",
+      "transcriptPlaceholder": "What does this recording say?",
+      "language": "Language",
+      "uploading": "Uploading...",
+      "uploadRecordings_one": "Upload {{count}} Recording",
+      "uploadRecordings_other": "Upload {{count}} Recordings",
+      "listTitle": "Recordings",
+      "empty": "No recordings yet for this TTS configuration."
+    },
+    "embed": {
+      "timeoutRange": "Chat inactivity timeout must be a whole number between {{min}} and {{max}} minutes",
+      "timeoutWhole": "Chat inactivity timeout must be a whole number of minutes",
+      "disableFailed": "Failed to disable embedding",
+      "saveFailed": "Failed to save widget configuration",
+      "saveSuccess": "Widget configuration saved. Publish the agent to apply the changes.",
+      "copyFailed": "Failed to copy embed code",
+      "title": "Configure Widget",
+      "docs": "Docs",
+      "description": "Add \"{{name}}\" to any website with a simple script tag.",
+      "enableEmbedding": "Enable Embedding",
+      "enableEmbeddingHelp": "Allow this workflow to be embedded on external websites",
+      "allowedDomains": "Allowed Domains",
+      "allowedDomainsHint": "(leave empty to allow all domains)",
+      "domainPlaceholder": "example.com or *.example.com",
+      "widgetType": "Widget Type",
+      "voiceAgent": "Voice Agent",
+      "voiceAgentHelp": "Visitors talk to your agent by voice",
+      "chatAgent": "Chat Agent",
+      "chatAgentHelp": "Visitors type messages to your agent",
+      "chatInactivityTimeout": "Chat Inactivity Timeout",
+      "minutes": "minutes",
+      "timeoutHelp": "End a text chat and trigger its completion webhook after this long without chat activity.",
+      "embedMode": "Embed Mode",
+      "floatingWidget": "Floating Widget",
+      "floatingWidgetHelp": "Shows as a button in corner of the page",
+      "inlineComponent": "Inline Component",
+      "inlineComponentHelp": "Embeds directly in your page content",
+      "headless": "Headless (Bring Your Own UI)",
+      "headlessHelp": "No UI - drive calls from your own buttons via the JS API",
+      "configuration": "Configuration",
+      "buttonText": "Button Text",
+      "buttonColor": "Button Color",
+      "position": "Position",
+      "positionBottomRight": "Bottom Right",
+      "positionBottomLeft": "Bottom Left",
+      "positionTopRight": "Top Right",
+      "positionTopLeft": "Top Left",
+      "callToActionText": "Call to Action Text",
+      "chatPanelText": "Chat Panel Text",
+      "chatPanelTextHelp": "Wording visitors see inside the chat panel.",
+      "voiceCallText": "Voice Call Text",
+      "voiceCallTextHelpInline": "Wording visitors see on the call panel across the call lifecycle.",
+      "voiceCallTextHelpFloating": "Wording the call button cycles through while a call connects and runs.",
+      "buttonLabels": "Button labels",
+      "statusMessages": "Status messages",
+      "previewGreeting": "Hi! How can I help you today?",
+      "previewQuestion": "I have a question…",
+      "integrationInstructions": "Integration Instructions",
+      "exampleDriveChatUi": "Example - drive your own chat UI",
+      "exampleTrackStatus": "Example - track status in your own state",
+      "example": "Example",
+      "exampleReactComponent": "Example React Component",
+      "headlessChatBullet1": "Add the embed script tag to your page (see below).",
+      "headlessChatBullet2": "The widget renders no UI - render your own chat interface.",
+      "headlessChatBullet3": "Call window.DograhWidget.startChat() to start a conversation (the agent greeting arrives via onMessage).",
+      "headlessChatBullet4": "Call window.DograhWidget.sendMessage(text) to send a visitor message; it resolves with the updated transcript, or null if the message could not be delivered.",
+      "headlessChatBullet5": "Call window.DograhWidget.endChat() to end the active conversation and trigger its completion webhook.",
+      "headlessChatBullet6": "Use getMessages() to read the transcript at any time.",
+      "headlessChatBullet7": "Subscribe to onMessage and onChatStateChange to drive your UI. States are idle, starting, ready, waiting, ended, expired, error.",
+      "headlessChatBullet8": "Call window.DograhWidget.setContext({ ... }) before startChat() to pass visitor details the page learned after load.",
+      "headlessVoiceBullet1": "Add the embed script tag to your page (see below).",
+      "headlessVoiceBullet2": "The widget renders no UI - render your own buttons.",
+      "headlessVoiceBullet3": "Call window.DograhWidget.start() to begin a call.",
+      "headlessVoiceBullet4": "Call window.DograhWidget.end() to end it.",
+      "headlessVoiceBullet5": "Subscribe to onCallStart, onCallEnd, onStatusChange, onError to drive your UI.",
+      "headlessVoiceBullet6": "start() must run inside a user-gesture handler (click) so the browser grants microphone access.",
+      "headlessVoiceBullet7": "Call window.DograhWidget.setContext({ ... }) before start() to pass visitor details the page learned after load.",
+      "headlessVoiceProse": "Mirror the call status into a variable you control, then render whatever UI you like from it. The status values are idle, connecting, connected, failed.",
+      "inlineBullet1": "Add a div with id=\"dograh-inline-container\" where you want the widget",
+      "inlineBullet2": "The widget will render inside this container",
+      "inlineBullet3": "You have full control over the container's styling",
+      "inlineBulletChat": "The chat panel renders in the container; the conversation starts when the visitor clicks the button",
+      "inlineBulletVoiceStart": "Call window.DograhWidget.start() to begin the call",
+      "inlineBulletVoiceEnd": "Call window.DograhWidget.end() to end the call",
+      "saveConfigurations": "Save Configurations",
+      "embedCode": "Embed Code",
+      "copyCode": "Copy Code",
+      "embedCodeHelp": "Add this script to your website's HTML to enable the widget. Configuration changes will apply automatically without re-embedding.",
+      "visitorDetails": "To pass visitor details to the agent, edit the <0>data-dograh-context</0> values above — or call <1>{{setContextExample}}</1> for details your page learns later. Each one is available in your prompts as <2>{{pageContextExample}}</2>. <3>Learn more</3>",
+      "clickSaveToGenerate": "Click <0>Save Configurations</0> to generate your embed script.",
+      "fields": {
+        "endChatText": "End Chat Button",
+        "endChatConfirmText": "End Chat Confirmation",
+        "endChatCancelText": "Cancel Button",
+        "endingChatText": "Ending Chat Status",
+        "conversationEndedText": "Conversation Ended Message",
+        "startNewChatText": "Start New Chat Button",
+        "chatRetryText": "Retry Button",
+        "chatInputPlaceholder": "Message Input Placeholder",
+        "sendMessageLabel": "Send Button Label",
+        "closeChatLabel": "Close Button Label",
+        "voiceConnectingText": "Connecting",
+        "voiceEndCallText": "End Call Button",
+        "voiceRetryText": "Retry Button",
+        "voiceReadyTitle": "Ready Heading",
+        "voiceConnectingSubtext": "Connecting Subtext",
+        "voiceConnectedTitle": "Connected Heading",
+        "voiceConnectedSubtext": "Connected Subtext",
+        "voiceCallEndedTitle": "Call Ended Heading",
+        "voiceCallEndedSubtext": "Call Ended Subtext",
+        "voiceConnectionFailedTitle": "Connection Failed Heading",
+        "voiceConnectionFailedSubtext": "Connection Failed Subtext",
+        "voiceConnectionLostTitle": "Connection Lost Heading",
+        "voiceConnectionLostSubtext": "Connection Lost Subtext"
+      },
+      "fieldHints": {
+        "nextToConfirmation": "shown next to the confirmation",
+        "screenReadersOnly": "screen readers only",
+        "pairedWithCta": "paired with Call to Action Text"
+      }
+    },
+    "configurations": {
+      "title": "Configurations",
+      "agentName": "Agent Name",
+      "agentNameHelp": "The name of your agent",
+      "nameLabel": "Name",
+      "namePlaceholder": "Enter Agent name",
+      "ambientNoise": "Ambient Noise",
+      "ambientNoiseHelp": "Add background office ambient noise to make the conversation sound more natural.",
+      "useAmbientNoise": "Use Ambient Noise",
+      "volume": "Volume",
+      "turnDetection": "Turn Detection",
+      "turnDetectionHelp": "Configure how the agent detects when the user has finished speaking.",
+      "detectionStrategy": "Detection Strategy",
+      "selectStrategy": "Select strategy",
+      "transcriptionBased": "Transcription-based",
+      "smartTurnAnalyzer": "Smart Turn Analyzer",
+      "transcriptionHelp": "Best for short responses (1-2 word statements). Ends turn when transcription indicates completion.",
+      "turnAnalyzerHelp": "Best for longer responses with natural pauses. Uses ML model to detect end of turn.",
+      "incompleteTurnTimeout": "Incomplete Turn Timeout (seconds)",
+      "incompleteTurnTimeoutHelp": "Max silence duration before ending an incomplete turn. Default: 2 seconds",
+      "interruption": "Interruption",
+      "interruptionHelp": "Configure when user speech should interrupt the agent while it is speaking.",
+      "interruptionStrategy": "Interruption Strategy",
+      "minWords": "Minimum Words Before Interruption",
+      "minWordsHelp": "Number of transcribed words needed to interrupt while the bot is speaking. Default: {{count}}",
+      "contextCompaction": "Context Compaction",
+      "contextCompactionHelp": "Automatically summarize conversation context when transitioning between nodes. Removes stale tool calls and keeps the context clean for the new node.",
+      "enableContextCompaction": "Enable Context Compaction",
+      "callManagement": "Call Management",
+      "callManagementHelp": "Configure call duration limits and idle timeout settings.",
+      "maxCallDuration": "Max Call Duration (seconds)",
+      "maxCallDurationDefault": "Default: 600 (10 minutes)",
+      "maxIdleTimeout": "Max User Idle Timeout (seconds)",
+      "maxIdleTimeoutDefault": "Default: 10 seconds",
+      "externalPbx": "External PBX Field Updates",
+      "externalPbxHelp": "Optionally copy final gathered-context values into provider-native fields before transfer or hangup.",
+      "fieldMappings": "Field Mappings",
+      "addMapping": "Add mapping",
+      "contextFieldAria": "Gathered context field {{index}}",
+      "destinationFieldAria": "External PBX destination field {{index}}",
+      "removeMappingAria": "Remove external PBX field mapping {{index}}",
+      "noExternalFields": "No external fields will be updated. Context names may be direct extracted-variable names or paths such as extracted_variables.qualified.",
+      "mappingInvalid": "Each mapping needs a context field and a destination field containing only letters, numbers, and underscores."
+    },
+    "dictionary": {
+      "title": "Dictionary",
+      "description": "Add any specific words that you would want the bot to actively listen for. The Voice Agent learns your unique words and names. Add expected words and phrases, company jargon, named entities, or industry-specific lingo.",
+      "descriptionExample": "Example: billing department, tretinoin etc.",
+      "descriptionCost": "(May incur extra cost depending on provider)",
+      "words": "Words",
+      "placeholder": "Enter words separated by comma",
+      "save": "Save Dictionary"
+    },
+    "contextVariables": {
+      "title": "Template Context Variables",
+      "description": "Add or remove template context variables that will be available to your workflow. You can use these variables within your workflow nodes within double curly braces. Example: {{example}}.",
+      "currentVariables": "Current Variables",
+      "addNewVariable": "Add New Variable",
+      "key": "Key",
+      "value": "Value",
+      "keyPlaceholder": "Enter variable key",
+      "valuePlaceholder": "Enter variable value",
+      "addVariable": "Add Variable",
+      "add": "Add",
+      "saveVariables": "Save Variables",
+      "duplicateKey": "Variable with this key already exists"
+    },
+    "answerSupervisor": {
+      "messageFormat": "Message format",
+      "formatText": "Text",
+      "formatRecording": "Recording",
+      "voicemailPlaceholder": "Hi, this is Alex from Acme. Please call us back at...",
+      "screeningPlaceholder": "Alex from Acme, calling about your appointment.",
+      "loadRecordingsFailed": "Could not load recordings.",
+      "whenVoicemail": "When voicemail is detected",
+      "disconnectCall": "Disconnect the call",
+      "leaveMessage": "Leave a message",
+      "voicemailMessage": "Voicemail message",
+      "voicemailMessageHelp": "The agent plays this message, then disconnects the call.",
+      "voicemailMessageRequired": "Enter a voicemail message or select a recording.",
+      "screeningMessage": "Screening message",
+      "screeningMessageHelp": "State your name and reason for calling. After this message, the agent waits silently for the person to answer. Leave blank to end screened calls.",
+      "timing": "Timing",
+      "timingHelp": "Use the Start node's Delayed Start setting to configure how long the agent listens before greeting a silent answer. The default is 1.2 seconds. A brief human greeting can end the wait sooner.",
+      "screeningWait": "Screening wait (seconds)",
+      "screeningWaitHelp": "How long to wait for the person after the screening message finishes."
+    },
+    "settings": {
+      "pageTitle": "Workflow Settings",
+      "onThisPage": "On this page",
+      "unsavedChanges": "Unsaved changes",
+      "nav": {
+        "general": "General",
+        "models": "Model Overrides",
+        "variables": "Template Variables",
+        "dictionary": "Dictionary",
+        "voicemail": "Voicemail & Screening",
+        "recordings": "Recordings",
+        "deployment": "Add to Website",
+        "report": "Report",
+        "identity": "Agent UUID"
+      },
+      "report": {
+        "title": "Report",
+        "description": "Download a CSV report of completed runs for this agent, optionally filtered by date range.",
+        "downloadFailed": "Failed to download report",
+        "downloadReport": "Download Report",
+        "filterTitle": "Filter by date range",
+        "from": "From",
+        "to": "To",
+        "startDate": "Start date",
+        "endDate": "End date",
+        "clear": "Clear",
+        "downloadFiltered": "Download Filtered",
+        "downloadAll": "Download All"
+      },
+      "general": {
+        "title": "General",
+        "description": "Agent name, call behavior, and turn detection. <0>Learn more</0>",
+        "saved": "General settings saved. Publish the agent to apply the changes.",
+        "agentName": "Agent Name",
+        "agentNamePlaceholder": "Enter Agent name",
+        "ambientNoise": "Ambient Noise",
+        "ambientNoiseHelp": "Add background ambient noise to make the conversation sound more natural.",
+        "useAmbientNoise": "Use Ambient Noise",
+        "volume": "Volume",
+        "customAudioFile": "Custom Audio File",
+        "customAudioHelp": "Upload your own audio file or use the default office ambience.",
+        "customAudioFallback": "Custom audio",
+        "fileTooLarge": "File too large ({{size}}MB). Maximum is 10MB.",
+        "uploadUrlFailed": "Failed to get upload URL",
+        "fileUploadFailed": "File upload failed",
+        "uploadFailed": "Upload failed",
+        "playFailed": "Failed to play audio",
+        "uploading": "Uploading...",
+        "uploadButton": "Upload audio file (max 10MB)",
+        "usingDefault": "Using default office ambience",
+        "turnDetection": "Turn Detection",
+        "turnDetectionHelp": "Configure how the agent detects when the user has finished speaking.",
+        "detectionStrategy": "Detection Strategy",
+        "selectStrategy": "Select strategy",
+        "transcriptionBased": "Transcription-based",
+        "smartTurnAnalyzer": "Smart Turn Analyzer",
+        "transcriptionHelp": "Best for short responses (1-2 word statements). Ends turn when transcription indicates completion.",
+        "turnAnalyzerHelp": "Best for longer responses with natural pauses. Uses ML model to detect end of turn.",
+        "incompleteTurnTimeout": "Incomplete Turn Timeout (seconds)",
+        "incompleteTurnTimeoutHelp": "Max silence duration before ending an incomplete turn. Default: 2 seconds",
+        "interruption": "Interruption",
+        "interruptionHelp": "Configure when user speech should interrupt the agent while it is speaking.",
+        "interruptionStrategy": "Interruption Strategy",
+        "minWords": "Minimum Words Before Interruption",
+        "minWordsHelp": "Number of transcribed words needed to interrupt while the bot is speaking. Default: {{count}}",
+        "transcript": "Transcript",
+        "transcriptHelp": "Include start and stop timestamps for each speaker in the uploaded transcript.",
+        "enhancedTimestamps": "Enhanced Timestamped Transcript",
+        "contextCompaction": "Context Compaction",
+        "contextCompactionHelp": "Automatically summarize conversation context when transitioning between nodes. Not applicable in Realtime mode - the speech-to-speech service manages its own conversation state and this setting is ignored.",
+        "enableContextCompaction": "Enable Context Compaction",
+        "callManagement": "Call Management",
+        "callManagementHelp": "Configure call duration limits and idle timeout settings.",
+        "maxCallDuration": "Max Call Duration (seconds)",
+        "maxCallDurationDefault": "Default: 600 (10 minutes)",
+        "maxIdleTimeout": "Max User Idle Timeout (seconds)",
+        "maxIdleTimeoutDefault": "Default: 10 seconds",
+        "externalPbx": "External PBX Field Updates",
+        "externalPbxHelp": "Optionally copy final gathered-context values into provider-native fields before transfer or hangup.",
+        "fieldMappings": "Field Mappings",
+        "addMapping": "Add mapping",
+        "contextFieldAria": "Gathered context field {{index}}",
+        "destinationFieldAria": "External PBX destination field {{index}}",
+        "removeMappingAria": "Remove external PBX field mapping {{index}}",
+        "noExternalFields": "No external fields will be updated. Context names may be direct extracted-variable names or paths such as extracted_variables.qualified.",
+        "mappingInvalid": "Each mapping needs a context field and a destination field containing only letters, numbers, and underscores.",
+        "leadFieldsTitle": "Lead Fields To Capture",
+        "leadFieldsHelp": "Extra lead fields to read from the inbound call, named without the header prefix (first_name reads X-VICIDIAL-first_name). Captured values are addressable in prompts as {{example}}. Each field adds one request during call setup, so list only what the agent uses.",
+        "leadFields": "Lead Fields",
+        "addField": "Add field",
+        "leadFieldAria": "External PBX lead field {{index}}",
+        "removeLeadFieldAria": "Remove external PBX lead field {{index}}",
+        "noLeadFields": "Only the identity fields needed to transfer or hang up the call are captured.",
+        "leadFieldInvalid": "Each lead field must start with a letter and contain only letters, numbers, and underscores.",
+        "saveButton": "Save General Settings"
+      },
+      "variables": {
+        "title": "Template Variables",
+        "description": "Variables available in workflow prompts via {{example}} syntax for testing the workflow. <0>Learn more</0>",
+        "saved": "Template variables saved. Publish the agent to apply the changes.",
+        "saveButton": "Save Variables"
+      },
+      "dictionary": {
+        "title": "Dictionary",
+        "description": "Add words the agent should actively listen for — company jargon, names, industry terms. May incur extra cost depending on provider.",
+        "placeholder": "Enter words separated by comma (e.g. billing department, tretinoin)",
+        "saved": "Dictionary saved. Publish the agent to apply the changes.",
+        "saveButton": "Save Dictionary"
+      },
+      "voicemail": {
+        "title": "Voicemail & Screening",
+        "description": "Choose how the agent handles voicemail and call screening. Applies to outbound calls with separate speech and language models.",
+        "descriptionRealtime": "These settings do not apply to realtime speech-to-speech models. Support for realtime models is coming soon.",
+        "enableLabel": "Enable voicemail and screening handling",
+        "classificationModel": "Classification model",
+        "useWorkflowLlm": "Use Workflow LLM",
+        "useWorkflowLlmHelp": "Use the LLM configured in your account settings.",
+        "classifierInstructions": "Classifier instructions",
+        "classifierPlaceholder": "Leave blank to use the built-in instructions.",
+        "classifierHelp": "These instructions decide whether the answering party is a person, a voicemail, a screening service or an IVR menu. Edit them when your calls are not in English: describe the greetings and carrier announcements your callers actually hear. Leave them unchanged to keep following the built-in instructions as they improve; clear the box to go back to them. The reply must be a single label — CONVERSATION, VOICEMAIL, NO_MESSAGE, SCREENER, SCREENING_WAIT, IVR or UNKNOWN. Anything else is read as UNKNOWN, which lets the call through to the agent, so instructions that only answer CONVERSATION or VOICEMAIL will silently disable screening and IVR handling.",
+        "saved": "Voicemail settings saved. Publish the agent to apply the changes.",
+        "saveButton": "Save Voicemail Settings"
+      },
+      "models": {
+        "title": "Model Overrides",
+        "description": "Override the full organization model configuration for this workflow. <0>Learn more</0>",
+        "loading": "Loading model configuration",
+        "loadDefaultsFailed": "Failed to load model configuration defaults",
+        "loadFailed": "Failed to load model configuration",
+        "setupFirst": "Set up your organization model configuration before overriding it per workflow.",
+        "configureModels": "Configure Models",
+        "overrideToggle": "Override for this workflow",
+        "overrideOn": "This workflow uses its own complete model configuration.",
+        "overrideOff": "This workflow uses the organization model configuration.",
+        "usingOrg": "Using organization model configuration.",
+        "saveOrgConfiguration": "Save Organization Configuration",
+        "saveOverride": "Save Model Override",
+        "savedOverride": "Model override saved. Publish the agent to apply the changes.",
+        "savedOrg": "Organization model configuration saved. Publish the agent to apply the changes."
+      },
+      "recordingsCard": {
+        "title": "Recordings",
+        "description": "Recordings are now managed at the organization level and shared across all agents. Use <0>@</0> in prompt fields to insert them. <1>Learn more</1>",
+        "goToRecordings": "Go to Recordings"
+      },
+      "deployment": {
+        "title": "Add to Website",
+        "description": "Configure a widget to add this voice agent to your website. <0>Learn more</0>",
+        "configureWidget": "Configure Widget"
+      },
+      "loadFailed": "Failed to fetch workflow",
+      "notFound": "Workflow not found",
+      "identity": {
+        "title": "Agent UUID",
+        "description": "Stable identifier for this agent. Used in agent-stream URLs and other integrations where a numeric workflow ID isn't portable.",
+        "clickToCopy": "Click to copy",
+        "copyUuid": "Copy UUID",
+        "copied": "Agent UUID copied",
+        "copyFailed": "Failed to copy Agent UUID"
+      }
+    },
+    "dispositions": {
+      "toggleLabel": "Extract call disposition at the end of the call",
+      "enabledSummary_one": "{{count}} outcome configured. VoiceWorker will classify the completed conversation into one of them.",
+      "enabledSummary_other": "{{count}} outcomes configured. VoiceWorker will classify the completed conversation into one of them.",
+      "disabledSummary": "Disabled. VoiceWorker will keep the disposition recorded by the call-ending event.",
+      "configureOptions": "Configure options",
+      "dialogTitle": "Call disposition extraction",
+      "dialogDescription": "Configure the code and description pairs the model can choose from. Codes are recorded before organization-level disposition mapping is applied.",
+      "optionsLabel": "Disposition options",
+      "addCustom": "Add custom disposition",
+      "dispositionNumber": "Disposition {{index}}",
+      "codeLabel": "Disposition Code",
+      "codePlaceholder": "qualified",
+      "descriptionLabel": "Description",
+      "descriptionPlaceholder": "Use when the customer meets the qualification criteria and wants to proceed.",
+      "removeAria": "Remove disposition {{index}}",
+      "emptyTitle": "Add at least one disposition",
+      "emptyBody": "Extraction needs a closed list of outcomes to choose from.",
+      "charCounter": "{{used}} / {{max}} description characters",
+      "saveOptions": "Save options",
+      "enableExtraction": "Enable extraction",
+      "errors": {
+        "codeRequired": "Disposition code is required.",
+        "codeTooLong": "Disposition code must be at most {{max}} characters.",
+        "codePattern": "Start with a letter and use only letters, numbers, underscores, or hyphens.",
+        "codeDuplicate": "Disposition codes must be unique.",
+        "descriptionRequired": "Description is required.",
+        "descriptionTooLong": "Description must be at most {{max}} characters.",
+        "totalTooLong": "Descriptions must total at most {{max}} characters."
+      }
+    }
+  },
+  "campaigns": {
+    "title": "Campaigns",
+    "subtitle": "Manage your bulk workflow execution campaigns",
+    "createCampaign": "Create Campaign",
+    "allCampaigns": "All Campaigns",
+    "allCampaignsDescription": "View and manage your campaigns",
+    "headerId": "ID",
+    "headerName": "Name",
+    "headerWorkflow": "Workflow",
+    "headerState": "State",
+    "headerProgress": "Progress",
+    "headerCreated": "Created",
+    "headerAction": "Action",
+    "view": "View",
+    "empty": "No campaigns found",
+    "createFirst": "Create your first campaign",
+    "backToCampaigns": "Back to Campaigns",
+    "backToCampaign": "Back to Campaign",
+    "notFound": "Campaign not found",
+    "editCampaign": "Edit Campaign",
+    "startCampaign": "Start Campaign",
+    "pauseCampaign": "Pause Campaign",
+    "resumeCampaign": "Resume Campaign",
+    "redialCampaign": "Redial Campaign",
+    "busy": "Busy",
+    "noAnswer": "No Answer",
+    "voicemail": "Voicemail",
+    "retryDelayLabel": "Retry Delay",
+    "states": {
+      "created": "created",
+      "running": "running",
+      "paused": "paused",
+      "completed": "completed",
+      "failed": "failed"
+    },
+    "csv": {
+      "label": "CSV File",
+      "selectCsv": "Please select a CSV file",
+      "sizeLimit": "File size must be less than 10MB",
+      "uploadUrlFailed": "Failed to get upload URL",
+      "storageFailed": "Failed to upload file to storage",
+      "uploaded": "File uploaded: {{name}}",
+      "uploadFailed": "Failed to upload CSV file",
+      "uploading": "Uploading... {{progress}}%",
+      "uploadButton": "Upload CSV File",
+      "selected": "Selected: ",
+      "help": "Upload a CSV file with contact data. Must include phone_number column. The columns can be accessed as initial_context in the workflow nodes. Max 10MB."
+    },
+    "advanced": {
+      "title": "Advanced Settings",
+      "maxConcurrency": "Max Concurrent Calls",
+      "defaultPlaceholder": "Default: {{limit}}",
+      "maxConcurrencyHelp": "Maximum number of simultaneous calls. Leave empty to use {{limit}}.",
+      "cliInfo_one": "You have {{count}} CLI and an org limit of {{orgLimit}}.",
+      "cliInfo_other": "You have {{count}} CLIs and an org limit of {{orgLimit}}.",
+      "callerIdRotation": "Caller IDs rotate across calls and may be reused on simultaneous calls.",
+      "openTelephony": "Open Telephony Configuration",
+      "dialRate": "Calls Started per Second",
+      "dialRateHelp": "Maximum new calls this campaign can start each second. Default: 1. Your account allows up to {{limit}}.",
+      "enableRetries": "Enable Retries",
+      "enableRetriesHelp": "Automatically retry failed calls",
+      "maxRetries": "Max Retries",
+      "retryDelay": "Retry Delay (seconds)",
+      "retryOn": "Retry On",
+      "busySignal": "Busy Signal",
+      "noAnswer": "No Answer",
+      "voicemail": "Voicemail",
+      "callSchedule": "Call Schedule",
+      "callScheduleHelp": "Restrict when calls are made",
+      "timezone": "Timezone",
+      "timeSlots": "Time Slots",
+      "days": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+      "to": "to",
+      "addTimeSlot": "Add Time Slot",
+      "circuitBreaker": "Circuit Breaker",
+      "circuitBreakerHelp": "Auto-pause campaign on high failure rates",
+      "failureThreshold": "Failure Threshold (%)",
+      "failureThresholdHelp": "Pause when failure rate exceeds this percentage",
+      "windowSeconds": "Window (seconds)",
+      "minCalls": "Min Calls in Window"
+    },
+    "new": {
+      "title": "Create New Campaign",
+      "subtitle": "Set up a new campaign to execute workflows at scale",
+      "cardTitle": "Campaign Details",
+      "cardDescription": "Configure your campaign settings",
+      "nameLabel": "Campaign Name",
+      "namePlaceholder": "Enter campaign name",
+      "nameHelp": "Choose a descriptive name for your campaign",
+      "workflowLabel": "Workflow",
+      "workflowPlaceholder": "Select a workflow",
+      "workflowsLoading": "Loading workflows...",
+      "workflowsEmpty": "No workflows found",
+      "workflowHelp": "Select the workflow to execute for each row in the data source",
+      "telephonyLabel": "Telephony Configuration",
+      "telephonyNone": "No telephony configurations yet. <1>Add one</1> to create a campaign.",
+      "telephonyPlaceholder": "Select a telephony configuration",
+      "telephonyLoading": "Loading configurations...",
+      "telephonyDefault": "default",
+      "telephonyHelp": "Outbound calls for this campaign will use this configuration's caller IDs",
+      "sourceTypeLabel": "Data Source Type",
+      "sourceTypePlaceholder": "Select source type",
+      "sourceCsv": "CSV File",
+      "sourceTypeHelp": "Choose where your contact data is stored",
+      "creating": "Creating...",
+      "loadWorkflowsFailed": "Failed to load workflows",
+      "loadTelephonyFailed": "Failed to load telephony configurations",
+      "fillAllFields": "Please fill in all fields",
+      "maxConcurrencyRange": "Max concurrent calls must be between 1 and your organization limit ({{limit}})",
+      "dialRateRange": "Calls started per second must be between 1 and {{limit}}",
+      "createFailed": "Failed to create campaign",
+      "created": "Campaign created successfully"
+    },
+    "edit": {
+      "title": "Edit Campaign",
+      "subtitle": "Modify campaign settings",
+      "cardTitle": "Campaign Settings",
+      "cardDescription": "Update name, concurrency, retry, and schedule configuration",
+      "nameLabel": "Campaign Name",
+      "namePlaceholder": "Enter campaign name",
+      "saving": "Saving...",
+      "saveChanges": "Save Changes",
+      "loadFailed": "Failed to load campaign",
+      "loadLimitsFailed": "Failed to load campaign limits",
+      "loadTelephonyFailed": "Failed to load telephony configurations",
+      "configMissing": "The campaign's telephony configuration could not be found",
+      "nameRequired": "Campaign name is required",
+      "maxConcurrencyRange": "Max concurrent calls must be between 1 and your organization limit ({{limit}})",
+      "dialRateRange": "Calls started per second must be between 1 and {{limit}}",
+      "addTimeSlot": "Add at least one time slot",
+      "slotOrder": "Start time must be before end time for each slot",
+      "updateFailed": "Failed to update campaign",
+      "updated": "Campaign updated successfully"
+    },
+    "detail": {
+      "loadFailed": "Failed to load campaign details",
+      "downloadUrlFailed": "Failed to get download URL",
+      "downloadCsvFailed": "Failed to download CSV file",
+      "downloadReportFailed": "Failed to download report",
+      "started": "Campaign started",
+      "startFailed": "Failed to start campaign",
+      "resumed": "Campaign resumed",
+      "resumeFailed": "Failed to resume campaign",
+      "redialReasonRequired": "Select at least one reason to redial",
+      "redialCreated": "Redial campaign created",
+      "redialFailed": "Failed to create redial campaign",
+      "paused": "Campaign paused",
+      "pauseFailed": "Failed to pause campaign",
+      "redialNameSuffix": "(Redial)",
+      "createdAt": "Created {{date}}",
+      "downloadReport": "Download Report",
+      "filterByDateRange": "Filter by date range",
+      "from": "From",
+      "to": "To",
+      "startDate": "Start date",
+      "endDate": "End date",
+      "clear": "Clear",
+      "downloadFiltered": "Download Filtered",
+      "downloadAll": "Download All",
+      "detailsTitle": "Campaign Details",
+      "detailsDescription": "Configuration and source information",
+      "workflow": "Workflow",
+      "sourceType": "Source Type",
+      "sourceFile": "Source File",
+      "sourceSheet": "Source Sheet",
+      "telephonyConfig": "Telephony Configuration",
+      "configNumber": "Configuration #{{id}}",
+      "notAssigned": "Not assigned",
+      "state": "State",
+      "progress": "Progress",
+      "redialOf": "Redial Of",
+      "redialedAs": "Redialed As",
+      "campaignNumber": "Campaign #{{id}}",
+      "startedAt": "Started At",
+      "completedAt": "Completed At",
+      "settingsTitle": "Campaign Settings",
+      "settingsDescription": "Concurrency and retry configuration",
+      "orgDefault": "Using organization default",
+      "retriesEnabled": "Retries Enabled",
+      "notConfigured": "Not configured",
+      "activityTitle": "Activity Log",
+      "activityDescription": "Recent state transitions and failures. Newest first.",
+      "activityEmpty": "No events recorded yet.",
+      "detailsToggle": "Details",
+      "redial": {
+        "title": "Redial Campaign",
+        "description": "Creates a new campaign that re-dials unique subscribers whose last call ended with one of the selected outcomes. Subscribers who were successfully reached on a retry are skipped.",
+        "nameLabel": "Name",
+        "namePlaceholder": "Campaign name",
+        "redialWhen": "Redial when last call was",
+        "creating": "Creating...",
+        "create": "Create Redial Campaign"
+      }
+    }
+  },
+  "files": {
+    "title": "Knowledge Base Files",
+    "subtitle": "Upload and manage documents for your voice agents to reference.",
+    "yourDocuments": "Your Documents",
+    "yourDocumentsDescription": "Documents shared across all agents in your organization",
+    "uploadDocument": "Upload Document",
+    "uploadDialogTitle": "Upload Document",
+    "uploadDialogDescription": "Upload a PDF or document file to add to your knowledge base",
+    "upload": {
+      "ossNoticeTitle": "Processed by an external service",
+      "ossNoticeBody": "Uploaded documents are sent to VoiceWorker's managed Model Proxy Service for parsing and chunking. VoiceWorker Model Proxy Service does not store or read your documents - the extracted text and embeddings are returned and stored locally in your self-hosted database.",
+      "unsupportedType": "Please select a supported file type: {{types}}",
+      "sizeLimit": "File size must be less than 5MB",
+      "uploadUrlFailed": "Failed to get upload URL",
+      "storageFailed": "Failed to upload file to storage",
+      "processingFailed": "Failed to trigger processing",
+      "uploaded": "File uploaded: {{name}}. Processing started.",
+      "uploadFailed": "Failed to upload document",
+      "retrievalQuestion": "How should the agent use this document?",
+      "fullDocument": "Full Document",
+      "fullDocumentHelp": "The entire document is provided to the agent on each retrieval. Best for menus, price lists, FAQs, and other small reference documents.",
+      "chunked": "Chunked Search",
+      "chunkedHelp": "The document is split into chunks and the most relevant ones are retrieved. Better for large documents like manuals or policies.",
+      "uploadAndProcess": "Upload & Process",
+      "uploading": "Uploading...",
+      "dropHere": "Drop your document here",
+      "orBrowse": "or click to browse",
+      "supportedFormats": "Supported formats: {{types}} (Max 5MB)",
+      "chooseFile": "Choose File"
+    },
+    "list": {
+      "fetchFailed": "Failed to fetch documents",
+      "deleteConfirm": "Are you sure you want to delete \"{{name}}\"?",
+      "deleteFailed": "Failed to delete document",
+      "deleted": "Deleted \"{{name}}\"",
+      "searchPlaceholder": "Search documents...",
+      "noMatch": "No documents match your search",
+      "empty": "No documents uploaded yet",
+      "statusCompleted": "Completed",
+      "statusProcessing": "Processing",
+      "statusPending": "Pending",
+      "statusFailed": "Failed",
+      "fullDocument": "Full Document",
+      "chunked": "Chunked",
+      "chunks": "{{count}} chunks",
+      "errorPrefix": "Error: ",
+      "duplicate": "Duplicate of another document"
+    }
+  },
+  "recordings": {
+    "title": "Recordings",
+    "subtitle": "Manage audio recordings for your organization. Use <1>@</1> in prompt fields to insert them, or as transition messages in tool calls.",
+    "allRecordings": "All Recordings",
+    "allRecordingsDescription": "Audio recordings shared across all agents in your organization",
+    "uploadRecording": "Upload Recording",
+    "list": {
+      "fetchFailed": "Failed to fetch recordings",
+      "deleteConfirm": "Are you sure you want to delete this recording?",
+      "deleteFailed": "Failed to delete recording",
+      "deleted": "Recording deleted",
+      "playFailed": "Failed to play recording",
+      "idEmpty": "ID cannot be empty",
+      "idInvalid": "Only letters, numbers, hyphens, and underscores",
+      "updateFailed": "Failed to update recording ID",
+      "updated": "Recording ID updated to \"{{id}}\". All workflow references have been updated.",
+      "searchPlaceholder": "Search by filename, transcript, or ID...",
+      "count_one": "{{count}} recording",
+      "count_other": "{{count}} recordings",
+      "matching": "matching \"{{query}}\"",
+      "noMatch": "No recordings match your search",
+      "empty": "No recordings yet",
+      "editId": "Edit ID"
+    },
+    "upload": {
+      "title": "Upload Recordings",
+      "description": "Upload or record audio files. Use <1>@</1> in prompt fields to insert them into your agents.",
+      "transcribeFailed": "Auto-transcription failed",
+      "fileTooLargeSkipped": "{{name}} ({{size}}MB) exceeds 5MB limit - skipped.",
+      "recordingTooLarge": "Recording ({{size}}MB) exceeds the maximum allowed size of 5MB.",
+      "micDenied": "Microphone access denied. Please allow microphone permissions.",
+      "uploadUrlsFailed": "Failed to get upload URLs",
+      "fileUploadFailed": "File upload failed for {{name}}",
+      "uploadFailed": "Failed to upload recordings",
+      "audioFiles": "Audio Files",
+      "chooseFiles": "Choose audio files (max 5MB each)",
+      "record": "Record",
+      "recordingName": "Recording Name",
+      "recordingNamePlaceholder": "e.g. greeting, hold-message",
+      "startRecording": "Start Recording",
+      "stop": "Stop",
+      "pending_one": "Pending ({{count}} file)",
+      "pending_other": "Pending ({{count}} files)",
+      "transcribing": "Transcribing...",
+      "transcriptPlaceholder": "What does this recording say?",
+      "language": "Language",
+      "uploading": "Uploading...",
+      "uploadCount_one": "Upload {{count}} Recording",
+      "uploadCount_other": "Upload {{count}} Recordings"
+    },
+    "preview": {
+      "title": "Run Preview",
+      "runSuffix": " - Run #{{id}}",
+      "empty": "No recording or transcript available.",
+      "downloadRecording": "Download Recording",
+      "downloadTranscript": "Download Transcript"
+    }
+  },
+  "reports": {
+    "title": "Daily Reports",
+    "selectWorkflow": "Select workflow",
+    "allWorkflows": "All Workflows",
+    "showingTimezone": "Showing data for {{timezone}} timezone",
+    "filteredBy": " • Filtered by: {{name}}",
+    "downloadCsv": "Download CSV",
+    "csvHeaders": ["Phone Number", "Disposition", "Duration (seconds)", "Workflow Run URL"],
+    "noDataToDownload": "No data available for download",
+    "downloadFailed": "Failed to download CSV data",
+    "loadFailed": "Failed to load report data",
+    "noRuns": "No workflow runs found for {{date}}",
+    "noRunsForWorkflow": " for the selected workflow",
+    "metrics": {
+      "totalRuns": "Total Workflow Runs",
+      "totalRunsDescription": "Total calls processed today",
+      "transferDispositions": "Transfer Dispositions",
+      "transferDispositionsDescription": "Calls transferred (XFER)"
+    },
+    "charts": {
+      "callDuration": "Call Duration Distribution",
+      "noDurationData": "No duration data available",
+      "calls": "Calls: {{count}}",
+      "percentOfTotal": "{{pct}}% of total",
+      "disposition": "Disposition Distribution",
+      "noDispositionData": "No disposition data available",
+      "count": "Count: {{count}}"
+    }
+  },
+  "automation": {
+    "title": "Automation",
+    "subtitle": "Automate your workflows and processes",
+    "comingSoon": "Coming Soon",
+    "underDevelopment": "Automation features are currently under development",
+    "workingOn": "We're working on powerful automation features to help you streamline your workflows.",
+    "description": "Automate repetitive tasks, trigger actions based on events, and create intelligent workflow pipelines.",
+    "checkBack": "Check back soon for updates!"
+  },
+  "superadmin": {
+    "title": "Superadmin Dashboard",
+    "subtitle": "Manage users and view system-wide data",
+    "enterProviderId": "Enter a provider user ID.",
+    "enterEmail": "Enter an email address.",
+    "notAuthenticated": "User not authenticated. Please log in and try again.",
+    "impersonateFailed": "Failed to impersonate user. Please try again.",
+    "processing": "Processing...",
+    "providerCard": {
+      "title": "Provider User ID",
+      "description": "Impersonate with the Stack provider user ID",
+      "label": "Provider User ID",
+      "placeholder": "Provider user ID",
+      "button": "Impersonate by Provider ID"
+    },
+    "emailCard": {
+      "title": "Email",
+      "description": "Impersonate with a primary email address",
+      "label": "Email Address",
+      "placeholder": "user@example.com",
+      "button": "Impersonate by Email"
+    },
+    "runsCard": {
+      "title": "Workflow Runs",
+      "description": "View and manage all workflow runs across organizations",
+      "button": "View All Runs"
+    },
+    "runs": {
+      "fetchFailed": "Failed to fetch workflow runs. Please try again.",
+      "impersonateFailed": "Failed to impersonate the user. Please try again.",
+      "loading": "Loading workflow runs...",
+      "title": "Workflow Runs",
+      "subtitle": "View and manage all workflow runs across organizations",
+      "allRuns": "All Workflow Runs",
+      "showingCount": "Showing {{shown}} of {{total}} total runs",
+      "refreshing": "Refreshing...",
+      "empty": "No workflow runs found.",
+      "headerId": "ID",
+      "headerWorkflow": "Workflow",
+      "headerStatus": "Status",
+      "headerDisposition": "Disposition",
+      "headerTags": "Tags",
+      "headerDuration": "Duration",
+      "headerDetails": "Details",
+      "headerCreatedAt": "Created At",
+      "headerActions": "Actions",
+      "unknownWorkflow": "Unknown Workflow",
+      "initialContext": "Initial Context",
+      "gatheredContext": "Gathered Context",
+      "usageInfo": "Usage Info",
+      "openWorkflowAsUser": "Open workflow as user",
+      "openRunAsUser": "Open run details as user",
+      "pageOf": "Page {{page}} of {{totalPages}} ({{total}} total runs)"
+    }
+  },
+  "leadForms": {
+    "fields": {
+      "name": "Name",
+      "namePlaceholder": "Your full name",
+      "company": "Company name",
+      "companyPlaceholder": "Acme Inc.",
+      "email": "Email",
+      "workEmail": "Work email",
+      "emailPlaceholder": "you@company.com",
+      "jobTitle": "Job title",
+      "jobTitlePlaceholder": "VP Operations",
+      "phone": "Phone",
+      "volumeExpected": "Expected monthly call volume",
+      "volumeMonthly": "Monthly call volume",
+      "select": "Select",
+      "selectOne": "Select one",
+      "goal": "What do you want the voice agent to do?",
+      "goalPlaceholderHire": "Use case, target outcomes, any remarks…",
+      "goalPlaceholderEnterprise": "Use case, regulatory context, current stack…",
+      "deploymentQuestion": "Need enterprise deployment (SSO, on-prem, data residency)?"
+    },
+    "options": {
+      "volume": {
+        "0-5k": "0–5k",
+        "5k-100k": "5k–100k",
+        "100k+": "100k+",
+        "not-sure": "Not sure"
+      },
+      "deployment": {
+        "yes": "Yes",
+        "no": "No",
+        "maybe": "Maybe"
+      },
+      "migration": {
+        "no": "No, I'm not migrating",
+        "vapi": "Vapi",
+        "retell": "Retell",
+        "bland": "Bland",
+        "elevenlabs": "ElevenLabs",
+        "synthflow": "Synthflow",
+        "other": "Other"
+      },
+      "heard": {
+        "github": "GitHub",
+        "search_engine": "Search engine",
+        "social_media": "Social media (Twitter, LinkedIn)",
+        "youtube": "YouTube",
+        "ai_tool": "AI tool (ChatGPT, Claude)",
+        "referral": "Someone told me about it",
+        "other": "Other"
+      },
+      "onboardingVolume": {
+        "0-5k": "0–5k",
+        "5k-100k": "5k–100k",
+        "100k+": "100k+",
+        "exploring": "Exploring"
+      },
+      "persona": {
+        "enterprise_midmarket": "Enterprise / Mid-Market",
+        "agency": "Agency / consultancy building for clients",
+        "local_business": "Local business",
+        "startup": "Startup",
+        "solo": "Solo founder / builder"
+      },
+      "onprem": {
+        "yes": "Yes",
+        "no": "No",
+        "not_sure": "Not sure"
+      }
+    },
+    "toasts": {
+      "fillRequired": "Please fill in all required fields",
+      "emailSent": "Check your inbox - we just emailed you the next steps (give it a minute).",
+      "submitFailed": "Something went wrong. Please try again.",
+      "providerRequired": "Please tell us which provider you're migrating from",
+      "answerAll": "Please answer all the questions",
+      "completeOnprem": "Please complete the on-prem details below, or remove that section."
+    },
+    "errors": {
+      "workEmailRequired": "Work email is required",
+      "invalidEmail": "Please enter a valid email address",
+      "useWorkEmail": "Please use your work email"
+    },
+    "hire": {
+      "eyebrow": "Done-for-you",
+      "title": "Let us build your voice agent",
+      "description": "Building good voice agents is nuanced. Tell us what you need and we'll take it end-to-end.",
+      "bookTitle": "Grab a time with our team",
+      "enterpriseHelper": "Need enterprise deployment? (SSO, on-prem, data residency)"
+    },
+    "enterprise": {
+      "eyebrow": "Enterprise",
+      "title": "Book a Strategy Call",
+      "description": "SSO, on-prem, data residency, committed volume. Tell us about your environment."
+    },
+    "bookDescription": "Pick a time that works for you.",
+    "done": "Done",
+    "submit": "Submit",
+    "onboarding": {
+      "eyebrow": "Welcome",
+      "title": "Welcome to VoiceWorker",
+      "description": "A few quick questions so we can tailor your experience. Takes ~20 seconds.",
+      "getStarted": "Get started",
+      "persona": "What best describes you?",
+      "onpremQuestion": "Do you need on-prem deployment for compliance & data residency?",
+      "managedNote": "We offer a <1>Managed On-Prem</1> deployment for compliance and data residency.",
+      "remove": "Remove",
+      "talkOnprem": "Talk to us about on-prem →",
+      "onpremFollowup": "Our team will reach out about on-prem. Prefer not to? Click \"{{remove}}\".",
+      "migrating": "Are you migrating from another provider?",
+      "otherProvider": "Other provider",
+      "otherProviderPlaceholder": "Enter the provider here",
+      "switchReason": "Why are you switching?",
+      "switchReasonPlaceholder": "e.g. cost, self-hosting, concurrency, data security, latency",
+      "heard": "How did you hear about us?"
+    },
+    "captcha": {
+      "title": "Quick check",
+      "body": "Confirm you're human before we send this.",
+      "question": "What is {{a}} + {{b}}?",
+      "inlineQuestion": "Quick check: what is {{a}} + {{b}}?",
+      "answerPlaceholder": "Answer",
+      "confirm": "Confirm & submit",
+      "wrong": "That's not quite right - try again."
+    },
+    "shell": {
+      "submitting": "Submitting…"
+    },
+    "trustLine": "Average response: under 10 minutes during business hours.",
+    "nudge": {
+      "title": "Hire an Expert",
+      "body": "We'll build your agent for you",
+      "dismiss": "Dismiss"
+    }
+  },
+  "filters": {
+    "title": "Filter Workflow Runs",
+    "subtitle": "Build custom filters to find specific workflow runs",
+    "templates": "Templates",
+    "templatesLabel": "Filter Templates",
+    "selectAttribute": "Select attribute to filter by",
+    "activeFilters": "Active Filters",
+    "clearAll": "Clear All",
+    "autoRefresh": "Auto-refresh every 5s",
+    "apply": "Apply ({{modifier}}+Enter)",
+    "applying": "Applying...",
+    "applyTitle": "Apply filters",
+    "summary": {
+      "noOptions": "No options selected",
+      "more": "+{{count}} more",
+      "noValue": "No value",
+      "noTags": "No tags",
+      "noDateRange": "No date range selected",
+      "noRange": "No range selected",
+      "rangeTo": "{{from}} to {{to}}"
+    },
+    "date": {
+      "selectDate": "Select date",
+      "from": "From",
+      "to": "To",
+      "time": "Time",
+      "presets": {
+        "today": "Today",
+        "yesterday": "Yesterday",
+        "last7days": "Last 7 days",
+        "last30days": "Last 30 days"
+      }
+    },
+    "multi": {
+      "label": "Select Options",
+      "placeholder": "Select options",
+      "search": "Search options...",
+      "selectAll": "Select All",
+      "selectNone": "Select None",
+      "empty": "No options found",
+      "selected": "{{count}} selected"
+    },
+    "number": {
+      "value": "Value",
+      "enterValue": "Enter value"
+    },
+    "numberRange": {
+      "min": "Min",
+      "max": "Max",
+      "minPlaceholder": "Min {{unit}}",
+      "maxPlaceholder": "Max {{unit}}",
+      "valueUnit": "value"
+    },
+    "numberSelect": {
+      "option": "Option",
+      "placeholder": "Select an option",
+      "unavailable": "Unavailable agent (#{{id}})",
+      "loading": "Loading options...",
+      "empty": "No options found"
+    },
+    "radio": {
+      "selectPrefix": "Select {{label}}",
+      "defaultLabel": "Select Status"
+    },
+    "tags": {
+      "label": "Tags",
+      "placeholder": "Enter tags (comma separated)"
+    },
+    "text": {
+      "placeholder": "Enter text"
+    },
+    "units": {
+      "seconds": "seconds",
+      "tokens": "tokens"
+    },
+    "attributes": {
+      "dateRange": "Date and Time Range",
+      "dispositionCode": "Disposition Code",
+      "duration": "Call Duration",
+      "status": "Completion Status",
+      "callTags": "Tags",
+      "tokenUsage": "Token Usage",
+      "runId": "Workflow Run ID",
+      "workflowId": "Workflow ID",
+      "callerNumber": "Caller Number",
+      "calledNumber": "Called Number",
+      "callDirection": "Direction",
+      "callChannel": "Type",
+      "campaignId": "Campaign ID",
+      "usageRunId": "Run ID",
+      "usageWorkflowId": "Agent ID",
+      "usageDateRange": "Date Range",
+      "usageDisposition": "Disposition",
+      "usageDuration": "Duration"
+    },
+    "attributePlaceholders": {
+      "runId": "Enter run ID",
+      "workflowId": "Enter workflow ID",
+      "callerNumber": "Enter caller number (partial match)",
+      "calledNumber": "Enter called number (partial match)",
+      "campaignId": "Enter campaign ID",
+      "callTags": "Enter tags"
+    },
+    "options": {
+      "status": {
+        "completed": "Completed",
+        "in_progress": "In Progress",
+        "all": "All"
+      },
+      "callDirection": {
+        "inbound": "Inbound",
+        "outbound": "Outbound",
+        "all": "All"
+      },
+      "callChannel": {
+        "telephony": "Telephony",
+        "web": "Web call",
+        "chat": "Text chat",
+        "all": "All"
+      }
+    },
+    "presets": {
+      "under1min": "< 1 min",
+      "1to5min": "1-5 min",
+      "over5min": "> 5 min",
+      "under30sec": "< 30 sec",
+      "30secTo1min": "30 sec - 1 min",
+      "1to3min": "1-3 min",
+      "3to5min": "3-5 min"
+    },
+    "templatesList": {
+      "failedCallsToday": {
+        "name": "Failed Calls Today",
+        "description": "Calls from today with failed disposition codes"
+      },
+      "longDurationCalls": {
+        "name": "Long Duration Calls",
+        "description": "Completed calls longer than 5 minutes"
+      },
+      "highCostCalls": {
+        "name": "High Cost Calls",
+        "description": "Completed calls using more than 100 tokens"
+      },
+      "recentActivity": {
+        "name": "Recent Activity",
+        "description": "All calls from the last 24 hours"
+      },
+      "transferredCalls": {
+        "name": "Transferred Calls",
+        "description": "Calls with XFER disposition"
+      },
+      "activeCalls": {
+        "name": "Active Calls",
+        "description": "Calls currently in progress"
+      }
+    },
+    "validation": {
+      "bothDates": "Both dates are required",
+      "endAfterStart": "End date must be after start date",
+      "maxRange": "Date range cannot exceed {{days}} days",
+      "selectOne": "At least one option must be selected",
+      "maxSelections": "Cannot select more than {{max}} options",
+      "bothValues": "Both values are required",
+      "minLessThanMax": "Minimum must be less than maximum",
+      "minNotLess": "Minimum value cannot be less than {{min}}",
+      "maxNotGreater": "Maximum value cannot be greater than {{max}}",
+      "valueRequired": "A value is required",
+      "valueNotLess": "Value cannot be less than {{min}}",
+      "valueNotGreater": "Value cannot be greater than {{max}}",
+      "statusRequired": "A status must be selected",
+      "tagRequired": "At least one tag must be entered",
+      "textRequired": "Text value is required"
+    }
+  },
+  "voiceSelector": {
+    "failedToLoad": "Failed to load voices",
+    "selectVoice": "Select a voice",
+    "selectVoiceTitle": "Select Voice",
+    "enterVoiceId": "Enter voice ID",
+    "addManually": "Add Voice ID Manually",
+    "loadingVoices": "Loading voices...",
+    "searchPlaceholder": "Search voices...",
+    "gender": "Gender",
+    "allGenders": "All genders",
+    "language": "Language",
+    "allLanguages": "All languages",
+    "accent": "Accent",
+    "allAccents": "All accents",
+    "noVoices": "No voices found",
+    "countSummary": "{{filtered}} of {{total}} voices",
+    "customVoiceId": "Custom voice ID",
+    "customVoiceIdHelp": "Use a voice ID that isn't in the catalog above.",
+    "noMatch": "No voices match these filters",
+    "playPreview": "Play preview",
+    "stopPreview": "Stop preview",
+    "browseCatalog": "Browse catalog",
+    "useThisVoice": "Use this voice",
+    "voiceCount_one": "{{count}} voice",
+    "voiceCount_other": "{{count}} voices",
+    "genders": {
+      "female": "Female",
+      "male": "Male",
+      "neutral": "Neutral"
+    }
+  },
+  "footer": {
+    "privacyPolicy": "Privacy Policy",
+    "termsOfService": "Terms of Service"
+  }
+}

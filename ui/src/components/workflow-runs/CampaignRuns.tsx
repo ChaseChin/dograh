@@ -2,6 +2,7 @@
 
 import { useRouter } from "next/navigation";
 import { useCallback, useEffect, useMemo, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { getCampaignRunsApiV1CampaignCampaignIdRunsGet } from "@/client/sdk.gen";
 import { WorkflowRunResponseSchema } from "@/client/types.gen";
@@ -20,6 +21,7 @@ interface CampaignRunsProps {
 
 export function CampaignRuns({ campaignId, workflowId, searchParams }: CampaignRunsProps) {
     const router = useRouter();
+    const { t } = useTranslation();
     const { isAuthenticated } = useAuth();
     const { codes: dispositionCodes } = useDispositionCodes();
     const campaignFilterAttributes = useMemo(
@@ -106,11 +108,11 @@ export function CampaignRuns({ campaignId, workflowId, searchParams }: CampaignR
             setError(null);
         } catch (err) {
             console.error("Error fetching campaign runs:", err);
-            setError("Failed to load campaign runs");
+            setError(t("runs.loadFailed"));
         } finally {
             setLoading(false);
         }
-    }, [campaignId, isAuthenticated]);
+    }, [campaignId, isAuthenticated, t]);
 
     const updatePageInUrl = useCallback((page: number, filters?: ActiveFilter[], sortByParam?: string | null, sortOrderParam?: 'asc' | 'desc') => {
         const params = new URLSearchParams();
@@ -208,8 +210,8 @@ export function CampaignRuns({ campaignId, workflowId, searchParams }: CampaignR
             onSort={handleSort}
             workflowId={workflowId}
             onReload={handleReload}
-            title="Campaign Workflow Runs"
-            emptyMessage="No workflow runs found for this campaign"
+            title={t("runs.campaignTitle")}
+            emptyMessage={t("runs.campaignEmpty")}
         />
     );
 }

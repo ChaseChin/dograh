@@ -1,3 +1,5 @@
+import { getIntlTag } from '@/i18n/dateLocale';
+
 export function getLocalTimezone() {
     return Intl.DateTimeFormat().resolvedOptions().timeZone;
 }
@@ -5,19 +7,21 @@ export function getLocalTimezone() {
 type DateInput = Date | number | string;
 
 export function formatDateTime(value: DateInput, timezone?: string | null) {
-    return new Date(value).toLocaleString('en-US', {
+    // 24h clock for zh (hour12 only for en); tag follows the UI language.
+    const tag = getIntlTag();
+    return new Date(value).toLocaleString(tag, {
         timeZone: timezone || getLocalTimezone(),
         year: 'numeric',
         month: 'short',
         day: 'numeric',
         hour: '2-digit',
         minute: '2-digit',
-        hour12: true,
+        ...(tag === 'en-US' ? { hour12: true } : { hour12: false }),
     });
 }
 
 export function formatDate(value: DateInput, timezone?: string | null) {
-    return new Date(value).toLocaleDateString('en-US', {
+    return new Date(value).toLocaleDateString(getIntlTag(), {
         timeZone: timezone || getLocalTimezone(),
         year: 'numeric',
         month: 'short',

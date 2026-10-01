@@ -7,15 +7,12 @@
 // centered so tall (sign-up) forms never clip on short viewports. Palette is the
 // app's blacks/greys with one warm CTA accent.
 
+"use client";
+
 import type { ReactNode } from "react";
+import { useTranslation } from "react-i18next";
 
 import { BrandLogo } from "@/components/BrandLogo";
-
-const HIGHLIGHTS = [
-  "Speech-to-speech",
-  "MCP-native",
-  "BYOK - any model",
-];
 
 export function AuthShell({
   children,
@@ -24,6 +21,9 @@ export function AuthShell({
   children: ReactNode;
   enterpriseSlot?: ReactNode;
 }) {
+  const { t } = useTranslation();
+  // Highlights render at auth time (module-level constants can't use hooks).
+  const highlights = t("auth.highlights", { returnObjects: true }) as string[];
   return (
     <div className="grid min-h-screen w-full bg-background lg:grid-cols-[55%_45%]">
       {/* Form column (LEFT) — scrolls and stays centered so tall forms never
@@ -55,10 +55,10 @@ export function AuthShell({
 
         <div className="relative max-w-md space-y-5">
           <h1 className="text-3xl font-semibold leading-tight tracking-tight text-zinc-50 xl:text-4xl">
-            VoiceWorker — AI voice agents that work for you.
+            {t("auth.headline")}
           </h1>
           <ul className="flex flex-wrap gap-2">
-            {HIGHLIGHTS.map((point) => (
+            {highlights.map((point) => (
               <li
                 key={point}
                 className="rounded-full border border-white/10 bg-white/[0.04] px-3 py-1 text-xs font-medium text-zinc-300"
@@ -73,11 +73,10 @@ export function AuthShell({
             viewport edge while justify-between keeps the column layout */}
         <div className="relative mb-12 max-w-md space-y-3 rounded-xl border border-white/10 bg-white/[0.03] p-5 xl:mb-16">
           <h2 className="text-sm font-semibold text-zinc-100">
-            Need on-prem, data residency &amp; a data perimeter?
+            {t("auth.enterpriseTitle")}
           </h2>
           <p className="text-sm text-zinc-400">
-            We deploy VoiceWorker inside your environment for regulated and
-            high-scale teams.
+            {t("auth.enterpriseBody")}
           </p>
           {enterpriseSlot}
         </div>

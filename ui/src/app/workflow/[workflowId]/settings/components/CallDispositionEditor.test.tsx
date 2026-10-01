@@ -1,6 +1,8 @@
 import { fireEvent, render, screen } from "@testing-library/react";
 import { useState } from "react";
-import { describe, expect, it } from "vitest";
+import { beforeAll, describe, expect, it } from "vitest";
+
+import i18n from "@/i18n";
 
 import {
     CallDispositionEditor,
@@ -11,6 +13,11 @@ import {
     normalizeCallDispositions,
     validateCallDispositionRows,
 } from "./CallDispositionEditor";
+
+// The assertions below match the en.json copy.
+beforeAll(async () => {
+    await i18n.changeLanguage("en");
+});
 
 const DEFAULT_DISPOSITIONS = [
     { code: "qualified", description: "The call achieved its goal." },
@@ -119,7 +126,7 @@ describe("CallDispositionEditor", () => {
         const validation = validateCallDispositionRows([
             { id: "first", code: "qualified", description: "Qualified." },
             { id: "second", code: "QUALIFIED", description: "Also qualified." },
-        ]);
+        ], i18n.t);
 
         expect(validation.isValid).toBe(false);
         expect(validation.rowErrors.first.code).toMatch(/unique/i);
@@ -138,7 +145,7 @@ describe("CallDispositionEditor", () => {
                 code: "callback_requested",
                 description: "x",
             },
-        ]);
+        ], i18n.t);
 
         expect(validation.isValid).toBe(false);
         expect(validation.rowErrors.unsafe.code).toMatch(/only letters/i);

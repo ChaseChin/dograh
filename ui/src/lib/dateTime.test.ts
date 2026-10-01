@@ -1,6 +1,12 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 
+import { setDateLocale } from '@/i18n/dateLocale';
 import { formatCalendarDate, formatDate, formatDateTime } from '@/lib/dateTime';
+
+// The assertions below match the en-US formatted output.
+beforeAll(() => {
+    setDateLocale('en');
+});
 
 describe('dateTime', () => {
     it('formats an instant in the requested timezone', () => {

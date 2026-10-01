@@ -1,11 +1,17 @@
 import { fireEvent, render, screen, waitFor } from "@testing-library/react";
 import type { ReactNode } from "react";
 import { toast } from "sonner";
-import { beforeEach, describe, expect, it, vi } from "vitest";
+import { beforeAll, beforeEach, describe, expect, it, vi } from "vitest";
 
 import type { OrganizationPreferences } from "@/client/types.gen";
+import i18n from "@/i18n";
 
 import { OrganizationPreferencesSection } from "./OrganizationPreferencesSection";
+
+// The assertions below match the en.json copy.
+beforeAll(async () => {
+  await i18n.changeLanguage("en");
+});
 
 const mocks = vi.hoisted(() => ({
   getPreferences: vi.fn(),

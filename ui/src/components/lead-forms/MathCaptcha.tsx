@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -14,6 +15,7 @@ interface MathCaptchaProps {
 // Dead-simple anti-spam: "What is X + Y?". Generated client-side on mount.
 // Math.random is allowed in browser runtime (this is not a workflow script).
 export function MathCaptcha({ onValidChange, id = "math-captcha" }: MathCaptchaProps) {
+  const { t } = useTranslation();
   const [a, setA] = useState(0);
   const [b, setB] = useState(0);
   const [answer, setAnswer] = useState("");
@@ -30,14 +32,14 @@ export function MathCaptcha({ onValidChange, id = "math-captcha" }: MathCaptchaP
   return (
     <div className="space-y-1.5">
       <Label htmlFor={id}>
-        Quick check: what is {a} + {b}?
+        {t("leadForms.captcha.inlineQuestion", { a, b })}
       </Label>
       <Input
         id={id}
         inputMode="numeric"
         value={answer}
         onChange={(e) => setAnswer(e.target.value)}
-        placeholder="Answer"
+        placeholder={t("leadForms.captcha.answerPlaceholder")}
         className="w-32"
       />
     </div>

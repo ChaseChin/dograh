@@ -1,5 +1,8 @@
+"use client";
+
 import { Plus, Trash2 } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -34,6 +37,7 @@ export const ConfigurationsDialog = ({
     workflowName,
     onSave
 }: ConfigurationsDialogProps) => {
+    const { t } = useTranslation();
     const { externalPbxIntegrationsEnabled } = useOrgConfig();
     const resolvedWorkflowConfigurations = resolveWorkflowConfigurations(workflowConfigurations);
     const [name, setName] = useState<string>(workflowName);
@@ -119,28 +123,28 @@ export const ConfigurationsDialog = ({
         <Dialog open={open} onOpenChange={onOpenChange}>
             <DialogContent className="max-w-lg max-h-[90vh] overflow-y-auto">
                 <DialogHeader>
-                    <DialogTitle>Configurations</DialogTitle>
+                    <DialogTitle>{t("workflow.configurations.title")}</DialogTitle>
                 </DialogHeader>
 
                 <div className="space-y-6">
                     {/* Workflow Name Section */}
                     <div className="space-y-4">
                         <div>
-                            <h3 className="text-sm font-semibold mb-1">Agent Name</h3>
+                            <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.agentName")}</h3>
                             <p className="text-xs text-muted-foreground">
-                                The name of your agent
+                                {t("workflow.configurations.agentNameHelp")}
                             </p>
                         </div>
                         <div className="space-y-2">
                             <Label htmlFor="workflow_name" className="text-xs">
-                                Name
+                                {t("workflow.configurations.nameLabel")}
                             </Label>
                             <Input
                                 id="workflow_name"
                                 type="text"
                                 value={name}
                                 onChange={(e) => setName(e.target.value)}
-                                placeholder="Enter Agent name"
+                                placeholder={t("workflow.configurations.namePlaceholder")}
                             />
                         </div>
                     </div>
@@ -148,16 +152,16 @@ export const ConfigurationsDialog = ({
                     {/* Ambient Noise Section */}
                     <div className="space-y-4">
                         <div>
-                            <h3 className="text-sm font-semibold mb-1">Ambient Noise</h3>
+                            <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.ambientNoise")}</h3>
                             <p className="text-xs text-muted-foreground">
-                                Add background office ambient noise to make the conversation sound more natural.
+                                {t("workflow.configurations.ambientNoiseHelp")}
                             </p>
                         </div>
 
                         <div className="space-y-4">
                             <div className="flex items-center justify-between">
                                 <Label htmlFor="ambient-noise-enabled" className="text-sm">
-                                    Use Ambient Noise
+                                    {t("workflow.configurations.useAmbientNoise")}
                                 </Label>
                                 <Switch
                                     id="ambient-noise-enabled"
@@ -171,7 +175,7 @@ export const ConfigurationsDialog = ({
                             {ambientNoiseConfig.enabled && (
                                 <div className="space-y-2">
                                     <Label htmlFor="ambient-volume" className="text-xs">
-                                        Volume
+                                        {t("workflow.configurations.volume")}
                                     </Label>
                                     <Input
                                         id="ambient-volume"
@@ -195,43 +199,43 @@ export const ConfigurationsDialog = ({
                     {/* Turn Detection Section */}
                     <div className="space-y-4">
                         <div>
-                            <h3 className="text-sm font-semibold mb-1">Turn Detection</h3>
+                            <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.turnDetection")}</h3>
                             <p className="text-xs text-muted-foreground">
-                                Configure how the agent detects when the user has finished speaking.
+                                {t("workflow.configurations.turnDetectionHelp")}
                             </p>
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="turn_stop_strategy" className="text-xs">
-                                Detection Strategy
+                                {t("workflow.configurations.detectionStrategy")}
                             </Label>
                             <Select
                                 value={turnStopStrategy}
                                 onValueChange={(value: TurnStopStrategy) => setTurnStopStrategy(value)}
                             >
                                 <SelectTrigger id="turn_stop_strategy">
-                                    <SelectValue placeholder="Select strategy" />
+                                    <SelectValue placeholder={t("workflow.configurations.selectStrategy")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     <SelectItem value="transcription">
-                                        Transcription-based
+                                        {t("workflow.configurations.transcriptionBased")}
                                     </SelectItem>
                                     <SelectItem value="turn_analyzer">
-                                        Smart Turn Analyzer
+                                        {t("workflow.configurations.smartTurnAnalyzer")}
                                     </SelectItem>
                                 </SelectContent>
                             </Select>
                             <p className="text-xs text-muted-foreground">
                                 {turnStopStrategy === 'transcription'
-                                    ? "Best for short responses (1-2 word statements). Ends turn when transcription indicates completion."
-                                    : "Best for longer responses with natural pauses. Uses ML model to detect end of turn."}
+                                    ? t("workflow.configurations.transcriptionHelp")
+                                    : t("workflow.configurations.turnAnalyzerHelp")}
                             </p>
                         </div>
 
                         {turnStopStrategy === 'turn_analyzer' && (
                             <div className="space-y-2">
                                 <Label htmlFor="smart_turn_stop_secs" className="text-xs">
-                                    Incomplete Turn Timeout (seconds)
+                                    {t("workflow.configurations.incompleteTurnTimeout")}
                                 </Label>
                                 <Input
                                     id="smart_turn_stop_secs"
@@ -248,7 +252,7 @@ export const ConfigurationsDialog = ({
                                     }}
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    Max silence duration before ending an incomplete turn. Default: 2 seconds
+                                    {t("workflow.configurations.incompleteTurnTimeoutHelp")}
                                 </p>
                             </div>
                         )}
@@ -257,22 +261,22 @@ export const ConfigurationsDialog = ({
                     {/* Interruption Section */}
                     <div className="space-y-4">
                         <div>
-                            <h3 className="text-sm font-semibold mb-1">Interruption</h3>
+                            <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.interruption")}</h3>
                             <p className="text-xs text-muted-foreground">
-                                Configure when user speech should interrupt the agent while it is speaking.
+                                {t("workflow.configurations.interruptionHelp")}
                             </p>
                         </div>
 
                         <div className="space-y-2">
                             <Label htmlFor="turn_start_strategy" className="text-xs">
-                                Interruption Strategy
+                                {t("workflow.configurations.interruptionStrategy")}
                             </Label>
                             <Select
                                 value={turnStartStrategy}
                                 onValueChange={(value: TurnStartStrategy) => setTurnStartStrategy(value)}
                             >
                                 <SelectTrigger id="turn_start_strategy">
-                                    <SelectValue placeholder="Select strategy" />
+                                    <SelectValue placeholder={t("workflow.configurations.selectStrategy")} />
                                 </SelectTrigger>
                                 <SelectContent>
                                     {TURN_START_STRATEGY_OPTIONS.map((option) => (
@@ -290,7 +294,7 @@ export const ConfigurationsDialog = ({
                         {turnStartStrategy === 'min_words' && (
                             <div className="space-y-2">
                                 <Label htmlFor="turn_start_min_words" className="text-xs">
-                                    Minimum Words Before Interruption
+                                    {t("workflow.configurations.minWords")}
                                 </Label>
                                 <Input
                                     id="turn_start_min_words"
@@ -307,7 +311,7 @@ export const ConfigurationsDialog = ({
                                     }}
                                 />
                                 <p className="text-xs text-muted-foreground">
-                                    Number of transcribed words needed to interrupt while the bot is speaking. Default: {DEFAULT_TURN_START_MIN_WORDS}
+                                    {t("workflow.configurations.minWordsHelp", { count: DEFAULT_TURN_START_MIN_WORDS })}
                                 </p>
                             </div>
                         )}
@@ -316,15 +320,15 @@ export const ConfigurationsDialog = ({
                     {/* Context Management Section */}
                     <div className="space-y-4">
                         <div>
-                            <h3 className="text-sm font-semibold mb-1">Context Compaction</h3>
+                            <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.contextCompaction")}</h3>
                             <p className="text-xs text-muted-foreground">
-                                Automatically summarize conversation context when transitioning between nodes. Removes stale tool calls and keeps the context clean for the new node.
+                                {t("workflow.configurations.contextCompactionHelp")}
                             </p>
                         </div>
 
                         <div className="flex items-center justify-between">
                             <Label htmlFor="context-compaction-enabled" className="text-sm">
-                                Enable Context Compaction
+                                {t("workflow.configurations.enableContextCompaction")}
                             </Label>
                             <Switch
                                 id="context-compaction-enabled"
@@ -337,16 +341,16 @@ export const ConfigurationsDialog = ({
                     {/* Call Management Section */}
                     <div className="space-y-4">
                         <div>
-                            <h3 className="text-sm font-semibold mb-1">Call Management</h3>
+                            <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.callManagement")}</h3>
                             <p className="text-xs text-muted-foreground">
-                                Configure call duration limits and idle timeout settings.
+                                {t("workflow.configurations.callManagementHelp")}
                             </p>
                         </div>
 
                         <div className="grid grid-cols-2 gap-4">
                             <div className="space-y-2">
                                 <Label htmlFor="max_call_duration" className="text-xs">
-                                    Max Call Duration (seconds)
+                                    {t("workflow.configurations.maxCallDuration")}
                                 </Label>
                                 <Input
                                     id="max_call_duration"
@@ -361,12 +365,12 @@ export const ConfigurationsDialog = ({
                                         }
                                     }}
                                 />
-                                <p className="text-xs text-muted-foreground">Default: 600 (10 minutes)</p>
+                                <p className="text-xs text-muted-foreground">{t("workflow.configurations.maxCallDurationDefault")}</p>
                             </div>
 
                             <div className="space-y-2">
                                 <Label htmlFor="max_user_idle_timeout" className="text-xs">
-                                    Max User Idle Timeout (seconds)
+                                    {t("workflow.configurations.maxIdleTimeout")}
                                 </Label>
                                 <Input
                                     id="max_user_idle_timeout"
@@ -381,7 +385,7 @@ export const ConfigurationsDialog = ({
                                         }
                                     }}
                                 />
-                                <p className="text-xs text-muted-foreground">Default: 10 seconds</p>
+                                <p className="text-xs text-muted-foreground">{t("workflow.configurations.maxIdleTimeoutDefault")}</p>
                             </div>
                         </div>
                     </div>
@@ -389,13 +393,13 @@ export const ConfigurationsDialog = ({
                     {externalPbxIntegrationsEnabled && (
                         <div className="space-y-4 border-t pt-4">
                             <div>
-                                <h3 className="text-sm font-semibold mb-1">External PBX Field Updates</h3>
+                                <h3 className="text-sm font-semibold mb-1">{t("workflow.configurations.externalPbx")}</h3>
                                 <p className="text-xs text-muted-foreground">
-                                    Optionally copy final gathered-context values into provider-native fields before transfer or hangup.
+                                    {t("workflow.configurations.externalPbxHelp")}
                                 </p>
                             </div>
                             <div className="flex items-center justify-between">
-                                <Label className="text-sm">Field Mappings</Label>
+                                <Label className="text-sm">{t("workflow.configurations.fieldMappings")}</Label>
                                 <Button
                                     type="button"
                                     variant="outline"
@@ -405,14 +409,14 @@ export const ConfigurationsDialog = ({
                                         { context_path: "", destination_field: "" },
                                     ])}
                                 >
-                                    <Plus className="mr-1 h-4 w-4" /> Add mapping
+                                    <Plus className="mr-1 h-4 w-4" /> {t("workflow.configurations.addMapping")}
                                 </Button>
                             </div>
                             <div className="space-y-2">
                                 {externalPbxFieldMappings.map((mapping, index) => (
                                     <div key={index} className="grid grid-cols-[1fr_1fr_auto] gap-2">
                                         <Input
-                                            aria-label={`Gathered context field ${index + 1}`}
+                                            aria-label={t("workflow.configurations.contextFieldAria", { index: index + 1 })}
                                             value={mapping.context_path}
                                             onChange={(event) => setExternalPbxFieldMappings((current) =>
                                                 current.map((item, itemIndex) =>
@@ -424,7 +428,7 @@ export const ConfigurationsDialog = ({
                                             placeholder="qualified"
                                         />
                                         <Input
-                                            aria-label={`External PBX destination field ${index + 1}`}
+                                            aria-label={t("workflow.configurations.destinationFieldAria", { index: index + 1 })}
                                             value={mapping.destination_field}
                                             onChange={(event) => setExternalPbxFieldMappings((current) =>
                                                 current.map((item, itemIndex) =>
@@ -439,7 +443,7 @@ export const ConfigurationsDialog = ({
                                             type="button"
                                             variant="ghost"
                                             size="icon"
-                                            aria-label={`Remove external PBX field mapping ${index + 1}`}
+                                            aria-label={t("workflow.configurations.removeMappingAria", { index: index + 1 })}
                                             onClick={() => setExternalPbxFieldMappings((current) =>
                                                 current.filter((_, itemIndex) => itemIndex !== index)
                                             )}
@@ -450,12 +454,12 @@ export const ConfigurationsDialog = ({
                                 ))}
                                 {externalPbxFieldMappings.length === 0 && (
                                     <p className="text-xs text-muted-foreground">
-                                        No external fields will be updated. Context names may be direct extracted-variable names or paths such as extracted_variables.qualified.
+                                        {t("workflow.configurations.noExternalFields")}
                                     </p>
                                 )}
                                 {!externalPbxFieldMappingsValid && (
                                     <p className="text-xs text-destructive">
-                                        Each mapping needs a context field and a destination field containing only letters, numbers, and underscores.
+                                        {t("workflow.configurations.mappingInvalid")}
                                     </p>
                                 )}
                             </div>
@@ -465,13 +469,13 @@ export const ConfigurationsDialog = ({
 
                 <DialogFooter>
                     <Button variant="outline" onClick={() => onOpenChange(false)}>
-                        Cancel
+                        {t("common.cancel")}
                     </Button>
                     <Button
                         onClick={handleSave}
                         disabled={isSaving || (externalPbxIntegrationsEnabled && !externalPbxFieldMappingsValid)}
                     >
-                        {isSaving ? "Saving..." : "Save"}
+                        {isSaving ? t("common.saving") : t("common.save")}
                     </Button>
                 </DialogFooter>
             </DialogContent>

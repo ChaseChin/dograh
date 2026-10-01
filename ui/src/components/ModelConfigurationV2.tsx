@@ -2,6 +2,7 @@
 
 import { ExternalLink } from "lucide-react";
 import { useEffect, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import {
     getModelConfigurationV2ApiV1OrganizationsModelConfigurationsV2Get,
@@ -21,6 +22,7 @@ import { useAuth } from "@/lib/auth";
 import { fetchModelConfigurationPricing } from "@/lib/modelConfigurationPricing";
 
 export default function ModelConfigurationV2({ docsUrl }: { docsUrl?: string }) {
+    const { t } = useTranslation();
     const auth = useAuth();
     const { refreshConfig } = useUserConfig();
     const hasFetched = useRef(false);
@@ -46,19 +48,19 @@ export default function ModelConfigurationV2({ docsUrl }: { docsUrl?: string }) 
             ]);
 
             if (defaultsResult.error) {
-                setError(detailFromError(defaultsResult.error, "Failed to load model configuration defaults"));
+                setError(detailFromError(defaultsResult.error, t("modelConfigs.loadDefaultsFailed")));
                 setLoading(false);
                 return;
             }
             if (configResult.error) {
-                setError(detailFromError(configResult.error, "Failed to load model configuration"));
+                setError(detailFromError(configResult.error, t("modelConfigs.loadFailed")));
                 setLoading(false);
                 return;
             }
 
             const nextDefaults = defaultsResult.data as ModelConfigurationDefaultsV2;
             if (!nextDefaults || !configResult.data) {
-                setError("Failed to load model configuration");
+                setError(t("modelConfigs.loadFailed"));
                 setLoading(false);
                 return;
             }
@@ -82,16 +84,16 @@ export default function ModelConfigurationV2({ docsUrl }: { docsUrl?: string }) 
         });
 
         if (result.error) {
-            throw new Error(detailFromError(result.error, "Failed to save model configuration"));
+            throw new Error(detailFromError(result.error, t("modelConfigs.saveFailed")));
         }
         if (!result.data) {
-            throw new Error("Failed to save model configuration");
+            throw new Error(t("modelConfigs.saveFailed"));
         }
 
         setResponse(result.data);
         void fetchModelConfigurationPricing().then(setPricing);
         await refreshConfig();
-        setNotice("Model configuration saved");
+        setNotice(t("modelConfigs.saved"));
     };
 
     if (loading) {
@@ -108,12 +110,12 @@ export default function ModelConfigurationV2({ docsUrl }: { docsUrl?: string }) 
         <div className="w-full max-w-4xl mx-auto space-y-6">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-start sm:justify-between">
                 <div>
-                    <h1 className="text-3xl font-bold">AI Models Configuration</h1>
+                    <h1 className="text-3xl font-bold">{t("modelConfigs.title")}</h1>
                     <p className="mt-2 text-sm text-muted-foreground">
-                        Organization-scoped model settings.{" "}
+                        {t("modelConfigs.subtitle")}{" "}
                         {docsUrl && (
                             <a href={docsUrl} target="_blank" rel="noopener noreferrer" className="inline-flex items-center gap-0.5 underline">
-                                Learn more <ExternalLink className="h-3 w-3" />
+                                {t("common.learnMore")} <ExternalLink className="h-3 w-3" />
                             </a>
                         )}
                     </p>

@@ -1,6 +1,7 @@
 "use client";
 
 import { Loader2, Square } from "lucide-react";
+import { useTranslation } from "react-i18next";
 
 import { Button } from "@/components/ui/button";
 import { Skeleton } from "@/components/ui/skeleton";
@@ -32,6 +33,7 @@ export function ManualTextChatPanel({
     onActiveChange,
     onNodeTransition,
 }: ManualTextChatPanelProps) {
+    const { t } = useTranslation();
     const {
         session,
         started,
@@ -89,8 +91,8 @@ export function ManualTextChatPanel({
                     <div className="flex h-full items-center justify-center px-4 py-10 text-center">
                         <p className="text-sm text-muted-foreground">
                             {disabled
-                                ? (disabledReason ?? "Testing is paused.")
-                                : "Send a message to start the conversation."}
+                                ? (disabledReason ?? t("workflow.tester.pausedReason"))
+                                : t("workflow.tester.chat.sendToStart")}
                         </p>
                     </div>
                 ) : (
@@ -99,8 +101,8 @@ export function ManualTextChatPanel({
                         autoScroll={true}
                         scrollBehavior="smooth"
                         emptyState={{
-                            title: "No conversation recorded",
-                            subtitle: "Send a message to start the conversation.",
+                            title: t("workflow.tester.chat.noConversation"),
+                            subtitle: t("workflow.tester.chat.sendToStart"),
                         }}
                         pendingIndicator={sendingMessage ? <TypingIndicator /> : null}
                         className="py-1"
@@ -140,8 +142,8 @@ export function ManualTextChatPanel({
                 <div className="flex items-center justify-between gap-3 border-t border-border/70 pt-3">
                     <p className="text-xs text-muted-foreground">
                         {session.is_completed
-                            ? "This conversation has ended."
-                            : "End the conversation and run its completion integrations."}
+                            ? t("workflow.tester.chat.conversationEnded")
+                            : t("workflow.tester.chat.endHelp")}
                     </p>
                     {!session.is_completed ? (
                         <Button
@@ -150,7 +152,7 @@ export function ManualTextChatPanel({
                             size="sm"
                             disabled={disabled || sendingMessage || endingSession}
                             onClick={() => {
-                                if (window.confirm("End this chat? You will not be able to send more messages.")) {
+                                if (window.confirm(t("workflow.tester.chat.confirmEnd"))) {
                                     void endSession();
                                 }
                             }}
@@ -161,7 +163,7 @@ export function ManualTextChatPanel({
                             ) : (
                                 <Square className="h-3.5 w-3.5" />
                             )}
-                            {endingSession ? "Ending" : "End chat"}
+                            {endingSession ? t("workflow.tester.chat.ending") : t("workflow.tester.chat.endChat")}
                         </Button>
                     ) : null}
                 </div>

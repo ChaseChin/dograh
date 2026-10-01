@@ -1,3 +1,5 @@
+"use client";
+
 import {
     type ChangeEvent,
     type KeyboardEvent,
@@ -7,6 +9,7 @@ import {
     useRef,
     useState,
 } from "react";
+import { useTranslation } from "react-i18next";
 
 import type { RecordingResponseSchema } from "@/client/types.gen";
 import { cn } from "@/lib/utils";
@@ -33,6 +36,7 @@ export function MentionTextarea({
     className,
     recordings = [],
 }: MentionTextareaProps) {
+    const { t } = useTranslation();
     const textareaRef = useRef<HTMLTextAreaElement>(null);
     const dropdownRef = useRef<HTMLDivElement>(null);
     const [showDropdown, setShowDropdown] = useState(false);
@@ -207,7 +211,7 @@ export function MentionTextarea({
             )}
             {showDropdown && filtered.length === 0 && items.length === 0 && (
                 <div className="absolute z-50 mt-1 w-full rounded-md border bg-popover text-popover-foreground shadow-md p-3 text-sm text-muted-foreground">
-                    No recordings found. Upload recordings via the Recordings panel.
+                    {t("flow.recordings.emptyMention")}
                 </div>
             )}
         </div>

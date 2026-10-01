@@ -1,3 +1,5 @@
+"use client";
+
 import '@xyflow/react/dist/style.css';
 
 import {
@@ -9,6 +11,7 @@ import {
 import { BrushCleaning, Maximize2, Minus, Plus, Settings } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import React, { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useTranslation } from "react-i18next";
 import { toast } from 'sonner';
 
 import { createWorkflowDraftApiV1WorkflowWorkflowIdCreateDraftPost, getWorkflowVersionsApiV1WorkflowWorkflowIdVersionsGet, listDocumentsApiV1KnowledgeBaseDocumentsGet, listRecordingsApiV1WorkflowRecordingsGet, listToolsApiV1ToolsGet } from '@/client';
@@ -78,6 +81,7 @@ function RenderWorkflow({
     user,
 }: RenderWorkflowProps) {
     const router = useRouter();
+    const { t } = useTranslation();
     const { specs } = useNodeSpecs();
     const { hasCompletedAction } = useOnboarding();
     const [isPhoneCallDialogOpen, setIsPhoneCallDialogOpen] = useState(false);
@@ -172,7 +176,7 @@ function RenderWorkflow({
                 query: { limit: VERSIONS_PAGE_SIZE + 1, offset: 0 },
             });
             if (response.error) {
-                toast.error(detailFromError(response.error, "Failed to load version history"));
+                toast.error(detailFromError(response.error, t("workflow.editor.versions.loadFailed")));
                 return;
             }
             const data = response.data;
@@ -197,7 +201,7 @@ function RenderWorkflow({
         } finally {
             setVersionsLoading(false);
         }
-    }, [workflowId]);
+    }, [workflowId, t]);
 
     const handleLoadMoreVersions = useCallback(async () => {
         if (versionsLoadingMore || !versionsHasMore) return;
@@ -208,7 +212,7 @@ function RenderWorkflow({
                 query: { limit: VERSIONS_PAGE_SIZE + 1, offset: versions.length },
             });
             if (response.error) {
-                toast.error(detailFromError(response.error, "Failed to load more versions"));
+                toast.error(detailFromError(response.error, t("workflow.editor.versions.loadMoreFailed")));
                 return;
             }
             const data = response.data;
@@ -219,7 +223,7 @@ function RenderWorkflow({
         } finally {
             setVersionsLoadingMore(false);
         }
-    }, [workflowId, versions.length, versionsLoadingMore, versionsHasMore]);
+    }, [workflowId, versions.length, versionsLoadingMore, versionsHasMore, t]);
 
     const handleOpenVersionPanel = useCallback(() => {
         setIsVersionPanelOpen(true);
@@ -231,7 +235,7 @@ function RenderWorkflow({
 
         const selectedIndex = versions.findIndex((candidate) => candidate.id === version.id);
         if (selectedIndex < 0) {
-            toast.error("That workflow version is no longer in the history list");
+            toast.error(t("workflow.editor.versions.versionMissing"));
             return;
         }
 
@@ -244,7 +248,7 @@ function RenderWorkflow({
                 query: { limit: 2, offset: selectedIndex },
             });
             if (response.error) {
-                toast.error(detailFromError(response.error, "Failed to compare workflow versions"));
+                toast.error(detailFromError(response.error, t("workflow.editor.versions.compareFailed")));
                 return;
             }
 
@@ -256,14 +260,14 @@ function RenderWorkflow({
             // every offset. Refresh instead of showing a mismatched comparison.
             if (!selectedVersion || selectedVersion.id !== version.id) {
                 await fetchVersions(true, true);
-                toast.error("Version history changed. Please try the comparison again.");
+                toast.error(t("workflow.editor.versions.historyChanged"));
                 return;
             }
             if (
                 !previousVersion ||
                 previousVersion.version_number >= selectedVersion.version_number
             ) {
-                toast.error(`v${selectedVersion.version_number} has no previous version`);
+                toast.error(t("workflow.editor.versions.noPrevious", { version: selectedVersion.version_number }));
                 return;
             }
 
@@ -276,11 +280,11 @@ function RenderWorkflow({
             setVersionDiffPair({ previousVersion, selectedVersion });
             setIsVersionPanelOpen(false);
         } catch {
-            toast.error("Failed to compare workflow versions");
+            toast.error(t("workflow.editor.versions.compareFailed"));
         } finally {
             setComparingVersionId(null);
         }
-    }, [comparingVersionId, fetchVersions, versions, workflowId]);
+    }, [comparingVersionId, fetchVersions, versions, workflowId, t]);
 
     const handleVersionDiffOpenChange = useCallback((open: boolean) => {
         if (open) return;
@@ -367,30 +371,40 @@ function RenderWorkflow({
         if (activeVersionId && versions.length > 0) {
             const v = versions.find((ver) => ver.id === activeVersionId);
             if (v) {
-                const statusSuffix = v.status === "draft" ? " (Draft)" : v.status === "published" ? " (Published)" : "";
-                return `v${v.version_number}${statusSuffix}`;
+                if (v.status === "draft") {
+                    return t("workflow.editor.versions.draftLabel", { version: v.version_number });
+                }
+                if (v.status === "published") {
+                    return t("workflow.editor.versions.publishedLabel", { version: v.version_number });
+                }
+                return t("workflow.editor.versions.versionLabel", { version: v.version_number });
             }
         }
         // Otherwise use the immediately-available version info from save responses
         if (currentVersionNumber != null) {
-            const statusSuffix = currentVersionStatus === "draft" ? " (Draft)" : currentVersionStatus === "published" ? " (Published)" : "";
-            return `v${currentVersionNumber}${statusSuffix}`;
+            if (currentVersionStatus === "draft") {
+                return t("workflow.editor.versions.draftLabel", { version: currentVersionNumber });
+            }
+            if (currentVersionStatus === "published") {
+                return t("workflow.editor.versions.publishedLabel", { version: currentVersionNumber });
+            }
+            return t("workflow.editor.versions.versionLabel", { version: currentVersionNumber });
         }
         return undefined;
-    }, [activeVersionId, versions, currentVersionNumber, currentVersionStatus]);
+    }, [activeVersionId, versions, currentVersionNumber, currentVersionStatus, t]);
 
     const testerDisabledReason = useMemo(() => {
         if (isViewingHistoricalVersion) {
-            return "Return to the draft before starting a new test session.";
+            return t("workflow.tester.returnToDraft");
         }
         if (isDirty) {
-            return "Save the latest draft before testing so the session uses the workflow you are looking at.";
+            return t("workflow.tester.saveDraftFirst");
         }
         if (workflowValidationErrors.length > 0) {
-            return "Resolve the current validation errors before starting another test.";
+            return t("workflow.tester.resolveErrors");
         }
         return null;
-    }, [isDirty, isViewingHistoricalVersion, workflowValidationErrors.length]);
+    }, [isDirty, isViewingHistoricalVersion, workflowValidationErrors.length, t]);
 
     const handleOpenTester = useCallback(() => {
         if (window.innerWidth >= 1280) {
@@ -535,10 +549,10 @@ function RenderWorkflow({
         // runs. Throw rather than silently sending fallback workflow configurations,
         // which would overwrite the saved server-side config.
         if (!workflowConfigurations) {
-            throw new Error("Workflow configurations not loaded");
+            throw new Error(t("workflow.editor.configNotLoaded"));
         }
         await saveWorkflowConfigurations(workflowConfigurations, newName);
-    }, [saveWorkflowConfigurations, workflowConfigurations]);
+    }, [saveWorkflowConfigurations, workflowConfigurations, t]);
 
     const updateTool = useCallback(
         (toolUuid: string, updater: (tool: ToolResponse) => ToolResponse) => {
@@ -647,7 +661,7 @@ function RenderWorkflow({
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="left">
-                                                        <p>Add node</p>
+                                                        <p>{t("workflow.editor.tooltips.addNode")}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
 
@@ -663,7 +677,7 @@ function RenderWorkflow({
                                                         </Button>
                                                     </TooltipTrigger>
                                                     <TooltipContent side="left">
-                                                        <p>Workflow settings</p>
+                                                        <p>{t("workflow.editor.tooltips.settings")}</p>
                                                     </TooltipContent>
                                                 </Tooltip>
                                             </div>
@@ -687,7 +701,7 @@ function RenderWorkflow({
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent side="top">
-                                            <p>Zoom in</p>
+                                            <p>{t("workflow.editor.tooltips.zoomIn")}</p>
                                         </TooltipContent>
                                     </Tooltip>
 
@@ -703,7 +717,7 @@ function RenderWorkflow({
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent side="top">
-                                            <p>Zoom out</p>
+                                            <p>{t("workflow.editor.tooltips.zoomOut")}</p>
                                         </TooltipContent>
                                     </Tooltip>
 
@@ -719,7 +733,7 @@ function RenderWorkflow({
                                             </Button>
                                         </TooltipTrigger>
                                         <TooltipContent side="top">
-                                            <p>Fit view</p>
+                                            <p>{t("workflow.editor.tooltips.fitView")}</p>
                                         </TooltipContent>
                                     </Tooltip>
 
@@ -739,7 +753,7 @@ function RenderWorkflow({
                                                 </Button>
                                             </TooltipTrigger>
                                             <TooltipContent side="top">
-                                                <p>Tidy Up</p>
+                                                <p>{t("workflow.editor.tooltips.tidyUp")}</p>
                                             </TooltipContent>
                                         </Tooltip>
                                     )}

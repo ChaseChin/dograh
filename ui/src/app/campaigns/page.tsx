@@ -3,6 +3,7 @@
 import { Plus } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import { getCampaignsApiV1CampaignGet } from '@/client/sdk.gen';
 import type { CampaignsResponse } from '@/client/types.gen';
@@ -25,6 +26,7 @@ export default function CampaignsPage() {
     const { user, getAccessToken, redirectToLogin, loading } = useAuth();
     const organizationTimezone = useOrganizationTimezone();
     const router = useRouter();
+    const { t } = useTranslation();
 
     const [campaignsData, setCampaignsData] = useState<CampaignsResponse | null>(null);
     const [isLoading, setIsLoading] = useState(true);
@@ -96,20 +98,20 @@ export default function CampaignsPage() {
         <div className="container mx-auto p-6 space-y-6">
             <div className="flex justify-between items-center">
                 <div>
-                    <h1 className="text-3xl font-bold mb-2">Campaigns</h1>
-                    <p>Manage your bulk workflow execution campaigns</p>
+                    <h1 className="text-3xl font-bold mb-2">{t('campaigns.title')}</h1>
+                    <p>{t('campaigns.subtitle')}</p>
                 </div>
                     <Button onClick={handleCreateCampaign}>
                         <Plus className="h-4 w-4 mr-2" />
-                        Create Campaign
+                        {t('campaigns.createCampaign')}
                     </Button>
                 </div>
 
                 <Card>
                     <CardHeader>
-                        <CardTitle>All Campaigns</CardTitle>
+                        <CardTitle>{t('campaigns.allCampaigns')}</CardTitle>
                         <CardDescription>
-                            View and manage your campaigns
+                            {t('campaigns.allCampaignsDescription')}
                         </CardDescription>
                     </CardHeader>
                     <CardContent>
@@ -124,13 +126,13 @@ export default function CampaignsPage() {
                                 <Table>
                                     <TableHeader>
                                         <TableRow>
-                                            <TableHead>ID</TableHead>
-                                            <TableHead>Name</TableHead>
-                                            <TableHead>Workflow</TableHead>
-                                            <TableHead>State</TableHead>
-                                            <TableHead>Progress</TableHead>
-                                            <TableHead>Created</TableHead>
-                                            <TableHead className="text-right">Action</TableHead>
+                                            <TableHead>{t('campaigns.headerId')}</TableHead>
+                                            <TableHead>{t('campaigns.headerName')}</TableHead>
+                                            <TableHead>{t('campaigns.headerWorkflow')}</TableHead>
+                                            <TableHead>{t('campaigns.headerState')}</TableHead>
+                                            <TableHead>{t('campaigns.headerProgress')}</TableHead>
+                                            <TableHead>{t('campaigns.headerCreated')}</TableHead>
+                                            <TableHead className="text-right">{t('campaigns.headerAction')}</TableHead>
                                         </TableRow>
                                     </TableHeader>
                                     <TableBody>
@@ -145,7 +147,7 @@ export default function CampaignsPage() {
                                                 <TableCell>{campaign.workflow_name}</TableCell>
                                                 <TableCell>
                                                     <Badge variant={getStateBadgeVariant(campaign.state)}>
-                                                        {campaign.state}
+                                                        {t(`campaigns.states.${campaign.state}`, { defaultValue: campaign.state })}
                                                     </Badge>
                                                 </TableCell>
                                                 <TableCell>
@@ -163,7 +165,7 @@ export default function CampaignsPage() {
                                                             handleRowClick(campaign.id);
                                                         }}
                                                     >
-                                                        View
+                                                        {t('campaigns.view')}
                                                     </Button>
                                                 </TableCell>
                                             </TableRow>
@@ -173,10 +175,10 @@ export default function CampaignsPage() {
                             </div>
                         ) : (
                             <div className="text-center py-8">
-                                <p className="mb-4">No campaigns found</p>
+                                <p className="mb-4">{t('campaigns.empty')}</p>
                                 <Button onClick={handleCreateCampaign} variant="outline">
                                     <Plus className="h-4 w-4 mr-2" />
-                                    Create your first campaign
+                                    {t('campaigns.createFirst')}
                                 </Button>
                             </div>
                         )}

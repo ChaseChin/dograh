@@ -2,6 +2,7 @@
 
 import { Save, SlidersHorizontal } from "lucide-react";
 import { useEffect, useId, useRef, useState } from "react";
+import { useTranslation } from "react-i18next";
 import TimezoneSelect, { type ITimezoneOption } from "react-timezone-select";
 import { toast } from "sonner";
 
@@ -110,6 +111,7 @@ function getTimezoneValue(tz: ITimezoneOption | string): string {
 export function OrganizationPreferencesSection() {
   const { user, loading: authLoading } = useAuth();
   const { refreshConfig } = useUserConfig();
+  const { t } = useTranslation();
   const timezoneSelectId = useId();
   const hasFetched = useRef(false);
 
@@ -140,7 +142,7 @@ export function OrganizationPreferencesSection() {
         toast.error(
           detailFromError(
             result.error,
-            "Failed to load organization preferences",
+            t("settings.preferences.loadFailed"),
           ),
         );
         return;
@@ -152,7 +154,7 @@ export function OrganizationPreferencesSection() {
         nextPreferences.timezone || emptyPreferences.timezone || "UTC",
       );
     } catch {
-      toast.error("Failed to load organization preferences");
+      toast.error(t("settings.preferences.loadFailed"));
     } finally {
       setLoading(false);
     }
@@ -183,11 +185,11 @@ export function OrganizationPreferencesSection() {
         );
 
       if (result.error) {
-        toast.error(detailFromError(result.error, "Failed to save preferences"));
+        toast.error(detailFromError(result.error, t("settings.preferences.saveFailed")));
         return false;
       }
       if (!result.data) {
-        toast.error("Failed to save preferences");
+        toast.error(t("settings.preferences.saveFailed"));
         return false;
       }
 
@@ -197,7 +199,7 @@ export function OrganizationPreferencesSection() {
       toast.success(successMessage);
       return true;
     } catch {
-      toast.error("Failed to save preferences");
+      toast.error(t("settings.preferences.saveFailed"));
       return false;
     } finally {
       setSaving(false);
@@ -206,7 +208,7 @@ export function OrganizationPreferencesSection() {
 
   async function handleSave(e: React.FormEvent) {
     e.preventDefault();
-    await persistPreferences(preferences, "Preferences saved");
+    await persistPreferences(preferences, t("settings.preferences.saved"));
   }
 
   async function handleDispositionMappingSave(
@@ -214,12 +216,12 @@ export function OrganizationPreferencesSection() {
   ): Promise<boolean> {
     return persistPreferences(
       { ...preferences, disposition_mapping: dispositionMapping },
-      "Disposition mapping saved",
+      t("settings.preferences.mappingSaved"),
     );
   }
 
   if (loading) {
-    return <p className="text-sm text-muted-foreground">Loading...</p>;
+    return <p className="text-sm text-muted-foreground">{t("common.loading")}</p>;
   }
 
   const mappingCount = Object.keys(preferences.disposition_mapping ?? {}).length;
@@ -227,11 +229,11 @@ export function OrganizationPreferencesSection() {
   return (
     <form onSubmit={handleSave} className="space-y-4">
       <p className="text-sm text-muted-foreground">
-        Set organization-wide defaults used by testing and scheduling flows.
+        {t("settings.preferences.intro")}
       </p>
       <div className="grid gap-4 sm:grid-cols-2">
         <div className="space-y-2">
-          <Label htmlFor="settings-test-phone-number">Test Phone Number</Label>
+          <Label htmlFor="settings-test-phone-number">{t("settings.preferences.testPhoneNumber")}</Label>
           <Input
             id="settings-test-phone-number"
             value={preferences.test_phone_number || ""}
@@ -245,7 +247,7 @@ export function OrganizationPreferencesSection() {
           />
         </div>
         <div className="space-y-2">
-          <Label>Timezone</Label>
+          <Label>{t("settings.preferences.timezone")}</Label>
           <TimezoneSelect
             instanceId={timezoneSelectId}
             value={timezone}
@@ -257,12 +259,10 @@ export function OrganizationPreferencesSection() {
       <div className="flex items-start justify-between gap-4 rounded-lg border p-4">
         <div className="space-y-1">
           <Label htmlFor="settings-external-pbx-integrations">
-            External PBX integrations
+            {t("settings.preferences.externalPbx")}
           </Label>
           <p className="text-xs text-muted-foreground">
-            Show and enable advanced external-PBX configuration for Asterisk,
-            transfer tools, and workflows. Existing configuration is preserved
-            when this is disabled.
+            {t("settings.preferences.externalPbxHelp")}
           </p>
         </div>
         <Switch
@@ -280,13 +280,10 @@ export function OrganizationPreferencesSection() {
         <div className="flex items-start justify-between gap-4">
           <div className="space-y-1">
             <Label htmlFor="settings-disposition-mapping">
-              Disposition mapping
+              {t("settings.preferences.dispositionMapping")}
             </Label>
             <p className="text-xs text-muted-foreground">
-              Report call outcomes using your own disposition codes instead of
-              VoiceWorker&apos;s. Applies to webhooks, run filters, reports, and
-              external PBX write-backs. Configuration is preserved when this is
-              disabled.
+              {t("settings.preferences.dispositionMappingHelp")}
             </p>
           </div>
           <Switch
@@ -309,12 +306,12 @@ export function OrganizationPreferencesSection() {
               onClick={() => setMappingDialogOpen(true)}
             >
               <SlidersHorizontal className="mr-2 h-3.5 w-3.5" />
-              Configure mapping
+              {t("settings.preferences.configureMapping")}
             </Button>
             <span className="text-xs text-muted-foreground">
               {mappingCount === 0
-                ? "No overrides yet"
-                : `${mappingCount} disposition${mappingCount === 1 ? "" : "s"} mapped`}
+                ? t("settings.preferences.noOverrides")
+                : t("settings.preferences.mapped", { count: mappingCount })}
             </span>
           </div>
         )}
@@ -327,7 +324,7 @@ export function OrganizationPreferencesSection() {
       />
       <Button type="submit" disabled={saving}>
         <Save className="mr-2 h-4 w-4" />
-        {saving ? "Saving..." : "Save"}
+        {saving ? t("common.saving") : t("common.save")}
       </Button>
     </form>
   );

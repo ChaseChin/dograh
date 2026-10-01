@@ -2,6 +2,7 @@
 
 import posthog from "posthog-js";
 import { useEffect, useRef, useState, useSyncExternalStore } from "react";
+import { useTranslation } from "react-i18next";
 
 import { BrandLogo } from "@/components/BrandLogo";
 
@@ -66,6 +67,7 @@ function readEligible() {
 }
 
 export function EventBanner() {
+  const { t } = useTranslation();
   const eligible = useSyncExternalStore(subscribeNever, readEligible, serverSnapshot);
   // Dismissal is a same-session re-render; the localStorage write below is what
   // makes it stick across page views.
@@ -111,7 +113,7 @@ export function EventBanner() {
         onClick={() =>
           posthog.capture("event_banner_clicked", { event: EVENT.analyticsId })
         }
-        aria-label={`Register for free: ${EVENT.title} — live virtual session (opens in a new tab)`}
+        aria-label={t("eventBanner.registerAria", { title: EVENT.title })}
         className="group mx-auto flex h-14 max-w-7xl items-center gap-2.5 pr-9 pl-4 transition-colors focus-visible:outline-2 focus-visible:-outline-offset-2 focus-visible:outline-cta sm:h-12 sm:gap-4 sm:pr-12 sm:pl-6 md:justify-center md:gap-5 lg:pr-14 lg:pl-8"
       >
         {/* Partnership lockup — shown from lg only. At md the row (lockup +
@@ -159,8 +161,8 @@ export function EventBanner() {
                 the title characters. Below 640 the bar is two lines and has the
                 room. */}
             <span className="font-mono text-[9px] uppercase tracking-[0.18em] text-cta sm:text-[10px]">
-              <span className="hidden sm:inline md:hidden">Live</span>
-              <span className="sm:hidden md:inline">Live virtual session</span>
+              <span className="hidden sm:inline md:hidden">{t("eventBanner.live")}</span>
+              <span className="sm:hidden md:inline">{t("eventBanner.liveVirtualSession")}</span>
             </span>
           </span>
           <span aria-hidden className="hidden h-3 w-px shrink-0 bg-border sm:block" />
@@ -176,7 +178,7 @@ export function EventBanner() {
             hover, because the whole bar is the link. */}
         <span className="ml-auto inline-flex shrink-0 items-center gap-1 whitespace-nowrap rounded-full border border-cta px-2.5 py-1 text-[11px] font-medium text-cta transition-colors duration-150 group-hover:bg-cta group-hover:text-cta-foreground sm:px-3 sm:py-1.5 sm:text-[12px] md:ml-0">
           <span>
-            Register<span className="hidden sm:inline"> for Free</span>
+            {t("eventBanner.register")}<span className="hidden sm:inline">{t("eventBanner.registerFreeSuffix")}</span>
           </span>
           <span aria-hidden>→</span>
         </span>
@@ -192,7 +194,7 @@ export function EventBanner() {
           }
           setDismissed(true);
         }}
-        aria-label="Dismiss event announcement"
+        aria-label={t("eventBanner.dismissAria")}
         className="absolute top-1/2 right-1.5 -translate-y-1/2 cursor-pointer rounded-md p-1.5 text-muted-foreground transition-colors hover:bg-accent hover:text-foreground focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-cta sm:right-3"
       >
         <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">

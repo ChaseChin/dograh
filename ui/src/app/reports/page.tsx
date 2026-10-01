@@ -3,6 +3,7 @@
 import { addDays, format, subDays } from 'date-fns';
 import { Calendar, ChevronLeft, ChevronRight, Download } from 'lucide-react';
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 import {
   getDailyReportApiV1OrganizationsReportsDailyGet,
@@ -17,6 +18,7 @@ import { Card } from '@/components/ui/card';
 import { Popover, PopoverContent, PopoverTrigger } from '@/components/ui/popover';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Skeleton } from '@/components/ui/skeleton';
+import { getDateFnsLocale } from '@/i18n/dateLocale';
 import { useAuth } from '@/lib/auth';
 
 import { DispositionChart } from './components/DispositionChart';
@@ -59,6 +61,7 @@ export default function ReportsPage() {
   const [error, setError] = useState<string | null>(null);
   const [timezone, setTimezone] = useState('America/New_York');
   const auth = useAuth();
+  const { t } = useTranslation();
 
   // Fetch workflows on mount
   useEffect(() => {
@@ -119,14 +122,14 @@ export default function ReportsPage() {
         }
       } catch (err) {
         console.error('Failed to fetch report:', err);
-        setError('Failed to load report data');
+        setError(t('reports.loadFailed'));
       } finally {
         setLoading(false);
       }
     };
 
     fetchReport();
-  }, [selectedDate, selectedWorkflow, timezone, auth.isAuthenticated]);
+  }, [selectedDate, selectedWorkflow, timezone, auth.isAuthenticated, t]);
 
   const handlePreviousDay = () => {
     setSelectedDate(subDays(selectedDate, 1));
@@ -154,7 +157,7 @@ export default function ReportsPage() {
 
       if (response.data && response.data.length > 0) {
         // Prepare CSV content
-        const headers = ['Phone Number', 'Disposition', 'Duration (seconds)', 'Workflow Run URL'];
+        const headers = t('reports.csvHeaders', { returnObjects: true }) as string[];
         const rows = response.data.map((run: WorkflowRunDetail) => {
           const url = `${window.location.origin}/workflow/${run.workflow_id}/run/${run.run_id}`;
           return [
@@ -187,11 +190,11 @@ export default function ReportsPage() {
         link.click();
         document.body.removeChild(link);
       } else {
-        alert('No data available for download');
+        alert(t('reports.noDataToDownload'));
       }
     } catch (err) {
       console.error('Failed to download CSV:', err);
-      alert('Failed to download CSV data');
+      alert(t('reports.downloadFailed'));
     }
   };
 
@@ -202,7 +205,7 @@ export default function ReportsPage() {
       {/* Header */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-4">
         <div className="space-y-2">
-          <h1 className="text-3xl font-bold">Daily Reports</h1>
+          <h1 className="text-3xl font-bold">{t('reports.title')}</h1>
         </div>
 
         {/* Date Navigation & Workflow Selector */}
@@ -210,10 +213,10 @@ export default function ReportsPage() {
           {/* Workflow Selector */}
           <Select value={selectedWorkflow} onValueChange={setSelectedWorkflow}>
             <SelectTrigger className="w-[200px]">
-              <SelectValue placeholder="Select workflow" />
+              <SelectValue placeholder={t('reports.selectWorkflow')} />
             </SelectTrigger>
             <SelectContent>
-              <SelectItem value="all">All Workflows</SelectItem>
+              <SelectItem value="all">{t('reports.allWorkflows')}</SelectItem>
               {workflows.map((workflow) => (
                 <SelectItem key={workflow.id} value={workflow.id.toString()}>
                   {workflow.name}
@@ -236,7 +239,7 @@ export default function ReportsPage() {
               <PopoverTrigger asChild>
                 <Button variant="outline" className="w-[200px]">
                   <Calendar className="mr-2 h-4 w-4" />
-                  {format(selectedDate, 'MMM dd, yyyy')}
+                  {format(selectedDate, 'MMM dd, yyyy', { locale: getDateFnsLocale() })}
                 </Button>
               </PopoverTrigger>
               <PopoverContent className="w-auto p-0">
@@ -264,9 +267,9 @@ export default function ReportsPage() {
       {/* Timezone Display and Download Button */}
       <div className="flex flex-col sm:flex-row justify-between items-start sm:items-center gap-2">
         <div className="text-sm text-muted-foreground">
-          Showing data for {timezone} timezone
+          {t('reports.showingTimezone', { timezone })}
           {selectedWorkflow !== 'all' && (
-            <span> • Filtered by: {workflows.find(w => w.id.toString() === selectedWorkflow)?.name}</span>
+            <span>{t('reports.filteredBy', { name: workflows.find(w => w.id.toString() === selectedWorkflow)?.name })}</span>
           )}
         </div>
 
@@ -279,7 +282,7 @@ export default function ReportsPage() {
             className="flex items-center gap-2"
           >
             <Download className="h-4 w-4" />
-            Download CSV
+            {t('reports.downloadCsv')}
           </Button>
         )}
       </div>
@@ -321,8 +324,8 @@ export default function ReportsPage() {
           {report.metrics.total_runs === 0 && (
             <Card className="p-6">
               <p className="text-center text-muted-foreground">
-                No workflow runs found for {format(selectedDate, 'MMMM dd, yyyy')}
-                {selectedWorkflow !== 'all' && ' for the selected workflow'}
+                {t('reports.noRuns', { date: format(selectedDate, 'MMMM dd, yyyy', { locale: getDateFnsLocale() }) })}
+                {selectedWorkflow !== 'all' && t('reports.noRunsForWorkflow')}
               </p>
             </Card>
           )}

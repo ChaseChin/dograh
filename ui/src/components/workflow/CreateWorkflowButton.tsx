@@ -3,6 +3,7 @@
 import { Bot, ChevronDown, LayoutTemplate, PlusIcon } from 'lucide-react';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { toast } from 'sonner';
 
 import { createWorkflowApiV1WorkflowCreateDefinitionPost } from '@/client/sdk.gen';
@@ -46,6 +47,7 @@ const BLANK_WORKFLOW_DEFINITION = {
 
 export function CreateWorkflowButton() {
     const router = useRouter();
+    const { t } = useTranslation();
     const { user, getAccessToken } = useAuth();
     const [isCreating, setIsCreating] = useState(false);
 
@@ -75,7 +77,7 @@ export function CreateWorkflowButton() {
             }
         } catch (err) {
             logger.error(`Error creating blank workflow: ${err}`);
-            toast.error('Failed to create workflow');
+            toast.error(t('workflowList.create.createFailed'));
         } finally {
             setIsCreating(false);
         }
@@ -86,7 +88,7 @@ export function CreateWorkflowButton() {
             <DropdownMenuTrigger asChild>
                 <Button disabled={isCreating}>
                     <PlusIcon className="w-4 h-4" />
-                    {isCreating ? 'Creating...' : 'Create Agent'}
+                    {isCreating ? t('workflow.create.creating') : t('workflow.create.createAgent')}
                     <ChevronDown className="w-4 h-4" />
                 </Button>
             </DropdownMenuTrigger>
@@ -94,15 +96,15 @@ export function CreateWorkflowButton() {
                 <DropdownMenuItem onClick={handleAgentBuilder} className="cursor-pointer">
                     <Bot className="w-4 h-4 mr-2" />
                     <div>
-                        <div className="font-medium">Use Agent Builder</div>
-                        <div className="text-xs text-muted-foreground">AI generates a workflow from your description</div>
+                        <div className="font-medium">{t('workflowList.create.useAgentBuilder')}</div>
+                        <div className="text-xs text-muted-foreground">{t('workflowList.create.useAgentBuilderDesc')}</div>
                     </div>
                 </DropdownMenuItem>
                 <DropdownMenuItem onClick={handleBlankCanvas} disabled={isCreating} className="cursor-pointer">
                     <LayoutTemplate className="w-4 h-4 mr-2" />
                     <div>
-                        <div className="font-medium">Blank Canvas</div>
-                        <div className="text-xs text-muted-foreground">Start from scratch with an empty workflow</div>
+                        <div className="font-medium">{t('workflowList.create.blankCanvas')}</div>
+                        <div className="text-xs text-muted-foreground">{t('workflowList.create.blankCanvasDesc')}</div>
                     </div>
                 </DropdownMenuItem>
             </DropdownMenuContent>

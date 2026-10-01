@@ -2,6 +2,7 @@
 
 import { ChevronRight, Wrench } from "lucide-react";
 import { useState } from "react";
+import { useTranslation } from "react-i18next";
 
 import { Badge } from "@/components/ui/badge";
 import { Collapsible, CollapsibleContent, CollapsibleTrigger } from "@/components/ui/collapsible";
@@ -28,6 +29,7 @@ export function ToolCallCard({
     reasoningDurationMs,
     latencyMs,
 }: ToolCallCardProps) {
+    const { t } = useTranslation();
     const [open, setOpen] = useState(false);
     const hasArguments = argumentsValue !== undefined;
     const hasResult = resultValue !== undefined;
@@ -62,7 +64,7 @@ export function ToolCallCard({
                                             : "border-emerald-500/30 text-emerald-700 dark:text-emerald-300",
                                     )}
                                 >
-                                    {status === "running" ? "Running" : "Completed"}
+                                    {status === "running" ? t("conversation.toolCall.running") : t("conversation.toolCall.completed")}
                                 </Badge>
                             </div>
                             {hasDetails ? (
@@ -78,7 +80,7 @@ export function ToolCallCard({
                                                     open && "rotate-90",
                                                 )}
                                             />
-                                            Details
+                                            {t("conversation.toolCall.details")}
                                         </button>
                                     </CollapsibleTrigger>
                                 </div>
@@ -91,20 +93,20 @@ export function ToolCallCard({
                                 {hasArguments ? (
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                                            Arguments
+                                            {t("conversation.toolCall.arguments")}
                                         </p>
                                         <pre className="overflow-x-auto rounded-xl bg-background/70 p-3 text-xs leading-5 text-foreground">
-                                            {formatConversationValue(argumentsValue)}
+                                            {formatConversationValue(argumentsValue, t("common.none"))}
                                         </pre>
                                     </div>
                                 ) : null}
                                 {hasResult ? (
                                     <div className="space-y-1">
                                         <p className="text-[11px] font-medium uppercase tracking-[0.14em] text-muted-foreground">
-                                            Result
+                                            {t("conversation.toolCall.result")}
                                         </p>
                                         <pre className="overflow-x-auto rounded-xl bg-background/70 p-3 text-xs leading-5 text-foreground">
-                                            {formatConversationValue(resultValue)}
+                                            {formatConversationValue(resultValue, t("common.none"))}
                                         </pre>
                                     </div>
                                 ) : null}

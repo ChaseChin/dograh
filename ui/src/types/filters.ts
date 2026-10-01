@@ -15,16 +15,17 @@ export interface AttributeConfig {
   max?: number;
   step?: number;
   unit?: string; // e.g., "seconds", "tokens"
-  numberPresets?: { label: string; min: number; max: number }[];
+  numberPresets?: { label: string; labelKey?: string; min: number; max: number }[];
 
   // For number (single value)
   placeholder?: string;
+  placeholderKey?: string; // i18n key for the placeholder (takes precedence)
   numberSelectLabel?: string;
   numberSelectOptions?: NumberFilterOption[];
   numberSelectOptionsLoading?: boolean;
 
   // For radio
-  radioOptions?: { label: string; value: string }[];
+  radioOptions?: { label: string; labelKey?: string; value: string }[];
   defaultValue?: string;
 
   // For text
@@ -35,6 +36,7 @@ export interface FilterAttribute {
   id: string;
   type: "dateRange" | "multiSelect" | "numberRange" | "number" | "numberSelect" | "radio" | "tags" | "text";
   label: string;
+  labelKey?: string; // i18n key for the label (takes precedence over label)
   field?: string; // Database field to filter on (optional, backend will resolve)
   config: AttributeConfig;
 }
@@ -95,7 +97,9 @@ export interface FilterBuilderState {
 export interface FilterTemplate {
   id: string;
   name: string;
+  nameKey?: string; // i18n key for the name (takes precedence)
   description: string;
+  descriptionKey?: string; // i18n key for the description (takes precedence)
   filters: {
     attributeId: string;
     value: FilterValue;
@@ -113,7 +117,9 @@ export const filterTemplates: FilterTemplate[] = [
   {
     id: "failed-calls-today",
     name: "Failed Calls Today",
+    nameKey: "filters.templatesList.failedCallsToday.name",
     description: "Calls from today with failed disposition codes",
+    descriptionKey: "filters.templatesList.failedCallsToday.description",
     filters: [
       {
         attributeId: "dateRange",
@@ -133,7 +139,9 @@ export const filterTemplates: FilterTemplate[] = [
   {
     id: "long-duration-calls",
     name: "Long Duration Calls",
+    nameKey: "filters.templatesList.longDurationCalls.name",
     description: "Completed calls longer than 5 minutes",
+    descriptionKey: "filters.templatesList.longDurationCalls.description",
     filters: [
       {
         attributeId: "duration",
@@ -153,7 +161,9 @@ export const filterTemplates: FilterTemplate[] = [
   {
     id: "high-cost-calls",
     name: "High Cost Calls",
+    nameKey: "filters.templatesList.highCostCalls.name",
     description: "Completed calls using more than 100 tokens",
+    descriptionKey: "filters.templatesList.highCostCalls.description",
     filters: [
       {
         attributeId: "tokenUsage",
@@ -173,7 +183,9 @@ export const filterTemplates: FilterTemplate[] = [
   {
     id: "recent-activity",
     name: "Recent Activity",
+    nameKey: "filters.templatesList.recentActivity.name",
     description: "All calls from the last 24 hours",
+    descriptionKey: "filters.templatesList.recentActivity.description",
     filters: [
       {
         attributeId: "dateRange",
@@ -187,7 +199,9 @@ export const filterTemplates: FilterTemplate[] = [
   {
     id: "transferred-calls",
     name: "Transferred Calls",
+    nameKey: "filters.templatesList.transferredCalls.name",
     description: "Calls with XFER disposition",
+    descriptionKey: "filters.templatesList.transferredCalls.description",
     filters: [
       {
         attributeId: "dispositionCode",
@@ -200,7 +214,9 @@ export const filterTemplates: FilterTemplate[] = [
   {
     id: "active-calls",
     name: "Active Calls",
+    nameKey: "filters.templatesList.activeCalls.name",
     description: "Calls currently in progress",
+    descriptionKey: "filters.templatesList.activeCalls.description",
     filters: [
       {
         attributeId: "status",
