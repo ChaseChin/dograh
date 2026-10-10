@@ -326,3 +326,25 @@ def test_external_pbx_lead_headers_treat_null_as_unset():
     )
 
     assert config.external_pbx_lead_headers == []
+
+
+@pytest.mark.parametrize("language", ["zh", "en", "auto"])
+def test_agent_language_accepts_supported_values(language):
+    assert WorkflowConfigurationDefaults(language=language).language == language
+
+
+def test_agent_language_defaults_to_unset():
+    # Unset (not "zh") is what keeps pre-existing workflows behaving as before:
+    # the runtime injects nothing unless a language was explicitly chosen.
+    assert WorkflowConfigurationDefaults().language is None
+
+
+def test_agent_language_rejects_unknown_values():
+    with pytest.raises(ValidationError, match="language"):
+        WorkflowConfigurationDefaults(language="fr")
+
+
+def test_agent_language_treats_null_as_unset():
+    config = WorkflowConfigurationDefaults.model_validate({"language": None})
+
+    assert config.language is None

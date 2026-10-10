@@ -24,7 +24,11 @@ from api.enums import (
 )
 from api.schemas.ai_model_configuration import OrganizationAIModelConfigurationV2
 from api.schemas.workflow import WorkflowRunResponseSchema
-from api.schemas.workflow_configurations import WorkflowConfigurationDefaults
+from api.schemas.workflow_configurations import (
+    DEFAULT_AGENT_LANGUAGE,
+    AgentLanguage,
+    WorkflowConfigurationDefaults,
+)
 from api.sdk_expose import sdk_expose
 from api.services.auth.depends import get_user
 from api.services.configuration.ai_model_configuration import (
@@ -58,6 +62,7 @@ from api.services.workflow.configuration_policy import (
 from api.services.workflow.dto import ReactFlowDTO, sanitize_workflow_definition
 from api.services.workflow.duplicate import duplicate_workflow
 from api.services.workflow.errors import ItemKind, WorkflowError
+from api.services.workflow.language import apply_language_instruction
 from api.services.workflow.run_creation import prepare_workflow_run_inputs
 from api.services.workflow.run_usage_response import (
     format_public_cost_info,
@@ -327,6 +332,7 @@ class WorkflowTemplateResponse(BaseModel):
 class CreateWorkflowRequest(BaseModel):
     name: str
     workflow_definition: dict
+    language: AgentLanguage = DEFAULT_AGENT_LANGUAGE
 
 
 class DuplicateTemplateRequest(BaseModel):
@@ -378,6 +384,7 @@ class CreateWorkflowTemplateRequest(BaseModel):
     call_type: Literal[CallType.INBOUND.value, CallType.OUTBOUND.value]
     use_case: str
     activity_description: str
+    language: AgentLanguage = DEFAULT_AGENT_LANGUAGE
 
 
 @router.post("/{workflow_id}/validate")
@@ -464,6 +471,10 @@ async def create_workflow(
     # Auto-mint trigger_path for any trigger node that didn't ship one so
     # clients don't need to generate UUIDs themselves.
     workflow_definition = ensure_trigger_paths(request.workflow_definition)
+    # Inject the language rule server-side too, so clients that post a
+    # definition without one still get an agent that speaks the chosen
+    # language (the runtime enforces it as well).
+    apply_language_instruction(workflow_definition, request.language)
     trigger_path_issues = validate_trigger_paths(workflow_definition)
     if trigger_path_issues:
         raise _trigger_path_validation_http_exception(trigger_path_issues)
@@ -498,6 +509,7 @@ async def create_workflow(
         workflow_definition,
         user.id,
         user.selected_organization_id,
+        workflow_configurations={"language": request.language},
     )
 
     capture_event(
@@ -507,6 +519,7 @@ async def create_workflow(
             "workflow_id": workflow.id,
             "workflow_name": workflow.name,
             "source": "direct",
+            "language": request.language,
             "organization_id": user.selected_organization_id,
         },
     )
@@ -581,6 +594,9 @@ async def create_workflow_from_template(
         workflow_def = regenerate_trigger_uuids(
             workflow_data.get("workflow_definition", {})
         )
+        # The generated definition ships its own English language rule; replace
+        # it with the one the user picked so the agent speaks the right language.
+        apply_language_instruction(workflow_def, request.language)
 
         trigger_paths = extract_trigger_paths(workflow_def) if workflow_def else []
         if trigger_paths:
@@ -596,6 +612,7 @@ async def create_workflow_from_template(
             workflow_definition=workflow_def,
             user_id=user.id,
             organization_id=user.selected_organization_id,
+            workflow_configurations={"language": request.language},
         )
 
         capture_event(
@@ -607,6 +624,7 @@ async def create_workflow_from_template(
                 "source": "template",
                 "call_type": request.call_type,
                 "use_case": request.use_case,
+                "language": request.language,
                 "organization_id": user.selected_organization_id,
             },
         )

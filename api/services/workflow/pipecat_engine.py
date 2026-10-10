@@ -132,6 +132,7 @@ class PipecatEngine:
         has_recordings: bool = False,
         is_realtime: bool = False,
         context_compaction_enabled: bool = False,
+        language_instruction: Optional[str] = None,
         run_transition_variable_extraction_in_background: bool = True,
         call_dispositions: Sequence[CallDispositionOption] | None = None,
     ):
@@ -258,6 +259,7 @@ class PipecatEngine:
 
         # Background context summarization on node transitions
         self._context_compaction_enabled: bool = context_compaction_enabled
+        self._language_instruction: Optional[str] = language_instruction
         self._context_summarization_manager: Optional[ContextSummarizationManager] = (
             None
         )
@@ -820,6 +822,7 @@ class PipecatEngine:
             workflow=agent.workflow,
             format_prompt=self._format_prompt,
             has_recordings=self._has_recordings,
+            language_instruction=self._language_instruction,
         )
         functions = await compose_functions_for_node(
             node=node, custom_tool_manager=manager

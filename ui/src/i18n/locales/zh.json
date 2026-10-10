@@ -2225,6 +2225,16 @@
       "successP3": "下一步可以在编辑器中测试语音机器人,然后根据你的使用场景进行修改。",
       "openAndTest": "打开并测试智能体"
     },
+    "language": {
+      "label": "智能体语言",
+      "zh": "中文",
+      "en": "English",
+      "auto": "自动跟随对方语言",
+      "help": "智能体会用这门语言与对方交流。该规则会写入开场提示词,并在每次通话时强制生效。",
+      "ttsNotice": "提示:语音合成与语音识别仍使用组织当前的配置。如果需要英文音色或英文识别,请到「模型配置」中修改。",
+      "blankTitle": "选择智能体语言",
+      "blankDescription": "将按所选语言生成开场提示词。创建后仍可在设置中随时修改。"
+    },
     "editor": {
       "serviceUnavailable": "VoiceWorker 暂时不可用,请稍后重试。",
       "fetchFailed": "获取工作流失败",
@@ -2754,6 +2764,7 @@
       "unsavedChanges": "有未保存的更改",
       "nav": {
         "general": "常规",
+        "language": "语言",
         "models": "模型覆盖",
         "variables": "模板变量",
         "dictionary": "词典",
@@ -2843,6 +2854,12 @@
         "noLeadFields": "仅捕获转接或挂断呼叫所需的身份字段。",
         "leadFieldInvalid": "每个线索字段必须以字母开头,且只含字母、数字和下划线。",
         "saveButton": "保存常规设置"
+      },
+      "language": {
+        "title": "智能体语言",
+        "description": "选择智能体与对方交流时使用的语言。该规则会在每次通话中强制生效。",
+        "saved": "语言设置已保存",
+        "saveButton": "保存语言"
       },
       "variables": {
         "title": "模板变量",

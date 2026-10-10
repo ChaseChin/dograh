@@ -2225,6 +2225,16 @@
       "successP3": "Next steps would be to test the voice bot in the editor, and then modify it to suit your use case.",
       "openAndTest": "Open and Test Agent"
     },
+    "language": {
+      "label": "Agent language",
+      "zh": "中文 (Chinese)",
+      "en": "English",
+      "auto": "Follow the caller",
+      "help": "The language your agent speaks with callers. The rule is written into the opening prompt and enforced on every call.",
+      "ttsNotice": "Note: text-to-speech and speech recognition still use your organization's current configuration. Change them in Model configuration if you need an English voice or English transcription.",
+      "blankTitle": "Choose the agent language",
+      "blankDescription": "The opening prompt is generated in the selected language. You can change it later in settings."
+    },
     "editor": {
       "serviceUnavailable": "VoiceWorker is temporarily unavailable. Please try again later.",
       "fetchFailed": "Failed to fetch workflow",
@@ -2754,6 +2764,7 @@
       "unsavedChanges": "Unsaved changes",
       "nav": {
         "general": "General",
+        "language": "Language",
         "models": "Model Overrides",
         "variables": "Template Variables",
         "dictionary": "Dictionary",
@@ -2843,6 +2854,12 @@
         "noLeadFields": "Only the identity fields needed to transfer or hang up the call are captured.",
         "leadFieldInvalid": "Each lead field must start with a letter and contain only letters, numbers, and underscores.",
         "saveButton": "Save General Settings"
+      },
+      "language": {
+        "title": "Agent language",
+        "description": "The language your agent speaks with callers. The rule is enforced on every call.",
+        "saved": "Language saved",
+        "saveButton": "Save language"
       },
       "variables": {
         "title": "Template Variables",

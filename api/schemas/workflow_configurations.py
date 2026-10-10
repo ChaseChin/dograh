@@ -26,6 +26,11 @@ DEFAULT_TURN_START_STRATEGY = "default"
 DEFAULT_TURN_START_MIN_WORDS = 3
 DEFAULT_TURN_STOP_STRATEGY = "transcription"
 DEFAULT_CONTEXT_COMPACTION_ENABLED = False
+# Language the agent speaks. "auto" follows the caller. Unset (None) means "no
+# language rule is injected at all" — that is what every workflow created before
+# this field existed stores, so their runtime behaviour stays unchanged.
+DEFAULT_AGENT_LANGUAGE = "zh"
+AgentLanguage = Literal["zh", "en", "auto"]
 MAX_CALL_DISPOSITIONS = 50
 MAX_CALL_DISPOSITION_CODE_LENGTH = 64
 MAX_CALL_DISPOSITION_DESCRIPTION_LENGTH = 1_000
@@ -151,6 +156,13 @@ class WorkflowConfigurationDefaults(BaseModel):
     )
     dictionary: str = ""
     context_compaction_enabled: bool = DEFAULT_CONTEXT_COMPACTION_ENABLED
+    language: AgentLanguage | None = Field(
+        default=None,
+        description=(
+            "Language the agent speaks: 'zh', 'en', or 'auto' (follow the "
+            "caller). Unset means no language rule is enforced."
+        ),
+    )
     call_dispositions: list[CallDispositionOption] = Field(
         default_factory=list,
         max_length=MAX_CALL_DISPOSITIONS,

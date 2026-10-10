@@ -19,6 +19,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Textarea } from '@/components/ui/textarea';
+import {
+    AgentLanguage,
+    DEFAULT_AGENT_LANGUAGE,
+} from '@/components/workflow/blank-workflow-definition';
+import { LanguageNotice } from '@/components/workflow/LanguageNotice';
+import { detailFromError } from '@/lib/apiError';
 import { useAuth } from '@/lib/auth';
 import logger from '@/lib/logger';
 
@@ -34,6 +40,7 @@ export default function CreateWorkflowPage() {
     const [callType, setCallType] = useState<'inbound' | 'outbound'>('inbound');
     const [useCase, setUseCase] = useState('');
     const [activityDescription, setActivityDescription] = useState('');
+    const [language, setLanguage] = useState<AgentLanguage>(DEFAULT_AGENT_LANGUAGE);
 
     const handleCreateWorkflow = async () => {
         if (!useCase || !activityDescription) {
@@ -58,11 +65,17 @@ export default function CreateWorkflowPage() {
                     call_type: callType,
                     use_case: useCase,
                     activity_description: activityDescription,
+                    language,
                 },
                 headers: {
                     'Authorization': `Bearer ${accessToken}`,
                 },
             });
+
+            if (response.error) {
+                setError(detailFromError(response.error, t('workflow.create.createFailed')));
+                return;
+            }
 
             if (response.data?.id) {
                 setWorkflowId(String(response.data.id));
@@ -144,6 +157,24 @@ export default function CreateWorkflowPage() {
                             <p className="text-sm text-muted-foreground">
                                 {t('workflow.create.activityHelp')}
                             </p>
+                        </div>
+
+                        <div className="space-y-2">
+                            <Label htmlFor="language">{t('workflow.language.label')}</Label>
+                            <Select value={language} onValueChange={(value) => setLanguage(value as AgentLanguage)}>
+                                <SelectTrigger id="language">
+                                    <SelectValue placeholder={t('workflow.language.label')} />
+                                </SelectTrigger>
+                                <SelectContent>
+                                    <SelectItem value="zh">{t('workflow.language.zh')}</SelectItem>
+                                    <SelectItem value="en">{t('workflow.language.en')}</SelectItem>
+                                    <SelectItem value="auto">{t('workflow.language.auto')}</SelectItem>
+                                </SelectContent>
+                            </Select>
+                            <p className="text-sm text-muted-foreground">
+                                {t('workflow.language.help')}
+                            </p>
+                            <LanguageNotice language={language} />
                         </div>
 
                         {error && (

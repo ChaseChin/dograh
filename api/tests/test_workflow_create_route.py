@@ -281,3 +281,151 @@ def test_create_workflow_webrtc_run_can_simulate_outbound_from_template_context(
     create_kwargs = mock_db.create_workflow_run.await_args.kwargs
     assert create_kwargs["call_type"] == CallType.OUTBOUND
     assert create_kwargs["initial_context"]["direction"] == "outbound"
+
+
+def _definition_body(language: str | None = None) -> dict:
+    body = {
+        "name": "Support Agent",
+        "workflow_definition": {
+            "nodes": [
+                {
+                    "id": "start",
+                    "type": "startCall",
+                    "data": {
+                        "prompt": (
+                            "# Goal\nBe nice.\n\n## Rules\n"
+                            "- Language: UK English but does not have to be correct english\n"
+                        )
+                    },
+                },
+                {"id": "end", "type": "endCall", "data": {}},
+            ],
+            "edges": [],
+        },
+    }
+    if language is not None:
+        body["language"] = language
+    return body
+
+
+def _created_workflow(language: str) -> SimpleNamespace:
+    return SimpleNamespace(
+        id=7,
+        name="Support Agent",
+        status="draft",
+        created_at=datetime.now(UTC),
+        current_definition_id=None,
+        template_context_variables=None,
+        call_disposition_codes=None,
+        workflow_configurations={"language": language},
+    )
+
+
+def _post_definition(body: dict):
+    app = _make_test_app()
+    client = TestClient(app)
+
+    with (
+        patch("api.routes.workflow.db_client") as mock_db,
+        patch(
+            "api.routes.workflow.validate_workflow_tool_name_collisions",
+            AsyncMock(return_value=[]),
+        ),
+        patch("api.routes.workflow.capture_event") as mock_capture,
+    ):
+        mock_db.create_workflow = AsyncMock(
+            return_value=_created_workflow(body.get("language", "zh"))
+        )
+        response = client.post("/workflow/create/definition", json=body)
+
+    return response, mock_db, mock_capture
+
+
+def test_create_workflow_defaults_to_chinese_and_rewrites_the_language_rule():
+    response, mock_db, mock_capture = _post_definition(_definition_body())
+
+    assert response.status_code == 200
+    definition = mock_db.create_workflow.await_args.args[1]
+    start_prompt = definition["nodes"][0]["data"]["prompt"]
+    assert "- Language: 始终使用简体中文" in start_prompt
+    assert "UK English" not in start_prompt
+    # The node without a prompt is left alone.
+    assert definition["nodes"][1]["data"] == {}
+    assert (
+        mock_db.create_workflow.await_args.kwargs["workflow_configurations"]
+        == {"language": "zh"}
+    )
+    assert mock_capture.call_args.kwargs["properties"]["language"] == "zh"
+
+
+def test_create_workflow_honours_an_explicit_english_language():
+    response, mock_db, mock_capture = _post_definition(_definition_body("en"))
+
+    assert response.status_code == 200
+    start_prompt = mock_db.create_workflow.await_args.args[1]["nodes"][0]["data"]["prompt"]
+    assert (
+        "- Language: Always respond in English, regardless of the language the caller uses."
+        in start_prompt
+    )
+    assert "UK English" not in start_prompt
+    assert (
+        mock_db.create_workflow.await_args.kwargs["workflow_configurations"]
+        == {"language": "en"}
+    )
+    assert mock_capture.call_args.kwargs["properties"]["language"] == "en"
+
+
+def test_create_workflow_from_template_overrides_the_generated_language_rule():
+    """The Agent Builder returns English guidelines; the picked language wins."""
+    generated = {
+        "name": "Generated Agent",
+        "workflow_definition": {
+            "nodes": [
+                {
+                    "id": "start",
+                    "type": "startCall",
+                    "data": {
+                        "prompt": "## Rules\n- Language: respond in the caller's language.\n"
+                    },
+                },
+                {
+                    "id": "global",
+                    "type": "globalNode",
+                    "data": {"prompt": "# Global\nBe nice."},
+                },
+            ],
+            "edges": [],
+        },
+    }
+
+    app = _make_test_app()
+    client = TestClient(app)
+
+    with (
+        patch("api.routes.workflow.db_client") as mock_db,
+        patch(
+            "api.routes.workflow.mps_service_key_client.call_workflow_api",
+            AsyncMock(return_value=generated),
+        ),
+        patch("api.routes.workflow.capture_event"),
+    ):
+        mock_db.create_workflow = AsyncMock(return_value=_created_workflow("zh"))
+        response = client.post(
+            "/workflow/create/template",
+            json={
+                "call_type": "inbound",
+                "use_case": "support",
+                "activity_description": "answer billing questions",
+            },
+        )
+
+    assert response.status_code == 200
+    definition = mock_db.create_workflow.await_args.kwargs["workflow_definition"]
+    prompts = {node["type"]: node["data"]["prompt"] for node in definition["nodes"]}
+    assert "- Language: 始终使用简体中文" in prompts["startCall"]
+    assert "respond in the caller's language" not in prompts["startCall"]
+    assert "- Language: 始终使用简体中文" in prompts["globalNode"]
+    assert (
+        mock_db.create_workflow.await_args.kwargs["workflow_configurations"]
+        == {"language": "zh"}
+    )

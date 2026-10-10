@@ -1821,6 +1821,10 @@ export type CreateWorkflowRequest = {
     workflow_definition: {
         [key: string]: unknown;
     };
+    /**
+     * Language
+     */
+    language?: 'zh' | 'en' | 'auto';
 };
 
 /**
@@ -1889,6 +1893,10 @@ export type CreateWorkflowTemplateRequest = {
      * Activity Description
      */
     activity_description: string;
+    /**
+     * Language
+     */
+    language?: 'zh' | 'en' | 'auto';
 };
 
 /**
@@ -5665,6 +5673,36 @@ export type SipTransportDetails = {
 };
 
 /**
+ * SIPTrunkConfigurationRequest
+ *
+ * Request schema for a SIP Track trunk configuration.
+ */
+export type SipTrunkConfigurationRequest = {
+    /**
+     * Provider
+     */
+    provider?: 'siptrack';
+    /**
+     * Hostname
+     *
+     * SIP host the carrier gave you, e.g. sip.example.com or 203.0.113.7
+     */
+    hostname: string;
+    /**
+     * Port
+     *
+     * Carrier's SIP signalling port
+     */
+    port?: number;
+    /**
+     * Transport
+     *
+     * Transport the carrier expects signalling on
+     */
+    transport?: 'udp' | 'tcp';
+};
+
+/**
  * Sarvam
  */
 export type SarvamLlmConfiguration = {
@@ -6271,6 +6309,8 @@ export type TelephonyConfigurationCreateRequest = {
     } & ExotelConfigurationRequest) | ({
         provider: 'plivo';
     } & PlivoConfigurationRequest) | ({
+        provider: 'siptrack';
+    } & SipTrunkConfigurationRequest) | ({
         provider: 'telnyx';
     } & TelnyxConfigurationRequest) | ({
         provider: 'twilio';
@@ -6437,6 +6477,8 @@ export type TelephonyConfigurationUpdateRequest = {
     } & ExotelConfigurationRequest) | ({
         provider: 'plivo';
     } & PlivoConfigurationRequest) | ({
+        provider: 'siptrack';
+    } & SipTrunkConfigurationRequest) | ({
         provider: 'telnyx';
     } & TelnyxConfigurationRequest) | ({
         provider: 'twilio';
@@ -7868,6 +7910,12 @@ export type WorkflowConfigurationDefaults = {
      * Context Compaction Enabled
      */
     context_compaction_enabled?: boolean;
+    /**
+     * Language
+     *
+     * Language the agent speaks: 'zh', 'en', or 'auto' (follow the caller). Unset means no language rule is enforced.
+     */
+    language?: 'zh' | 'en' | 'auto' | null;
     /**
      * Call Dispositions
      *

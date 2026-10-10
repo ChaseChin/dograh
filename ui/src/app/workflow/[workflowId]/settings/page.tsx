@@ -1,7 +1,7 @@
 "use client";
 
 import { format } from "date-fns";
-import { ArrowLeft, BookA, Brain, CalendarIcon, Clipboard, Download, ExternalLink, FileDown, Fingerprint, Loader2, Mic, Pause, PhoneOff, Play, Plus, Rocket, Settings, Trash2Icon, Upload, Variable, X } from "lucide-react";
+import { ArrowLeft, BookA, Brain, CalendarIcon, Clipboard, Download, ExternalLink, FileDown, Fingerprint, Languages, Loader2, Mic, Pause, PhoneOff, Play, Plus, Rocket, Settings, Trash2Icon, Upload, Variable, X } from "lucide-react";
 import Link from "next/link";
 import { useParams, useRouter } from "next/navigation";
 import { useEffect, useMemo, useRef, useState } from "react";
@@ -28,6 +28,7 @@ import {
 import { FlowEdge, FlowNode } from "@/components/flow/types";
 import { LLMConfigSelector } from "@/components/LLMConfigSelector";
 import SpinLoader from "@/components/SpinLoader";
+import { LanguageNotice } from "@/components/workflow/LanguageNotice";
 import { Button } from "@/components/ui/button";
 import { Calendar } from "@/components/ui/calendar";
 import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from "@/components/ui/card";
@@ -49,8 +50,10 @@ import { copyTextToClipboard } from "@/lib/clipboard";
 import logger from "@/lib/logger";
 import { fetchModelConfigurationPricing } from "@/lib/modelConfigurationPricing";
 import {
+    type AgentLanguage,
     type AmbientNoiseConfiguration,
     type CallDispositionOption,
+    DEFAULT_AGENT_LANGUAGE,
     DEFAULT_TURN_START_MIN_WORDS,
     DEFAULT_VOICEMAIL_DETECTION_CONFIGURATION,
     type ExternalPBXFieldMapping,
@@ -80,6 +83,7 @@ import {
 // Sidebar navigation items (labels resolved with t() at render)
 const NAV_ITEMS = [
     { id: "general", labelKey: "general", icon: Settings },
+    { id: "language", labelKey: "language", icon: Languages },
     { id: "models", labelKey: "models", icon: Brain },
     { id: "variables", labelKey: "variables", icon: Variable },
     { id: "dictionary", labelKey: "dictionary", icon: BookA },
@@ -975,6 +979,78 @@ function GeneralSection({
 }
 
 // ---------------------------------------------------------------------------
+// Section: Agent language
+// ---------------------------------------------------------------------------
+
+function LanguageSection({
+    workflowConfigurations,
+    workflowName,
+    onSave,
+}: {
+    workflowConfigurations: WorkflowConfigurations;
+    workflowName: string;
+    onSave: (configurations: WorkflowConfigurations, workflowName: string) => Promise<void>;
+}) {
+    const { t } = useTranslation();
+    // A workflow created before this setting existed has no stored language and
+    // keeps its prompt untouched. Showing "Chinese" for it is only a display
+    // default: the value stays unset unless the user actually picks another one.
+    const savedLanguage = workflowConfigurations.language ?? DEFAULT_AGENT_LANGUAGE;
+    const [language, setLanguage] = useState<AgentLanguage>(savedLanguage);
+    const [isSaving, setIsSaving] = useState(false);
+
+    const isDirty = language !== savedLanguage;
+
+    useUnsavedChanges("language", isDirty);
+
+    const handleSave = async () => {
+        setIsSaving(true);
+        try {
+            await onSave({ ...workflowConfigurations, language }, workflowName);
+            toast.success(t("workflow.settings.language.saved"));
+        } catch (error) {
+            console.error("Failed to save language:", error);
+        } finally {
+            setIsSaving(false);
+        }
+    };
+
+    return (
+        <Card id="language">
+            <CardHeader>
+                <CardTitle className="flex items-center gap-2 text-base">
+                    <Languages className="h-4 w-4" />
+                    {t("workflow.settings.language.title")}
+                </CardTitle>
+                <CardDescription>
+                    {t("workflow.settings.language.description")}
+                </CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-2">
+                <Select value={language} onValueChange={(value) => setLanguage(value as AgentLanguage)}>
+                    <SelectTrigger id="settings-language">
+                        <SelectValue />
+                    </SelectTrigger>
+                    <SelectContent>
+                        <SelectItem value="zh">{t("workflow.language.zh")}</SelectItem>
+                        <SelectItem value="en">{t("workflow.language.en")}</SelectItem>
+                        <SelectItem value="auto">{t("workflow.language.auto")}</SelectItem>
+                    </SelectContent>
+                </Select>
+                <p className="text-sm text-muted-foreground">{t("workflow.language.help")}</p>
+                <LanguageNotice language={language} />
+            </CardContent>
+            <CardFooter className="justify-end gap-3 border-t pt-6">
+                {isDirty && <span className="text-xs text-muted-foreground">{t("workflow.settings.unsavedChanges")}</span>}
+                <Button onClick={handleSave} disabled={isSaving || !isDirty}>
+                    {isSaving ? t("common.saving") : t("workflow.settings.language.saveButton")}
+                </Button>
+            </CardFooter>
+        </Card>
+    );
+}
+
+// ---------------------------------------------------------------------------
 // Section: Template Variables
 // ---------------------------------------------------------------------------
 
@@ -1778,6 +1854,12 @@ function WorkflowSettingsInner({
                                 defaultCallDispositions={defaultCallDispositions}
                                 workflowName={workflowName || workflow.name}
                                 workflowId={workflowId}
+                                onSave={saveWorkflowConfigurations}
+                            />
+
+                            <LanguageSection
+                                workflowConfigurations={resolvedWorkflowConfigurationsForRender}
+                                workflowName={workflowName}
                                 onSave={saveWorkflowConfigurations}
                             />
 

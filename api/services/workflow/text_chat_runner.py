@@ -54,6 +54,7 @@ from api.services.pipecat.worker_runner import (
 )
 from api.services.workflow.dto import ReactFlowDTO
 from api.services.workflow.initial_context import merge_external_initial_context
+from api.services.workflow.language import build_language_instruction
 from api.services.workflow.pipecat_engine import (
     ENGINE_OWNED_CONTEXT_KEYS,
     FINAL_EXTRACTION_TIMEOUT_SECONDS,
@@ -641,6 +642,9 @@ async def execute_text_chat_pending_turn(
     context_compaction_enabled = (workflow.workflow_configurations or {}).get(
         "context_compaction_enabled", False
     )
+    language_instruction = build_language_instruction(
+        (workflow.workflow_configurations or {}).get("language")
+    )
     engine = PipecatEngine(
         llm=llm,
         inference_llm=inference_llm,
@@ -658,6 +662,7 @@ async def execute_text_chat_pending_turn(
         embeddings_api_version=embeddings_api_version,
         has_recordings=has_recordings,
         context_compaction_enabled=context_compaction_enabled,
+        language_instruction=language_instruction,
         call_dispositions=call_dispositions,
         # Each text turn owns a short-lived pipeline. Complete extraction before
         # leaving a node so teardown cannot discard the result before checkpointing.

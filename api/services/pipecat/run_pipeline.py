@@ -89,6 +89,7 @@ from api.services.workflow.answer_classification_service import (
 )
 from api.services.workflow.dto import ReactFlowDTO
 from api.services.workflow.initial_context import merge_external_initial_context
+from api.services.workflow.language import build_language_instruction
 from api.services.workflow.pipecat_engine import PipecatEngine
 from api.services.workflow.workflow_graph import WorkflowGraph
 from pipecat.audio.turn.smart_turn.base_smart_turn import SmartTurnParams
@@ -923,6 +924,10 @@ async def _run_pipeline_impl(
         logger.info("Disabling context_compaction_enabled for realtime workflow run")
         context_compaction_enabled = False
 
+    language_instruction = build_language_instruction(
+        (workflow.workflow_configurations or {}).get("language")
+    )
+
     engine = PipecatEngine(
         llm=llm,
         inference_llm=inference_llm,
@@ -940,6 +945,7 @@ async def _run_pipeline_impl(
         has_recordings=has_recordings,
         is_realtime=is_realtime,
         context_compaction_enabled=context_compaction_enabled,
+        language_instruction=language_instruction,
         call_dispositions=call_dispositions,
     )
 
