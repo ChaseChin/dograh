@@ -44,8 +44,12 @@ from api.services.organization_preferences import external_pbx_integrations_enab
 from api.services.quota_service import authorize_workflow_run_start
 from api.services.telephony import ws_auth
 from api.services.telephony.call_transfer_manager import get_call_transfer_manager
-from api.services.telephony.providers.ari import channel_registry
-from api.services.telephony.providers.ari.external_pbx import create_adapter
+from api.services.telephony.asterisk import (
+    AsteriskGatewayReconciler,
+    asterisk_driven_provider_names,
+)
+from api.services.telephony.asterisk import channel_registry
+from api.services.telephony.asterisk.external_pbx import create_adapter
 from api.services.telephony.status_processor import (
     StatusCallbackRequest,
     _process_status_update,
@@ -113,9 +117,16 @@ class ARIConnection:
         ws_client_name: str = "",
         external_pbx_config: Optional[dict] = None,
         stasis_app_name: str = "",
+        provider_name: str = WorkflowRunMode.ARI.value,
     ):
         self.organization_id = organization_id
         self.telephony_configuration_id = telephony_configuration_id
+        # Which provider this connection serves. The events are identical
+        # whatever is on the far end of the ARI socket, so the runs it mints
+        # and the failure reports it files have to say which one this is —
+        # otherwise a call arriving on a bundled gateway is recorded as having
+        # come from a customer's PBX.
+        self.provider_name = provider_name
         self.ari_endpoint = ari_endpoint.rstrip("/")
         self.app_name = app_name
         self.app_password = app_password
@@ -308,7 +319,7 @@ class ARIConnection:
                     classify_exception(
                         e,
                         source=ErrorSource.TELEPHONY,
-                        provider="ari",
+                        provider=self.provider_name,
                         error_owner="user",
                     ),
                     operation="connect ARI websocket",
@@ -331,7 +342,7 @@ class ARIConnection:
                                 "The PBX closed the ARI connection immediately "
                                 "after accepting it."
                             ),
-                            provider="ari",
+                            provider=self.provider_name,
                             error_owner="user",
                             retryable=True,
                         ),
@@ -657,7 +668,7 @@ class ARIConnection:
                 config_id = (run.initial_context or {}).get(
                     "telephony_configuration_id"
                 )
-                if run.mode != WorkflowRunMode.ARI.value or config_id not in (
+                if run.mode != self.provider_name or config_id not in (
                     None,
                     self.telephony_configuration_id,
                 ):
@@ -906,7 +917,7 @@ class ARIConnection:
             # 1. Resolve the workflow from the called extension via the
             #    telephony_phone_numbers row scoped to this connection's config.
             phone_row = await db_client.find_active_phone_number_for_inbound(
-                self.organization_id, called_number, "ari"
+                self.organization_id, called_number, self.provider_name
             )
             if (
                 not phone_row
@@ -982,14 +993,14 @@ class ARIConnection:
             workflow_run = await db_client.create_workflow_run(
                 name=f"ARI Inbound {caller_number}",
                 workflow_id=inbound_workflow_id,
-                mode=WorkflowRunMode.ARI.value,
+                mode=self.provider_name,
                 user_id=user_id,
                 call_type=CallType.INBOUND,
                 initial_context={
                     "caller_number": caller_number,
                     "called_number": called_number,
                     "direction": "inbound",
-                    "provider": "ari",
+                    "provider": self.provider_name,
                     "telephony_configuration_id": self.telephony_configuration_id,
                     "external_pbx_call": external_pbx_call,
                 },
@@ -1519,6 +1530,11 @@ class ARIManager:
         # failures are re-detected on every refresh, so without this a row with a
         # missing field emits one ERROR per minute for as long as it exists.
         self._validation_log_state: Dict[int, tuple[str, float]] = {}
+        # Rewrites the bundled gateway's trunk config from the same rows the
+        # loop below re-reads. No-op on an installation without that gateway.
+        self._gateway_reconciler = AsteriskGatewayReconciler(
+            asterisk_driven_provider_names()
+        )
 
     async def start(self):
         """Start the ARI manager."""
@@ -1552,7 +1568,10 @@ class ARIManager:
         - Starts new connections for new ARI configurations
         - Stops connections for removed configurations
         - Restarts connections if configuration changed
+        - Rewrites the bundled gateway's trunk config
         """
+        await self._reconcile_gateway()
+
         try:
             active_configs = await self._load_ari_configs()
         except Exception as e:
@@ -1580,6 +1599,7 @@ class ARIManager:
                 ws_client_name,
                 external_pbx_config,
                 stasis_app_name,
+                provider_name=config["provider_name"],
             )
             key = conn.connection_key
 
@@ -1678,14 +1698,41 @@ class ARIManager:
             f"from the telephony settings."
         )
 
+    async def _reconcile_gateway(self) -> None:
+        """Rewrite the bundled gateway's trunk config from the stored trunks.
+
+        Driven from the refresh loop rather than from the save path so that
+        every edit converges on the same schedule — including a deletion,
+        which has no hook to fire on. The reconciler writes only when the
+        rendered text differs, so a poll that finds nothing to do costs one
+        query and two comparisons.
+        """
+        try:
+            await self._gateway_reconciler.reconcile()
+        except Exception as e:
+            # A failure here must not take the connections down with it: the
+            # gateway's config being stale is a smaller problem than every call
+            # in the installation dropping.
+            logger.error(f"[ARI Manager] Gateway config reconcile failed: {e}")
+
     async def _load_ari_configs(self) -> list:
-        """Load the ARI configurations the manager should be connected to now.
+        """Load the ARI-driven configurations the manager should be connected to.
 
         Rows parked by :meth:`ARIConnection._deactivate` or by
         :meth:`_deactivate_invalid_config` are excluded until someone
         reactivates them.
+
+        Every provider that drives an Asterisk is included, not just ``ari``:
+        a bundled gateway speaks the same ARI as a customer's PBX, and asking
+        the registry which providers those are is what keeps a second one from
+        being forgotten here.
         """
-        rows = await db_client.list_active_telephony_configurations_by_provider("ari")
+        provider_names = asterisk_driven_provider_names()
+        if not provider_names:
+            return []
+        rows = await db_client.list_active_telephony_configurations_by_provider(
+            provider_names
+        )
 
         configs = []
         for row in rows:
@@ -1712,7 +1759,7 @@ class ARIManager:
                             code="ari-incomplete-config",
                             internal_message="ARI configuration is missing an endpoint, app name, or app password",
                             external_message="Complete the required ARI connection settings.",
-                            provider="ari",
+                            provider=row.provider,
                             error_owner="user",
                             retryable=False,
                         ),
@@ -1735,7 +1782,7 @@ class ARIManager:
                         code="ari-missing-ws-client-name",
                         internal_message="ARI configuration is missing ws_client_name",
                         external_message="Set the ARI WebSocket client name in telephony configuration.",
-                        provider="ari",
+                        provider=row.provider,
                         error_owner="user",
                         retryable=False,
                     ),
@@ -1746,6 +1793,7 @@ class ARIManager:
                 {
                     "organization_id": row.organization_id,
                     "telephony_configuration_id": row.id,
+                    "provider_name": row.provider,
                     "ari_endpoint": ari_endpoint,
                     "app_name": app_name,
                     "app_password": app_password,

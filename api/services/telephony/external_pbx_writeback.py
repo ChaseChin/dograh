@@ -20,7 +20,7 @@ from loguru import logger
 from api.db import db_client
 from api.services.organization_preferences import external_pbx_integrations_enabled
 from api.services.telephony.external_pbx import resolve_external_pbx_field_mappings
-from api.services.telephony.providers.ari.external_pbx import (
+from api.services.telephony.asterisk.external_pbx import (
     ExternalPBXAdapter,
     create_adapter,
 )

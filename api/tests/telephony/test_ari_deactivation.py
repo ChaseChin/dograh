@@ -236,6 +236,7 @@ def _row(config_id: int, ws_client_name: str = "dograh_ws") -> SimpleNamespace:
     return SimpleNamespace(
         id=config_id,
         organization_id=100 + config_id,
+        provider="ari",
         credentials={
             "ari_endpoint": "http://pbx.example.com:8088",
             "app_name": "dograh",

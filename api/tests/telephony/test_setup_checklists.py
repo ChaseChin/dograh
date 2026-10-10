@@ -21,8 +21,9 @@ def test_connectivity_separates_carrier_accounts_from_byo_sip():
     for spec in registry.all_specs():
         by_connectivity[spec.connectivity].add(spec.name)
 
-    # The providers whose calls run over infrastructure the customer owns.
-    assert by_connectivity["sip"] == {"cloudonix", "ari"}
+    # The providers where the customer connects SIP service of their own —
+# their carrier, their PBX — instead of buying phone service from us.
+    assert by_connectivity["sip"] == {"cloudonix", "ari", "siptrack"}
     # Everything else is a carrier you buy numbers from, and there is at least
     # one — otherwise the "use a telephony provider" route has nothing to offer.
     assert by_connectivity["api"]

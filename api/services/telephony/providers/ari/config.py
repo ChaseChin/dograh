@@ -4,7 +4,7 @@ from typing import Literal, Optional
 
 from pydantic import BaseModel, Field, field_validator, model_validator
 
-from api.services.telephony.providers.ari.dial_string import (
+from api.services.telephony.asterisk.dial_string import (
     DEFAULT_DIAL_STRING_TEMPLATE,
     has_channel_technology,
 )

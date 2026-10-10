@@ -1,0 +1,193 @@
+---
+title: "SIP Track"
+description: "Connect a no-authentication SIP trunk to Dograh by hostname and port"
+---
+
+## Overview
+
+SIP Track connects Dograh to a carrier's SIP trunk that authenticates by **source IP** rather than credentials. You enter the host and port the carrier gave you; Dograh terminates the trunk on the SIP gateway bundled with your installation and routes calls to your voice agents the same way it does for any other provider.
+
+Because there are no credentials, the carrier decides who may use the trunk by **whitelisting your server's public IP**. Until they add it, calls fail in both directions.
+
+<Note>
+SIP Track requires the bundled **Asterisk gateway**. Dograh itself speaks WebSocket audio and has no SIP stack; the gateway is what turns the carrier's SIP and RTP into that WebSocket. It ships with this repository and runs as its own container.
+</Note>
+
+## Prerequisites
+
+- A SIP trunk from your carrier, with:
+  - the **host** and **port** of their signalling endpoint (usually port `5060`)
+  - the transport they expect — UDP unless they told you otherwise
+  - **G.711 μ-law (`ulaw`)** among the codecs they offer. Dograh's media path is fixed to `ulaw`; a trunk that offers only G.729 or Opus needs transcoding configured on the gateway
+  - the **inbound numbers** you want Dograh to answer
+- A server that Dograh and the gateway run on, with a **fixed public IP**
+- The ability to open inbound ports on that server (see [Network](#network))
+
+## Step 1: Start the gateway
+
+The gateway is opt-in — it publishes SIP and RTP ports, which an installation with no carrier trunk should not have open. Set an ARI password and start it with the `sip-trunk` profile:
+
+```bash
+# In the .env file this stack reads
+ASTERISK_ARI_PASSWORD=<a strong secret>
+
+# Then
+docker compose --profile sip-trunk up -d
+```
+
+`ASTERISK_ARI_PASSWORD` is shared between the gateway and the API container — it is how Dograh drives the gateway. The API will not serve SIP Track configurations correctly without it, and the gateway refuses to start if it is unset.
+
+Verify the gateway came up:
+
+```bash
+docker compose --profile sip-trunk logs asterisk | grep "dograh-gateway"
+```
+
+You should see the configuration files written, then `starting Asterisk`.
+
+<Note>
+The gateway runs under the `api` container's ARI manager, which must be enabled — `ENABLE_ARI_MANAGER` defaults to `true`. On a scale-out deployment where the API container is split into an API node and a worker, it is the worker that must run it.
+</Note>
+
+### Configuration variables
+
+Set these in the same `.env` file if the defaults do not fit your host:
+
+| Variable | Default | What it does |
+|---|---|---|
+| `ASTERISK_ARI_PASSWORD` | — | **Required.** Shared secret between the API and the gateway |
+| `ASTERISK_SIP_PORT` | `5060` | The port the gateway listens on for SIP |
+| `ASTERISK_SIP_TRANSPORTS` | `udp` | Space-separated transports to bind: `udp`, `tcp`, or `udp tcp` |
+| `ASTERISK_EXTERNAL_ADDRESS` | `PUBLIC_HOST` | The public IP the carrier is told to send media to |
+| `ASTERISK_RTP_START` / `ASTERISK_RTP_END` | `10000` / `10100` | The RTP port range. One call uses two ports, so the default carries about fifty concurrent calls |
+| `ASTERISK_LOCAL_NET` | `172.16.0.0/12` | The private range the gateway lives in, so it can tell its own network from the carrier's |
+| `SIPTRACK_INBOUND_ADDRESS` | derived from `PUBLIC_HOST` | The address shown in the UI for you to give to the carrier |
+
+<Warning>
+Set `ASTERISK_EXTERNAL_ADDRESS` on any host behind NAT. Without it Asterisk advertises its container-private address in SDP, and the classic symptom follows: the call connects, then carries no audio in one or both directions.
+</Warning>
+
+## Network
+
+Open these on the host and in your cloud firewall or security group:
+
+| Port | Protocol | Why |
+|---|---|---|
+| `5060` (or `ASTERISK_SIP_PORT`) | UDP, and TCP if you enabled it | SIP signalling — the carrier's INVITEs arrive here |
+| `10000-10100` (or your RTP range) | UDP | The audio itself, both directions |
+
+Report the server's public IP to your carrier and ask them to whitelist it. This is the entire access control for the trunk.
+
+## Step 2: Add the configuration in Dograh
+
+1. Go to **/telephony-configurations** and click **Add configuration**
+2. Select **SIP Track**
+3. Fill in:
+
+| Field | Description | Example |
+|-------|-------------|---------|
+| **SIP Host** | The hostname or IP your carrier gave you, without a `sip:` prefix and without a port | `sip.carrier.example.com` |
+| **Port** | The carrier's signalling port | `5060` |
+| **Transport** | The transport the carrier expects | `UDP` |
+
+4. Click **Save Configuration**
+
+**Inbound Address** is not something you enter — Dograh derives it from your public address and shows it on the form, both when you save and whenever you reopen the configuration. That is the address to report to your carrier.
+
+A saved configuration reaches the gateway within about a minute: the API rewrites the trunk files on its next poll, and the gateway reloads Asterisk when it notices.
+
+## Outbound Calling
+
+Outbound calls dial the trunk directly. Dograh builds the dial string as `PJSIP/{number}@<trunk>` from the configuration, so a call to `+14155550123` originates as `PJSIP/+14155550123@dograhst_1a2b3c4d5e6f`.
+
+Set a **caller ID** by adding the number you want to present as a phone number on the configuration and marking it **Default caller ID for this configuration**. Carriers commonly reject or anonymise calls that present no number, depending on their policy, so test with one set.
+
+Destination numbers must be in E.164 (`+` and country code): the carrier hands the call to the public network, which has no way to resolve a bare extension.
+
+## Inbound Calling
+
+Inbound calls arrive at your server's public IP, are matched to a trunk by the carrier's source address, and are routed to a workflow by the number that was dialled.
+
+**Step 1: Confirm the whitelist**
+
+Inbound calls cannot reach Dograh until the carrier has added your public IP. If you are unsure, ask them to confirm before troubleshooting anything else — a call that never arrives looks identical to a misconfiguration from this side.
+
+**Step 2: Add the number as a phone number in Dograh**
+
+1. Open your SIP Track configuration
+2. In the **Phone numbers** section, add the number the carrier will send calls to, in E.164 (`+14155550123`)
+3. Set its **Inbound workflow** to the agent that should answer
+4. Save
+
+Repeat for each number that should reach a voice agent. Numbers are matched exactly, including the `+` if the carrier sends one — if calls arrive but Dograh reports no matching number, check how the carrier formats the called number and add it that way.
+
+**Step 3: Test**
+
+Call one of the numbers. The assigned workflow should activate.
+
+### Inbound call context
+
+| Field | Description |
+|-------|-------------|
+| `caller_number` | The caller's number |
+| `called_number` | The number that was dialled |
+| `direction` | Always `inbound` |
+| `provider` | Always `siptrack` |
+
+## Troubleshooting
+
+<AccordionGroup>
+  <Accordion title="The gateway will not start">
+    - Confirm `ASTERISK_ARI_PASSWORD` is set — the gateway exits with a message saying so when it is missing
+    - Check you started it with the profile: `docker compose --profile sip-trunk up -d`
+    - Read the log: `docker compose --profile sip-trunk logs asterisk`
+  </Accordion>
+
+  <Accordion title="Outbound calls fail immediately">
+    - Confirm the carrier has whitelisted your public IP — this is the most common cause for an unauthenticated trunk
+    - Verify the host and port match what the carrier gave you, and that the transport matches theirs
+    - Check the carrier accepts the caller ID you configured
+    - Confirm destinations are E.164
+  </Accordion>
+
+  <Accordion title="Inbound calls never arrive">
+    - Confirm the carrier has whitelisted your public IP, and that they are sending to the address shown on the configuration
+    - Check the SIP port and RTP range are open on the host **and** in the cloud firewall
+    - Confirm the gateway is running (`docker compose --profile sip-trunk ps`)
+  </Accordion>
+
+  <Accordion title="The call connects but there is no audio">
+    - Set `ASTERISK_EXTERNAL_ADDRESS` to your public IP and restart the gateway — this is the NAT case, and it is the usual cause
+    - Confirm the RTP range is open in both directions
+    - Check the trunk allows `ulaw`; a carrier offering only G.729 or Opus needs transcoding
+  </Accordion>
+
+  <Accordion title="Inbound calls arrive but no workflow answers">
+    - Confirm the called number is added as a phone number on the configuration, spelled exactly as the carrier sends it, with an **Inbound workflow** assigned
+    - Confirm the workflow belongs to the same organization as the configuration
+    - Check the organization has quota available
+    - Review the API logs for warnings about no matching phone number for the configuration
+  </Accordion>
+
+  <Accordion title="A saved change does not take effect">
+    - Allow up to a minute: the API polls for configuration changes every 60 seconds, and the gateway reloads Asterisk within a few seconds of the files changing
+    - Confirm the gateway can read the trunk files — `docker compose --profile sip-trunk logs asterisk` reports each reload
+    - Restart the API container to force an immediate reconcile
+  </Accordion>
+</AccordionGroup>
+
+## How it works
+
+There is no SIP code in Dograh. The bundled gateway is an Asterisk 22 container with three jobs:
+
+- **SIP termination.** It listens on `ASTERISK_SIP_PORT`, matches incoming calls to a trunk by the carrier's source address, and matches outgoing calls to the transport the carrier expects.
+- **Media conversion.** Each call gets an `externalMedia` channel, and `chan_websocket` carries the audio to `/api/v1/telephony/ws/ari` — the same path a customer-run Asterisk uses.
+- **Call control.** Dograh drives the call over ARI: originate, answer, bridge, transfer, hang up.
+
+Dograh writes the trunk configuration for each saved SIP Track configuration into a shared volume the gateway reads, and the gateway reloads Asterisk when that configuration changes. Neither side reads the other's database.
+
+## Further Reading
+
+- [Asterisk ARI Integration](asterisk-ari) — the same media path, for a PBX you run yourself
+- [Inbound Calls](inbound) — routing inbound calls to workflows in general
+- [Asterisk Documentation](https://docs.asterisk.org/) — reference for the PJSIP configuration the gateway writes

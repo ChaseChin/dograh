@@ -25,6 +25,9 @@ from api.services.telephony.providers.exotel.config import (
 from api.services.telephony.providers.plivo.config import (
     PlivoConfigurationRequest,
 )
+from api.services.telephony.providers.siptrack.config import (
+    SIPTrunkConfigurationRequest,
+)
 from api.services.telephony.providers.telnyx.config import (
     TelnyxConfigurationRequest,
 )
@@ -51,6 +54,7 @@ TelephonyConfigRequest = Annotated[
         CloudonixConfigurationRequest,
         ExotelConfigurationRequest,
         PlivoConfigurationRequest,
+        SIPTrunkConfigurationRequest,
         TelnyxConfigurationRequest,
         TwilioConfigurationRequest,
         VobizConfigurationRequest,
@@ -184,6 +188,7 @@ __all__ = [
     "CloudonixConfigurationRequest",
     "ExotelConfigurationRequest",
     "PlivoConfigurationRequest",
+    "SIPTrunkConfigurationRequest",
     "TelephonyConfigRequest",
     "TrunkCreateRequest",
     "TrunkListResponse",

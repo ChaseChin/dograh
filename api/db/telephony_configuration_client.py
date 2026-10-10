@@ -6,7 +6,7 @@ Each row represents one provider account that an organization has connected
 """
 
 from datetime import UTC, datetime
-from typing import Any, Dict, List, Optional
+from typing import Any, Dict, List, Optional, Sequence
 
 from sqlalchemy import func, update
 from sqlalchemy.exc import IntegrityError
@@ -163,18 +163,24 @@ class TelephonyConfigurationClient(BaseDBClient):
             return int(result.scalar() or 0)
 
     async def list_active_telephony_configurations_by_provider(
-        self, provider: str
+        self, provider: str | Sequence[str]
     ) -> List[TelephonyConfigurationModel]:
-        """List the non-deactivated configs of a given provider, across all orgs.
+        """List the non-deactivated configs of one or more providers, across all orgs.
 
         Used by background workers like the ARI manager that maintain
         long-lived connections per config row, independent of any one org.
         Deactivated rows stay excluded until someone reactivates them.
+
+        Takes several providers because such a worker serves every provider
+        that drives the same upstream system, and querying them one at a time
+        would leave it deciding how to combine the results — a place for a
+        second provider to be silently forgotten.
         """
+        providers = [provider] if isinstance(provider, str) else list(provider)
         async with self.async_session() as session:
             result = await session.execute(
                 select(TelephonyConfigurationModel).where(
-                    TelephonyConfigurationModel.provider == provider,
+                    TelephonyConfigurationModel.provider.in_(providers),
                     TelephonyConfigurationModel.inactive.is_(False),
                 )
             )

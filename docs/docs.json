@@ -119,6 +119,7 @@
               "integrations/telephony/exotel",
               "integrations/telephony/vobiz",
               "integrations/telephony/asterisk-ari",
+              "integrations/telephony/siptrack",
               "integrations/telephony/vicidial",
               "integrations/telephony/webhooks",
               "integrations/telephony/agent-stream",

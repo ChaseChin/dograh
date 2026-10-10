@@ -8,12 +8,12 @@ from pipecat.utils.enums import EndTaskReason
 from api.db import db_client
 from api.enums import TelephonyCallStatus
 from api.services.telephony.external_pbx import resolve_external_pbx_field_mappings
-from api.services.telephony.providers.ari.external_pbx import (
+from api.services.telephony.asterisk.external_pbx import (
     ExternalPBXResult,
     create_adapter,
 )
 from api.services.telephony.providers.ari.provider import ARIProvider
-from api.services.telephony.providers.ari.strategies import ARIHangupStrategy
+from api.services.telephony.asterisk.strategies import ARIHangupStrategy
 from api.services.workflow.tools import transfer_resolver
 
 
@@ -165,10 +165,10 @@ async def test_vicidial_lead_header_log_separates_empty_from_never_requested():
 
     with (
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.logger.info"
+            "api.services.telephony.asterisk.external_pbx.vicidial.logger.info"
         ) as log_info,
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.logger.warning"
+            "api.services.telephony.asterisk.external_pbx.vicidial.logger.warning"
         ) as log_warning,
     ):
         await adapter.capture_call_identity(
@@ -239,7 +239,7 @@ async def test_vicidial_update_lead_requests_a_text_response():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         result = await adapter.update_fields({"lead_id": "42"}, {"comments": "hello"})
@@ -259,7 +259,7 @@ async def test_vicidial_update_lead_treats_an_empty_body_as_a_rejection():
     session = _StubSession(_StubResponse(200, ""))
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         result = await adapter.update_fields({"lead_id": "42"}, {"comments": "hello"})
@@ -279,11 +279,11 @@ async def test_vicidial_update_lead_log_redacts_rejection_body():
 
     with (
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+            "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
             return_value=session,
         ),
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.logger.info"
+            "api.services.telephony.asterisk.external_pbx.vicidial.logger.info"
         ) as log_info,
     ):
         result = await adapter.update_fields(
@@ -317,7 +317,7 @@ async def test_vicidial_update_lead_asks_for_custom_fields():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         await adapter.update_fields({"lead_id": "42"}, {"Medicaid": "yes"})
@@ -339,7 +339,7 @@ async def test_vicidial_update_lead_never_puts_a_mapped_field_first():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         await adapter.update_fields(
@@ -363,7 +363,7 @@ async def test_vicidial_update_lead_rejects_fields_shadowing_control_params():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         await adapter.update_fields(
@@ -385,7 +385,7 @@ async def test_vicidial_update_lead_accepts_a_custom_fields_only_notice():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         result = await adapter.update_fields({"lead_id": "42"}, {"Medicaid": "yes"})
@@ -407,7 +407,7 @@ async def test_vicidial_update_lead_accepts_mixed_standard_and_custom_response()
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         result = await adapter.update_fields(
@@ -426,7 +426,7 @@ async def test_vicidial_update_lead_still_rejects_an_unrelated_notice():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+        "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
         return_value=session,
     ):
         result = await adapter.update_fields({"lead_id": "42"}, {"Medicaid": "yes"})
@@ -446,11 +446,11 @@ async def test_vicidial_update_lead_rejection_names_fields_and_reason():
 
     with (
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+            "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
             return_value=session,
         ),
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.logger.warning"
+            "api.services.telephony.asterisk.external_pbx.vicidial.logger.warning"
         ) as log_warning,
     ):
         result = await adapter.update_fields(
@@ -478,11 +478,11 @@ async def test_vicidial_update_lead_rejection_reason_drops_echoed_parameters():
 
     with (
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.aiohttp.ClientSession",
+            "api.services.telephony.asterisk.external_pbx.vicidial.aiohttp.ClientSession",
             return_value=session,
         ),
         patch(
-            "api.services.telephony.providers.ari.external_pbx.vicidial.logger.warning"
+            "api.services.telephony.asterisk.external_pbx.vicidial.logger.warning"
         ) as log_warning,
     ):
         await adapter.update_fields({"lead_id": "42"}, {"comments": "private note"})
@@ -499,7 +499,7 @@ async def test_vicidial_update_lead_skips_are_not_silent():
     adapter = create_adapter(_vicidial_config())
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.logger.info"
+        "api.services.telephony.asterisk.external_pbx.vicidial.logger.info"
     ) as log_info:
         result = await adapter.update_fields({"lead_id": "42"}, {})
     assert result.ok
@@ -508,7 +508,7 @@ async def test_vicidial_update_lead_skips_are_not_silent():
     )
 
     with patch(
-        "api.services.telephony.providers.ari.external_pbx.vicidial.logger.warning"
+        "api.services.telephony.asterisk.external_pbx.vicidial.logger.warning"
     ) as log_warning:
         result = await adapter.update_fields({}, {"comments": "hello"})
     assert not result.ok

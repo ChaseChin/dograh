@@ -1841,6 +1841,26 @@
             }
           }
         }
+      },
+      "siptrack": {
+        "field": {
+          "hostname": {
+            "label": "SIP Host",
+            "description": "The host your carrier gave you for this trunk, without a sip: prefix and without a port. Dograh terminates it on the gateway bundled with your installation."
+          },
+          "port": {
+            "label": "Port",
+            "description": "The carrier's SIP signalling port. Almost always 5060."
+          },
+          "transport": {
+            "label": "Transport",
+            "description": "The transport the carrier expects. UDP unless they told you otherwise."
+          },
+          "inbound_address": {
+            "label": "Inbound Address",
+            "description": "Give this address to your carrier and ask them to whitelist it, then point your inbound numbers at it. Inbound calls cannot reach Dograh until they do."
+          }
+        }
       }
     },
     "sip": {

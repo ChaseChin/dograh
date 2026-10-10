@@ -13,7 +13,7 @@ from pydantic import ValidationError
 from api.services.telephony import registry
 from api.services.telephony.providers.ari import _config_loader
 from api.services.telephony.providers.ari.config import ARIConfigurationRequest
-from api.services.telephony.providers.ari.dial_string import (
+from api.services.telephony.asterisk.dial_string import (
     DEFAULT_DIAL_STRING_TEMPLATE,
     build_dial_string,
 )
@@ -114,7 +114,7 @@ def test_ari_does_not_require_e164_destinations():
 
 
 def test_carriers_require_e164_destinations():
-    for name in ("twilio", "telnyx", "plivo", "vonage", "exotel", "vobiz"):
+    for name in ("twilio", "telnyx", "plivo", "vonage", "exotel", "vobiz", "siptrack"):
         assert registry.get(name).requires_e164_destinations is True, name
 
 

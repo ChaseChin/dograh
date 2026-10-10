@@ -54,6 +54,7 @@ const PROVIDER_DISPLAY_NAMES: Record<string, string> = {
   cloudonix: "Cloudonix",
   exotel: "Exotel",
   plivo: "Plivo",
+  siptrack: "SIP Track",
   telnyx: "Telnyx",
   twilio: "Twilio",
   vobiz: "Vobiz",

@@ -1,19 +1,13 @@
-"""ARI (Asterisk) transport factory."""
+"""ARI transport factory.
+
+The factory itself is shared with every provider that rides an Asterisk; this
+module only names the one whose credentials it must find.
+"""
 
 from fastapi import WebSocket
-from pipecat.transports.websocket.fastapi import (
-    FastAPIWebsocketParams,
-    FastAPIWebsocketTransport,
-)
 
 from api.services.pipecat.audio_config import AudioConfig
-from api.services.pipecat.audio_mixer import build_audio_out_mixer
-from api.services.pipecat.transport_params import realtime_param_overrides
-from api.services.telephony.factory import load_credentials_for_transport
-
-from .external_pbx import create_adapter
-from .serializers import AsteriskFrameSerializer
-from .strategies import ARIBridgeSwapStrategy, ARIHangupStrategy
+from api.services.telephony.asterisk import create_asterisk_transport
 
 
 async def create_transport(
@@ -28,48 +22,14 @@ async def create_transport(
     channel_id: str,
 ):
     """Create a transport for Asterisk ARI connections."""
-    config = await load_credentials_for_transport(
-        organization_id, telephony_configuration_id, expected_provider="ari"
-    )
-
-    ari_endpoint = config.get("ari_endpoint")
-    app_name = config.get("app_name")
-    app_password = config.get("app_password")
-
-    if not ari_endpoint or not app_name or not app_password:
-        raise ValueError(
-            f"Incomplete ARI configuration for organization {organization_id}. "
-            f"Required: ari_endpoint, app_name, app_password"
-        )
-
-    serializer = AsteriskFrameSerializer(
+    return await create_asterisk_transport(
+        websocket,
+        workflow_run_id,
+        audio_config,
+        organization_id,
+        ambient_noise_config=ambient_noise_config,
+        telephony_configuration_id=telephony_configuration_id,
+        is_realtime=is_realtime,
         channel_id=channel_id,
-        ari_endpoint=ari_endpoint,
-        app_name=app_name,
-        app_password=app_password,
-        transfer_strategy=ARIBridgeSwapStrategy(),
-        hangup_strategy=ARIHangupStrategy(
-            external_pbx_adapter=create_adapter(config.get("external_pbx"))
-        ),
-        params=AsteriskFrameSerializer.InputParams(
-            asterisk_sample_rate=audio_config.transport_in_sample_rate,
-            sample_rate=audio_config.pipeline_sample_rate,
-        ),
-    )
-
-    mixer = await build_audio_out_mixer(
-        audio_config.transport_out_sample_rate, ambient_noise_config
-    )
-
-    return FastAPIWebsocketTransport(
-        websocket=websocket,
-        params=FastAPIWebsocketParams(
-            audio_in_enabled=True,
-            audio_out_enabled=True,
-            audio_in_sample_rate=audio_config.transport_in_sample_rate,
-            audio_out_sample_rate=audio_config.transport_out_sample_rate,
-            audio_out_mixer=mixer,
-            serializer=serializer,
-            **realtime_param_overrides(is_realtime),
-        ),
+        expected_provider="ari",
     )

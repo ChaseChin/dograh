@@ -12,7 +12,8 @@ from fastapi import HTTPException
 
 from api.enums import TelephonyCallStatus
 from api.services.telephony import ari_manager
-from api.services.telephony.providers.ari import channel_registry
+from api.services.telephony.asterisk import channel_registry
+from api.services.telephony.asterisk import driver as driver_module
 from api.services.telephony.providers.ari import provider as provider_module
 
 RUN_ID = 123
@@ -47,7 +48,7 @@ def ari_call(monkeypatch):
     session = MagicMock()
     session.__aenter__.return_value = session
     monkeypatch.setattr(
-        provider_module.aiohttp, "ClientSession", MagicMock(return_value=session)
+        driver_module.aiohttp, "ClientSession", MagicMock(return_value=session)
     )
     return SimpleNamespace(
         provider=provider, session=session, redis=redis, mappings=mappings

@@ -1841,6 +1841,26 @@
             }
           }
         }
+      },
+      "siptrack": {
+        "field": {
+          "hostname": {
+            "label": "SIP 主机名",
+            "description": "运营商为这条中继提供的主机名,不带 sip: 前缀,也不带端口。Dograh 由随本部署安装的网关对接它。"
+          },
+          "port": {
+            "label": "端口",
+            "description": "运营商的 SIP 信令端口,几乎都是 5060。"
+          },
+          "transport": {
+            "label": "传输协议",
+            "description": "运营商要求的传输协议。除非对方另有说明,否则用 UDP。"
+          },
+          "inbound_address": {
+            "label": "呼入送达地址",
+            "description": "把该地址提供给运营商并请其加入 IP 白名单,再将你的呼入号码指向它。白名单生效之前,呼入电话无法到达 Dograh。"
+          }
+        }
       }
     },
     "sip": {

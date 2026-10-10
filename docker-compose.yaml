@@ -140,6 +140,66 @@ services:
     networks:
       - app-network
 
+  # The SIP gateway behind the "SIP Track" telephony provider.
+  #
+  # Dograh speaks WebSocket audio and has no SIP stack of its own; a carrier
+  # trunk is SIP and RTP. This container is the difference: Asterisk terminates
+  # the carrier's trunk, and chan_websocket hands the audio to the API over the
+  # same ARI path a customer's own Asterisk uses.
+  #
+  # Started only under the profile, because it publishes SIP and RTP ports and
+  # needs the host's public address — a deployment with no carrier trunk should
+  # not have either.
+  #
+  #   docker compose --profile sip-trunk up -d
+  #
+  # Add a configuration at /telephony-configurations, choose SIP Track, enter
+  # the host and port the carrier gave you, and report this host's public IP to
+  # them: there is no authentication on the trunk, so the IP whitelist is what
+  # keeps everyone else out.
+  asterisk:
+    build:
+      context: ./deploy/asterisk
+    image: ${REGISTRY:-dograhai}/dograh-asterisk:latest
+    container_name: dograh-asterisk
+    restart: unless-stopped
+    profiles: ["sip-trunk"]
+    environment:
+      # Must match the api service below — one credential, two ends.
+      ASTERISK_ARI_USER: "${ASTERISK_ARI_USER:-dograh}"
+      ASTERISK_ARI_PASSWORD: "${ASTERISK_ARI_PASSWORD:?ASTERISK_ARI_PASSWORD must be set — the SIP Track gateway authenticates the API over ARI}"
+      ASTERISK_WS_CLIENT_NAME: "${ASTERISK_WS_CLIENT_NAME:-dograh}"
+      # Where this gateway opens its audio WebSocket. Reachable over the compose
+      # network only; nothing is published for it.
+      ASTERISK_API_WS_URL: "${ASTERISK_API_WS_URL:-ws://api:8000/api/v1/telephony/ws/ari}"
+      ASTERISK_SIP_PORT: "${ASTERISK_SIP_PORT:-5060}"
+      ASTERISK_SIP_TRANSPORTS: "${ASTERISK_SIP_TRANSPORTS:-udp}"
+      ASTERISK_RTP_START: "${ASTERISK_RTP_START:-10000}"
+      ASTERISK_RTP_END: "${ASTERISK_RTP_END:-10100}"
+      # The address the carrier is told to send media to. On a host with a
+      # public IP this is that IP; leave it empty only if this container is
+      # directly reachable, or calls connect and then carry no audio.
+      ASTERISK_EXTERNAL_ADDRESS: "${ASTERISK_EXTERNAL_ADDRESS:-${PUBLIC_HOST:-}}"
+      # The private range this container lives in, so Asterisk can tell its own
+      # network from the carrier's.
+      ASTERISK_LOCAL_NET: "${ASTERISK_LOCAL_NET:-172.16.0.0/12}"
+    ports:
+      # Both transports are published; Asterisk binds only those named in
+      # ASTERISK_SIP_TRANSPORTS, and the other port stays closed.
+      - "${ASTERISK_SIP_PORT:-5060}:${ASTERISK_SIP_PORT:-5060}/udp"
+      - "${ASTERISK_SIP_PORT:-5060}:${ASTERISK_SIP_PORT:-5060}/tcp"
+      # RTP. Widen the range in .env for more concurrent calls: one call is two
+      # streams, so the default 101 ports carry roughly fifty.
+      - "${ASTERISK_RTP_START:-10000}-${ASTERISK_RTP_END:-10100}:${ASTERISK_RTP_START:-10000}-${ASTERISK_RTP_END:-10100}/udp"
+    volumes:
+      # The trunks themselves, written by the api and read here.
+      - asterisk-generated:/etc/asterisk/dograh
+    depends_on:
+      api:
+        condition: service_healthy
+    networks:
+      - app-network
+
   api:
     image: ${REGISTRY:-dograhai}/dograh-api:latest
     environment:
@@ -253,6 +313,20 @@ services:
 
       OSS_JWT_SECRET: "${OSS_JWT_SECRET:?OSS_JWT_SECRET must be set to a strong secret}"
 
+      # The SIP Track gateway (see the asterisk service). These are what the
+      # "SIP Track" provider stores into a configuration and dials through, so
+      # the form can ask for a host and a port and nothing else. Leave them
+      # alone unless you run the gateway somewhere this api cannot guess.
+      ASTERISK_ARI_ENDPOINT: "${ASTERISK_ARI_ENDPOINT:-http://asterisk:8088}"
+      ASTERISK_ARI_USER: "${ASTERISK_ARI_USER:-dograh}"
+      ASTERISK_ARI_PASSWORD: "${ASTERISK_ARI_PASSWORD:-}"
+      ASTERISK_WS_CLIENT_NAME: "${ASTERISK_WS_CLIENT_NAME:-dograh}"
+      ASTERISK_SIP_PORT: "${ASTERISK_SIP_PORT:-5060}"
+      # What the UI tells the operator to report to the carrier, ahead of the
+      # IP whitelist that stands in for authentication. Derived from
+      # PUBLIC_HOST and ASTERISK_SIP_PORT when unset.
+      SIPTRACK_INBOUND_ADDRESS: "${SIPTRACK_INBOUND_ADDRESS:-}"
+
       # Telephony media WebSocket capability token. The carrier dials the media
       # socket back, so its URL is caller-visible and the ids in it are otherwise
       # guessable. Set a secret in .env to have providers sign that URL and the
@@ -269,6 +343,11 @@ services:
 
     ports:
       - "8000:8000"
+    volumes:
+      # Where the SIP Track trunks are written for the gateway to read. Mounted
+      # whether or not the gateway is running, so switching it on later needs no
+      # change here; with no gateway the files are simply never read.
+      - asterisk-generated:/etc/asterisk/dograh
     depends_on:
       postgres:
         condition: service_healthy
@@ -363,6 +442,9 @@ volumes:
   nginx-generated:
     driver: local
   coturn-generated:
+    driver: local
+  # Shared between api (writes the trunks) and asterisk (reads them).
+  asterisk-generated:
     driver: local
 
 networks:
