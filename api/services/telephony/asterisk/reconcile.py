@@ -183,15 +183,23 @@ class AsteriskGatewayReconciler:
 
     @property
     def available(self) -> bool:
-        """Whether the gateway's configuration directory exists.
+        """Whether the gateway has prepared the shared directory for writing.
 
-        The compose stack mounts it into the api unconditionally, so that
-        enabling the bundled gateway later is a matter of starting the container
-        and not of editing the api's mounts. Against an installation that has no
-        gateway, the writes below land in a volume nothing reads, and cost a
-        header-only file and one indexed query per poll.
+        The compose stack mounts the volume into the api unconditionally, so
+        that enabling the bundled gateway later is a matter of starting the
+        container and not of editing the api's mounts. The consequence is that
+        the directory is present from the api's first second — Docker creates a
+        named volume's root owned by root, mode 0755 — while the api writes as
+        its own unprivileged user and cannot open a file there. The gateway
+        chmods the directory world-writable as it starts, and that is the point
+        at which these writes can land.
+
+        So test writability, not existence. Against an installation that never
+        started a gateway the directory exists and is not writable, and this
+        says so once per poll instead of logging a permission error once a
+        minute for the life of the deployment.
         """
-        return self.conf_dir.is_dir()
+        return self.conf_dir.is_dir() and os.access(self.conf_dir, os.W_OK)
 
     def _trunks_from_rows(self, rows: Sequence[Any]) -> List[GatewayTrunk]:
         trunks: List[GatewayTrunk] = []

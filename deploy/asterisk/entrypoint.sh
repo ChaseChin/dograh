@@ -85,6 +85,12 @@ fi
 # trunk's host, port and codec — the carrier's public settings, and exactly the
 # values this integration exists to make non-secret.
 install -d -m 0777 "$GENERATED_DIR"
+# Explicit, because it is the API's green light rather than a cosmetic mode:
+# Docker creates the volume's root owned by root at 0755, and the API treats a
+# directory it cannot write to as "no gateway here" and stays quiet. `install -d`
+# sets the mode when it creates the directory; this also covers the case where
+# the directory already exists because the volume was mounted on a previous run.
+chmod 0777 "$GENERATED_DIR"
 
 # Asterisk reads these through a wildcard include. An empty file loads as no
 # sections, which is what an installation with no trunks configured should look
