@@ -164,6 +164,19 @@ services:
     container_name: dograh-asterisk
     restart: unless-stopped
     profiles: ["sip-trunk"]
+    # The base image runs Asterisk with its debugging turned all the way up
+    # (`-vvvdddf`), which is what you want the day an inbound call does not
+    # arrive and a liability every day after: unbounded, this one container
+    # wrote 7.5 GB of log in twenty-eight hours and filled the host's disk,
+    # which took Redis' write path down with it and everything behind Redis.
+    # The cap is what makes the verbosity safe, so it is sized for debugging
+    # rather than for tidiness — 150 MB still holds roughly the last half hour
+    # of signalling, which is the window you read after a failed call.
+    logging:
+      driver: "json-file"
+      options:
+        max-size: "50m"
+        max-file: "3"
     environment:
       # Must match the api service below — one credential, two ends.
       ASTERISK_ARI_USER: "${ASTERISK_ARI_USER:-dograh}"
