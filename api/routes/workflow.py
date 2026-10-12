@@ -1,3 +1,4 @@
+import copy
 import json
 import re
 import uuid
@@ -62,7 +63,10 @@ from api.services.workflow.configuration_policy import (
 from api.services.workflow.dto import ReactFlowDTO, sanitize_workflow_definition
 from api.services.workflow.duplicate import duplicate_workflow
 from api.services.workflow.errors import ItemKind, WorkflowError
-from api.services.workflow.language import apply_language_instruction
+from api.services.workflow.language import (
+    apply_language_instruction,
+    resolve_workflow_language,
+)
 from api.services.workflow.run_creation import prepare_workflow_run_inputs
 from api.services.workflow.run_usage_response import (
     format_public_cost_info,
@@ -1068,6 +1072,65 @@ async def move_workflow_to_folder(
     )
 
 
+async def _definition_for_update(
+    workflow_definition: dict | None,
+    workflow_configurations: dict | None,
+    *,
+    workflow_id: int,
+    organization_id: int,
+) -> dict | None:
+    """The definition an update should store, with its language rule refreshed.
+
+    The rule line in the stored prompt has to agree with the stored language,
+    and the update route is the only path that writes either of them. Creation
+    applies the rule once (see ``create_workflow``); without this step a
+    workflow kept the rule from the language it was created in, however many
+    times the setting changed afterwards.
+
+    Two shapes of save arrive here: the settings page sends the configurations
+    and no graph, the builder sends the graph and no configurations. So the
+    definition being stored is the request's when it has one and the stored one
+    otherwise, and the language is the one the request sets or the one already
+    on the row.
+
+    Only the rule line moves — ``upsert_language_rule`` replaces that line and
+    leaves the prose around it alone, so a hand-written prompt keeps everything
+    that was written by hand. Returns None when there is nothing to store.
+    """
+    if workflow_definition is None and (
+        workflow_configurations is None or "language" not in workflow_configurations
+    ):
+        return workflow_definition
+
+    stored_draft = await db_client.get_draft_version(workflow_id)
+    if stored_draft is not None:
+        stored_definition = stored_draft.workflow_json
+        stored_configurations = stored_draft.workflow_configurations or {}
+    else:
+        stored_workflow = await db_client.get_workflow(
+            workflow_id, organization_id=organization_id
+        )
+        released = stored_workflow.released_definition if stored_workflow else None
+        stored_definition = released.workflow_json if released else None
+        stored_configurations = (released.workflow_configurations or {}) if released else {}
+
+    if workflow_definition is not None:
+        definition_to_store = workflow_definition
+    else:
+        # Deep copy: the stored definition comes off the ORM and
+        # apply_language_instruction edits in place — mutating a loaded row here
+        # would mark the session dirty with a change the caller never made.
+        definition_to_store = copy.deepcopy(stored_definition)
+
+    if definition_to_store is None:
+        return None
+
+    return apply_language_instruction(
+        definition_to_store,
+        resolve_workflow_language(workflow_configurations, stored_configurations),
+    )
+
+
 @router.put(
     "/{workflow_id}",
     **sdk_expose(
@@ -1294,6 +1357,15 @@ async def update_workflow(
                     raise _trigger_conflict_http_exception(
                         workflow_definition, e.trigger_paths
                     )
+
+        # The stored language is what the opening prompt's rule line has to agree
+        # with; see _definition_for_update.
+        workflow_definition = await _definition_for_update(
+            workflow_definition,
+            workflow_configurations,
+            workflow_id=workflow_id,
+            organization_id=user.selected_organization_id,
+        )
 
         workflow = await db_client.update_workflow(
             workflow_id=workflow_id,

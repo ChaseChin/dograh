@@ -25,6 +25,35 @@ from api.services.voice_prompting_guide import (
     get_topic,
     list_topic_index,
 )
+from api.services.workflow.language import (
+    build_language_instruction,
+    upsert_language_rule,
+)
+
+
+def _in_language(content: str, language: Optional[str]) -> str:
+    """Point the reference content at the agent's language.
+
+    The guide is written in English because it is advice *to* the authoring
+    LLM, and English advice is fine — what is not fine is the LLM copying its
+    template verbatim into a Chinese agent, which is what happened: the
+    template's own `Language:` line said "Default English" and the examples
+    were English too.
+
+    So the rule line is rewritten in place, and one sentence tells the author
+    to write the rest in the same language. Without a known language the
+    content is returned exactly as it was.
+    """
+    rule = build_language_instruction(language)
+    if rule is None:
+        return content
+
+    return (
+        f"{upsert_language_rule(content, rule)}\n\n"
+        "Write the whole template in the agent's language — its examples and "
+        "its objection handling included. The `Language:` rule line is already "
+        "set for you; copy it as it stands."
+    )
 
 
 @traced_tool
@@ -32,6 +61,7 @@ async def get_voice_prompting_guide(
     stage: Optional[str] = None,
     topic: Optional[str] = None,
     node_type: Optional[str] = None,
+    language: Optional[str] = None,
 ) -> dict[str, Any]:
     """Fetch staged voice-prompting guidance for authoring Dograh workflows.
 
@@ -51,6 +81,12 @@ async def get_voice_prompting_guide(
             for that atom. Use after the briefing flags a topic worth
             drilling into. Mutually exclusive with `stage`.
         node_type: Optional filter. Most useful with `stage="create"`.
+        language: The agent's language ("zh" | "en" | "auto"), the same value
+            you pass to `create_workflow`. The guide's own text is English,
+            but topic content returned with this set has its `Language:` rule
+            line and its instructions written for that language — so the
+            global-node template you copy out of it comes out in the right
+            one. Omit it and the content is returned as written.
 
     Returns:
         - With `topic`: { id, title, severity, content, stages_relevant,
@@ -84,7 +120,9 @@ async def get_voice_prompting_guide(
                     f"Available topics: {available or '(none registered)'}."
                 ),
             )
-        return atom.to_deep_dict()
+        rendered = atom.to_deep_dict()
+        rendered["content"] = _in_language(rendered["content"], language)
+        return rendered
 
     if stage is not None:
         try:

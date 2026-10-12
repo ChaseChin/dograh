@@ -31,8 +31,13 @@ from api.enums import PostHogEvent
 from api.mcp_server.auth import authenticate_mcp_request
 from api.mcp_server.tracing import traced_tool
 from api.mcp_server.ts_bridge import TsBridgeError, parse_code
+from api.schemas.workflow_configurations import (
+    DEFAULT_AGENT_LANGUAGE,
+    AgentLanguage,
+)
 from api.services.posthog_client import capture_event
 from api.services.workflow.dto import ReactFlowDTO
+from api.services.workflow.language import apply_language_instruction
 from api.services.workflow.layout import reconcile_positions
 from api.services.workflow.tool_name_validation import (
     validate_workflow_tool_name_collisions,
@@ -61,11 +66,20 @@ def _format_errors(errors: list[dict[str, Any]]) -> str:
 
 
 @traced_tool
-async def create_workflow(code: str) -> dict[str, Any]:
+async def create_workflow(
+    code: str, language: AgentLanguage = DEFAULT_AGENT_LANGUAGE
+) -> dict[str, Any]:
     """Parse SDK TypeScript and create a new published workflow.
 
     `code` is TypeScript source using `@dograh/sdk`. The workflow name
     comes from `new Workflow({ name: "..." })` — it is required.
+
+    `language` is the language the agent speaks with callers, and it is
+    the language every prompt in `code` must be written in: write the
+    greeting, the node prompts and the global prompt in it, not in
+    English. Defaults to `zh`. A `- Language:` rule is written into each
+    prompt-bearing node from this value, so the code does not need to
+    (and should not) spell out a language rule of its own.
 
     Example code:
         import { Workflow } from "@dograh/sdk";
@@ -165,12 +179,18 @@ async def create_workflow(code: str) -> dict[str, Any]:
                 "trigger_path_conflict", str(e), trigger_paths=e.trigger_paths
             )
 
-    # 5. Persist as a new workflow with v1 published.
+    # 5. Persist as a new workflow with v1 published. The language rule goes
+    # into the authored prompts here rather than being left to the author: it
+    # is what makes the agent speak `language`, and a prompt carrying the
+    # guide's own English rule line would otherwise contradict it.
+    payload = apply_language_instruction(payload, language)
+
     workflow = await db_client.create_workflow(
         name,
         payload,
         user.id,
         user.selected_organization_id,
+        workflow_configurations={"language": language},
     )
 
     capture_event(

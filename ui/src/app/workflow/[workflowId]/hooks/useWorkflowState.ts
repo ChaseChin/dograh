@@ -29,11 +29,13 @@ import {
 } from "@/client/types.gen";
 import { useNodeSpecs } from "@/components/flow/renderer";
 import { FlowEdge, FlowNode, FlowNodeData, NodeType } from "@/components/flow/types";
+import { nodePromptDefault } from "@/components/workflow/node-prompt-defaults";
 import { PostHogEvent } from "@/constants/posthog-events";
 import { detailFromError } from "@/lib/apiError";
 import logger from '@/lib/logger';
 import { getNextNodeId, getRandomId } from "@/lib/utils";
 import {
+    type AgentLanguage,
     resolveWorkflowConfigurations,
     type WorkflowConfigurationDefaults,
     type WorkflowConfigurations,
@@ -60,12 +62,22 @@ function extractWorkflowErrors(payload: unknown): WorkflowError[] {
 // hardcoded `getNewNode` switch — adding a new node type is now zero
 // frontend code: declare the spec on the backend and the defaults flow
 // through here.
-function buildDataFromSpec(spec: NodeSpec): Record<string, unknown> {
+//
+// `language` is the one default the spec cannot supply: the global node's
+// prompt is agent-facing text, so it comes from node-prompt-defaults.ts
+// instead of the backend's (English) spec_default.
+function buildDataFromSpec(
+    spec: NodeSpec,
+    language?: AgentLanguage | null,
+): Record<string, unknown> {
     const data: Record<string, unknown> = {};
     for (const prop of spec.properties) {
         if (prop.default !== undefined && prop.default !== null) {
             data[prop.name] = prop.default;
         }
+    }
+    if (spec.name === NodeType.GLOBAL_NODE) {
+        data.prompt = nodePromptDefault(spec.name, language, data.prompt);
     }
     return data;
 }
@@ -75,8 +87,9 @@ function buildNewNode(
     position: { x: number; y: number },
     existingNodes: FlowNode[],
     spec: NodeSpec,
+    language?: AgentLanguage | null,
 ): FlowNode {
-    const data = buildDataFromSpec(spec) as Partial<FlowNodeData> & Record<string, unknown>;
+    const data = buildDataFromSpec(spec, language) as Partial<FlowNodeData> & Record<string, unknown>;
     if (type === NodeType.START_CALL) data.is_start = true;
     if (type === NodeType.END_CALL) data.is_end = true;
     return {
@@ -315,7 +328,7 @@ export const useWorkflowState = ({
             return;
         }
         const newNode = {
-            ...buildNewNode(nodeType, position, nodes, spec),
+            ...buildNewNode(nodeType, position, nodes, spec, workflowConfigurations?.language),
             selected: true, // Mark the new node as selected
         };
 
@@ -331,7 +344,7 @@ export const useWorkflowState = ({
             workflow_id: workflowId,
         });
         setIsAddNodePanelOpen(false);
-    }, [nodes, setIsAddNodePanelOpen, workflowId, bySpecName]);
+    }, [nodes, setIsAddNodePanelOpen, workflowId, bySpecName, workflowConfigurations?.language]);
 
     const handleNameChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         setWorkflowName(e.target.value);

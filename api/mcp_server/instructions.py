@@ -58,9 +58,9 @@ The guide tool is the authoritative source for prompt-authoring craft (global gu
 1. Run the plan stage (see above) before any code.
 2. Create a simple 1-node workflow with only `startCall` if the user just wants a starter. The user can iteratively add complexity by editing it.
 3. `list_node_types` / `get_node_type` — consult to learn the fields available on the node types you intend to use.
-4. `get_voice_prompting_guide` with `stage="create"` and `node_type=<type>` — call before writing each node's prompt. For a `globalNode`, also call `get_voice_prompting_guide` with `topic="common_guidelines"` and place that content in the global node nearly verbatim, adapting only user-provided details such as language, persona, company, transfer target, or qualification scope.
-5. Author SDK TypeScript from scratch. The `new Workflow({ name: "..." })` call is required — `name` becomes the workflow's display name.
-6. `create_workflow` — persists a new workflow as version 1 (published). Returns the new `workflow_id`. For subsequent edits use `save_workflow` (which writes a draft).
+4. `get_voice_prompting_guide` with `stage="create"`, `node_type=<type>` and the agent's `language` — call before writing each node's prompt. For a `globalNode`, also call `get_voice_prompting_guide` with `topic="common_guidelines"` and the same `language`, then place that content in the global node nearly verbatim, adapting only user-provided details such as persona, company, transfer target, or qualification scope.
+5. Author SDK TypeScript from scratch. The `new Workflow({ name: "..." })` call is required — `name` becomes the workflow's display name. **Write every prompt in the agent's language** — the greeting, the node prompts and the global node alike. Do not translate the guide's own instructions (it is advice to you, and its English is fine), but do not carry its English template text into a non-English agent either. Do not write a `Language:` rule line yourself: pass `language` and one is written for you.
+6. `create_workflow(code, language=<the same value>)` — persists a new workflow as version 1 (published). Returns the new `workflow_id`. For subsequent edits use `save_workflow` (which writes a draft and keeps the rule line in step with the workflow's stored language).
 
 ## Allowed source shape
 

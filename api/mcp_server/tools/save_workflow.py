@@ -34,6 +34,7 @@ from api.mcp_server.tools._workflow_projection import (
 from api.mcp_server.tracing import traced_tool
 from api.mcp_server.ts_bridge import TsBridgeError, parse_code
 from api.services.workflow.dto import ReactFlowDTO
+from api.services.workflow.language import apply_language_instruction
 from api.services.workflow.layout import reconcile_positions
 from api.services.workflow.tool_name_validation import (
     validate_workflow_tool_name_collisions,
@@ -169,7 +170,16 @@ async def save_workflow(workflow_id: int, code: str) -> dict[str, Any]:
             organization_id=user.selected_organization_id,
         )
 
-    # 4b. Save as a new draft (existing published version stays intact).
+    # 4b. Save as a new draft (existing published version stays intact). The
+    # language rule is re-applied from the workflow's stored language, so an
+    # edit made here cannot drop the rule the settings page put in place — and
+    # an edit made while the guide was in English cannot leave an English rule
+    # inside a Chinese agent.
+    payload = apply_language_instruction(
+        payload,
+        (workflow.workflow_configurations or {}).get("language"),
+    )
+
     draft = await db_client.save_workflow_draft(
         workflow_id=workflow_id,
         workflow_definition=payload,

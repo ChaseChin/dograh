@@ -3,6 +3,7 @@
 from api.services.workflow.language import (
     apply_language_instruction,
     build_language_instruction,
+    resolve_workflow_language,
     upsert_language_rule,
 )
 
@@ -110,3 +111,22 @@ def test_apply_language_instruction_is_a_noop_without_a_language():
 
     assert apply_language_instruction(definition, None) is definition
     assert str(definition) == before
+
+
+def test_a_save_that_sets_a_language_speaks_for_it():
+    """The settings page sends configurations and no graph."""
+    assert resolve_workflow_language({"language": "en"}, {"language": "zh"}) == "en"
+
+
+def test_a_save_that_says_nothing_defers_to_what_is_stored():
+    """The builder sends a graph and no configurations."""
+    assert resolve_workflow_language(None, {"language": "zh"}) == "zh"
+    assert resolve_workflow_language({"dictionary": ""}, {"language": "auto"}) == "auto"
+    assert resolve_workflow_language(None, None) is None
+
+
+def test_an_explicitly_unset_language_is_not_second_guessed():
+    """`exclude_unset` keeps an explicitly-null field, which means "unset" —
+    a save saying so must leave the prompt alone rather than restore the
+    stored value."""
+    assert resolve_workflow_language({"language": None}, {"language": "zh"}) is None

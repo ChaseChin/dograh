@@ -46,6 +46,10 @@ class _FakeWorkflowModel:
     current_definition = None
     released_definition = None
     workflow_definition = None
+    # A real column on WorkflowModel. None is "this workflow predates the
+    # agent-language setting", which leaves the prompt's rule line alone —
+    # see test_language_rule_follows_the_stored_language for the other case.
+    workflow_configurations = None
 
 
 @pytest.fixture
@@ -379,3 +383,39 @@ async def test_unknown_workflow_raises_404(authed_user: MagicMock):
         with pytest.raises(HTTPException) as exc_info:
             await save_workflow(workflow_id=999, code=_valid_code())
         assert exc_info.value.status_code == 404
+
+
+# ─── Agent language ──────────────────────────────────────────────────────
+
+
+@pytest.mark.asyncio
+async def test_language_rule_follows_the_stored_language(mock_backends):
+    """An edit made here cannot leave the wrong language rule in the prompt.
+
+    The guide the authoring LLM copies from is written in English, so a
+    workflow edited through MCP would otherwise carry an English rule inside a
+    Chinese agent — and the settings page, which put the Chinese rule there,
+    would have no way to notice.
+    """
+    save_mock, _ = mock_backends
+    stored = _FakeWorkflowModel()
+    stored.workflow_configurations = {"language": "zh"}
+
+    with patch(
+        "api.mcp_server.tools.save_workflow.db_client.get_workflow",
+        AsyncMock(return_value=stored),
+    ):
+        result = await save_workflow(
+            workflow_id=1, code=_valid_code(name=_FakeWorkflowModel.name)
+        )
+
+    assert result["saved"] is True
+    saved_definition = save_mock.call_args.kwargs["workflow_definition"]
+    prompts = {
+        node["data"]["name"]: node["data"].get("prompt", "")
+        for node in saved_definition["nodes"]
+    }
+    assert "简体中文" in prompts["greeting"]
+    # endCall carries no prompt for a caller to hear, so it is not a
+    # prompt-bearing node and is left exactly as authored.
+    assert prompts["done"] == "Bye."

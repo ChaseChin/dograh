@@ -99,3 +99,21 @@ def apply_language_instruction(
             data["prompt"] = upsert_language_rule(prompt, instruction)
 
     return workflow_definition
+
+
+def resolve_workflow_language(
+    requested: dict | None, stored: dict | None
+) -> str | None:
+    """The language a save should leave the stored prompt's rule in.
+
+    Two shapes of save reach the update route: the settings page sends the
+    configurations and no graph, the builder sends the graph and no
+    configurations. A request that speaks for the language is taken at its word
+    — including when it says "unset", which leaves the prompt alone rather than
+    guessing. One that says nothing about it defers to what is already stored,
+    so a graph save and a settings save cannot leave the rule disagreeing with
+    the setting.
+    """
+    if requested is not None and "language" in requested:
+        return requested.get("language")
+    return (stored or {}).get("language")
