@@ -60,6 +60,7 @@ from api.services.workflow.configuration_policy import (
     WorkflowConfigurationNotFoundError,
     apply_external_pbx_mapping_policy,
 )
+from api.services.workflow.definition_translation import translate_definition
 from api.services.workflow.dto import ReactFlowDTO, sanitize_workflow_definition
 from api.services.workflow.duplicate import duplicate_workflow
 from api.services.workflow.errors import ItemKind, WorkflowError
@@ -598,6 +599,15 @@ async def create_workflow_from_template(
         workflow_def = regenerate_trigger_uuids(
             workflow_data.get("workflow_definition", {})
         )
+        # The prompt service generates in English and takes no language, so
+        # translate what it produced. This runs before the rule line is written:
+        # the rule has to be the last thing in, or it would be translated along
+        # with everything else.
+        workflow_def = await translate_definition(
+            workflow_def,
+            request.language,
+            organization_id=user.selected_organization_id,
+        )
         # The generated definition ships its own English language rule; replace
         # it with the one the user picked so the agent speaks the right language.
         apply_language_instruction(workflow_def, request.language)
@@ -1112,7 +1122,9 @@ async def _definition_for_update(
         )
         released = stored_workflow.released_definition if stored_workflow else None
         stored_definition = released.workflow_json if released else None
-        stored_configurations = (released.workflow_configurations or {}) if released else {}
+        stored_configurations = (
+            (released.workflow_configurations or {}) if released else {}
+        )
 
     if workflow_definition is not None:
         definition_to_store = workflow_definition
