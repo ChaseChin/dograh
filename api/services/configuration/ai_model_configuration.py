@@ -25,6 +25,7 @@ from api.schemas.ai_model_configuration import (
     OrganizationAIModelConfigurationV2,
     compile_ai_model_configuration_v2,
 )
+from api.services.configuration.language_voices import apply_language_voice
 from api.services.configuration.masking import (
     SERVICE_SECRET_FIELDS,
     contains_masked_key,
@@ -99,9 +100,13 @@ async def get_effective_ai_model_configuration_for_workflow(
     resolved_config = await get_resolved_ai_model_configuration(
         organization_id=organization_id,
     )
-    return resolve_effective_config(
-        resolved_config.effective,
-        workflow_configurations.get("model_overrides"),
+    overrides = workflow_configurations.get("model_overrides")
+    return apply_language_voice(
+        resolve_effective_config(resolved_config.effective, overrides),
+        workflow_configurations.get("language"),
+        # A workflow that brought its own tts settings has already chosen a
+        # voice; the language rule sits underneath that choice, not over it.
+        own_tts_override=bool(overrides and "tts" in overrides),
     )
 
 

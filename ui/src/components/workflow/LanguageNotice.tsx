@@ -6,10 +6,14 @@ import { useTranslation } from 'react-i18next';
 import type { AgentLanguage } from '@/types/workflow-configurations';
 
 /**
- * Tells the user that picking a non-Chinese agent language does not switch the
- * speech engines yet: TTS and STT still come from the organization's model
- * configuration, so an English agent can be paired with a Chinese voice unless
- * the user changes that separately.
+ * The half of the speech path that picking a language does not cover.
+ *
+ * The voice follows: the backend matches it to the agent's language where the
+ * text-to-speech provider publishes a voice for it, so an English agent no
+ * longer speaks with the organization's Chinese voice. Transcription does not
+ * follow — it still comes from the organization's model configuration — so a
+ * non-Chinese agent can be listened to by a Chinese recognizer until someone
+ * changes that in Model configuration.
  */
 export function LanguageNotice({ language }: { language: AgentLanguage }) {
     const { t } = useTranslation();

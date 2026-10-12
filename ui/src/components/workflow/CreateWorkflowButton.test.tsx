@@ -122,8 +122,9 @@ describe("CreateWorkflowButton blank canvas", () => {
     fireEvent.change(within(dialog).getByTestId("language-select"), {
       target: { value: "en" },
     });
-    // Picking a non-Chinese language warns that the speech engines are unchanged.
-    expect(within(dialog).getByText(/text-to-speech and speech recognition/)).toBeTruthy();
+    // Picking a non-Chinese language warns that transcription has not
+    // followed it — the voice has.
+    expect(within(dialog).getByText(/Speech recognition still uses/)).toBeTruthy();
 
     fireEvent.click(within(dialog).getByRole("button", { name: "Blank Canvas" }));
 

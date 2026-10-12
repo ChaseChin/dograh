@@ -102,8 +102,9 @@ describe("Agent Builder create page", () => {
   it("submits the language the user picked", async () => {
     renderFilledForm();
     fireEvent.change(languageSelect(), { target: { value: "auto" } });
-    // Picking a non-Chinese language warns that the speech engines are unchanged.
-    expect(screen.getByText(/text-to-speech and speech recognition/)).toBeTruthy();
+    // Picking a non-Chinese language warns that transcription has not
+    // followed it — the voice has.
+    expect(screen.getByText(/Speech recognition still uses/)).toBeTruthy();
     submit();
 
     await waitFor(() => expect(mocks.createFromTemplate).toHaveBeenCalled());

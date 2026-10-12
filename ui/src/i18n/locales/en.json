@@ -2251,7 +2251,7 @@
       "en": "English",
       "auto": "Follow the caller",
       "help": "The language your agent speaks with callers. The rule is written into the opening prompt and enforced on every call.",
-      "ttsNotice": "Note: text-to-speech and speech recognition still use your organization's current configuration. Change them in Model configuration if you need an English voice or English transcription.",
+      "ttsNotice": "Note: the voice follows the agent's language. Speech recognition still uses your organization's configuration \u2014 change it in Model configuration if you need English transcription.",
       "blankTitle": "Choose the agent language",
       "blankDescription": "The opening prompt is generated in the selected language. You can change it later in settings."
     },

@@ -58,3 +58,16 @@ There are two ways to create a workflow via the API:
 - **From a template** — describe the use case in natural language and Dograh generates the initial graph using an LLM. Best for getting started quickly.
 
 See the [Workflow Definition Schema](/developer/workflow-schema) for the full field reference.
+
+## Agent language
+
+Every workflow has an **Agent language** — Chinese, English, or "follow the caller" — chosen when you create it and changeable at any time in **Settings**. It decides three things:
+
+- **The opening prompt.** A `- Language:` rule is written into the prompt when the workflow is created and rewritten whenever you change the setting. Only that rule line is replaced; the rest of your prompt is left exactly as you wrote it. The same rule is prepended to every node's system prompt at runtime, so editing a node prompt cannot drop it.
+- **What the agent says.** That rule is what the model follows, on every call.
+- **The voice.** Where your text-to-speech provider publishes a voice for the language, the agent is given it instead of your organization's default voice — an English agent stops speaking with a Chinese voice. See [Voice](/configurations/voice). A workflow that sets its own `tts` model override keeps the voice it chose.
+
+Two things the language does not reach:
+
+- **Speech recognition** still uses your organization's model configuration.
+- A workflow created **from a template** keeps the wording the template service generated. Its rule line is correct, and the rule line is what decides the language the agent speaks, so the agent still speaks the language you chose — but the prompt text itself remains in whatever language the template used.

@@ -14,3 +14,5 @@ For locally deployed or self-hosted TTS models, Dograh also supports Speaches, a
 If you don't find your favourite voice, you can always add the voice ID manually.
 
 ![Add Voice Manually](../images/add_tts_manually.png)
+
+Dograh matches an agent's voice to its [Agent language](/core-concepts/workflows-and-agents#agent-language) where the provider publishes a voice for it, so an English agent is not given a Chinese voice. The voice you select here is what an agent uses when it has no language set, when its language is "follow the caller", when the provider publishes no voice for that language, or when the workflow sets its own `tts` override.
