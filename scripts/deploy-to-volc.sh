@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-# 本地交叉构建 amd64 镜像,经 ssh 直接灌到火山服务器(voice.kidmuse.cn)并重启对应服务。
+# 本地交叉构建 amd64 镜像,经 ssh 直接灌到火山服务器(voiceworker.cn)并重启对应服务。
 # 服务器被墙访问不了 DockerHub/GitHub,不走任何 registry。
 #
 # 用法:
@@ -16,7 +16,7 @@ SSH_HOST="volc"
 REMOTE_DIR="/opt/dograh"
 LOCAL_TAG="voiceworker-${SERVICE}:amd64"
 REMOTE_TAG="dograhai/dograh-${SERVICE}:latest"
-PUBLIC_HEALTH="https://voice.kidmuse.cn/api/v1/health"
+PUBLIC_HEALTH="https://voiceworker.cn/api/v1/health"
 
 # The asterisk gateway builds from its own directory (its Dockerfile COPYs a file
 # from alongside itself); the application images build from the repo root.
@@ -93,6 +93,6 @@ elif [ "$SERVICE" = "asterisk" ]; then
   echo "==> deploy done"
 else
   ssh "$SSH_HOST" "docker ps --filter name=dograh-ui-1 --format '{{.Status}}'"
-  curl -sL --max-time 20 https://voice.kidmuse.cn -o /dev/null -w 'voice.kidmuse.cn HTTP %{http_code}\n'
+  curl -sL --max-time 20 https://voiceworker.cn -o /dev/null -w 'voiceworker.cn HTTP %{http_code}\n'
   echo "==> deploy done"
 fi
